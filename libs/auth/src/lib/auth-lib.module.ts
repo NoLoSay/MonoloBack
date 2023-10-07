@@ -6,6 +6,6 @@ import { UsersLibModule } from '@noloback/users-lib';
   controllers: [],
   providers: [],
   exports: [],
-  imports: [UsersLibModule]
+  imports: [UsersLibModule],
 })
 export class AuthLibModule {}
