@@ -5,6 +5,11 @@
   "projectType": "application",
   "targets": {
     "build": {
+      "dependsOn": [
+        {
+          "target": "generate-types"
+        }
+      ],
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
