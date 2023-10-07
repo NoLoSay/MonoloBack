@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { UsersLibModule } from '@no-lo-back/users-lib';
+import { UsersLibModule } from '@noloback/users-lib';
 
 @Module({
   controllers: [],
