@@ -6,7 +6,7 @@ import { AppService } from './app.service';
 import { LoggerLibModule } from '@noloback/logger-lib';
 
 @Module({
-  imports: [],
+  imports: [LoggerLibModule],
   controllers: [AppController],
   providers: [AppService],
 })
