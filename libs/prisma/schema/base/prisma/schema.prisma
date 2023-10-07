@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  // output into a separate subdirectory so multiple schemas can be used in a monorepo
+  output   = "../../../../../node_modules/@prisma/client/base"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// generator docs {
+//   provider = "node node_modules/prisma-docs-generator"
+//   output   = "../../../../../docs/prisma"
+// }
+
+// generator dbml {
+//   provider = "prisma-dbml-generator"
+//   output   = "../../../../../docs/prisma-dbml"
+// }
+
+model User {
+  id           Int               @id @default(autoincrement())
+  username     String            @unique @default(uuid())
+  email        String            @unique
+  password     String
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  deletedAt    DateTime?
+  role         Role              @default(USER)
+  Places       Place[]
+  postedVideos UserhasVideos[]
+  likedVideos  UserlikesVideos[]
+}
+
+enum Role {
+  ADMIN
+  USER
+  REFERENT
+}
+
+model Country {
+  id          Int          @id @default(autoincrement())
+  name        String
+  longitude   Float?
+  latitude    Float?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  Departments Department[]
+  Cities      City[]
+  Addresses   Address[]
+  Places      Place[]
+}
+
+model Department {
+  id        Int       @id @default(autoincrement())
+  name      String
+  longitude Float?
+  latitude  Float?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  countryId Int
+  Addresses Address[]
+  Cities    City[]
+  Country   Country   @relation(fields: [countryId], references: [id])
+}
+
+model City {
+  id           Int        @id @default(autoincrement())
+  name         String
+  zip          String
+  longitude    Float?
+  latitude     Float?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  deletedAt    DateTime?
+  departmentId Int
+  countryId    Int
+  Addresses    Address[]
+  Department   Department @relation(fields: [departmentId], references: [id])
+  Country      Country    @relation(fields: [countryId], references: [id])
+  Places       Place[]
+}
+
+model Address {
+  id           Int         @id @default(autoincrement())
+  houseNumber  String?
+  street       String
+  zip          String
+  otherDetails String?
+  longitude    Float?
+  latitude     Float?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  deletedAt    DateTime?
+  cityId       Int
+  countryId    Int
+  placeId      Int?
+  departmentId Int?
+  City         City        @relation(fields: [cityId], references: [id])
+  Country      Country     @relation(fields: [countryId], references: [id])
+  Place        Place?      @relation(fields: [placeId], references: [id])
+  Department   Department? @relation(fields: [departmentId], references: [id])
+}
+
+model Place {
+  id             Int              @id @default(autoincrement())
+  name           String
+  longitude      Float?
+  latitude       Float?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  deletedAt      DateTime?
+  mainUserId     Int
+  cityId         Int
+  countryId      Int
+  Referent       User             @relation(fields: [mainUserId], references: [id])
+  Addresses      Address[]
+  City           City             @relation(fields: [cityId], references: [id])
+  Country        Country          @relation(fields: [countryId], references: [id])
+  PlacehasVideos PlacehasVideos[]
+}
+
+model PlacehasVideos {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  placeId   Int
+  videoId   Int
+  Place     Place     @relation(fields: [placeId], references: [id])
+  Video     Video     @relation(fields: [videoId], references: [id])
+}
+
+model Video {
+  id            Int               @id @default(autoincrement())
+  name          String
+  url           String
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  deletedAt     DateTime?
+  linkedToPlace PlacehasVideos[]
+  postedBy      UserhasVideos[]
+  likedBy       UserlikesVideos[]
+}
+
+model UserhasVideos {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  userId    Int
+  videoId   Int
+  User      User      @relation(fields: [userId], references: [id])
+  Video     Video     @relation(fields: [videoId], references: [id])
+}
+
+model UserlikesVideos {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  userId    Int
+  videoId   Int
+  User      User      @relation(fields: [userId], references: [id])
+  Video     Video     @relation(fields: [videoId], references: [id])
+}
