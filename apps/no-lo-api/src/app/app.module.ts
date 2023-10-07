@@ -9,7 +9,12 @@ import { TranslatorLibModule } from '@noloback/translator-lib';
 import { UsersLibModule } from '@noloback/users-lib';
 
 @Module({
-  imports: [],
+  imports: [
+    AuthLibModule,
+    LoggerLibModule,
+    TranslatorLibModule,
+    UsersLibModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
