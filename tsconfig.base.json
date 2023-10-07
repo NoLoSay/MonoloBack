@@ -19,11 +19,15 @@
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],
       "@noloback/prisma-client-logs": ["libs/prisma/client/logs/src/index.ts"],
-      "@noloback/prisma-client-translator": ["libs/prisma/client/translator/src/index.ts"],
+      "@noloback/prisma-client-translator": [
+        "libs/prisma/client/translator/src/index.ts"
+      ],
+      "@noloback/prisma-lib": ["libs/prisma/src/index.ts"],
       "@noloback/prisma-schema-base": ["libs/prisma/schema/base/src/index.ts"],
       "@noloback/prisma-schema-logs": ["libs/prisma/schema/logs/src/index.ts"],
-      "@noloback/prisma-schema-translator": ["libs/prisma/schema/translator/src/index.ts"],
-      "@noloback/prisma-lib": ["libs/prisma/src/index.ts"],
+      "@noloback/prisma-schema-translator": [
+        "libs/prisma/schema/translator/src/index.ts"
+      ],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
       "@noloback/users-lib": ["libs/users/src/index.ts"]
     }
