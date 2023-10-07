@@ -1,14 +1,14 @@
 {
-  "name": "nolovideo-e2e",
+  "name": "video-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "implicitDependencies": ["nolovideo"],
+  "implicitDependencies": ["video"],
   "projectType": "application",
   "targets": {
     "e2e": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{e2eProjectRoot}"],
       "options": {
-        "jestConfig": "apps/nolovideo-e2e/jest.config.ts",
+        "jestConfig": "apps/video-e2e/jest.config.ts",
         "passWithNoTests": true
       }
     },
@@ -16,7 +16,7 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/nolovideo-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/video-e2e/**/*.{js,ts}"]
       }
     }
   }

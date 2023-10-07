@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
-  displayName: 'nolovideo',
+  displayName: 'video',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/nolovideo',
+  coverageDirectory: '../../coverage/apps/video',
 };

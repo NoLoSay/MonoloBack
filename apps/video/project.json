@@ -1,28 +1,22 @@
 {
-  "name": "no-lo-api",
+  "name": "video",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/no-lo-api/src",
+  "sourceRoot": "apps/video/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "dependsOn": [
-        {
-          "dependencies": true,
-          "target": "generate-types"
-        }
-      ],
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/no-lo-api",
-        "main": "apps/no-lo-api/src/main.ts",
-        "tsConfig": "apps/no-lo-api/tsconfig.app.json",
-        "assets": ["apps/no-lo-api/src/assets"],
+        "outputPath": "dist/apps/video",
+        "main": "apps/video/src/main.ts",
+        "tsConfig": "apps/video/tsconfig.app.json",
+        "assets": ["apps/video/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/no-lo-api/webpack.config.js"
+        "webpackConfig": "apps/video/webpack.config.js"
       },
       "configurations": {
         "development": {},
@@ -33,14 +27,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "no-lo-api:build"
+        "buildTarget": "video:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "no-lo-api:build:development"
+          "buildTarget": "video:build:development"
         },
         "production": {
-          "buildTarget": "no-lo-api:build:production"
+          "buildTarget": "video:build:production"
         }
       }
     },
@@ -48,14 +42,14 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/no-lo-api/**/*.ts"]
+        "lintFilePatterns": ["apps/video/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/no-lo-api/jest.config.ts",
+        "jestConfig": "apps/video/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

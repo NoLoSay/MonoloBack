@@ -1,28 +1,22 @@
 {
-  "name": "nolovideo",
+  "name": "api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/nolovideo/src",
+  "sourceRoot": "apps/api/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "dependsOn": [
-        {
-          "dependencies": true,
-          "target": "generate-types"
-        }
-      ],
       "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/nolovideo",
-        "main": "apps/nolovideo/src/main.ts",
-        "tsConfig": "apps/nolovideo/tsconfig.app.json",
-        "assets": ["apps/nolovideo/src/assets"],
+        "outputPath": "dist/apps/api",
+        "main": "apps/api/src/main.ts",
+        "tsConfig": "apps/api/tsconfig.app.json",
+        "assets": ["apps/api/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/nolovideo/webpack.config.js"
+        "webpackConfig": "apps/api/webpack.config.js"
       },
       "configurations": {
         "development": {},
@@ -33,14 +27,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "nolovideo:build"
+        "buildTarget": "api:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "nolovideo:build:development"
+          "buildTarget": "api:build:development"
         },
         "production": {
-          "buildTarget": "nolovideo:build:production"
+          "buildTarget": "api:build:production"
         }
       }
     },
@@ -48,14 +42,14 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/nolovideo/**/*.ts"]
+        "lintFilePatterns": ["apps/api/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/nolovideo/jest.config.ts",
+        "jestConfig": "apps/api/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
