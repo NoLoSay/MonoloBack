@@ -7,6 +7,7 @@
     "build": {
       "dependsOn": [
         {
+          "dependencies": true,
           "target": "generate-types"
         }
       ],
