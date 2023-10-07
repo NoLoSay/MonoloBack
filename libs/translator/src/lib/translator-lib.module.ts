@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { PrismaLibModule } from '@noloback/prisma-lib';
+import { PrismaClientTranslatorModule } from '@noloback/prisma-client-translator';
 
 @Module({
   controllers: [],
   providers: [],
   exports: [],
+  imports: [PrismaClientTranslatorModule],
 })
 export class TranslatorLibModule {}
