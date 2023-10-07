@@ -14,7 +14,13 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@no-lo-back/auth-lib": ["libs/auth/src/index.ts"],
+      "@no-lo-back/logger-lib": ["libs/logger/src/index.ts"],
+      "@no-lo-back/prisma-lib": ["libs/prisma/src/index.ts"],
+      "@no-lo-back/translator-lib": ["libs/translator/src/index.ts"],
+      "@no-lo-back/users-lib": ["libs/users/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
