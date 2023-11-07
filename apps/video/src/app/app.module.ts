@@ -3,10 +3,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { LoggerLibModule } from '@noloback/logger-lib';
+import { AuthLibModule } from '@noloback/auth-lib';
+import { LvideoModule } from '@noloback/lvideo';
 
 @Module({
-  imports: [LoggerLibModule],
+  imports: [AuthLibModule, LvideoModule],
   controllers: [AppController],
   providers: [AppService],
 })
