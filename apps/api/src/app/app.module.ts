@@ -6,14 +6,14 @@ import { AppService } from './app.service';
 import { AuthLibModule } from '@noloback/auth-lib';
 import { LoggerLibModule } from '@noloback/logger-lib';
 import { TranslatorLibModule } from '@noloback/translator-lib';
-import { UsersLibModule } from '@noloback/users-lib';
+import { UserControllerModule } from '@noloback/user-controller';
 
 @Module({
   imports: [
     AuthLibModule,
     LoggerLibModule,
     TranslatorLibModule,
-    UsersLibModule,
+    UserControllerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
