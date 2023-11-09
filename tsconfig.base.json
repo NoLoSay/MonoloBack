@@ -31,8 +31,8 @@
       ],
       "@noloback/register": ["libs/register/src/index.ts"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
-      "@noloback/users-controller": ["libs/users-controller/src/index.ts"],
-      "@noloback/users-lib": ["libs/users/src/index.ts"]
+      "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
+      "@noloback/users.service": ["libs/users.service/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

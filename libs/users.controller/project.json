@@ -1,21 +1,21 @@
 {
-  "name": "users-controller",
+  "name": "users.controller",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/users-controller/src",
+  "sourceRoot": "libs/users.controller/src",
   "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/users-controller/**/*.ts"]
+        "lintFilePatterns": ["libs/users.controller/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/users-controller/jest.config.ts",
+        "jestConfig": "libs/users.controller/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

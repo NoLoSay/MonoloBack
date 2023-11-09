@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe, ValidationPipe } from '@nestjs/common';
-import { CreateUserDto, UpdateUserDto, UsersService } from '@noloback/users-lib';
 import { Admin } from '@noloback/auth-lib'
+import { CreateUserDto, UpdateUserDto, UsersService } from '@noloback/users.service';
 
 @Controller('users')
 export class UsersController {

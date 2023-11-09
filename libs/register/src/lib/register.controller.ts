@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { Public } from '@noloback/auth-lib';
-import { CreateUserDto, UsersService } from '@noloback/users-lib';
+import { CreateUserDto, UsersService } from 'libs/users.service/src';
 
 @Controller('register')
 export class RegisterController {

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { LoggerLibModule } from '@noloback/logger-lib';
 import { PrismaClientBaseModule } from '@noloback/prisma-client-base';
-import { UsersLibModule } from '@noloback/users-lib';
+import { UsersServiceModule } from 'libs/users.service/src';
 
 @Module({
-  imports: [PrismaClientBaseModule, UsersLibModule, LoggerLibModule],
+  imports: [PrismaClientBaseModule, UsersServiceModule, LoggerLibModule],
   controllers: [],
   providers: [],
   exports: [],

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { UsersLibModule } from '@noloback/users-lib';
+import { UsersServiceModule } from 'libs/users.service/src';
 import { AuthController } from './auth-lib.controller';
 import { AuthService } from './auth-lib.service';
 // import { Admin } from './decorators/roles/admin.decorator';
@@ -29,7 +29,7 @@ import { PassportModule } from '@nestjs/passport';
   ],
   exports: [AuthService /*, Admin, User, Referent*/],
   imports: [
-    UsersLibModule,
+    UsersServiceModule,
     JwtModule.register({
       secret: process.env['PASSPORT_SESSION_KEY'],
       signOptions: { expiresIn: '30d' },

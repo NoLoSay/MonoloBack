@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UsersLibModule } from '@noloback/users-lib';
+import { UsersServiceModule } from 'libs/users.service/src';
 import { RegisterController } from './register.controller';
 
 @Module({
   controllers: [RegisterController],
   providers: [],
   exports: [],
-  imports: [UsersLibModule]
+  imports: [UsersServiceModule]
 })
 export class RegisterModule {}
