@@ -10,14 +10,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         super();
     }
 
-    canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+    override canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         if (this._isPublic(context)) {
             return true;
         }
         return super.canActivate(context);
     }
 
-    handleRequest<TUser = any>(err: any, user: any, info: any, context: ExecutionContext, status?: any): TUser {
+    override handleRequest<TUser = any>(err: any, user: any, info: any, context: ExecutionContext, status?: any): TUser {
         if (err || !user) {
             throw err || new UnauthorizedException();
         }
