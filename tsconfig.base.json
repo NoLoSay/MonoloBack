@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
       "@noloback/lvideo": ["libs/lvideo/src/index.ts"],
