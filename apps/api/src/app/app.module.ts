@@ -6,8 +6,8 @@ import { AppService } from './app.service';
 import { LoggerLibModule } from '@noloback/logger-lib';
 import { TranslatorLibModule } from '@noloback/translator-lib';
 import { UsersControllerModule } from '@noloback/users.controller';
-import { RegisterModule } from '@noloback/register';
 import { AuthControllerModule } from '@noloback/auth.controller';
+import { RegisterModule } from '@noloback/register.controller';
 
 @Module({
   imports: [

@@ -4,10 +4,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { AuthServiceModule } from '@noloback/auth.service';
-import { LvideoModule } from '@noloback/lvideo';
+import { VideoServiceModule } from '@noloback/video.service';
 
 @Module({
-  imports: [AuthServiceModule, LvideoModule],
+  imports: [AuthServiceModule, VideoServiceModule],
   controllers: [AppController],
   providers: [AppService],
 })

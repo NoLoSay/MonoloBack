@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UsersServiceModule } from 'libs/users.service/src';
 import { RegisterController } from './register.controller';
+import { UsersServiceModule } from '@noloback/users.service';
 
 @Module({
   controllers: [RegisterController],
