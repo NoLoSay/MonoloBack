@@ -11,6 +11,6 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["../users-controller/src/**/*.ts"],
-  "exclude": ["../users-controller/jest.config.ts", "../users-controller/src/**/*.spec.ts", "../users-controller/src/**/*.test.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

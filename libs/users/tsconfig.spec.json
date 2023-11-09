@@ -10,5 +10,5 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
-, "../user-controller/src/lib/users-lib.controller.spec.ts"  ]
+, "../users-controller/src/lib/users-lib.controller.spec.ts"  ]
 }

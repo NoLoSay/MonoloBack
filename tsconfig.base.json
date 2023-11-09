@@ -30,7 +30,7 @@
         "libs/prisma/schema/translator/src/index.ts"
       ],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
-      "@noloback/user-controller": ["libs/user-controller/src/index.ts"],
+      "@noloback/users-controller": ["libs/users-controller/src/index.ts"],
       "@noloback/users-lib": ["libs/users/src/index.ts"]
     }
   },
