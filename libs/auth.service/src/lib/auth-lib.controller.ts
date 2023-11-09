@@ -1,6 +1,6 @@
 import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { AuthService } from './auth-lib.service';
+import { AuthService } from './auth.service';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { Public } from './decorators/jwt/public.decorator';
 import { UsernamePasswordCombo } from './models/username-password-combo';

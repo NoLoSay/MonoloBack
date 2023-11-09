@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
-import { UsersServiceModule } from 'libs/users.service/src';
+import { UsersServiceModule } from '@noloback/users.service';
 import { AuthController } from './auth-lib.controller';
-import { AuthService } from './auth-lib.service';
+import { AuthService } from './auth.service';
 // import { Admin } from './decorators/roles/admin.decorator';
 // import { User } from './decorators/roles/user.decorator';
 // import { Referent } from './decorators/roles/referent.decorator';

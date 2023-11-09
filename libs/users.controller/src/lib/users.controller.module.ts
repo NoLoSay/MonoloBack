@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
-import { AuthLibModule } from '@noloback/auth-lib';
+import { AuthLibModule } from '@noloback/auth.service';
 import { UsersServiceModule } from '@noloback/users.service';
 
 @Module({

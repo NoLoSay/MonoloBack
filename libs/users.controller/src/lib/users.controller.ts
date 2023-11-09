@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe, ValidationPipe } from '@nestjs/common';
-import { Admin } from '@noloback/auth-lib'
+import { Admin } from '@noloback/auth.service'
 import { CreateUserDto, UpdateUserDto, UsersService } from '@noloback/users.service';
 
 @Controller('users')
