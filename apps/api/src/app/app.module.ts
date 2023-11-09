@@ -7,6 +7,7 @@ import { AuthLibModule } from '@noloback/auth-lib';
 import { LoggerLibModule } from '@noloback/logger-lib';
 import { TranslatorLibModule } from '@noloback/translator-lib';
 import { UsersControllerModule } from '@noloback/users-controller';
+import { RegisterModule } from '@noloback/register';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UsersControllerModule } from '@noloback/users-controller';
     LoggerLibModule,
     TranslatorLibModule,
     UsersControllerModule,
+    RegisterModule
   ],
   controllers: [AppController],
   providers: [AppService],
