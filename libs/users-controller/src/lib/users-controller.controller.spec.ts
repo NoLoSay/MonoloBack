@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users-lib.controller';
+import { UsersController } from './users-controller.controller';
 import { UsersService } from '@noloback/users-lib';
 
 describe('UsersController', () => {
