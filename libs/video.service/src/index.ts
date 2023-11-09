@@ -1,1 +1,1 @@
-export * from './lib/video.service';
+export * from './lib/video.service.module';
