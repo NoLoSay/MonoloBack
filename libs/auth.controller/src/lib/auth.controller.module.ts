@@ -6,6 +6,6 @@ import { AuthServiceModule } from '@noloback/auth.service';
   controllers: [AuthController],
   providers: [],
   exports: [],
-  imports: [AuthServiceModule]
+  imports: [AuthServiceModule],
 })
 export class AuthControllerModule {}

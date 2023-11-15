@@ -6,6 +6,6 @@ import { UsersServiceModule } from '@noloback/users.service';
   controllers: [RegisterController],
   providers: [],
   exports: [],
-  imports: [UsersServiceModule]
+  imports: [UsersServiceModule],
 })
 export class RegisterModule {}

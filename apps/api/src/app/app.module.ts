@@ -15,7 +15,7 @@ import { RegisterModule } from '@noloback/register.controller';
     LoggerLibModule,
     TranslatorLibModule,
     UsersControllerModule,
-    RegisterModule
+    RegisterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
