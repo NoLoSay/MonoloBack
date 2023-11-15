@@ -18,7 +18,6 @@
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
-      "@noloback/video.service": ["libs/video.service/src/index.ts"],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],
       "@noloback/prisma-client-logs": ["libs/prisma/client/logs/src/index.ts"],
       "@noloback/prisma-client-translator": [
@@ -30,11 +29,16 @@
       "@noloback/prisma-schema-translator": [
         "libs/prisma/schema/translator/src/index.ts"
       ],
-      "@noloback/register.controller": ["libs/register.controller/src/index.ts"],
+      "@noloback/register.controller": [
+        "libs/register.controller/src/index.ts"
+      ],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
-      "@noloback/users.service": ["libs/users.service/src/index.ts"]
-    }
+      "@noloback/users.service": ["libs/users.service/src/index.ts"],
+      "@noloback/video.controller": ["libs/video.controller/src/index.ts"],
+      "@noloback/video.service": ["libs/video.service/src/index.ts"]
+    },
+    "types": ["Multer"]
   },
   "exclude": ["node_modules", "tmp"]
 }
