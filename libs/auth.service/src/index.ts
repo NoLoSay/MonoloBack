@@ -1,5 +1,5 @@
 export * from './lib/auth.service.module';
-export * from './lib/auth.service'
+export * from './lib/auth.service';
 export { Admin } from './lib/decorators/roles/admin.decorator';
 export { Referent } from './lib/decorators/roles/referent.decorator';
 export { User } from './lib/decorators/roles/user.decorator';
