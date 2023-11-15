@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VideoController } from './video.controller';
-import { VideoService } from '../../services/video.service';
 import { HttpModule } from '@nestjs/axios';
+import { VideoService } from '@noloback/video.service';
 
 describe('VideoController', () => {
   let video: TestingModule;
@@ -10,7 +10,7 @@ describe('VideoController', () => {
     video = await Test.createTestingModule({
       controllers: [VideoController],
       providers: [VideoService],
-      imports: [ HttpModule ],
+      imports: [HttpModule],
     }).compile();
   });
 

@@ -8,7 +8,7 @@ describe('VideoService', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       providers: [VideoService],
-      imports: [ HttpModule ]
+      imports: [HttpModule],
     }).compile();
   });
 
@@ -17,5 +17,5 @@ describe('VideoService', () => {
       const service = app.get(VideoService);
       expect(await service.getVideo('1234')).toBe('1234');
     });
-  })
+  });
 });

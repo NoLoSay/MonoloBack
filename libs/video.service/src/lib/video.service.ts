@@ -29,18 +29,21 @@ export class VideoService {
     return uploadUrl.data.upload_url;
   }
 
-  private async uploadVideo(video: Express.Multer.File, uploadUrl: string): Promise<string> {
+  private async uploadVideo(
+    video: Express.Multer.File,
+    uploadUrl: string
+  ): Promise<string> {
     const formData = new FormData();
     const blob = new Blob([video.buffer], { type: video.mimetype });
-  
+
     formData.append('file', blob, 'video.mp4');
-  
+
     const response$ = this.httpService.post(uploadUrl, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
-  
+
     const uploadedVideo = await lastValueFrom(response$);
 
     return uploadedVideo.data.url;
@@ -54,10 +57,10 @@ export class VideoService {
         url: creationUrl,
       },
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
-  
+
     const uploadedVideo = await lastValueFrom(response$);
 
     return uploadedVideo.data.id;
@@ -69,10 +72,10 @@ export class VideoService {
     const response$ = this.httpService.post(videoPublishUrl, {
       data: {
         published: true,
-        is_created_for_kids: false
+        is_created_for_kids: false,
       },
     });
-  
+
     const publishedVideo = await lastValueFrom(response$);
 
     return publishedVideo.data.id;

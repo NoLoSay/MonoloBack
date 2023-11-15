@@ -21,7 +21,7 @@ import { PassportModule } from '@nestjs/passport';
     AdminStrategy,
     UserStrategy,
     ReferentStrategy,
-    AuthService
+    AuthService,
   ],
   exports: [AuthService],
   imports: [
@@ -30,7 +30,7 @@ import { PassportModule } from '@nestjs/passport';
       secret: process.env['PASSPORT_SESSION_KEY'],
       signOptions: { expiresIn: '30d' },
     }),
-    PassportModule
+    PassportModule,
   ],
 })
 export class AuthServiceModule {}

@@ -1,10 +1,24 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe, ValidationPipe } from '@nestjs/common';
-import { Admin } from '@noloback/auth.service'
-import { CreateUserDto, UpdateUserDto, UsersService } from '@noloback/users.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  ParseIntPipe,
+  ValidationPipe,
+} from '@nestjs/common';
+import { Admin } from '@noloback/auth.service';
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UsersService,
+} from '@noloback/users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Admin()
   @Get()
@@ -26,7 +40,10 @@ export class UsersController {
 
   @Admin()
   @Put(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserDto: UpdateUserDto
+  ) {
     return this.usersService.update(id, updateUserDto);
   }
 

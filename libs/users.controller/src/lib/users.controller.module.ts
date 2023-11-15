@@ -7,6 +7,6 @@ import { UsersServiceModule } from '@noloback/users.service';
   controllers: [UsersController],
   providers: [],
   exports: [],
-  imports: [AuthServiceModule, UsersServiceModule]
+  imports: [AuthServiceModule, UsersServiceModule],
 })
 export class UsersControllerModule {}
