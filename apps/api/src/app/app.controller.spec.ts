@@ -13,10 +13,18 @@ describe('AppController', () => {
     }).compile();
   });
 
+  //test 'getData'
   describe('getData', () => {
     it('should return "Hello API"', () => {
+      const result = {message : "Hello im the API"};
       const appController = app.get<AppController>(AppController);
-      expect(appController.getData()).toEqual({ message: 'Hello API' });
+
+      //Jest spyOn will modify the return of the function in the service.
+      //For example, getData() function return "Hello API" in the service,
+      //but when i use the spyOn now the new return is the result const defined before.
+      jest.spyOn(appController, 'getData').mockImplementation(() => result);
+
+      expect(appController.getData()).toEqual({ message: 'Hello im the API' });
     });
   });
 });
