@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { UsersServiceModule } from '@noloback/users.service';
+import { UsersService, UsersServiceModule } from '@noloback/users.service';
 import { AuthService } from './auth.service';
 import { AdminAuthGuard } from './guards/roles/admin-auth.guard';
 import { JwtModule, JwtService } from '@nestjs/jwt';
@@ -22,6 +22,7 @@ import { PassportModule } from '@nestjs/passport';
     UserStrategy,
     ReferentStrategy,
     AuthService,
+    UsersService,
   ],
   exports: [AuthService],
   imports: [
