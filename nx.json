@@ -21,6 +21,7 @@
       "inputs": ["production", "^production"]
     },
     "test": {
+      "dependsOn": ["^generate-types"],
       "inputs": [
         "default",
         "^production",
