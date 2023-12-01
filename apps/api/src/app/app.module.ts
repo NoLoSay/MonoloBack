@@ -3,17 +3,19 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { AuthLibModule } from '@noloback/auth-lib';
 import { LoggerLibModule } from '@noloback/logger-lib';
 import { TranslatorLibModule } from '@noloback/translator-lib';
-import { UsersLibModule } from '@noloback/users-lib';
+import { UsersControllerModule } from '@noloback/users.controller';
+import { AuthControllerModule } from '@noloback/auth.controller';
+import { RegisterModule } from '@noloback/register.controller';
 
 @Module({
   imports: [
-    AuthLibModule,
+    AuthControllerModule,
     LoggerLibModule,
     TranslatorLibModule,
-    UsersLibModule,
+    UsersControllerModule,
+    RegisterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
