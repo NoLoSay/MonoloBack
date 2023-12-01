@@ -10,6 +10,7 @@ import { AdminStrategy } from './strategies/roles/admin.strategy';
 import { UserStrategy } from './strategies/roles/user.strategy';
 import { ReferentStrategy } from './strategies/roles/referent.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   controllers: [],
@@ -22,6 +23,7 @@ import { PassportModule } from '@nestjs/passport';
     UserStrategy,
     ReferentStrategy,
     AuthService,
+    GoogleStrategy
   ],
   exports: [AuthService],
   imports: [

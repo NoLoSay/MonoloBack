@@ -2,6 +2,7 @@ import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import {
   AuthService,
+  GoogleOAuthGuard,
   LocalAuthGuard,
   Public,
   UsernamePasswordCombo,
@@ -18,4 +19,10 @@ export class AuthController {
   async login(@Request() req: any) {
     return this.authService.login(req.user);
   }
+
+  // @Public()
+  @UseGuards(GoogleOAuthGuard)
+  @Get('google')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async auth() {}
 }

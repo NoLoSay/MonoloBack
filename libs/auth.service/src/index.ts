@@ -6,3 +6,4 @@ export { User } from './lib/decorators/roles/user.decorator';
 export { Public } from './lib/decorators/jwt/public.decorator';
 export { UsernamePasswordCombo } from './lib/models/username-password-combo';
 export { LocalAuthGuard } from './lib/guards/local-auth.guard';
+export { GoogleOAuthGuard } from './lib/guards/google-oauth.guard';
