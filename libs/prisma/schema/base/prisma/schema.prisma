@@ -22,18 +22,38 @@ datasource db {
 //   output   = "../../../../../docs/prisma-dbml"
 // }
 
+model OAuthProviders {
+  providerId        Int                 @id @default(autoincrement())
+  provider          String              @unique
+  OAuthProviderUser OAuthProviderUser[]
+}
+
+model OAuthProviderUser {
+  id         Int            @id @default(autoincrement())
+  user       User           @relation(fields: [userId], references: [id])
+  provider   OAuthProviders @relation(fields: [providerId], references: [providerId])
+  userId     Int
+  providerId Int
+  // accessToken  String
+  // refreshToken String
+
+  @@unique([userId, providerId])
+}
+
 model User {
-  id           Int               @id @default(autoincrement())
-  username     String            @unique @default(uuid())
-  email        String            @unique
-  password     String
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @updatedAt
-  deletedAt    DateTime?
-  role         Role              @default(USER)
-  Places       Place[]
-  postedVideos UserhasVideos[]
-  likedVideos  UserlikesVideos[]
+  id                Int                 @id @default(autoincrement())
+  username          String              @unique @default(uuid())
+  email             String              @unique
+  password          String
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  deletedAt         DateTime?
+  picture           String?
+  role              Role                @default(USER)
+  Places            Place[]
+  postedVideos      UserhasVideos[]
+  likedVideos       UserlikesVideos[]
+  OAuthProviderUser OAuthProviderUser[]
 }
 
 enum Role {

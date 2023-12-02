@@ -11,6 +11,7 @@ import { UserStrategy } from './strategies/roles/user.strategy';
 import { ReferentStrategy } from './strategies/roles/referent.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { PrismaBaseService } from '@noloback/prisma-client-base';
 
 @Module({
   controllers: [],
@@ -23,7 +24,8 @@ import { GoogleStrategy } from './strategies/google.strategy';
     UserStrategy,
     ReferentStrategy,
     AuthService,
-    GoogleStrategy
+    GoogleStrategy,
+    PrismaBaseService
   ],
   exports: [AuthService],
   imports: [

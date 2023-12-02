@@ -24,5 +24,5 @@ export class AuthController {
   @UseGuards(GoogleOAuthGuard)
   @Get('google')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async auth() {}
+  async loginWithGoogle() {}
 }
