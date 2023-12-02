@@ -45,6 +45,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       },
     });
 
+    console.log(dbUser)
+
     if (!dbUser)
       dbUser = await this.prismaBaseService.oAuthProviderUser.create({
         data: {
@@ -56,8 +58,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
             })
           ).providerId,
           userId: (
-            await this.prismaBaseService.user.create({
-              data: {
+            await this.prismaBaseService.user.upsert({
+              where: {
+                email: user.email
+              },
+              update: {},
+              create: {
                 email: user.email,
                 password: await hash(randomUUID(), 12),
                 picture: user.picture,
