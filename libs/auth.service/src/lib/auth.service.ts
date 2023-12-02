@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '@noloback/users.service';
+import { User } from '@prisma/client/base';
 import { compare } from 'bcrypt';
 
 @Injectable()
@@ -20,13 +21,9 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
-    return {
-      username: user.username,
-      email: user.email,
-      access_token: this.jwtService.sign(payload),
-    };
+  async login(user: User): Promise<string> {
+    const payload = { sub: user.id, email: user.email, uuid: user.uuid };
+    return this.jwtService.sign(payload);
   }
 
   async findUserByUsername(username: string) {

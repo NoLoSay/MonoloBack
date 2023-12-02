@@ -1,4 +1,5 @@
-import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards, Req } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { ApiBody } from '@nestjs/swagger/dist';
 import {
   AuthService,
@@ -24,5 +25,11 @@ export class AuthController {
   @UseGuards(GoogleOAuthGuard)
   @Get('google')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async loginWithGoogle() {}
+  async loginWithGoogle(@Req() req: any) {
+    const googleUser = req.user;
+
+    console.log(googleUser);
+    
+    return this.authService.login(googleUser);
+  }
 }

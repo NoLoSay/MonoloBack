@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { PrismaBaseService } from '@noloback/prisma-client-base';
 import { hash } from 'bcrypt';
@@ -9,9 +9,9 @@ import { Strategy, VerifyCallback } from 'passport-google-oauth2';
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(private prismaBaseService: PrismaBaseService) {
     super({
-      clientID: process.env["GOOGLE_CLIENT_ID"],
-      clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
-      callbackURL: process.env["GOOGLE_CALLBACK_URL"],
+      clientID: process.env['GOOGLE_CLIENT_ID'],
+      clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
+      callbackURL: process.env['GOOGLE_CALLBACK_URL'],
       scope: ['profile', 'email'],
     });
   }
@@ -20,7 +20,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     _accessToken: string,
     _refreshToken: string,
     profile: any,
-    done: VerifyCallback,
+    done: VerifyCallback
   ): Promise<any> {
     const { id, name, emails, photos } = profile;
 
@@ -31,38 +31,42 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       name: `${name.givenName} ${name.familyName}`,
       picture: photos[0].value,
     };
-    
+
     console.log(user);
 
     let dbUser = await this.prismaBaseService.oAuthProviderUser.findFirst({
       where: {
         provider: {
-          provider: user.provider
+          provider: user.provider,
         },
         user: {
-          email: user.email
+          email: user.email,
         },
-      }
+      },
     });
 
     if (!dbUser)
       dbUser = await this.prismaBaseService.oAuthProviderUser.create({
-      data: {
-        providerId: (await this.prismaBaseService.oAuthProviders.findUniqueOrThrow({
-          where: {
-            provider: user.provider
-          }
-        })).providerId,
-        userId: (await this.prismaBaseService.user.create({
-          data: {
-            email: user.email,
-            password: await hash(randomUUID(), 12),
-            picture: user.picture,
-          }
-        })).id
-      }
-    })
-      // throw UnauthorizedException;
+        data: {
+          providerId: (
+            await this.prismaBaseService.oAuthProviders.findUniqueOrThrow({
+              where: {
+                provider: user.provider,
+              },
+            })
+          ).providerId,
+          userId: (
+            await this.prismaBaseService.user.create({
+              data: {
+                email: user.email,
+                password: await hash(randomUUID(), 12),
+                picture: user.picture,
+              },
+            })
+          ).id,
+        },
+      });
+    // throw UnauthorizedException;
 
     console.log(dbUser);
 

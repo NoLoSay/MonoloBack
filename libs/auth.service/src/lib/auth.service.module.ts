@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { UsersServiceModule } from '@noloback/users.service';
 import { AuthService } from './auth.service';
 import { AdminAuthGuard } from './guards/roles/admin-auth.guard';
-import { JwtModule, JwtService } from '@nestjs/jwt';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AdminStrategy } from './strategies/roles/admin.strategy';
@@ -12,12 +11,12 @@ import { ReferentStrategy } from './strategies/roles/referent.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { PrismaBaseService } from '@noloback/prisma-client-base';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   controllers: [],
   providers: [
     AdminAuthGuard,
-    JwtService,
     LocalStrategy,
     JwtStrategy,
     AdminStrategy,
