@@ -12,6 +12,7 @@ import { PassportModule } from '@nestjs/passport';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { PrismaBaseService } from '@noloback/prisma-client-base';
 import { JwtModule } from '@nestjs/jwt';
+import { InstagramStrategy } from './strategies/instagram.strategy';
 
 @Module({
   controllers: [],
@@ -24,7 +25,8 @@ import { JwtModule } from '@nestjs/jwt';
     ReferentStrategy,
     AuthService,
     GoogleStrategy,
-    PrismaBaseService
+    InstagramStrategy,
+    PrismaBaseService,
   ],
   exports: [AuthService],
   imports: [

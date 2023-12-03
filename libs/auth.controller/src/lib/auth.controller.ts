@@ -4,6 +4,7 @@ import { ApiBody } from '@nestjs/swagger/dist';
 import {
   AuthService,
   GoogleOAuthGuard,
+  InstagramOAuthGuard,
   LocalAuthGuard,
   Public,
   UsernamePasswordCombo,
@@ -26,8 +27,18 @@ export class AuthController {
   @Get('google')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async loginWithGoogle(@Req() req: any) {
-    const googleUser = req.user;
+    const user = req.user;
 
-    return this.authService.login(googleUser);
+    return this.authService.login(user);
+  }
+
+  // @Public()
+  @UseGuards(InstagramOAuthGuard)
+  @Get('instagram')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async loginWithInstagram(@Req() req: any) {
+    const user = req.user;
+
+    return this.authService.login(user);
   }
 }
