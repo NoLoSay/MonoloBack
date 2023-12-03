@@ -29,4 +29,8 @@ export class AuthService {
   async findUserByUsername(username: string) {
     return this.usersService.findOneByUsername(username);
   }
+
+  async findUserByEmail(email: string) {
+    return this.usersService.findOneByEmail(email);
+  }
 }

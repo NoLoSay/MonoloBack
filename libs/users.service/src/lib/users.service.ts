@@ -69,6 +69,10 @@ export class UsersService {
     return this.prismaBase.user.findUnique({ where: { username: username } });
   }
 
+  findOneByEmail(username: string) {
+    return this.prismaBase.user.findUnique({ where: { email: username } });
+  }
+
   async findUserByEmailOrUsername(search: string) {
     const user = await this.prismaBase.user.findFirst({
       where: {
