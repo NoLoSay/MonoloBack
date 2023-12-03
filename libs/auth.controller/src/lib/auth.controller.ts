@@ -28,8 +28,6 @@ export class AuthController {
   async loginWithGoogle(@Req() req: any) {
     const googleUser = req.user;
 
-    console.log(googleUser);
-    
     return this.authService.login(googleUser);
   }
 }

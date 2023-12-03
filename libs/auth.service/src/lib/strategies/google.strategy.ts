@@ -32,35 +32,31 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       picture: photos[0].value,
     };
 
-    console.log(user);
+    const oAuthProvider =
+      await this.prismaBaseService.oAuthProviders.findUniqueOrThrow({
+        where: {
+          provider: user.provider,
+        },
+      });
 
     let dbUser = await this.prismaBaseService.oAuthProviderUser.findFirst({
       where: {
-        provider: {
-          provider: user.provider,
-        },
+        provider: oAuthProvider,
         user: {
           email: user.email,
         },
+        providerUserId: user.providerId,
       },
     });
 
-    console.log(dbUser)
-
-    if (!dbUser)
+    if (!dbUser) {
       dbUser = await this.prismaBaseService.oAuthProviderUser.create({
         data: {
-          providerId: (
-            await this.prismaBaseService.oAuthProviders.findUniqueOrThrow({
-              where: {
-                provider: user.provider,
-              },
-            })
-          ).providerId,
+          providerId: oAuthProvider.providerId,
           userId: (
             await this.prismaBaseService.user.upsert({
               where: {
-                email: user.email
+                email: user.email,
               },
               update: {},
               create: {
@@ -70,11 +66,19 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
               },
             })
           ).id,
+          providerUserId: user.providerId,
         },
       });
-    // throw UnauthorizedException;
+    }
 
-    console.log(dbUser);
+    await this.prismaBaseService.userLoginLog.create({
+      data: {
+        providerId: oAuthProvider.providerId,
+        userId: dbUser.userId,
+        // ip:
+        // loginMethod: this.prismaBaseService.oAuthProviders
+      },
+    });
 
     done(null, user);
   }
