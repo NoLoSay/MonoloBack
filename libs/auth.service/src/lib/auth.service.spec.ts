@@ -5,6 +5,8 @@ import { compare }  from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '@prisma/client/base';
 
+jest.mock('@nestjs/jwt');
+jest.mock('@noloback/users.service');
 
 const johnDoeUser = {
   id: 123,
@@ -61,26 +63,37 @@ describe('AuthService', () => {
   describe('validateUser', () => {
     it('should return user if valid login and password', async () => {
       const mockPassword = 'RightPassword';
-
+      const johnDoeUser2 = {
+        id: 123,
+        username: "John",
+        email: "JohnDoe@email.com",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+        role: Role.USER,
+      }
       //mock the findUserByEmailOrUsername
       jest.spyOn(userService, 'findUserByEmailOrUsername').mockResolvedValue(johnDoeUser);
       //mock the compare password
-      (compare as jest.Mock).mockResolvedValue(true);
+      const bcryptCompare = jest.fn().mockResolvedValue(true);
+      (compare as jest.Mock) = bcryptCompare;
 
       const result = await service.validateUser(johnDoeUser.username, mockPassword);
 
-      expect(result).toEqual(johnDoeUser);
+      expect(result).toEqual(johnDoeUser2);
     });
 
     it('should return null if wrong password', async () => {
       const mockPassword = 'WrongPassword';
       
       //mock the findUserByEmailOrUsername
-      jest.spyOn(userService, 'findUserByEmailOrUsername').mockResolvedValue(johnDoeUser);
+      jest.spyOn(userService, 'findUserByEmailOrUsername').mockResolvedValue(null);
       //mock the compare password
-      (compare as jest.Mock).mockResolvedValue(false);
 
       const result = await service.validateUser(johnDoeUser.username, mockPassword);
+
+      const bcryptCompare = jest.fn().mockResolvedValue(false);
+      (compare as jest.Mock) = bcryptCompare;
 
       expect(result).toEqual(null);
     });
