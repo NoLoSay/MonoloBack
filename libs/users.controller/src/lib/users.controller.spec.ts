@@ -24,25 +24,8 @@ const vincentUser = {
   deletedAt: null,
   role: Role.USER,
 }
-describe('UsersController', () => {
-  let controller: UsersController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [UsersController],
-      providers: [UsersService],
-    }).compile();
-
-    controller = module.get<UsersController>(UsersController);
-  });
-
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
-});
-
-
-jest.mock('@noloback/users.service'); // Update the path
+jest.mock('@noloback/users.service');
 
 describe('UsersController', () => {
   let controller: UsersController;
