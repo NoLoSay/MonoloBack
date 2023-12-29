@@ -63,15 +63,8 @@ describe('AuthService', () => {
   describe('validateUser', () => {
     it('should return user if valid login and password', async () => {
       const mockPassword = 'RightPassword';
-      const johnDoeUser2 = {
-        id: 123,
-        username: "John",
-        email: "JohnDoe@email.com",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        deletedAt: null,
-        role: Role.USER,
-      }
+      
+      const { password, ...johnDoeUser2 } = johnDoeUser;
       //mock the findUserByEmailOrUsername
       jest.spyOn(userService, 'findUserByEmailOrUsername').mockResolvedValue(johnDoeUser);
       //mock the compare password
