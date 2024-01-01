@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { UsersServiceModule } from '@noloback/users.service';
 import { AuthService } from './auth.service';
-import { AdminAuthGuard } from './guards/roles/admin-auth.guard';
+import { AdminAuthGuard } from '../../../../models/roles/admin-auth.guard';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AdminStrategy } from './strategies/roles/admin.strategy';
