@@ -8,3 +8,4 @@ export { UsernamePasswordCombo } from './lib/models/username-password-combo';
 export { LocalAuthGuard } from './lib/guards/local-auth.guard';
 export { GoogleOAuthGuard } from './lib/guards/google-oauth.guard';
 export { InstagramOAuthGuard } from './lib/guards/instagram-oauth.guard';
+export { FacebookOAuthGuard } from './lib/guards/facebook-oauth.guard';

@@ -13,6 +13,7 @@ import { GoogleStrategy } from './strategies/google.strategy';
 import { PrismaBaseService } from '@noloback/prisma-client-base';
 import { JwtModule } from '@nestjs/jwt';
 import { InstagramStrategy } from './strategies/instagram.strategy';
+import { FacebookStrategy } from './strategies/facebook.strategy';
 
 @Module({
   controllers: [],
@@ -26,6 +27,7 @@ import { InstagramStrategy } from './strategies/instagram.strategy';
     AuthService,
     GoogleStrategy,
     InstagramStrategy,
+    FacebookStrategy,
     PrismaBaseService,
   ],
   exports: [AuthService],

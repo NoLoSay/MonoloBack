@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ApiBody } from '@nestjs/swagger/dist';
 import {
   AuthService,
+  FacebookOAuthGuard,
   GoogleOAuthGuard,
   InstagramOAuthGuard,
   LocalAuthGuard,
@@ -37,6 +38,16 @@ export class AuthController {
   @Get('instagram')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async loginWithInstagram(@Req() req: any) {
+    const user = req.user;
+
+    return this.authService.login(user);
+  }
+
+  // @Public()
+  @UseGuards(FacebookOAuthGuard)
+  @Get('facebook')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async loginWithFacebook(@Req() req: any) {
     const user = req.user;
 
     return this.authService.login(user);
