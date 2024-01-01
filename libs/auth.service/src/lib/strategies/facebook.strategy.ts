@@ -27,7 +27,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     const userEmail = emails && emails.length > 0 ? emails[0].value : '';
 
     const user = {
-      provider: 'instagram',
+      provider: 'facebook',
       providerId: id,
       username: username,
       name: fullName,
