@@ -1,27 +1,40 @@
+import { google, youtube_v3 } from 'googleapis';
+import { JWT } from 'google-auth-library';
 import { Injectable } from '@nestjs/common';
-import { google } from 'googleapis';
-import { createReadStream, statSync } from 'fs';
-import 'multer';
-import multer = require('multer');
-import { clearLine, cursorTo } from 'readline';
-
-// const youtube = google.youtube({
-//   version: 'v3',
-//   // auth: 'redacted',
-//   key: 'redacted'
-// })
-
-const youtube = google.youtube('v3');
+import { createReadStream, readFileSync, statSync } from 'fs';
 
 @Injectable()
 export class VideoService {
-  constructor() {}
+  private auth: JWT;
+  private youtube: youtube_v3.Youtube;
+
+  constructor() {
+    const serviceAccount = JSON.parse(
+      readFileSync('secrets/google-service-account.json', 'utf-8')
+    );
+
+    this.auth = new google.auth.JWT(
+      serviceAccount.client_email,
+      undefined,
+      serviceAccount.private_key,
+      [
+        'https://www.googleapis.com/auth/youtube.upload',
+        'https://www.googleapis.com/auth/youtube',
+      ],
+      undefined
+    );
+
+    this.youtube = google.youtube({
+      version: 'v3',
+      auth: this.auth,
+    });
+  }
 
   async getYoutube(youtubeId: string): Promise<string | undefined> {
-    youtube.videos
+    this.youtube.videos
       .list({
         chart: 'mostPopular',
-        regionCode: 'US',
+        regionCode: 'FR',
         part: [
           'contentDetails',
           'id',
@@ -42,77 +55,38 @@ export class VideoService {
   }
 
   async createYoutube(video: Express.Multer.File): Promise<string> {
-    //   const auth = await authenticate({
-    //     keyfilePath: '/app/client_secret.apps.googleusercontent.com.json',
-    //     scopes: [
-    //       'https://www.googleapis.com/auth/youtube.upload',
-    //       'https://www.googleapis.com/auth/youtube',
-    //     ],
-    //   });
-    //   google.options({auth});
-
-    //   const fileSize = fs.statSync(fileName).size;
-    //   const res = await youtube.videos.insert(
-    //     {
-    //       part: ['id', 'snippet', 'status'],
-    //       notifySubscribers: false,
-    //       requestBody: {
-    //         snippet: {
-    //           title: 'Node.js YouTube Upload Test',
-    //           description: 'Testing YouTube upload via Google APIs Node.js Client',
-    //         },
-    //         status: {
-    //           privacyStatus: 'private',
-    //         },
-    //       },
-    //       media: {
-    //         body: fs.createReadStream(fileName),
-    //       },
-    //     },
-    //     {
-    //       onUploadProgress: evt => {
-    //         const progress = (evt.bytesRead / fileSize) * 100;
-    //         readline.clearLine(process.stdout, 0);
-    //         readline.cursorTo(process.stdout, 0, null);
-    //         process.stdout.write(`${Math.round(progress)}% complete`);
-    //       },
-    //     }
-    //   );
-    //   console.log('\n\n');
-    //   console.log(res.data);
-    // try {
-    console.log(video.path);
     const fileSize = statSync(video.path).size;
-    console.log(fileSize);
-    const test = youtube.videos.insert(
+    const res = await this.youtube.videos.insert(
       {
-        oauth_token: process.env['YOUTUBE_TOKEN'],
-        part: ['snippet', 'contentDetails', 'status'],
-
+        part: ['id', 'snippet', 'status'],
         requestBody: {
           snippet: {
-            title: 'NoLoTest',
-            description: 'My description',
+            title: 'Test video',
+            description: 'Test video',
+            tags: ['tag1', 'tag2'],
+            categoryId: '22',
           },
           status: {
             privacyStatus: 'private',
           },
         },
-
         media: {
           body: createReadStream(video.path),
         },
       },
       {
-        onUploadProgress: (evt) => {
-          const progress = (evt.bytesRead / fileSize) * 100;
-          clearLine(process.stdout, 0);
-          cursorTo(process.stdout, 0);
-          process.stdout.write(`${Math.round(progress)}% complete`);
+        onUploadProgress: (event) => {
+          const progress = (event.bytesRead / fileSize) * 100;
+          console.log(`Progress: ${Math.round(progress)}%`);
         },
       }
     );
-    console.log(test);
-    return 'publishedYoutubeId';
+
+    if ('data' in res) {
+      console.log(res.data);
+      return res.data.id ?? '';
+    } else {
+      throw new Error('Upload failed');
+    }
   }
 }
