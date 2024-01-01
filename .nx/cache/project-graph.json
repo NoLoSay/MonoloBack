@@ -1,5 +1,62 @@
 {
   "nodes": {
+    "prisma-schema-translator": {
+      "name": "prisma-schema-translator",
+      "type": "lib",
+      "data": {
+        "name": "prisma-schema-translator",
+        "root": "libs/prisma/schema/translator",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/prisma/schema/translator/src",
+        "projectType": "library",
+        "targets": {
+          "prisma": {
+            "options": {
+              "cwd": "libs/prisma/schema/translator",
+              "command": "prisma"
+            },
+            "executor": "nx:run-commands",
+            "configurations": {}
+          },
+          "generate-types": {
+            "options": {
+              "cwd": "libs/prisma/schema/translator",
+              "command": "prisma generate"
+            },
+            "executor": "nx:run-commands",
+            "configurations": {}
+          },
+          "migrate": {
+            "options": {
+              "cwd": "libs/prisma/schema/translator",
+              "command": "prisma migrate dev"
+            },
+            "executor": "nx:run-commands",
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore",
+              "{workspaceRoot}/eslint.config.js"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/prisma/schema/translator/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
     "prisma-client-translator": {
       "name": "prisma-client-translator",
       "type": "lib",
@@ -60,63 +117,6 @@
         ]
       }
     },
-    "prisma-schema-translator": {
-      "name": "prisma-schema-translator",
-      "type": "lib",
-      "data": {
-        "name": "prisma-schema-translator",
-        "root": "libs/prisma/schema/translator",
-        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-        "sourceRoot": "libs/prisma/schema/translator/src",
-        "projectType": "library",
-        "targets": {
-          "prisma": {
-            "options": {
-              "cwd": "libs/prisma/schema/translator",
-              "command": "prisma"
-            },
-            "executor": "nx:run-commands",
-            "configurations": {}
-          },
-          "generate-types": {
-            "options": {
-              "cwd": "libs/prisma/schema/translator",
-              "command": "prisma generate"
-            },
-            "executor": "nx:run-commands",
-            "configurations": {}
-          },
-          "migrate": {
-            "options": {
-              "cwd": "libs/prisma/schema/translator",
-              "command": "prisma migrate dev"
-            },
-            "executor": "nx:run-commands",
-            "configurations": {}
-          },
-          "lint": {
-            "inputs": [
-              "default",
-              "{workspaceRoot}/.eslintrc.json",
-              "{workspaceRoot}/.eslintignore",
-              "{workspaceRoot}/eslint.config.js"
-            ],
-            "executor": "@nx/linter:eslint",
-            "outputs": [
-              "{options.outputFile}"
-            ],
-            "options": {
-              "lintFilePatterns": [
-                "libs/prisma/schema/translator/**/*.ts"
-              ]
-            },
-            "configurations": {}
-          }
-        },
-        "tags": [],
-        "implicitDependencies": []
-      }
-    },
     "register.controller": {
       "name": "register.controller",
       "type": "lib",
@@ -169,6 +169,63 @@
                 "codeCoverage": true
               }
             }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "prisma-schema-base": {
+      "name": "prisma-schema-base",
+      "type": "lib",
+      "data": {
+        "name": "prisma-schema-base",
+        "root": "libs/prisma/schema/base",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/prisma/schema/base/src",
+        "projectType": "library",
+        "targets": {
+          "prisma": {
+            "options": {
+              "cwd": "libs/prisma/schema/base",
+              "command": "prisma"
+            },
+            "executor": "nx:run-commands",
+            "configurations": {}
+          },
+          "generate-types": {
+            "options": {
+              "cwd": "libs/prisma/schema/base",
+              "command": "prisma generate"
+            },
+            "executor": "nx:run-commands",
+            "configurations": {}
+          },
+          "migrate": {
+            "options": {
+              "cwd": "libs/prisma/schema/base",
+              "command": "prisma migrate dev"
+            },
+            "executor": "nx:run-commands",
+            "configurations": {}
+          },
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore",
+              "{workspaceRoot}/eslint.config.js"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/prisma/schema/base/**/*.ts"
+              ]
+            },
+            "configurations": {}
           }
         },
         "tags": [],
@@ -235,120 +292,6 @@
         ]
       }
     },
-    "prisma-schema-base": {
-      "name": "prisma-schema-base",
-      "type": "lib",
-      "data": {
-        "name": "prisma-schema-base",
-        "root": "libs/prisma/schema/base",
-        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-        "sourceRoot": "libs/prisma/schema/base/src",
-        "projectType": "library",
-        "targets": {
-          "prisma": {
-            "options": {
-              "cwd": "libs/prisma/schema/base",
-              "command": "prisma"
-            },
-            "executor": "nx:run-commands",
-            "configurations": {}
-          },
-          "generate-types": {
-            "options": {
-              "cwd": "libs/prisma/schema/base",
-              "command": "prisma generate"
-            },
-            "executor": "nx:run-commands",
-            "configurations": {}
-          },
-          "migrate": {
-            "options": {
-              "cwd": "libs/prisma/schema/base",
-              "command": "prisma migrate dev"
-            },
-            "executor": "nx:run-commands",
-            "configurations": {}
-          },
-          "lint": {
-            "inputs": [
-              "default",
-              "{workspaceRoot}/.eslintrc.json",
-              "{workspaceRoot}/.eslintignore",
-              "{workspaceRoot}/eslint.config.js"
-            ],
-            "executor": "@nx/linter:eslint",
-            "outputs": [
-              "{options.outputFile}"
-            ],
-            "options": {
-              "lintFilePatterns": [
-                "libs/prisma/schema/base/**/*.ts"
-              ]
-            },
-            "configurations": {}
-          }
-        },
-        "tags": [],
-        "implicitDependencies": []
-      }
-    },
-    "prisma-schema-logs": {
-      "name": "prisma-schema-logs",
-      "type": "lib",
-      "data": {
-        "name": "prisma-schema-logs",
-        "root": "libs/prisma/schema/logs",
-        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-        "sourceRoot": "libs/prisma/schema/logs/src",
-        "projectType": "library",
-        "targets": {
-          "prisma": {
-            "options": {
-              "cwd": "libs/prisma/schema/logs",
-              "command": "prisma"
-            },
-            "executor": "nx:run-commands",
-            "configurations": {}
-          },
-          "generate-types": {
-            "options": {
-              "cwd": "libs/prisma/schema/logs",
-              "command": "prisma generate"
-            },
-            "executor": "nx:run-commands",
-            "configurations": {}
-          },
-          "migrate": {
-            "options": {
-              "cwd": "libs/prisma/schema/logs",
-              "command": "prisma migrate dev"
-            },
-            "executor": "nx:run-commands",
-            "configurations": {}
-          },
-          "lint": {
-            "inputs": [
-              "default",
-              "{workspaceRoot}/.eslintrc.json",
-              "{workspaceRoot}/.eslintignore",
-              "{workspaceRoot}/eslint.config.js"
-            ],
-            "executor": "@nx/linter:eslint",
-            "outputs": [
-              "{options.outputFile}"
-            ],
-            "options": {
-              "lintFilePatterns": [
-                "libs/prisma/schema/logs/**/*.ts"
-              ]
-            },
-            "configurations": {}
-          }
-        },
-        "tags": [],
-        "implicitDependencies": []
-      }
-    },
     "prisma-client-logs": {
       "name": "prisma-client-logs",
       "type": "lib",
@@ -409,16 +352,40 @@
         ]
       }
     },
-    "users.controller": {
-      "name": "users.controller",
+    "prisma-schema-logs": {
+      "name": "prisma-schema-logs",
       "type": "lib",
       "data": {
-        "name": "users.controller",
-        "root": "libs/users.controller",
-        "$schema": "../../node_modules/nx/schemas/project-schema.json",
-        "sourceRoot": "libs/users.controller/src",
+        "name": "prisma-schema-logs",
+        "root": "libs/prisma/schema/logs",
+        "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/prisma/schema/logs/src",
         "projectType": "library",
         "targets": {
+          "prisma": {
+            "options": {
+              "cwd": "libs/prisma/schema/logs",
+              "command": "prisma"
+            },
+            "executor": "nx:run-commands",
+            "configurations": {}
+          },
+          "generate-types": {
+            "options": {
+              "cwd": "libs/prisma/schema/logs",
+              "command": "prisma generate"
+            },
+            "executor": "nx:run-commands",
+            "configurations": {}
+          },
+          "migrate": {
+            "options": {
+              "cwd": "libs/prisma/schema/logs",
+              "command": "prisma migrate dev"
+            },
+            "executor": "nx:run-commands",
+            "configurations": {}
+          },
           "lint": {
             "inputs": [
               "default",
@@ -432,35 +399,10 @@
             ],
             "options": {
               "lintFilePatterns": [
-                "libs/users.controller/**/*.ts"
+                "libs/prisma/schema/logs/**/*.ts"
               ]
             },
             "configurations": {}
-          },
-          "test": {
-            "dependsOn": [
-              "^generate-types"
-            ],
-            "inputs": [
-              "default",
-              "^production",
-              "{workspaceRoot}/jest.preset.js",
-              "^generate-types"
-            ],
-            "executor": "@nx/jest:jest",
-            "outputs": [
-              "{workspaceRoot}/coverage/{projectRoot}"
-            ],
-            "options": {
-              "jestConfig": "libs/users.controller/jest.config.ts",
-              "passWithNoTests": true
-            },
-            "configurations": {
-              "ci": {
-                "ci": true,
-                "codeCoverage": true
-              }
-            }
           }
         },
         "tags": [],
@@ -511,6 +453,64 @@
             ],
             "options": {
               "jestConfig": "libs/video.controller/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "users.controller": {
+      "name": "users.controller",
+      "type": "lib",
+      "data": {
+        "name": "users.controller",
+        "root": "libs/users.controller",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/users.controller/src",
+        "projectType": "library",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore",
+              "{workspaceRoot}/eslint.config.js"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/users.controller/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          },
+          "test": {
+            "dependsOn": [
+              "^generate-types"
+            ],
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js",
+              "^generate-types"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/users.controller/jest.config.ts",
               "passWithNoTests": true
             },
             "configurations": {
@@ -583,64 +583,6 @@
         "implicitDependencies": []
       }
     },
-    "users.service": {
-      "name": "users.service",
-      "type": "lib",
-      "data": {
-        "name": "users.service",
-        "root": "libs/users.service",
-        "$schema": "../../node_modules/nx/schemas/project-schema.json",
-        "sourceRoot": "libs/users.service/src",
-        "projectType": "library",
-        "targets": {
-          "lint": {
-            "inputs": [
-              "default",
-              "{workspaceRoot}/.eslintrc.json",
-              "{workspaceRoot}/.eslintignore",
-              "{workspaceRoot}/eslint.config.js"
-            ],
-            "executor": "@nx/linter:eslint",
-            "outputs": [
-              "{options.outputFile}"
-            ],
-            "options": {
-              "lintFilePatterns": [
-                "libs/users.service/**/*.ts"
-              ]
-            },
-            "configurations": {}
-          },
-          "test": {
-            "dependsOn": [
-              "^generate-types"
-            ],
-            "inputs": [
-              "default",
-              "^production",
-              "{workspaceRoot}/jest.preset.js",
-              "^generate-types"
-            ],
-            "executor": "@nx/jest:jest",
-            "outputs": [
-              "{workspaceRoot}/coverage/{projectRoot}"
-            ],
-            "options": {
-              "jestConfig": "libs/users.service/jest.config.ts",
-              "passWithNoTests": true
-            },
-            "configurations": {
-              "ci": {
-                "ci": true,
-                "codeCoverage": true
-              }
-            }
-          }
-        },
-        "tags": [],
-        "implicitDependencies": []
-      }
-    },
     "video.service": {
       "name": "video.service",
       "type": "lib",
@@ -685,6 +627,64 @@
             ],
             "options": {
               "jestConfig": "libs/video.service/jest.config.ts",
+              "passWithNoTests": true
+            },
+            "configurations": {
+              "ci": {
+                "ci": true,
+                "codeCoverage": true
+              }
+            }
+          }
+        },
+        "tags": [],
+        "implicitDependencies": []
+      }
+    },
+    "users.service": {
+      "name": "users.service",
+      "type": "lib",
+      "data": {
+        "name": "users.service",
+        "root": "libs/users.service",
+        "$schema": "../../node_modules/nx/schemas/project-schema.json",
+        "sourceRoot": "libs/users.service/src",
+        "projectType": "library",
+        "targets": {
+          "lint": {
+            "inputs": [
+              "default",
+              "{workspaceRoot}/.eslintrc.json",
+              "{workspaceRoot}/.eslintignore",
+              "{workspaceRoot}/eslint.config.js"
+            ],
+            "executor": "@nx/linter:eslint",
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "options": {
+              "lintFilePatterns": [
+                "libs/users.service/**/*.ts"
+              ]
+            },
+            "configurations": {}
+          },
+          "test": {
+            "dependsOn": [
+              "^generate-types"
+            ],
+            "inputs": [
+              "default",
+              "^production",
+              "{workspaceRoot}/jest.preset.js",
+              "^generate-types"
+            ],
+            "executor": "@nx/jest:jest",
+            "outputs": [
+              "{workspaceRoot}/coverage/{projectRoot}"
+            ],
+            "options": {
+              "jestConfig": "libs/users.service/jest.config.ts",
               "passWithNoTests": true
             },
             "configurations": {
@@ -11399,6 +11399,13 @@
     }
   },
   "dependencies": {
+    "prisma-schema-translator": [
+      {
+        "source": "prisma-schema-translator",
+        "target": "npm:@nestjs/common",
+        "type": "static"
+      }
+    ],
     "prisma-client-translator": [
       {
         "source": "prisma-client-translator",
@@ -11412,13 +11419,6 @@
       },
       {
         "source": "prisma-client-translator",
-        "target": "npm:@nestjs/common",
-        "type": "static"
-      }
-    ],
-    "prisma-schema-translator": [
-      {
-        "source": "prisma-schema-translator",
         "target": "npm:@nestjs/common",
         "type": "static"
       }
@@ -11440,6 +11440,7 @@
         "type": "static"
       }
     ],
+    "prisma-schema-base": [],
     "prisma-client-base": [
       {
         "source": "prisma-client-base",
@@ -11453,14 +11454,6 @@
       },
       {
         "source": "prisma-client-base",
-        "target": "npm:@nestjs/common",
-        "type": "static"
-      }
-    ],
-    "prisma-schema-base": [],
-    "prisma-schema-logs": [
-      {
-        "source": "prisma-schema-logs",
         "target": "npm:@nestjs/common",
         "type": "static"
       }
@@ -11482,25 +11475,10 @@
         "type": "static"
       }
     ],
-    "users.controller": [
+    "prisma-schema-logs": [
       {
-        "source": "users.controller",
+        "source": "prisma-schema-logs",
         "target": "npm:@nestjs/common",
-        "type": "static"
-      },
-      {
-        "source": "users.controller",
-        "target": "auth.service",
-        "type": "static"
-      },
-      {
-        "source": "users.controller",
-        "target": "users.service",
-        "type": "static"
-      },
-      {
-        "source": "users.controller",
-        "target": "npm:@nestjs/testing",
         "type": "static"
       }
     ],
@@ -11546,6 +11524,28 @@
         "type": "static"
       }
     ],
+    "users.controller": [
+      {
+        "source": "users.controller",
+        "target": "npm:@nestjs/common",
+        "type": "static"
+      },
+      {
+        "source": "users.controller",
+        "target": "auth.service",
+        "type": "static"
+      },
+      {
+        "source": "users.controller",
+        "target": "users.service",
+        "type": "static"
+      },
+      {
+        "source": "users.controller",
+        "target": "npm:@nestjs/testing",
+        "type": "static"
+      }
+    ],
     "auth.controller": [
       {
         "source": "auth.controller",
@@ -11565,6 +11565,43 @@
       {
         "source": "auth.controller",
         "target": "npm:@nestjs/swagger",
+        "type": "static"
+      }
+    ],
+    "video.service": [
+      {
+        "source": "video.service",
+        "target": "npm:@nestjs/common",
+        "type": "static"
+      },
+      {
+        "source": "video.service",
+        "target": "npm:@nestjs/config",
+        "type": "static"
+      },
+      {
+        "source": "video.service",
+        "target": "npm:@nestjs/platform-express",
+        "type": "static"
+      },
+      {
+        "source": "video.service",
+        "target": "npm:@nestjs/axios",
+        "type": "static"
+      },
+      {
+        "source": "video.service",
+        "target": "npm:@nestjs/testing",
+        "type": "static"
+      },
+      {
+        "source": "video.service",
+        "target": "npm:googleapis",
+        "type": "static"
+      },
+      {
+        "source": "video.service",
+        "target": "npm:multer",
         "type": "static"
       }
     ],
@@ -11607,43 +11644,6 @@
       {
         "source": "users.service",
         "target": "npm:@prisma/client",
-        "type": "static"
-      }
-    ],
-    "video.service": [
-      {
-        "source": "video.service",
-        "target": "npm:@nestjs/common",
-        "type": "static"
-      },
-      {
-        "source": "video.service",
-        "target": "npm:@nestjs/config",
-        "type": "static"
-      },
-      {
-        "source": "video.service",
-        "target": "npm:@nestjs/platform-express",
-        "type": "static"
-      },
-      {
-        "source": "video.service",
-        "target": "npm:@nestjs/axios",
-        "type": "static"
-      },
-      {
-        "source": "video.service",
-        "target": "npm:@nestjs/testing",
-        "type": "static"
-      },
-      {
-        "source": "video.service",
-        "target": "npm:googleapis",
-        "type": "static"
-      },
-      {
-        "source": "video.service",
-        "target": "npm:multer",
         "type": "static"
       }
     ],
