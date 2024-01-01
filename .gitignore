@@ -9,6 +9,7 @@ tmp
 node_modules
 .env
 secrets
+.nx
 
 # IDEs and editors
 /.idea
