@@ -3,33 +3,36 @@ import { PassportStrategy } from '@nestjs/passport';
 import { PrismaBaseService } from '@noloback/prisma-client-base';
 import { hash } from 'bcrypt';
 import { randomUUID } from 'crypto';
-import { Strategy, VerifyCallback } from 'passport-google-oauth2';
+import { Strategy } from 'passport-instagram';
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+export class InstagramStrategy extends PassportStrategy(Strategy, 'instagram') {
   constructor(private prismaBaseService: PrismaBaseService) {
     super({
-      clientID: process.env['GOOGLE_CLIENT_ID'],
-      clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-      callbackURL: process.env['GOOGLE_CALLBACK_URL'],
-      scope: ['profile', 'email'],
+      clientID: process.env['INSTAGRAM_CLIENT_ID'],
+      clientSecret: process.env['INSTAGRAM_CLIENT_SECRET'],
+      callbackURL: process.env['INSTAGRAM_CALLBACK_URL'],
+      scope: ['user_profile'],
     });
   }
 
   async validate(
     _accessToken: string,
     _refreshToken: string,
-    profile: any,
-    done: VerifyCallback
+    profile: any
   ): Promise<any> {
-    const { id, name, emails, photos } = profile;
+    const { id, username, fullName, profilePicture, emails } = profile;
+
+    // Assuming that emails is an array and the first element contains the user's email
+    const userEmail = emails && emails.length > 0 ? emails[0].value : '';
 
     const user = {
-      provider: 'google',
+      provider: 'instagram',
       providerId: id,
-      email: emails[0].value,
-      name: `${name.givenName} ${name.familyName}`,
-      picture: photos[0].value,
+      username: username,
+      name: fullName,
+      email: userEmail,
+      picture: profilePicture,
     };
 
     const oAuthProvider =
@@ -42,9 +45,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     let dbUser = await this.prismaBaseService.oAuthProviderUser.findFirst({
       where: {
         provider: oAuthProvider,
-        user: {
-          email: user.email,
-        },
         providerUserId: user.providerId,
       },
     });
@@ -56,10 +56,11 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
           userId: (
             await this.prismaBaseService.user.upsert({
               where: {
-                email: user.email,
+                username: user.username,
               },
               update: {},
               create: {
+                username: user.username,
                 email: user.email,
                 password: await hash(randomUUID(), 12),
                 picture: user.picture,
@@ -75,11 +76,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       data: {
         providerId: oAuthProvider.providerId,
         userId: dbUser.userId,
-        // ip:
-        // loginMethod: this.prismaBaseService.oAuthProviders
+        // Add additional fields based on your requirements
       },
     });
 
-    done(null, user);
+    return user;
   }
 }

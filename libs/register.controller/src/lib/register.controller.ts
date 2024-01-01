@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { Public } from '@noloback/auth.service';
+import { Public } from '@noloback/jwt';
 import { CreateUserDto, UsersService } from '@noloback/users.service';
 
 @Controller('register')

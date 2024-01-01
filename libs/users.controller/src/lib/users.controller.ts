@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
   ValidationPipe,
 } from '@nestjs/common';
-import { Admin } from '@noloback/auth.service';
+import { Admin } from '@noloback/roles';
 import {
   CreateUserDto,
   UpdateUserDto,
