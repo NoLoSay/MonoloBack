@@ -36,10 +36,14 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
     };
 
     const oAuthProvider =
-      await this.prismaBaseService.oAuthProviders.findUniqueOrThrow({
+      await this.prismaBaseService.oAuthProviders.upsert({
         where: {
           provider: user.provider,
         },
+        create: {
+          provider: user.provider,
+        },
+        update: {},
       });
 
     let dbUser = await this.prismaBaseService.oAuthProviderUser.findFirst({
