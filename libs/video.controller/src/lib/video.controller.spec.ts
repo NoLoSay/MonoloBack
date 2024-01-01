@@ -11,12 +11,14 @@ describe('VideoController', () => {
     video = await Test.createTestingModule({
       controllers: [VideoController],
       providers: [VideoService],
-      imports: [HttpModule,
+      imports: [
+        HttpModule,
         MulterModule.registerAsync({
           useFactory: () => ({
             dest: './upload',
-          })})
-        ],
+          }),
+        }),
+      ],
     }).compile();
   });
 

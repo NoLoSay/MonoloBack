@@ -6,7 +6,8 @@ import { VideoService } from './video.service';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MulterModule.register({ dest: './uploads' })],
+    MulterModule.register({ dest: './uploads' }),
+  ],
   providers: [VideoService],
   exports: [VideoService],
 })

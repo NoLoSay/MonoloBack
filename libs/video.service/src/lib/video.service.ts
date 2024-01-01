@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { google } from 'googleapis'
+import { google } from 'googleapis';
 import { createReadStream, statSync } from 'fs';
 import 'multer';
 import multer = require('multer');
@@ -18,14 +18,30 @@ export class VideoService {
   constructor() {}
 
   async getYoutube(youtubeId: string): Promise<string | undefined> {
-    youtube.videos.list({chart: "mostPopular", regionCode: "US", part: ['contentDetails', 'id', 'liveStreamingDetails', 'localizations', 'player', 'recordingDetails', 'snippet', 'statistics', 'status', 'topicDetails']}).then(v => {
-      console.dir(v.data)
-    })
+    youtube.videos
+      .list({
+        chart: 'mostPopular',
+        regionCode: 'US',
+        part: [
+          'contentDetails',
+          'id',
+          'liveStreamingDetails',
+          'localizations',
+          'player',
+          'recordingDetails',
+          'snippet',
+          'statistics',
+          'status',
+          'topicDetails',
+        ],
+      })
+      .then((v) => {
+        console.dir(v.data);
+      });
     return youtubeId;
   }
 
   async createYoutube(video: Express.Multer.File): Promise<string> {
-
     //   const auth = await authenticate({
     //     keyfilePath: '/app/client_secret.apps.googleusercontent.com.json',
     //     scopes: [
@@ -65,36 +81,38 @@ export class VideoService {
     //   console.log('\n\n');
     //   console.log(res.data);
     // try {
-      console.log(video.path)
-      const fileSize = statSync(video.path).size;
-      console.log(fileSize)
-      const test = youtube.videos.insert({
-        oauth_token: process.env["YOUTUBE_TOKEN"],
+    console.log(video.path);
+    const fileSize = statSync(video.path).size;
+    console.log(fileSize);
+    const test = youtube.videos.insert(
+      {
+        oauth_token: process.env['YOUTUBE_TOKEN'],
         part: ['snippet', 'contentDetails', 'status'],
 
         requestBody: {
-            snippet: {
-                title: 'NoLoTest',
-                description: 'My description'
-            },
-            status: {
-                privacyStatus: 'private'
-            }
+          snippet: {
+            title: 'NoLoTest',
+            description: 'My description',
+          },
+          status: {
+            privacyStatus: 'private',
+          },
         },
 
         media: {
-          body: createReadStream(video.path)
-        }
+          body: createReadStream(video.path),
+        },
       },
       {
-        onUploadProgress: evt => {
+        onUploadProgress: (evt) => {
           const progress = (evt.bytesRead / fileSize) * 100;
           clearLine(process.stdout, 0);
           cursorTo(process.stdout, 0);
           process.stdout.write(`${Math.round(progress)}% complete`);
         },
-      })
-      console.log(test)
-    return "publishedYoutubeId";
+      }
+    );
+    console.log(test);
+    return 'publishedYoutubeId';
   }
 }

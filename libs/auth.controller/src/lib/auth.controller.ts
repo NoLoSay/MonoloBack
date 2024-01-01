@@ -2,9 +2,7 @@ import { Controller, Get, Request, Post, UseGuards, Req } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
-import {
-  LocalAuthGuard,
-} from '@noloback/guards';
+import { LocalAuthGuard } from '@noloback/guards';
 import { Public } from '@noloback/jwt';
 import { GoogleOAuthGuard } from '@noloback/guards';
 
