@@ -1,0 +1,1607 @@
+{
+  "version": "6.0",
+  "nxVersion": "16.10.0",
+  "deps": {
+    "@nestjs/axios": "^3.0.1",
+    "@nestjs/cli": "^10.2.1",
+    "@nestjs/common": "^10.0.2",
+    "@nestjs/config": "^3.1.1",
+    "@nestjs/core": "^10.0.2",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/passport": "^10.0.2",
+    "@nestjs/platform-express": "^10.0.2",
+    "@nestjs/swagger": "^7.1.13",
+    "@prisma/client": "^5.5.2",
+    "@swc-node/core": "^1.10.6",
+    "@swc-node/register": "^1.6.8",
+    "@swc/core": "^1.3.92",
+    "axios": "^1.0.0",
+    "bcrypt": "^5.1.1",
+    "class-validator": "^0.14.0",
+    "googleapis": "^129.0.0",
+    "multer": "^1.4.5-lts.1",
+    "passport": "^0.7.0",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth2": "^0.2.0",
+    "passport-instagram": "^1.0.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.8.0",
+    "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.3.0",
+    "@nestjs/schematics": "^10.0.1",
+    "@nestjs/testing": "^10.0.2",
+    "@nx/eslint-plugin": "16.10.0",
+    "@nx/jest": "16.10.0",
+    "@nx/js": "16.10.0",
+    "@nx/linter": "16.10.0",
+    "@nx/nest": "16.10.0",
+    "@nx/node": "16.10.0",
+    "@nx/webpack": "16.10.0",
+    "@nx/workspace": "16.10.0",
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.4.0",
+    "@types/multer": "^1.4.11",
+    "@types/node": "~18.7.1",
+    "@types/passport-google-oauth2": "^0.1.8",
+    "@types/passport-instagram": "^1.0.5",
+    "@types/passport-jwt": "^3.0.13",
+    "@types/passport-local": "^1.0.38",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
+    "eslint": "~8.46.0",
+    "eslint-config-prettier": "8.1.0",
+    "jest": "^29.4.1",
+    "jest-environment-node": "^29.4.1",
+    "mkcert": "^3.2.0",
+    "nx-cloud": "latest",
+    "prettier": "^2.6.2",
+    "prisma": "^5.5.2",
+    "ts-jest": "^29.1.0",
+    "ts-node": "10.9.1",
+    "typescript": "~5.1.3"
+  },
+  "pathMappings": {
+    "@noloback/auth.controller": [
+      "libs/auth.controller/src/index.ts"
+    ],
+    "@noloback/auth.service": [
+      "libs/auth.service/src/index.ts"
+    ],
+    "@noloback/logger-lib": [
+      "libs/logger/src/index.ts"
+    ],
+    "@noloback/prisma-client-base": [
+      "libs/prisma/client/base/src/index.ts"
+    ],
+    "@noloback/prisma-client-logs": [
+      "libs/prisma/client/logs/src/index.ts"
+    ],
+    "@noloback/prisma-client-translator": [
+      "libs/prisma/client/translator/src/index.ts"
+    ],
+    "@noloback/prisma-lib": [
+      "libs/prisma/src/index.ts"
+    ],
+    "@noloback/prisma-schema-base": [
+      "libs/prisma/schema/base/src/index.ts"
+    ],
+    "@noloback/prisma-schema-logs": [
+      "libs/prisma/schema/logs/src/index.ts"
+    ],
+    "@noloback/prisma-schema-translator": [
+      "libs/prisma/schema/translator/src/index.ts"
+    ],
+    "@noloback/register.controller": [
+      "libs/register.controller/src/index.ts"
+    ],
+    "@noloback/translator-lib": [
+      "libs/translator/src/index.ts"
+    ],
+    "@noloback/users.controller": [
+      "libs/users.controller/src/index.ts"
+    ],
+    "@noloback/users.service": [
+      "libs/users.service/src/index.ts"
+    ],
+    "@noloback/video.controller": [
+      "libs/video.controller/src/index.ts"
+    ],
+    "@noloback/video.service": [
+      "libs/video.service/src/index.ts"
+    ],
+    "@noloback/models": [
+      "models/index.ts"
+    ],
+    "@noloback/models/swagger": [
+      "models/swagger/index.ts"
+    ],
+    "@noloback/guards": [
+      "models/guards"
+    ],
+    "@noloback/roles": [
+      "models/roles"
+    ],
+    "@noloback/jwt": [
+      "models/jwt"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "7663861978715868291"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "15027382785011667266"
+      },
+      {
+        "file": ".github/workflows/ci.yml",
+        "hash": "11188519792845123870"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "4919839843993607942"
+      },
+      {
+        "file": ".nx/cache/16241821730718509818/code",
+        "hash": "1838281907459330133"
+      },
+      {
+        "file": ".nx/cache/16241821730718509818/terminalOutput",
+        "hash": "10907776444934783501"
+      },
+      {
+        "file": ".nx/cache/16241821730718509818.commit",
+        "hash": "4664556114322093609"
+      },
+      {
+        "file": ".nx/cache/16241821730718509818.tar.gz",
+        "hash": "810939941020712012"
+      },
+      {
+        "file": ".nx/cache/2597392341391059651/code",
+        "hash": "1838281907459330133"
+      },
+      {
+        "file": ".nx/cache/2597392341391059651/terminalOutput",
+        "hash": "10159160238536165575"
+      },
+      {
+        "file": ".nx/cache/2597392341391059651.commit",
+        "hash": "4664556114322093609"
+      },
+      {
+        "file": ".nx/cache/2597392341391059651.tar.gz",
+        "hash": "7453944805135225771"
+      },
+      {
+        "file": ".nx/cache/cloud/2312.28.2/index.js",
+        "hash": "12298577992480632049"
+      },
+      {
+        "file": ".nx/cache/cloud/2312.28.2/lib/daemon/process-run-end.js",
+        "hash": "12820542990068404856"
+      },
+      {
+        "file": ".nx/cache/cloud/2312.28.2/lib/heartbeat/heartbeat-process.js",
+        "hash": "12151698486280484120"
+      },
+      {
+        "file": ".nx/cache/cloud/2312.28.2/package.json",
+        "hash": "11687418979936424737"
+      },
+      {
+        "file": ".nx/cache/cloud/verify.lock",
+        "hash": "3387932604727127781"
+      },
+      {
+        "file": ".nx/cache/d/daemon.log",
+        "hash": "547431434038072389"
+      },
+      {
+        "file": ".nx/cache/d/server-process.json",
+        "hash": "3228513764418117531"
+      },
+      {
+        "file": ".nx/cache/file-map.json",
+        "hash": "12082787477342095738"
+      },
+      {
+        "file": ".nx/cache/lockfile.hash",
+        "hash": "174603869992313666"
+      },
+      {
+        "file": ".nx/cache/nx_files.nxt",
+        "hash": "2341477330704740960"
+      },
+      {
+        "file": ".nx/cache/parsed-lock-file.json",
+        "hash": "10128491129155724592"
+      },
+      {
+        "file": ".nx/cache/project-graph.json",
+        "hash": "17657285732658262863"
+      },
+      {
+        "file": ".nx/cache/run.json",
+        "hash": "9454215841666114124"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/16235331228132437918",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/16241821730718509818",
+        "hash": "10907776444934783501"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/2597392341391059651",
+        "hash": "10159160238536165575"
+      },
+      {
+        "file": ".nx/cache/terminalOutputs/666408141513730952",
+        "hash": "13174881549632182436"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "8865097869854018350"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "235626400633494639"
+      },
+      {
+        "file": ".yarn/releases/yarn-1.22.19.cjs",
+        "hash": "4339254978497063728"
+      },
+      {
+        "file": ".yarnrc",
+        "hash": "6414922622098367488"
+      },
+      {
+        "file": "README.md",
+        "hash": "8695808656404523047"
+      },
+      {
+        "file": "docker-compose.yml",
+        "hash": "17909096494136055892"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "12333515226966617182"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "9430166341120122740"
+      },
+      {
+        "file": "libs/prisma/Dockerfile",
+        "hash": "13997567339622751763"
+      },
+      {
+        "file": "models/guards/auth.guard.ts",
+        "hash": "3324826049850598418"
+      },
+      {
+        "file": "models/guards/facebook-oauth.guard.ts",
+        "hash": "15359930587097001475"
+      },
+      {
+        "file": "models/guards/google-oauth.guard.ts",
+        "hash": "18316036447788812254"
+      },
+      {
+        "file": "models/guards/index.ts",
+        "hash": "16279021264069912561"
+      },
+      {
+        "file": "models/guards/instagram-oauth.guard.ts",
+        "hash": "5041919060453127969"
+      },
+      {
+        "file": "models/guards/jwt-auth.guard.ts",
+        "hash": "9399774015295395665"
+      },
+      {
+        "file": "models/guards/local-auth.guard.ts",
+        "hash": "3637930699424808850"
+      },
+      {
+        "file": "models/index.ts",
+        "hash": "7895761616308659105"
+      },
+      {
+        "file": "models/jwt/index.ts",
+        "hash": "13428479140740800859"
+      },
+      {
+        "file": "models/jwt/public.decorator.ts",
+        "hash": "17960535925631508594"
+      },
+      {
+        "file": "models/roles/admin-auth.guard.ts",
+        "hash": "15333167106021755522"
+      },
+      {
+        "file": "models/roles/admin.decorator.ts",
+        "hash": "12046754711919468293"
+      },
+      {
+        "file": "models/roles/index.ts",
+        "hash": "15467169602118617450"
+      },
+      {
+        "file": "models/roles/referent-auth.guard.ts",
+        "hash": "74287946087451583"
+      },
+      {
+        "file": "models/roles/referent.decorator.ts",
+        "hash": "12946768628630359606"
+      },
+      {
+        "file": "models/roles/user-auth.guard.ts",
+        "hash": "3234974871368966454"
+      },
+      {
+        "file": "models/roles/user.decorator.ts",
+        "hash": "9301910525984435182"
+      },
+      {
+        "file": "models/swagger/index.ts",
+        "hash": "13455853450224322829"
+      },
+      {
+        "file": "models/swagger/youtube-file.ts",
+        "hash": "6166185343742098049"
+      },
+      {
+        "file": "models/youtube.ts",
+        "hash": "9754310827808687933"
+      },
+      {
+        "file": "nx.json",
+        "hash": "12870233692017150499"
+      },
+      {
+        "file": "package.json",
+        "hash": "17786831889949118436"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "12374330794271009032"
+      },
+      {
+        "file": "yarn.lock",
+        "hash": "3954159192961206181"
+      },
+      {
+        "file": "uploads/6422698fa16a0f852ef02a727a44c3f7.mp4",
+        "hash": "8254946877069753891"
+      },
+      {
+        "file": "uploads/a63109faf331a77dcf6b4ee43dc9e27e6.mp4",
+        "hash": "8254946877069753891"
+      },
+      {
+        "file": "uploads/0a12cb226492610f24992c82e3a985642.mp4",
+        "hash": "15415074945892010287"
+      },
+      {
+        "file": "uploads/9c5b2bdf08c9e8411fc1453d6b2e86c5.mp4",
+        "hash": "15415074945892010287"
+      },
+      {
+        "file": "uploads/45fafae109367b19cc25ccba10db7d98108.mp4",
+        "hash": "15415074945892010287"
+      },
+      {
+        "file": "uploads/d64cefe448c0ed60b53e56496ab7ae84.mp4",
+        "hash": "15415074945892010287"
+      },
+      {
+        "file": "uploads/17c52c10bd72ef7fcff47fba17e814717.mp4",
+        "hash": "8254946877069753891"
+      }
+    ],
+    "projectFileMap": {
+      "api": [
+        {
+          "file": "apps/api/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "apps/api/jest.config.ts",
+          "hash": "9483968714649439783"
+        },
+        {
+          "file": "apps/api/project.json",
+          "hash": "9513095095013931515"
+        },
+        {
+          "file": "apps/api/src/app/app.controller.spec.ts",
+          "hash": "9499997688052526633",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/app.controller.ts",
+          "hash": "9005150069945785676",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/app.module.ts",
+          "hash": "12392483165366605919",
+          "deps": [
+            "npm:@nestjs/common",
+            "logger-lib",
+            "translator-lib",
+            "users.controller",
+            "auth.controller",
+            "register.controller"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/app.service.spec.ts",
+          "hash": "8587461140686713758",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/api/src/app/app.service.ts",
+          "hash": "9967902337593410053",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/api/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/api/src/main.ts",
+          "hash": "17267646433233323805",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/core",
+            "npm:@nestjs/swagger",
+            "npm:fs"
+          ]
+        },
+        {
+          "file": "apps/api/tsconfig.app.json",
+          "hash": "3171572500325445971"
+        },
+        {
+          "file": "apps/api/tsconfig.json",
+          "hash": "3490524966360018312"
+        },
+        {
+          "file": "apps/api/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        },
+        {
+          "file": "apps/api/webpack.config.js",
+          "hash": "10619490397189790225",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "logger-lib": [
+        {
+          "file": "libs/logger/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "libs/logger/README.md",
+          "hash": "13606526071310152287"
+        },
+        {
+          "file": "libs/logger/jest.config.ts",
+          "hash": "3626173625790773648"
+        },
+        {
+          "file": "libs/logger/project.json",
+          "hash": "14933601956597680172"
+        },
+        {
+          "file": "libs/logger/src/index.ts",
+          "hash": "2071657306100868103"
+        },
+        {
+          "file": "libs/logger/src/lib/logger-lib.module.ts",
+          "hash": "2582022276302822919",
+          "deps": [
+            "npm:@nestjs/common",
+            "prisma-client-logs"
+          ]
+        },
+        {
+          "file": "libs/logger/src/lib/logger.service.ts",
+          "hash": "13405331396657278672",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@prisma/client",
+            "prisma-client-logs"
+          ]
+        },
+        {
+          "file": "libs/logger/tsconfig.json",
+          "hash": "5840880287502376438"
+        },
+        {
+          "file": "libs/logger/tsconfig.lib.json",
+          "hash": "3550173832616418300"
+        },
+        {
+          "file": "libs/logger/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        }
+      ],
+      "prisma-client-logs": [
+        {
+          "file": "libs/prisma/client/logs/.eslintrc.json",
+          "hash": "15754961097349354736"
+        },
+        {
+          "file": "libs/prisma/client/logs/README.md",
+          "hash": "14747044978145886593"
+        },
+        {
+          "file": "libs/prisma/client/logs/jest.config.ts",
+          "hash": "13887988750879304075"
+        },
+        {
+          "file": "libs/prisma/client/logs/project.json",
+          "hash": "14774608920549489996"
+        },
+        {
+          "file": "libs/prisma/client/logs/src/index.ts",
+          "hash": "4674057783867174943",
+          "deps": [
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "libs/prisma/client/logs/src/lib/prisma-client-logs.module.ts",
+          "hash": "9090091423787806318",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "libs/prisma/client/logs/src/lib/prisma.service.ts",
+          "hash": "17853496712461957480",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "libs/prisma/client/logs/tsconfig.json",
+          "hash": "9584156853704587869"
+        },
+        {
+          "file": "libs/prisma/client/logs/tsconfig.lib.json",
+          "hash": "8122501378292448260"
+        },
+        {
+          "file": "libs/prisma/client/logs/tsconfig.spec.json",
+          "hash": "12676338339107966475"
+        }
+      ],
+      "users.service": [
+        {
+          "file": "libs/users.service/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "libs/users.service/README.md",
+          "hash": "3914285125018933694"
+        },
+        {
+          "file": "libs/users.service/jest.config.ts",
+          "hash": "8902699691309913793"
+        },
+        {
+          "file": "libs/users.service/project.json",
+          "hash": "2322405668162646927"
+        },
+        {
+          "file": "libs/users.service/src/index.ts",
+          "hash": "1047921010158212234"
+        },
+        {
+          "file": "libs/users.service/src/lib/dto/create-user.dto.ts",
+          "hash": "9365246741205160329",
+          "deps": [
+            "npm:@nestjs/swagger",
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "libs/users.service/src/lib/dto/update-user.dto.ts",
+          "hash": "18378884879315876314",
+          "deps": [
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "libs/users.service/src/lib/users.service.module.ts",
+          "hash": "899201011042652405",
+          "deps": [
+            "npm:@nestjs/common",
+            "prisma-client-base",
+            "logger-lib"
+          ]
+        },
+        {
+          "file": "libs/users.service/src/lib/users.service.spec.ts",
+          "hash": "7278099433523887940",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "libs/users.service/src/lib/users.service.ts",
+          "hash": "790086367774861406",
+          "deps": [
+            "prisma-client-base",
+            "npm:@nestjs/common",
+            "npm:bcrypt",
+            "logger-lib",
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "libs/users.service/tsconfig.json",
+          "hash": "5840880287502376438"
+        },
+        {
+          "file": "libs/users.service/tsconfig.lib.json",
+          "hash": "3550173832616418300"
+        },
+        {
+          "file": "libs/users.service/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        }
+      ],
+      "video": [
+        {
+          "file": "apps/video/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "apps/video/Dockerfile",
+          "hash": "4788105029119542198"
+        },
+        {
+          "file": "apps/video/jest.config.ts",
+          "hash": "1019115810362576522"
+        },
+        {
+          "file": "apps/video/project.json",
+          "hash": "5115050952807496019"
+        },
+        {
+          "file": "apps/video/src/app/app.controller.spec.ts",
+          "hash": "9499997688052526633",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/video/src/app/app.controller.ts",
+          "hash": "9005150069945785676",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/video/src/app/app.module.ts",
+          "hash": "16416173013364991952",
+          "deps": [
+            "npm:@nestjs/common",
+            "auth.service",
+            "video.service",
+            "video.controller"
+          ]
+        },
+        {
+          "file": "apps/video/src/app/app.service.spec.ts",
+          "hash": "8587461140686713758",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "apps/video/src/app/app.service.ts",
+          "hash": "9967902337593410053",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "apps/video/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/video/src/main.ts",
+          "hash": "1308091506888992764",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/core",
+            "npm:@nestjs/swagger"
+          ]
+        },
+        {
+          "file": "apps/video/tsconfig.app.json",
+          "hash": "3171572500325445971"
+        },
+        {
+          "file": "apps/video/tsconfig.json",
+          "hash": "3490524966360018312"
+        },
+        {
+          "file": "apps/video/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        },
+        {
+          "file": "apps/video/webpack.config.js",
+          "hash": "10619490397189790225",
+          "deps": [
+            "npm:@nx/webpack"
+          ]
+        }
+      ],
+      "video.controller": [
+        {
+          "file": "libs/video.controller/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "libs/video.controller/README.md",
+          "hash": "13116661153064505840"
+        },
+        {
+          "file": "libs/video.controller/jest.config.ts",
+          "hash": "344034863171739007"
+        },
+        {
+          "file": "libs/video.controller/project.json",
+          "hash": "9582008466068450888"
+        },
+        {
+          "file": "libs/video.controller/src/index.ts",
+          "hash": "12813616933390145872"
+        },
+        {
+          "file": "libs/video.controller/src/lib/video.controller.module.ts",
+          "hash": "4821257499857360424",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/config",
+            "npm:@nestjs/platform-express",
+            "video.service"
+          ]
+        },
+        {
+          "file": "libs/video.controller/src/lib/video.controller.spec.ts",
+          "hash": "18221941428205735018",
+          "deps": [
+            "npm:@nestjs/testing",
+            "npm:@nestjs/axios",
+            "video.service",
+            "npm:@nestjs/platform-express"
+          ]
+        },
+        {
+          "file": "libs/video.controller/src/lib/video.controller.ts",
+          "hash": "14209310699283189548",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/platform-express",
+            "npm:@nestjs/swagger",
+            "npm:@noloback/models/swagger",
+            "video.service",
+            "npm:@noloback/guards",
+            "npm:multer"
+          ]
+        },
+        {
+          "file": "libs/video.controller/tsconfig.json",
+          "hash": "5840880287502376438"
+        },
+        {
+          "file": "libs/video.controller/tsconfig.lib.json",
+          "hash": "3550173832616418300"
+        },
+        {
+          "file": "libs/video.controller/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        }
+      ],
+      "prisma-client-base": [
+        {
+          "file": "libs/prisma/client/base/.eslintrc.json",
+          "hash": "15754961097349354736"
+        },
+        {
+          "file": "libs/prisma/client/base/README.md",
+          "hash": "11265038286246668056"
+        },
+        {
+          "file": "libs/prisma/client/base/jest.config.ts",
+          "hash": "4390598437444159643"
+        },
+        {
+          "file": "libs/prisma/client/base/project.json",
+          "hash": "4851837449138811573"
+        },
+        {
+          "file": "libs/prisma/client/base/src/index.ts",
+          "hash": "1451870709020148854",
+          "deps": [
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "libs/prisma/client/base/src/lib/prisma-client-base.module.ts",
+          "hash": "4546037054569655360",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "libs/prisma/client/base/src/lib/prisma.service.ts",
+          "hash": "13004518988571152993",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "libs/prisma/client/base/tsconfig.json",
+          "hash": "9584156853704587869"
+        },
+        {
+          "file": "libs/prisma/client/base/tsconfig.lib.json",
+          "hash": "8122501378292448260"
+        },
+        {
+          "file": "libs/prisma/client/base/tsconfig.spec.json",
+          "hash": "12676338339107966475"
+        }
+      ],
+      "prisma-schema-base": [
+        {
+          "file": "libs/prisma/schema/base/.eslintrc.json",
+          "hash": "15754961097349354736"
+        },
+        {
+          "file": "libs/prisma/schema/base/jest.config.ts",
+          "hash": "6782730020483828750"
+        },
+        {
+          "file": "libs/prisma/schema/base/prisma/migrations/20231202072035_/migration.sql",
+          "hash": "8425190471772084790"
+        },
+        {
+          "file": "libs/prisma/schema/base/prisma/migrations/20231202074722_/migration.sql",
+          "hash": "15478249454316452336"
+        },
+        {
+          "file": "libs/prisma/schema/base/prisma/migrations/20231203070927_/migration.sql",
+          "hash": "766900364941375114"
+        },
+        {
+          "file": "libs/prisma/schema/base/prisma/migrations/20231203071706_/migration.sql",
+          "hash": "15264186728278156842"
+        },
+        {
+          "file": "libs/prisma/schema/base/prisma/migrations/20231203072316_/migration.sql",
+          "hash": "14382595645401008893"
+        },
+        {
+          "file": "libs/prisma/schema/base/prisma/migrations/20231203072533_/migration.sql",
+          "hash": "17176089164800052910"
+        },
+        {
+          "file": "libs/prisma/schema/base/prisma/migrations/migration_lock.toml",
+          "hash": "11493296588214560035"
+        },
+        {
+          "file": "libs/prisma/schema/base/prisma/schema.prisma",
+          "hash": "16193536045929287243"
+        },
+        {
+          "file": "libs/prisma/schema/base/project.json",
+          "hash": "4686432837509984662"
+        },
+        {
+          "file": "libs/prisma/schema/base/tsconfig.json",
+          "hash": "9792494229513935008"
+        },
+        {
+          "file": "libs/prisma/schema/base/tsconfig.lib.json",
+          "hash": "8122501378292448260"
+        },
+        {
+          "file": "libs/prisma/schema/base/tsconfig.spec.json",
+          "hash": "12676338339107966475"
+        }
+      ],
+      "video.service": [
+        {
+          "file": "libs/video.service/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "libs/video.service/README.md",
+          "hash": "17546793068142076264"
+        },
+        {
+          "file": "libs/video.service/jest.config.ts",
+          "hash": "9795878376471839423"
+        },
+        {
+          "file": "libs/video.service/project.json",
+          "hash": "11046828458367011818"
+        },
+        {
+          "file": "libs/video.service/src/index.ts",
+          "hash": "7893034706546029135"
+        },
+        {
+          "file": "libs/video.service/src/lib/video.service.module.ts",
+          "hash": "2878646824515083512",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/config",
+            "npm:@nestjs/platform-express"
+          ]
+        },
+        {
+          "file": "libs/video.service/src/lib/video.service.spec.ts",
+          "hash": "11617742898533175061",
+          "deps": [
+            "npm:@nestjs/axios",
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "libs/video.service/src/lib/video.service.ts",
+          "hash": "9788378180553085619",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:googleapis",
+            "npm:fs",
+            "npm:multer"
+          ]
+        },
+        {
+          "file": "libs/video.service/tsconfig.json",
+          "hash": "5840880287502376438"
+        },
+        {
+          "file": "libs/video.service/tsconfig.lib.json",
+          "hash": "3550173832616418300"
+        },
+        {
+          "file": "libs/video.service/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        }
+      ],
+      "users.controller": [
+        {
+          "file": "libs/users.controller/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "libs/users.controller/README.md",
+          "hash": "866751060105355712"
+        },
+        {
+          "file": "libs/users.controller/jest.config.ts",
+          "hash": "4454403232580636282"
+        },
+        {
+          "file": "libs/users.controller/project.json",
+          "hash": "1669151112103981913"
+        },
+        {
+          "file": "libs/users.controller/src/index.ts",
+          "hash": "9970219438250978662"
+        },
+        {
+          "file": "libs/users.controller/src/lib/users.controller.module.ts",
+          "hash": "1076931416026681030",
+          "deps": [
+            "npm:@nestjs/common",
+            "auth.service",
+            "users.service"
+          ]
+        },
+        {
+          "file": "libs/users.controller/src/lib/users.controller.spec.ts",
+          "hash": "933514338439297800",
+          "deps": [
+            "npm:@nestjs/testing",
+            "users.service"
+          ]
+        },
+        {
+          "file": "libs/users.controller/src/lib/users.controller.ts",
+          "hash": "2641997008632128076",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@noloback/roles",
+            "users.service"
+          ]
+        },
+        {
+          "file": "libs/users.controller/tsconfig.json",
+          "hash": "5840880287502376438"
+        },
+        {
+          "file": "libs/users.controller/tsconfig.lib.json",
+          "hash": "3550173832616418300"
+        },
+        {
+          "file": "libs/users.controller/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        }
+      ],
+      "register.controller": [
+        {
+          "file": "libs/register.controller/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "libs/register.controller/README.md",
+          "hash": "2475542703969443536"
+        },
+        {
+          "file": "libs/register.controller/jest.config.ts",
+          "hash": "188658744507642467"
+        },
+        {
+          "file": "libs/register.controller/project.json",
+          "hash": "7273555781336693982"
+        },
+        {
+          "file": "libs/register.controller/src/index.ts",
+          "hash": "10600545532315072636"
+        },
+        {
+          "file": "libs/register.controller/src/lib/register.controller.module.ts",
+          "hash": "15472476505134876824",
+          "deps": [
+            "npm:@nestjs/common",
+            "users.service"
+          ]
+        },
+        {
+          "file": "libs/register.controller/src/lib/register.controller.spec.ts",
+          "hash": "1801910685506315713",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "libs/register.controller/src/lib/register.controller.ts",
+          "hash": "7251366537360837780",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@noloback/jwt",
+            "users.service"
+          ]
+        },
+        {
+          "file": "libs/register.controller/tsconfig.json",
+          "hash": "5840880287502376438"
+        },
+        {
+          "file": "libs/register.controller/tsconfig.lib.json",
+          "hash": "3550173832616418300"
+        },
+        {
+          "file": "libs/register.controller/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        }
+      ],
+      "api-e2e": [
+        {
+          "file": "apps/api-e2e/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "apps/api-e2e/jest.config.ts",
+          "hash": "5451374175158945661"
+        },
+        {
+          "file": "apps/api-e2e/project.json",
+          "hash": "14077912604619836741"
+        },
+        {
+          "file": "apps/api-e2e/src/api/api.spec.ts",
+          "hash": "110394728024017389",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/api-e2e/src/support/global-setup.ts",
+          "hash": "2568409276037275290"
+        },
+        {
+          "file": "apps/api-e2e/src/support/global-teardown.ts",
+          "hash": "5275447082211835490"
+        },
+        {
+          "file": "apps/api-e2e/src/support/test-setup.ts",
+          "hash": "10984585515912236441",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/api-e2e/tsconfig.json",
+          "hash": "15443990093475294480"
+        },
+        {
+          "file": "apps/api-e2e/tsconfig.spec.json",
+          "hash": "14954872453723519891"
+        }
+      ],
+      "prisma-client-translator": [
+        {
+          "file": "libs/prisma/client/translator/.eslintrc.json",
+          "hash": "15754961097349354736"
+        },
+        {
+          "file": "libs/prisma/client/translator/README.md",
+          "hash": "10342364677776676008"
+        },
+        {
+          "file": "libs/prisma/client/translator/jest.config.ts",
+          "hash": "17969167015755174010"
+        },
+        {
+          "file": "libs/prisma/client/translator/project.json",
+          "hash": "18141169247706257383"
+        },
+        {
+          "file": "libs/prisma/client/translator/src/index.ts",
+          "hash": "6830252994292289555",
+          "deps": [
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "libs/prisma/client/translator/src/lib/prisma-client-translator.module.ts",
+          "hash": "17680182531688966434",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "libs/prisma/client/translator/src/lib/prisma.service.ts",
+          "hash": "9745809451558559432",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "libs/prisma/client/translator/tsconfig.json",
+          "hash": "9584156853704587869"
+        },
+        {
+          "file": "libs/prisma/client/translator/tsconfig.lib.json",
+          "hash": "8122501378292448260"
+        },
+        {
+          "file": "libs/prisma/client/translator/tsconfig.spec.json",
+          "hash": "12676338339107966475"
+        }
+      ],
+      "prisma-schema-logs": [
+        {
+          "file": "libs/prisma/schema/logs/.eslintrc.json",
+          "hash": "15754961097349354736"
+        },
+        {
+          "file": "libs/prisma/schema/logs/jest.config.ts",
+          "hash": "15775309084647194913"
+        },
+        {
+          "file": "libs/prisma/schema/logs/prisma/schema.prisma",
+          "hash": "12056140090881023237"
+        },
+        {
+          "file": "libs/prisma/schema/logs/project.json",
+          "hash": "17286825533347835359"
+        },
+        {
+          "file": "libs/prisma/schema/logs/src/index.ts",
+          "hash": "9719797615485180829"
+        },
+        {
+          "file": "libs/prisma/schema/logs/src/lib/prisma-schema-logs.module.ts",
+          "hash": "13890652771711005407",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "libs/prisma/schema/logs/tsconfig.json",
+          "hash": "9584156853704587869"
+        },
+        {
+          "file": "libs/prisma/schema/logs/tsconfig.lib.json",
+          "hash": "8122501378292448260"
+        },
+        {
+          "file": "libs/prisma/schema/logs/tsconfig.spec.json",
+          "hash": "12676338339107966475"
+        }
+      ],
+      "translator-lib": [
+        {
+          "file": "libs/translator/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "libs/translator/README.md",
+          "hash": "10861010281060790793"
+        },
+        {
+          "file": "libs/translator/jest.config.ts",
+          "hash": "16539296183542665279"
+        },
+        {
+          "file": "libs/translator/project.json",
+          "hash": "7693170358546306818"
+        },
+        {
+          "file": "libs/translator/src/index.ts",
+          "hash": "16713443054569726241"
+        },
+        {
+          "file": "libs/translator/src/lib/translator-lib.module.ts",
+          "hash": "908697374540597718",
+          "deps": [
+            "npm:@nestjs/common",
+            "prisma-client-translator"
+          ]
+        },
+        {
+          "file": "libs/translator/tsconfig.json",
+          "hash": "5840880287502376438"
+        },
+        {
+          "file": "libs/translator/tsconfig.lib.json",
+          "hash": "3550173832616418300"
+        },
+        {
+          "file": "libs/translator/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        }
+      ],
+      "prisma-schema-translator": [
+        {
+          "file": "libs/prisma/schema/translator/.eslintrc.json",
+          "hash": "15754961097349354736"
+        },
+        {
+          "file": "libs/prisma/schema/translator/jest.config.ts",
+          "hash": "9128653010254078840"
+        },
+        {
+          "file": "libs/prisma/schema/translator/prisma/schema.prisma",
+          "hash": "11703264667369901368"
+        },
+        {
+          "file": "libs/prisma/schema/translator/project.json",
+          "hash": "7191637516360395048"
+        },
+        {
+          "file": "libs/prisma/schema/translator/src/index.ts",
+          "hash": "11797836095818156626"
+        },
+        {
+          "file": "libs/prisma/schema/translator/src/lib/prisma-schema-translator.module.ts",
+          "hash": "7352876625665093376",
+          "deps": [
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "libs/prisma/schema/translator/tsconfig.json",
+          "hash": "9584156853704587869"
+        },
+        {
+          "file": "libs/prisma/schema/translator/tsconfig.lib.json",
+          "hash": "8122501378292448260"
+        },
+        {
+          "file": "libs/prisma/schema/translator/tsconfig.spec.json",
+          "hash": "12676338339107966475"
+        }
+      ],
+      "auth.service": [
+        {
+          "file": "libs/auth.service/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "libs/auth.service/README.md",
+          "hash": "17592086957335893398"
+        },
+        {
+          "file": "libs/auth.service/jest.config.ts",
+          "hash": "16366878339876421276"
+        },
+        {
+          "file": "libs/auth.service/project.json",
+          "hash": "9432231016298245074"
+        },
+        {
+          "file": "libs/auth.service/src/index.ts",
+          "hash": "11493018663206730164"
+        },
+        {
+          "file": "libs/auth.service/src/lib/auth.service.module.ts",
+          "hash": "13246996192904672494",
+          "deps": [
+            "npm:@nestjs/common",
+            "users.service",
+            "npm:../../../../models/roles/admin-auth.guard",
+            "npm:@nestjs/passport",
+            "prisma-client-base",
+            "npm:@nestjs/jwt"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/auth.service.spec.ts",
+          "hash": "5442871165268080463",
+          "deps": [
+            "npm:@nestjs/testing"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/auth.service.ts",
+          "hash": "3677227514038827067",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/jwt",
+            "users.service",
+            "npm:@prisma/client",
+            "npm:bcrypt"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/models/username-password-combo.ts",
+          "hash": "1426628612779648916",
+          "deps": [
+            "npm:@nestjs/swagger",
+            "npm:class-validator"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/strategies/facebook.strategy.ts",
+          "hash": "13761486361118443824",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport",
+            "prisma-client-base",
+            "npm:bcrypt",
+            "npm:crypto",
+            "npm:passport-instagram"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/strategies/google.strategy.ts",
+          "hash": "15178276091906153870",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport",
+            "prisma-client-base",
+            "npm:bcrypt",
+            "npm:crypto",
+            "npm:passport-google-oauth2"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/strategies/instagram.strategy.ts",
+          "hash": "17214135210377013925",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/passport",
+            "prisma-client-base",
+            "npm:bcrypt",
+            "npm:crypto",
+            "npm:passport-instagram"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/strategies/jwt.strategy.ts",
+          "hash": "18170549990747996853",
+          "deps": [
+            "npm:passport-jwt",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/common",
+            "prisma-client-base"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/strategies/local.strategy.ts",
+          "hash": "3842078749589090929",
+          "deps": [
+            "npm:passport-local",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/common",
+            "prisma-client-base"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/strategies/roles/admin.strategy.ts",
+          "hash": "17806524819675588545",
+          "deps": [
+            "npm:passport-jwt",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/common"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/strategies/roles/referent.strategy.ts",
+          "hash": "6640253378736059975",
+          "deps": [
+            "npm:passport-jwt",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/common",
+            "prisma-client-base"
+          ]
+        },
+        {
+          "file": "libs/auth.service/src/lib/strategies/roles/user.strategy.ts",
+          "hash": "9464972851147719922",
+          "deps": [
+            "npm:passport-jwt",
+            "npm:@nestjs/passport",
+            "npm:@nestjs/common",
+            "prisma-client-base"
+          ]
+        },
+        {
+          "file": "libs/auth.service/tsconfig.json",
+          "hash": "5840880287502376438"
+        },
+        {
+          "file": "libs/auth.service/tsconfig.lib.json",
+          "hash": "3550173832616418300"
+        },
+        {
+          "file": "libs/auth.service/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        }
+      ],
+      "video-e2e": [
+        {
+          "file": "apps/video-e2e/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "apps/video-e2e/jest.config.ts",
+          "hash": "2169207844926429182"
+        },
+        {
+          "file": "apps/video-e2e/project.json",
+          "hash": "17362750055177875767"
+        },
+        {
+          "file": "apps/video-e2e/src/support/global-setup.ts",
+          "hash": "2568409276037275290"
+        },
+        {
+          "file": "apps/video-e2e/src/support/global-teardown.ts",
+          "hash": "5275447082211835490"
+        },
+        {
+          "file": "apps/video-e2e/src/support/test-setup.ts",
+          "hash": "10984585515912236441",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/video-e2e/src/video/video.spec.ts",
+          "hash": "110394728024017389",
+          "deps": [
+            "npm:axios"
+          ]
+        },
+        {
+          "file": "apps/video-e2e/tsconfig.json",
+          "hash": "15443990093475294480"
+        },
+        {
+          "file": "apps/video-e2e/tsconfig.spec.json",
+          "hash": "14954872453723519891"
+        }
+      ],
+      "auth.controller": [
+        {
+          "file": "libs/auth.controller/.eslintrc.json",
+          "hash": "13800677001662881425"
+        },
+        {
+          "file": "libs/auth.controller/README.md",
+          "hash": "10288356937409905681"
+        },
+        {
+          "file": "libs/auth.controller/jest.config.ts",
+          "hash": "2280226194519524984"
+        },
+        {
+          "file": "libs/auth.controller/project.json",
+          "hash": "10482057371222937889"
+        },
+        {
+          "file": "libs/auth.controller/src/index.ts",
+          "hash": "84748440370149073"
+        },
+        {
+          "file": "libs/auth.controller/src/lib/auth.controller.module.ts",
+          "hash": "13285336922563471386",
+          "deps": [
+            "npm:@nestjs/common",
+            "auth.service"
+          ]
+        },
+        {
+          "file": "libs/auth.controller/src/lib/auth.controller.ts",
+          "hash": "17637837637591725662",
+          "deps": [
+            "npm:@nestjs/common",
+            "npm:@nestjs/jwt",
+            "npm:@nestjs/swagger",
+            "auth.service",
+            "npm:@noloback/guards",
+            "npm:@noloback/jwt"
+          ]
+        },
+        {
+          "file": "libs/auth.controller/tsconfig.json",
+          "hash": "5840880287502376438"
+        },
+        {
+          "file": "libs/auth.controller/tsconfig.lib.json",
+          "hash": "3550173832616418300"
+        },
+        {
+          "file": "libs/auth.controller/tsconfig.spec.json",
+          "hash": "11550347367511341917"
+        }
+      ]
+    }
+  }
+}

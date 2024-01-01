@@ -1,8 +1,9 @@
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { google } from 'googleapis'
-import { createReadStream } from 'fs';
+import { createReadStream, statSync } from 'fs';
 import 'multer';
+import multer = require('multer');
+import { clearLine, cursorTo } from 'readline';
 
 // const youtube = google.youtube({
 //   version: 'v3',
@@ -24,6 +25,7 @@ export class VideoService {
   }
 
   async createYoutube(video: Express.Multer.File): Promise<string> {
+
     //   const auth = await authenticate({
     //     keyfilePath: '/app/client_secret.apps.googleusercontent.com.json',
     //     scopes: [
@@ -63,8 +65,11 @@ export class VideoService {
     //   console.log('\n\n');
     //   console.log(res.data);
     // try {
-      youtube.videos.insert({
-        oauth_token: 'redacted',
+      console.log(video.path)
+      const fileSize = statSync(video.path).size;
+      console.log(fileSize)
+      const test = youtube.videos.insert({
+        oauth_token: process.env["YOUTUBE_TOKEN"],
         part: ['snippet', 'contentDetails', 'status'],
 
         requestBody: {
@@ -80,7 +85,16 @@ export class VideoService {
         media: {
           body: createReadStream(video.path)
         }
+      },
+      {
+        onUploadProgress: evt => {
+          const progress = (evt.bytesRead / fileSize) * 100;
+          clearLine(process.stdout, 0);
+          cursorTo(process.stdout, 0);
+          process.stdout.write(`${Math.round(progress)}% complete`);
+        },
       })
+      console.log(test)
     return "publishedYoutubeId";
   }
 }
