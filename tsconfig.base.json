@@ -41,7 +41,7 @@
       "@noloback/models/swagger": ["models/swagger/index.ts"],
       "@noloback/guards": ["models/guards"],
       "@noloback/roles": ["models/roles"],
-      "@noloback/jwt": ["models/jwt"],
+      "@noloback/jwt": ["models/jwt"]
     },
     "types": ["Multer"]
   },
