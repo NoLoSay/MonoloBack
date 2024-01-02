@@ -17,4 +17,4 @@ WORKDIR /app
 
 COPY --from=builder /app .
 
-CMD ["npx", "nx", "run", "video:serve:development"]
+CMD ["npx", "nx", "run", "video:serve:production", "--skip-nx-cache"]
