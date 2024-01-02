@@ -39,7 +39,7 @@ export class VideoController {
     const youtube = await this.videoservice.getYoutube(id);
 
     if (!youtube) {
-      throw new HttpException('Youtube not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Video not found', HttpStatus.NOT_FOUND);
     }
 
     return (
