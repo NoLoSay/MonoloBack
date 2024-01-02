@@ -10,6 +10,7 @@ node_modules
 .env
 secrets
 .nx
+uploads
 
 # IDEs and editors
 /.idea

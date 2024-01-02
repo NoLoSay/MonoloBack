@@ -69,6 +69,7 @@ model User {
   likedVideos   UserlikesVideos[]
   oAuthAccounts OAuthProviderUser[]
   loginHistory  UserLoginLog[]
+  TmpVideo      TmpVideo[]
 }
 
 enum Role {
@@ -204,4 +205,15 @@ model UserlikesVideos {
   videoId   Int
   User      User      @relation(fields: [userId], references: [id])
   Video     Video     @relation(fields: [videoId], references: [id])
+}
+
+model TmpVideo {
+  id         Int       @id @default(autoincrement())
+  uuid       String    @unique @default(uuid())
+  providerId String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+  userId     Int
+  User       User      @relation(fields: [userId], references: [id])
 }

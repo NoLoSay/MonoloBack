@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Request,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -36,17 +37,7 @@ export class VideoController {
   @Get(':id')
   @HttpCode(200)
   async getYoutube(@Param('id') id: string): Promise<string> {
-    const youtube = await this.videoservice.getYoutube(id);
-
-    if (!youtube) {
-      throw new HttpException('Video not found', HttpStatus.NOT_FOUND);
-    }
-
-    return (
-      '<body><script src="https://geo.dailymotion.com/libs/player/xcdyd.js"></script><div id="my-dailymotion-player">Loading player...</div><script>dailymotion.createPlayer("my-dailymotion-player", { youtube: "' +
-      youtube +
-      '" }).then((player) => console.log(player)).catch((e) => console.error(e));</script></body>'
-    );
+    return await this.videoservice.getYoutube(id);
   }
 
   @ApiBody({ type: VideoFile })
@@ -70,9 +61,12 @@ export class VideoController {
     })
   )
   async createYoutube(
+    @Request() req: any,
     @UploadedFile() file: Express.Multer.File
   ): Promise<string> {
-    const youtube = this.videoservice.createYoutube(file);
+    const user = req.user;
+    console.log(user);
+    const youtube = this.videoservice.createYoutube(user, file);
 
     return await youtube;
   }

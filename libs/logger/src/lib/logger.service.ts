@@ -9,7 +9,7 @@ export class LoggerService {
   async log(
     criticity: LogCriticity,
     context: string,
-    exception: Error,
+    exception: Error | undefined,
     message: string = ''
   ) {
     await this.prisma.logs
@@ -17,9 +17,9 @@ export class LoggerService {
         data: {
           criticity: criticity,
           context: context,
-          exception: exception.name,
-          content: exception.message,
-          stack: exception.stack,
+          exception: exception?.name,
+          content: exception?.message,
+          stack: exception?.stack,
           message: message,
         },
       })
@@ -34,7 +34,7 @@ export class LoggerService {
   static async log(
     criticity: LogCriticity,
     context: string,
-    exception: Error,
+    exception: Error | undefined,
     message: string = ''
   ) {
     const prisma: PrismaClient = new PrismaClient();
@@ -44,9 +44,9 @@ export class LoggerService {
         data: {
           criticity: criticity,
           context: context,
-          exception: exception.name,
-          content: exception.message,
-          stack: exception.stack,
+          exception: exception?.name,
+          content: exception?.message,
+          stack: exception?.stack,
           message: message,
         },
       })
