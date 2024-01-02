@@ -1,3 +1,4 @@
+export * from './apple-oauth.guard';
 export * from './auth.guard';
 export * from './instagram-oauth.guard';
 export * from './jwt-auth.guard';

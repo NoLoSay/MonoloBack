@@ -2,7 +2,7 @@ import { Controller, Get, Request, Post, UseGuards, Req } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
-import { LocalAuthGuard } from '@noloback/guards';
+import { AppleOAuthGuard, LocalAuthGuard } from '@noloback/guards';
 import { Public } from '@noloback/jwt';
 import { GoogleOAuthGuard } from '@noloback/guards';
 
@@ -23,6 +23,16 @@ export class AuthController {
   @Get('google')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async loginWithGoogle(@Req() req: any) {
+    const user = req.user;
+
+    return this.authService.login(user);
+  }
+
+  // @Public()
+  @UseGuards(AppleOAuthGuard)
+  @Get('apple')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async loginWithApple(@Req() req: any) {
     const user = req.user;
 
     return this.authService.login(user);
