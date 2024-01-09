@@ -1,0 +1,43 @@
+{
+  "name": "mailing.service",
+  "$schema": "../../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "/users/ugo/documents/github/monolo-back/libs/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/users/ugo/documents/github/monolo-back/libs",
+        "main": "/users/ugo/documents/github/monolo-back/libs/src/index.ts",
+        "tsConfig": "/users/ugo/documents/github/monolo-back/libs/tsconfig.lib.json",
+        "assets": ["/users/ugo/documents/github/monolo-back/libs/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "/users/ugo/documents/github/monolo-back/libs/**/*.ts",
+          "users/ugo/documents/github/monolo-back/libs/package.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "users/ugo/documents/github/monolo-back/libs/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
