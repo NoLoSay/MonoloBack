@@ -1,7 +1,4 @@
-import {
-  PrismaBaseService,
-  Country,
-} from '@noloback/prisma-client-base'
+import { PrismaBaseService, Country } from '@noloback/prisma-client-base'
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { CountryManipulationModel } from './models/country-manipulation.model'
 //import { LogCriticity } from '@prisma/client/logs'
@@ -12,9 +9,9 @@ export class CountriesService {
   private countries: Country[] = []
 
   constructor (
-    private prismaBase: PrismaBaseService,
-    //private loggingService: LoggerService
-  ) {}
+    private prismaBase: PrismaBaseService
+  ) //private loggingService: LoggerService
+  {}
 
   async findAll (): Promise<Country[]> {
     return await this.prismaBase.country.findMany()

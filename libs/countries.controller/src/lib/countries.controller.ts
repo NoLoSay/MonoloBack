@@ -15,10 +15,9 @@ import {
 } from '@noloback/countries.service'
 
 @Controller('countries')
-export class ContriesController {
+export class CountriesController {
   constructor (private readonly countriesService: CountriesService) {}
 
-  @Admin()
   @Get()
   async findAll () {
     return this.countriesService.findAll()

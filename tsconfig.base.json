@@ -21,6 +21,12 @@
         "libs/countries.controller/src/index.ts"
       ],
       "@noloback/countries.service": ["libs/countries.service/src/index.ts"],
+      "@noloback/departments.controller": [
+        "libs/departments.controller/src/index.ts"
+      ],
+      "@noloback/departments.service": [
+        "libs/departments.service/src/index.ts"
+      ],
       "@noloback/guards": ["models/guards"],
       "@noloback/jwt": ["models/jwt"],
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],

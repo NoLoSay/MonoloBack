@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AuthServiceModule } from '@noloback/auth.service';
 import { CountriesServiceModule } from '@noloback/countries.service';
-import { ContriesController } from './countries.controller';
+import { CountriesController } from './countries.controller';
 
 @Module({
-  controllers: [ContriesController],
+  controllers: [CountriesController],
   providers: [],
   exports: [],
   imports: [AuthServiceModule, CountriesServiceModule],
