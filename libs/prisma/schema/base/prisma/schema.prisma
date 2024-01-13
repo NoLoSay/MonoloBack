@@ -22,61 +22,9 @@ datasource db {
 //   output   = "../../../../../docs/prisma-dbml"
 // }
 
-model OAuthProviders {
-  providerId        Int                 @id @default(autoincrement())
-  provider          String              @unique
-  OAuthProviderUser OAuthProviderUser[]
-  UserLoginLog      UserLoginLog[]
-}
-
-model OAuthProviderUser {
-  id             Int            @id @default(autoincrement())
-  user           User           @relation(fields: [userId], references: [id])
-  provider       OAuthProviders @relation(fields: [providerId], references: [providerId])
-  providerUserId String
-  userId         Int
-  providerId     Int
-  // accessToken  String
-  // refreshToken String
-
-  @@unique([providerUserId, providerId])
-  @@unique([userId, providerId])
-}
-
-model UserLoginLog {
-  id          Int             @id @default(autoincrement())
-  loginTime   DateTime        @default(now())
-  // ip                       String
-  loginMethod OAuthProviders? @relation(fields: [providerId], references: [providerId])
-  User        User?           @relation(fields: [userId], references: [id])
-  userId      Int
-  providerId  Int?
-}
-
-model User {
-  id            Int                 @id @default(autoincrement())
-  uuid          String              @unique @default(uuid())
-  username      String              @unique @default(uuid())
-  email         String              @unique
-  password      String
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
-  deletedAt     DateTime?
-  picture       String?
-  role          Role                @default(USER)
-  Places        Place[]
-  postedVideos  UserhasVideos[]
-  likedVideos   UserlikesVideos[]
-  oAuthAccounts OAuthProviderUser[]
-  loginHistory  UserLoginLog[]
-  TmpVideo      TmpVideo[]
-}
-
-enum Role {
-  ADMIN
-  USER
-  REFERENT
-}
+// ----------------------------------
+// ---------- Localization ----------
+// ----------------------------------
 
 model Country {
   id          Int          @id @default(autoincrement())
@@ -87,9 +35,6 @@ model Country {
   updatedAt   DateTime     @updatedAt
   deletedAt   DateTime?
   Departments Department[]
-  Cities      City[]
-  Addresses   Address[]
-  Places      Place[]
 }
 
 model Department {
@@ -101,9 +46,8 @@ model Department {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
   countryId Int
-  Addresses Address[]
-  Cities    City[]
   Country   Country   @relation(fields: [countryId], references: [id])
+  Cities    City[]
 }
 
 model City {
@@ -116,84 +60,107 @@ model City {
   updatedAt    DateTime   @updatedAt
   deletedAt    DateTime?
   departmentId Int
-  countryId    Int
-  Addresses    Address[]
   Department   Department @relation(fields: [departmentId], references: [id])
-  Country      Country    @relation(fields: [countryId], references: [id])
-  Places       Place[]
+  Addresses    Address[]
 }
 
 model Address {
-  id           Int         @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   houseNumber  String?
   street       String
   zip          String
   otherDetails String?
   longitude    Float?
   latitude     Float?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
   cityId       Int
-  countryId    Int
-  placeId      Int?
-  departmentId Int?
-  City         City        @relation(fields: [cityId], references: [id])
-  Country      Country     @relation(fields: [countryId], references: [id])
-  Place        Place?      @relation(fields: [placeId], references: [id])
-  Department   Department? @relation(fields: [departmentId], references: [id])
+  City         City      @relation(fields: [cityId], references: [id])
+  Places       Place[]
 }
 
-model Place {
-  id             Int              @id @default(autoincrement())
-  name           String
-  longitude      Float?
-  latitude       Float?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  deletedAt      DateTime?
-  mainUserId     Int
-  cityId         Int
-  countryId      Int
-  Referent       User             @relation(fields: [mainUserId], references: [id])
-  Addresses      Address[]
-  City           City             @relation(fields: [cityId], references: [id])
-  Country        Country          @relation(fields: [countryId], references: [id])
-  PlacehasVideos PlacehasVideos[]
+// ---------------------------
+// ---------- OAuth ----------
+// ---------------------------
+
+model OAuthProviders {
+  providerId        Int                 @id @default(autoincrement())
+  provider          String              @unique
+  OAuthProviderUser OAuthProviderUser[]
+  UserLoginLog      UserLoginLog[]
 }
 
-model PlacehasVideos {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  placeId   Int
-  videoId   Int
-  Place     Place     @relation(fields: [placeId], references: [id])
-  Video     Video     @relation(fields: [videoId], references: [id])
+model OAuthProviderUser {
+  providerUserId String
+  userId         Int
+  providerId     Int
+  id             Int            @id @default(autoincrement())
+  user           User           @relation(fields: [userId], references: [id])
+  provider       OAuthProviders @relation(fields: [providerId], references: [providerId])
+  // accessToken  String
+  // refreshToken String
+
+  @@unique([providerUserId, providerId])
+  @@unique([userId, providerId])
 }
+
+// ---------------------------
+// ---------- Users ----------
+// ---------------------------
+
+enum Role {
+  ADMIN
+  USER
+  REFERENT
+}
+
+model User {
+  id                Int                 @id @default(autoincrement())
+  uuid              String              @unique @default(uuid())
+  username          String              @unique @default(uuid())
+  email             String              @unique
+  password          String
+  picture           String?
+  role              Role                @default(USER)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  deletedAt         DateTime?
+  postedVideos      Video[]
+  likedVideos       UserlikesVideos[]
+  oAuthAccounts     OAuthProviderUser[]
+  loginHistory      UserLoginLog[]
+  TmpVideo          TmpVideo[] ///TMP TMP TMP TMP TMP TMP TMP
+  Exhibition        Exhibition[]
+  PlaceHasReferents PlaceHasReferent[]
+}
+
+// ----------------------------
+// ---------- Videos ----------
+// ----------------------------
 
 model Video {
-  id            Int               @id @default(autoincrement())
-  name          String
-  url           String
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt
-  deletedAt     DateTime?
-  linkedToPlace PlacehasVideos[]
-  postedBy      UserhasVideos[]
-  likedBy       UserlikesVideos[]
-}
-
-model UserhasVideos {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        Int               @id @default(autoincrement())
+  uuid      String            @unique @default(uuid())
+  name      String
+  url       String
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
   deletedAt DateTime?
   userId    Int
-  videoId   Int
-  User      User      @relation(fields: [userId], references: [id])
-  Video     Video     @relation(fields: [videoId], references: [id])
+  User      User              @relation(fields: [userId], references: [id])
+  likedBy   UserlikesVideos[]
+}
+
+model TmpVideo {
+  id         Int       @id @default(autoincrement())
+  uuid       String    @unique @default(uuid())
+  providerId String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+  userId     Int
+  User       User      @relation(fields: [userId], references: [id])
 }
 
 model UserlikesVideos {
@@ -207,13 +174,156 @@ model UserlikesVideos {
   Video     Video     @relation(fields: [videoId], references: [id])
 }
 
-model TmpVideo {
-  id         Int       @id @default(autoincrement())
-  uuid       String    @unique @default(uuid())
-  providerId String    @unique
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
-  userId     Int
-  User       User      @relation(fields: [userId], references: [id])
+// -----------------------------
+// ---------- Persons ----------
+// -----------------------------
+
+enum PersonType {
+  ARTIST
+  WRITER
+  SCIENTIST
+  CEKEBRITY
+  OTHER
+}
+
+model Person {
+  id        Int        @id @default(autoincrement())
+  name      String
+  bio       String?
+  type      PersonType
+  birthDate DateTime?
+  deathDate DateTime?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+  Objects   Object[]
+}
+
+// -----------------------------
+// ---------- Objects ----------
+// -----------------------------
+
+model ObjectCategory {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  ObjectTypes ObjectType[]
+}
+
+model ObjectType {
+  id               Int            @id @default(autoincrement())
+  name             String
+  description      String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  deletedAt        DateTime?
+  objectCategoryId Int
+  ObjectCategories ObjectCategory @relation(fields: [objectCategoryId], references: [id])
+  Objects          Object[]
+}
+
+model Object {
+  id              Int          @id @default(autoincrement())
+  name            String
+  description     String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  deletedAt       DateTime?
+  objectTypeId    Int?
+  relatedPersonId Int?
+  ObjectType      ObjectType?  @relation(fields: [objectTypeId], references: [id])
+  relatedPerson   Person?      @relation(fields: [relatedPersonId], references: [id])
+  Exhibitions     Exhibition[]
+}
+
+// -------------------------------
+// ---------- Exhibitions --------
+// -------------------------------
+
+model Exhibition {
+  id               Int       @id @default(autoincrement())
+  name             String
+  shortDescription String?
+  longDescription  String?
+  startDate        DateTime
+  endDate          DateTime
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+  placeId          Int
+  creatorId        Int
+  Creator          User      @relation(fields: [creatorId], references: [id])
+  Place            Place     @relation(fields: [placeId], references: [id])
+  Objects          Object[]
+}
+
+// ----------------------------
+// ---------- Places ----------
+// ----------------------------
+
+enum PlaceType {
+  MUSEUM
+  LIBRARY
+  ARCHIVE
+  RESTAURANT
+  ATTRACTION
+  PUBLIC_PLACE
+  OTHER
+}
+
+enum PlaceTag {
+  NOLOSAY
+  DISABILITY_FRIENDLY
+  DEAF_FRIENDLY
+  BLIND_FRIENDLY
+  OTHER
+}
+
+model Place {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  shortDescription  String?
+  longDescription   String?
+  telNumber         String?
+  email             String?
+  website           String?
+  price             Float
+  type              PlaceType
+  tags              PlaceTag[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  deletedAt         DateTime?
+  addressId         Int
+  Address           Address             @relation(fields: [addressId], references: [id])
+  Exhibition        Exhibition[]
+  PlaceHasReferents PlaceHasReferent[]
+}
+
+model PlaceHasReferent {
+  id        Int       @id @default(autoincrement())
+  isMain    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  placeId   Int
+  userId    Int
+  Place     Place     @relation(fields: [placeId], references: [id])
+  User      User      @relation(fields: [userId], references: [id])
+}
+
+// --------------------------
+// ---------- Logs ----------
+// --------------------------
+
+model UserLoginLog {
+  id          Int             @id @default(autoincrement())
+  loginTime   DateTime        @default(now())
+  // ip                       String
+  loginMethod OAuthProviders? @relation(fields: [providerId], references: [providerId])
+  User        User?           @relation(fields: [userId], references: [id])
+  userId      Int
+  providerId  Int?
 }
