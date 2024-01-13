@@ -17,6 +17,8 @@
     "paths": {
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
+      "@noloback/cities.controller": ["libs/cities.controller/src/index.ts"],
+      "@noloback/cities.service": ["libs/cities.service/src/index.ts"],
       "@noloback/countries.controller": [
         "libs/countries.controller/src/index.ts"
       ],
