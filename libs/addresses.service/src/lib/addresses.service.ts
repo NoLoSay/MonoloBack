@@ -6,8 +6,6 @@ import { AddressManipulationModel } from './models/addressManipulation.model'
 
 @Injectable()
 export class AddressesService {
-  private addresses: Address[] = []
-
   constructor (
     private prismaBase: PrismaBaseService
     //private loggingService: LoggerService

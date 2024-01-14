@@ -35,6 +35,10 @@
       ],
       "@noloback/guards": ["models/guards"],
       "@noloback/jwt": ["models/jwt"],
+      "@noloback/locations.controller": [
+        "libs/locations.controller/src/index.ts"
+      ],
+      "@noloback/locations.service": ["libs/locations.service/src/index.ts"],
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
       "@noloback/models": ["models/index.ts"],
       "@noloback/models/swagger": ["models/swagger/index.ts"],
