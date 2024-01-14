@@ -182,7 +182,7 @@ enum PersonType {
   ARTIST
   WRITER
   SCIENTIST
-  CEKEBRITY
+  CELEBRITY
   OTHER
 }
 
