@@ -65,19 +65,19 @@ model City {
 }
 
 model Address {
-  id           Int       @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   houseNumber  String?
   street       String
   zip          String
   otherDetails String?
   longitude    Float?
   latitude     Float?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
   deletedAt    DateTime?
   cityId       Int
-  City         City      @relation(fields: [cityId], references: [id])
-  Places       Place[]
+  City         City       @relation(fields: [cityId], references: [id])
+  Locations    Location[]
 }
 
 // ---------------------------
@@ -116,23 +116,23 @@ enum Role {
 }
 
 model User {
-  id                Int                 @id @default(autoincrement())
-  uuid              String              @unique @default(uuid())
-  username          String              @unique @default(uuid())
-  email             String              @unique
-  password          String
-  picture           String?
-  role              Role                @default(USER)
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  deletedAt         DateTime?
-  postedVideos      Video[]
-  likedVideos       UserlikesVideos[]
-  oAuthAccounts     OAuthProviderUser[]
-  loginHistory      UserLoginLog[]
-  TmpVideo          TmpVideo[] ///TMP TMP TMP TMP TMP TMP TMP
-  Exhibition        Exhibition[]
-  PlaceHasReferents PlaceHasReferent[]
+  id                   Int                   @id @default(autoincrement())
+  uuid                 String                @unique @default(uuid())
+  username             String                @unique @default(uuid())
+  email                String                @unique
+  password             String
+  picture              String?
+  role                 Role                  @default(USER)
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  deletedAt            DateTime?
+  postedVideos         Video[]
+  likedVideos          UserlikesVideos[]
+  oAuthAccounts        OAuthProviderUser[]
+  loginHistory         UserLoginLog[]
+  TmpVideo             TmpVideo[] ///TMP TMP TMP TMP TMP TMP TMP
+  Exhibition           Exhibition[]
+  LocationHasReferents LocationHasReferent[]
 }
 
 // ----------------------------
@@ -253,18 +253,18 @@ model Exhibition {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   deletedAt        DateTime?
-  placeId          Int
+  locationId       Int
   creatorId        Int
   Creator          User      @relation(fields: [creatorId], references: [id])
-  Place            Place     @relation(fields: [placeId], references: [id])
+  Location         Location  @relation(fields: [locationId], references: [id])
   Objects          Object[]
 }
 
 // ----------------------------
-// ---------- Places ----------
+// ---------- Locations ----------
 // ----------------------------
 
-enum PlaceType {
+enum LocationType {
   MUSEUM
   LIBRARY
   ARCHIVE
@@ -274,7 +274,7 @@ enum PlaceType {
   OTHER
 }
 
-enum PlaceTag {
+enum LocationTag {
   NOLOSAY
   DISABILITY_FRIENDLY
   DEAF_FRIENDLY
@@ -282,36 +282,36 @@ enum PlaceTag {
   OTHER
 }
 
-model Place {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  shortDescription  String?
-  longDescription   String?
-  telNumber         String?
-  email             String?
-  website           String?
-  price             Float
-  type              PlaceType
-  tags              PlaceTag[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  deletedAt         DateTime?
-  addressId         Int
-  Address           Address             @relation(fields: [addressId], references: [id])
-  Exhibition        Exhibition[]
-  PlaceHasReferents PlaceHasReferent[]
+model Location {
+  id                   Int                   @id @default(autoincrement())
+  name                 String
+  shortDescription     String?
+  longDescription      String?
+  telNumber            String?
+  email                String?
+  website              String?
+  price                Float
+  type                 LocationType
+  tags                 LocationTag[]
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
+  deletedAt            DateTime?
+  addressId            Int
+  Address              Address               @relation(fields: [addressId], references: [id])
+  Exhibition           Exhibition[]
+  LocationHasReferents LocationHasReferent[]
 }
 
-model PlaceHasReferent {
-  id        Int       @id @default(autoincrement())
-  isMain    Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  placeId   Int
-  userId    Int
-  Place     Place     @relation(fields: [placeId], references: [id])
-  User      User      @relation(fields: [userId], references: [id])
+model LocationHasReferent {
+  id         Int       @id @default(autoincrement())
+  isMain     Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+  locationId Int
+  userId     Int
+  Location   Location  @relation(fields: [locationId], references: [id])
+  User       User      @relation(fields: [userId], references: [id])
 }
 
 // --------------------------
