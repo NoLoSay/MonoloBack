@@ -57,6 +57,8 @@
       "@noloback/object.types.service": [
         "libs/object.types.service/src/index.ts"
       ],
+      "@noloback/objects.controller": ["libs/objects.controller/src/index.ts"],
+      "@noloback/objects.service": ["libs/objects.service/src/index.ts"],
       "@noloback/persons.controller": ["libs/persons.controller/src/index.ts"],
       "@noloback/persons.service": ["libs/persons.service/src/index.ts"],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],

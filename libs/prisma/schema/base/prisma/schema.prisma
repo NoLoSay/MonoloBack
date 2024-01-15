@@ -221,7 +221,7 @@ model ObjectType {
   updatedAt        DateTime       @updatedAt
   deletedAt        DateTime?
   objectCategoryId Int
-  ObjectCategory ObjectCategory @relation(fields: [objectCategoryId], references: [id])
+  ObjectCategory   ObjectCategory @relation(fields: [objectCategoryId], references: [id])
   Objects          Object[]
 }
 
@@ -235,7 +235,7 @@ model Object {
   objectTypeId    Int?
   relatedPersonId Int?
   ObjectType      ObjectType?  @relation(fields: [objectTypeId], references: [id])
-  relatedPerson   Person?      @relation(fields: [relatedPersonId], references: [id])
+  RelatedPerson   Person?      @relation(fields: [relatedPersonId], references: [id])
   Exhibitions     Exhibition[]
 }
 

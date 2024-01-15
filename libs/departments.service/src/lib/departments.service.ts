@@ -6,8 +6,6 @@ import { DepartmentManipulationModel } from './models/departmentManipulation.mod
 
 @Injectable()
 export class DepartmentsService {
-  private departments: Department[] = []
-
   constructor (
     private prismaBase: PrismaBaseService
     //private loggingService: LoggerService

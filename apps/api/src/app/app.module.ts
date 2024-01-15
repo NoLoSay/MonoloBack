@@ -16,6 +16,7 @@ import { LocationsControllerModule } from '@noloback/locations.controller';
 import { ObjectCategoriesControllerModule } from '@noloback/object.categories.controller';
 import { ObjectTypesControllerModule } from '@noloback/object.types.controller';
 import { PersonsControllerModule } from '@noloback/persons.controller';
+import { ObjectsControllerModule } from '@noloback/objects.controller';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PersonsControllerModule } from '@noloback/persons.controller';
     ObjectCategoriesControllerModule,
     ObjectTypesControllerModule,
     PersonsControllerModule,
+    ObjectsControllerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
