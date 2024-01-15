@@ -100,7 +100,7 @@ export class LocationsService {
       .catch((e: Error) => {
         console.log(e)
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException()
+        throw new InternalServerErrorException(e)
       })
 
     return {
@@ -144,7 +144,7 @@ export class LocationsService {
       .catch((e: Error) => {
         console.log(e)
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException()
+        throw new InternalServerErrorException(e)
       })
 
     return {
@@ -162,7 +162,7 @@ export class LocationsService {
       .catch((e: Error) => {
         console.log(e)
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException()
+        throw new InternalServerErrorException(e)
       })
 
     return {

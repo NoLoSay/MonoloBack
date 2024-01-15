@@ -47,7 +47,7 @@ export class UsersService {
           this.constructor.name,
           e
         );
-        throw new InternalServerErrorException();
+        throw new InternalServerErrorException(e);
       });
 
     await this.prismaBase.userLoginLog.create({

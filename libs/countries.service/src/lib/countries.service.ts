@@ -35,7 +35,7 @@ export class CountriesService {
       .catch((e: Error) => {
         console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException()
+        throw new InternalServerErrorException(e)
       })
 
     return {
@@ -56,7 +56,7 @@ export class CountriesService {
       })
       .catch((e: Error) => {
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException()
+        throw new InternalServerErrorException(e)
       })
 
     return {
