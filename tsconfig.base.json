@@ -51,6 +51,12 @@
       "@noloback/object.categories.service": [
         "libs/object.categories.service/src/index.ts"
       ],
+      "@noloback/object.types.controller": [
+        "libs/object.types.controller/src/index.ts"
+      ],
+      "@noloback/object.types.service": [
+        "libs/object.types.service/src/index.ts"
+      ],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],
       "@noloback/prisma-client-logs": ["libs/prisma/client/logs/src/index.ts"],
       "@noloback/prisma-client-translator": [

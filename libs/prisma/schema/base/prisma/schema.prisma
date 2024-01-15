@@ -221,7 +221,7 @@ model ObjectType {
   updatedAt        DateTime       @updatedAt
   deletedAt        DateTime?
   objectCategoryId Int
-  ObjectCategories ObjectCategory @relation(fields: [objectCategoryId], references: [id])
+  ObjectCategory ObjectCategory @relation(fields: [objectCategoryId], references: [id])
   Objects          Object[]
 }
 
