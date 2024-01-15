@@ -131,7 +131,6 @@ model User {
   oAuthAccounts        OAuthProviderUser[]
   loginHistory         UserLoginLog[]
   TmpVideo             TmpVideo[] ///TMP TMP TMP TMP TMP TMP TMP
-  Exhibition           Exhibition[]
   LocationHasReferents LocationHasReferent[]
 }
 
@@ -226,17 +225,17 @@ model ObjectType {
 }
 
 model Object {
-  id              Int          @id @default(autoincrement())
+  id              Int               @id @default(autoincrement())
   name            String
   description     String?
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
   deletedAt       DateTime?
   objectTypeId    Int?
   relatedPersonId Int?
-  ObjectType      ObjectType?  @relation(fields: [objectTypeId], references: [id])
-  RelatedPerson   Person?      @relation(fields: [relatedPersonId], references: [id])
-  Exhibitions     Exhibition[]
+  ObjectType      ObjectType?       @relation(fields: [objectTypeId], references: [id])
+  RelatedPerson   Person?           @relation(fields: [relatedPersonId], references: [id])
+  ExhibitedBy     ExhibitedObject[]
 }
 
 // -------------------------------
@@ -244,20 +243,28 @@ model Object {
 // -------------------------------
 
 model Exhibition {
-  id               Int       @id @default(autoincrement())
+  id               Int               @id @default(autoincrement())
   name             String
   shortDescription String?
   longDescription  String?
-  startDate        DateTime
-  endDate          DateTime
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  startDate        DateTime?
+  endDate          DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
   deletedAt        DateTime?
   locationId       Int
-  creatorId        Int
-  Creator          User      @relation(fields: [creatorId], references: [id])
-  Location         Location  @relation(fields: [locationId], references: [id])
-  Objects          Object[]
+  Location         Location          @relation(fields: [locationId], references: [id])
+  ExhibitedObjects ExhibitedObject[]
+}
+
+model ExhibitedObject {
+  id           Int        @id @default(autoincrement())
+  objectId     Int
+  exhibitionId Int
+  Object       Object     @relation(fields: [objectId], references: [id])
+  Exhibition   Exhibition @relation(fields: [exhibitionId], references: [id])
+
+  @@unique([objectId, exhibitionId])
 }
 
 // ----------------------------

@@ -33,6 +33,12 @@
       "@noloback/departments.service": [
         "libs/departments.service/src/index.ts"
       ],
+      "@noloback/exhibitions.controller": [
+        "libs/exhibitions.controller/src/index.ts"
+      ],
+      "@noloback/exhibitions.service": [
+        "libs/exhibitions.service/src/index.ts"
+      ],
       "@noloback/guards": ["models/guards"],
       "@noloback/jwt": ["models/jwt"],
       "@noloback/locations.controller": [
