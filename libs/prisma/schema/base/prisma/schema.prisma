@@ -312,6 +312,9 @@ model LocationHasReferent {
   userId     Int
   Location   Location  @relation(fields: [locationId], references: [id])
   User       User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, locationId])
+  @@unique([isMain, locationId])
 }
 
 // --------------------------

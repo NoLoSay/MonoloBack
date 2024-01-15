@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional, IsNotEmpty, IsPositive, IsEnum, IsArray, IsDate } from 'class-validator';
+import { IsString, IsNumber, IsOptional, IsNotEmpty, IsPositive, IsEnum } from 'class-validator';
 import { AddressManipulationModel } from '@noloback/addresses.service';
 
 enum LocationType {

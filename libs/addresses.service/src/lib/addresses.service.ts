@@ -90,7 +90,7 @@ export class AddressesService {
       })
       .catch((e: Error) => {
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException()
+        throw new InternalServerErrorException(e)
       })
 
     return {
