@@ -45,6 +45,12 @@
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
       "@noloback/models": ["models/index.ts"],
       "@noloback/models/swagger": ["models/swagger/index.ts"],
+      "@noloback/object.categories.controller": [
+        "libs/object.categories.controller/src/index.ts"
+      ],
+      "@noloback/object.categories.service": [
+        "libs/object.categories.service/src/index.ts"
+      ],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],
       "@noloback/prisma-client-logs": ["libs/prisma/client/logs/src/index.ts"],
       "@noloback/prisma-client-translator": [
