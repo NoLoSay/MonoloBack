@@ -1,6 +1,16 @@
-import { PrismaBaseService, Country } from '@noloback/prisma-client-base'
+import {
+  PrismaBaseService,
+  Country,
+  Prisma
+} from '@noloback/prisma-client-base'
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { CountryManipulationModel } from './models/country-manipulation.model'
+import {
+  CountryAdminReturn,
+  CountryAdminSelect,
+  CountryCommonReturn,
+  CountryCommonSelect
+} from './models/country.api.model'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -9,18 +19,63 @@ export class CountriesService {
   private countries: Country[] = []
 
   constructor (
-    private prismaBase: PrismaBaseService
-  ) //private loggingService: LoggerService
-  {}
+    private prismaBase: PrismaBaseService //private loggingService: LoggerService
+  ) {}
 
-  async findAll (): Promise<Country[]> {
-    return await this.prismaBase.country.findMany()
+  async findAll (
+    role: 'USER' | 'ADMIN' | 'REFERENT'
+  ): Promise<CountryCommonReturn[] | CountryAdminReturn[]> {
+    let selectOptions: Prisma.CountrySelect
+
+    switch (role) {
+      case 'ADMIN':
+        selectOptions = new CountryAdminSelect()
+        break
+      default:
+        selectOptions = new CountryCommonSelect()
+    }
+
+    const countries = await this.prismaBase.country.findMany({
+      select: selectOptions
+    })
+
+    switch (role) {
+      case 'ADMIN':
+        return countries as CountryAdminReturn[]
+      default:
+        return countries as CountryCommonReturn[]
+    }
   }
 
-  async findOne (id: number): Promise<Country | null> {
-    return await this.prismaBase.country.findUnique({
-      where: { id: id }
+  async findOne (
+    id: number,
+    role: 'USER' | 'ADMIN' | 'REFERENT'
+  ): Promise<CountryCommonReturn | CountryAdminReturn | null> {
+    let selectOptions: Prisma.CountrySelect
+
+    switch (role) {
+      case 'ADMIN':
+        selectOptions = new CountryAdminSelect()
+        break
+      default:
+        selectOptions = new CountryCommonSelect()
+    }
+
+    const country = await this.prismaBase.country.findUnique({
+      where: { id },
+      select: selectOptions
     })
+
+    if (!country) {
+      return null
+    }
+
+    switch (role) {
+      case 'ADMIN':
+        return country as CountryAdminReturn
+      default:
+        return country as CountryCommonReturn
+    }
   }
 
   async create (country: CountryManipulationModel) {

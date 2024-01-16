@@ -1,36 +1,43 @@
-import { PrismaBaseService, User } from '@noloback/prisma-client-base';
+import { Prisma, PrismaBaseService, User } from '@noloback/prisma-client-base'
 import {
   ConflictException,
   HttpException,
   Injectable,
   InternalServerErrorException,
-} from '@nestjs/common';
-import { hash } from 'bcrypt';
-import { LoggerService } from '@noloback/logger-lib';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { LogCriticity } from '@prisma/client/logs';
+  UnauthorizedException
+} from '@nestjs/common'
+import { hash } from 'bcrypt'
+import { LoggerService } from '@noloback/logger-lib'
+import { CreateUserDto } from './dto/create-user.dto'
+import { LogCriticity } from '@prisma/client/logs'
+import {
+  UserAdminReturn,
+  UserAdminSelect,
+  UserCommonReturn,
+  UserCommonSelect
+} from './models/user.api.models'
+import { UserAdminUpdateModel, UserUpdateModel } from './users.service.module'
 
 @Injectable()
 export class UsersService {
-  constructor(
+  constructor (
     private prismaBase: PrismaBaseService,
     private loggingService: LoggerService
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create (createUserDto: CreateUserDto) {
     const userUsername: User | null = await this.prismaBase.user.findUnique({
-      where: { username: createUserDto.username },
-    });
+      where: { username: createUserDto.username }
+    })
     if (userUsername != null) {
-      throw new ConflictException('Username already taken');
+      throw new ConflictException('Username already taken')
     }
 
     const userEmail: User | null = await this.prismaBase.user.findUnique({
-      where: { email: createUserDto.email },
-    });
+      where: { email: createUserDto.email }
+    })
     if (userEmail != null) {
-      throw new ConflictException('Email address already taken');
+      throw new ConflictException('Email address already taken')
     }
 
     const newUser: User = await this.prismaBase.user
@@ -38,72 +45,144 @@ export class UsersService {
         data: {
           username: createUserDto.username,
           email: createUserDto.email,
-          password: await hash(createUserDto.password, 12),
-        },
+          password: await hash(createUserDto.password, 12)
+        }
       })
       .catch((e: Error) => {
-        this.loggingService.log(
-          LogCriticity.Critical,
-          this.constructor.name,
-          e
-        );
-        throw new InternalServerErrorException(e);
-      });
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      })
 
     await this.prismaBase.userLoginLog.create({
       data: {
-        userId: newUser.id,
-      },
-    });
+        userId: newUser.id
+      }
+    })
 
     return {
       id: newUser.id,
       username: newUser.username,
-      email: newUser.email,
-    };
+      email: newUser.email
+    }
   }
 
-  findAll() {
-    return this.prismaBase.user.findMany({ where: { deletedAt: null } });
+  async findAll (
+    role: 'USER' | 'ADMIN' | 'REFERENT'
+  ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
+    let selectOptions: Prisma.UserSelect
+
+    switch (role) {
+      case 'ADMIN':
+        selectOptions = new UserAdminSelect()
+        break
+      default:
+        selectOptions = new UserCommonSelect()
+    }
+
+    const users = await this.prismaBase.user.findMany({
+      where: { deletedAt: null },
+      select: selectOptions
+    })
+
+    switch (role) {
+      case 'ADMIN':
+        return users as UserAdminReturn[]
+      default:
+        return users as UserCommonReturn[]
+    }
   }
 
-  findOne(id: number) {
-    return this.prismaBase.user.findUnique({ where: { id: id } });
+  async findOne (id: number, role: 'USER' | 'ADMIN' | 'REFERENT') {
+    let selectOptions: Prisma.UserSelect
+
+    switch (role) {
+      case 'ADMIN':
+        selectOptions = new UserAdminSelect()
+        break
+      default:
+        selectOptions = new UserCommonSelect()
+    }
+    const where: {
+      id: number
+      deletedAt?: Date | null
+    } = { id: id }
+
+    if (role !== 'ADMIN') {
+      where.deletedAt = null
+    }
+
+    const user = await this.prismaBase.user.findUnique({
+      where: where,
+      select: selectOptions
+    })
+
+    switch (role) {
+      case 'ADMIN':
+        return user as unknown as UserAdminReturn
+      default:
+        return user as unknown as UserCommonReturn
+    }
   }
 
-  findOneByUsername(username: string) {
-    return this.prismaBase.user.findUnique({ where: { username: username } });
+  async findOneByUsername (username: string) {
+    return await this.prismaBase.user.findUnique({
+      where: { username: username }
+    })
   }
 
-  findOneByEmail(username: string) {
-    return this.prismaBase.user.findUnique({ where: { email: username } });
+  async findOneByEmail (username: string) {
+    return await this.prismaBase.user.findUnique({ where: { email: username } })
   }
 
-  async findUserByEmailOrUsername(search: string) {
+  async findUserByEmailOrUsername (search: string) {
     const user = await this.prismaBase.user.findFirst({
       where: {
-        OR: [
-          {
-            email: search,
-          },
-          {
-            username: search,
-          },
-        ],
-      },
-    });
+        OR: [{ email: search }, { username: search }]
+      }
+    })
 
-    return user;
+    return user
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  async update (
+    id: number,
+    updateUser: UserAdminUpdateModel,
+    role: 'USER' | 'ADMIN' | 'REFERENT'
+  ) {
+    if (updateUser.role && role !== 'ADMIN') {
+      throw new UnauthorizedException()
+    }
 
-  remove(id: number) {
+    const data: {
+      username?: string
+      email?: string
+      password?: string
+      picture?: string
+      role?: string
+    } = {
+      username: updateUser.username,
+      email: updateUser.email,
+      picture: updateUser.picture,
+      role: updateUser.role,
+      password: updateUser.password
+        ? await hash(updateUser.password, 12)
+        : undefined
+    }
+
+    const filteredData = Object.fromEntries(
+      Object.entries(data).filter(([_, value]) => value !== undefined)
+    )
+
     return this.prismaBase.user.update({
       where: { id: id },
-      data: { deletedAt: new Date() },
-    });
+      data: filteredData
+    })
+  }
+
+  async remove (id: number) {
+    return await this.prismaBase.user.update({
+      where: { id: id },
+      data: { deletedAt: new Date() }
+    })
   }
 }

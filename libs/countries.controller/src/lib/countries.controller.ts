@@ -6,27 +6,34 @@ import {
   Put,
   Param,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  Request,
+  UseGuards
 } from '@nestjs/common'
 import { Admin } from '@noloback/roles'
 import {
   CountryManipulationModel,
   CountriesService
 } from '@noloback/countries.service'
+import { JwtAuthGuard } from '@noloback/guards'
 
 @Controller('countries')
 export class CountriesController {
   constructor (private readonly countriesService: CountriesService) {}
 
   @Get()
-  async findAll () {
-    return this.countriesService.findAll()
+  @UseGuards(JwtAuthGuard)
+  async findAll (@Request() request: any) {
+    return this.countriesService.findAll(request.user.role)
   }
 
-  @Admin()
   @Get(':id')
-  async findOne (@Param('id', ParseIntPipe) id: number) {
-    return this.countriesService.findOne(id)
+  @UseGuards(JwtAuthGuard)
+  async findOne (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.countriesService.findOne(id, request.user.role)
   }
 
   @Admin()

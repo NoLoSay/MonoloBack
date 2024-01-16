@@ -3,7 +3,7 @@ import { PrismaClientBaseModule } from '@noloback/prisma-client-base';
 import { UsersService } from './users.service';
 import { LoggerLibModule } from '@noloback/logger-lib';
 export { CreateUserDto } from './dto/create-user.dto';
-export { UpdateUserDto } from './dto/update-user.dto';
+export { UserAdminUpdateModel, UserUpdateModel } from './models/user.update.models';
 
 @Module({
   controllers: [],

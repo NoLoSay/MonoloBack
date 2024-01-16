@@ -2,10 +2,12 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../../auth.service';
+import { PrismaBaseService } from '@noloback/prisma-client-base';
 
 @Injectable()
 export class AdminStrategy extends PassportStrategy(Strategy, 'role.admin') {
-  constructor(private readonly authService: AuthService) {
+  constructor(private readonly authService: AuthService,
+    private prismaBaseService: PrismaBaseService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
