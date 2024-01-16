@@ -98,4 +98,41 @@ export class LocationsReferentsService {
         throw new InternalServerErrorException(e)
       })
   }
+
+  async isReferentOfLocation (referentId: number, locationId: number) {
+    const relation: LocationHasReferent | null =
+      await this.prismaBase.locationHasReferent
+        .findUnique({
+          where: {
+            userId_locationId: {
+              locationId: locationId,
+              userId: referentId
+            }
+          }
+        })
+        .catch((e: Error) => {
+          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+          throw new InternalServerErrorException(e)
+        })
+    return relation !== null
+  }
+
+  async isMainReferentOfLocation (referentId: number, locationId: number) {
+    const relation: LocationHasReferent | null =
+      await this.prismaBase.locationHasReferent
+        .findUnique({
+          where: {
+            userId_locationId: {
+              locationId: locationId,
+              userId: referentId,
+              isMain: true
+            }
+          }
+        })
+        .catch((e: Error) => {
+          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+          throw new InternalServerErrorException(e)
+        })
+    return relation !== null
+  }
 }

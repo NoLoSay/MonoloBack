@@ -6,23 +6,30 @@ import {
   Put,
   Param,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  UseGuards,
+  Request,
+  UnauthorizedException
 } from '@nestjs/common'
 import { Admin } from '@noloback/roles'
 import {
   LocationManipulationModel,
   LocationsService
 } from '@noloback/locations.service'
-import { LocationReferentAdditionModel, LocationReferentModificationModel, LocationsReferentsService } from '@noloback/locations.referents.service'
+import {
+  LocationReferentAdditionModel,
+  LocationReferentModificationModel,
+  LocationsReferentsService
+} from '@noloback/locations.referents.service'
+import { JwtAuthGuard } from '@noloback/guards'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('locations')
 export class LocationsController {
   constructor (
     private readonly locationsService: LocationsService,
-    private readonly locationsReferentsService: LocationsReferentsService,
-    // private loggingService: LoggerService
-    ) {}
+    private readonly locationsReferentsService: LocationsReferentsService // private loggingService: LoggerService
+  ) {}
 
   @Admin()
   @Get()
@@ -57,37 +64,83 @@ export class LocationsController {
     return this.locationsService.delete(id)
   }
 
-  @Admin()
+  @UseGuards(JwtAuthGuard)
   @Get(':id/referents')
-  async findReferents (@Param('id', ParseIntPipe) id: number) {
-    return this.locationsReferentsService.findReferents(id)
+  async findReferents (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    if (
+      request.user.role === 'ADMIN' ||
+      (request.user.role === 'REFERENT' &&
+        (await this.locationsReferentsService.isReferentOfLocation(
+          request.user.id,
+          id
+        )))
+    )
+      return this.locationsReferentsService.findReferents(id)
+    throw new UnauthorizedException()
   }
 
-  @Admin()
+  @UseGuards(JwtAuthGuard)
   @Post(':id/referents')
   async addReferent (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() referentRelationId: LocationReferentAdditionModel
   ) {
-    return this.locationsReferentsService.addReferent(id, referentRelationId)
+    if (
+      request.user.role === 'ADMIN' ||
+      (request.user.role === 'REFERENT' &&
+        (await this.locationsReferentsService.isMainReferentOfLocation(
+          request.user.id,
+          id
+        )))
+    )
+      return this.locationsReferentsService.addReferent(id, referentRelationId)
+    throw new UnauthorizedException()
   }
 
-  @Admin()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id/referents/:referentId')
   async deleteReferent (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Param('referentId', ParseIntPipe) referentId: number
   ) {
-    return this.locationsReferentsService.deleteReferent(id, referentId)
+    if (
+      request.user.role === 'ADMIN' ||
+      (request.user.role === 'REFERENT' &&
+        (await this.locationsReferentsService.isMainReferentOfLocation(
+          request.user.id,
+          id
+        )))
+    )
+      return this.locationsReferentsService.deleteReferent(id, referentId)
+    throw new UnauthorizedException()
   }
 
-  @Admin()
+  @UseGuards(JwtAuthGuard)
   @Put(':id/referents/:referentId')
   async updateReferent (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Param('referentId', ParseIntPipe) referentRelationId: number,
     @Body() updatedRefRelation: LocationReferentModificationModel
   ) {
-    return this.locationsReferentsService.updateReferent(id, referentRelationId, updatedRefRelation)
+    if (
+      request.user.role === 'ADMIN' ||
+      (request.user.role === 'REFERENT' &&
+        (await this.locationsReferentsService.isMainReferentOfLocation(
+          request.user.id,
+          id
+        )))
+    )
+      return this.locationsReferentsService.updateReferent(
+        id,
+        referentRelationId,
+        updatedRefRelation
+      )
+    throw new UnauthorizedException()
   }
 }
