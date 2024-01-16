@@ -33,6 +33,9 @@
       "@noloback/departments.service": [
         "libs/departments.service/src/index.ts"
       ],
+      "@noloback/exhibited.objects.service": [
+        "libs/exhibited.objects.service/src/index.ts"
+      ],
       "@noloback/exhibitions.controller": [
         "libs/exhibitions.controller/src/index.ts"
       ],

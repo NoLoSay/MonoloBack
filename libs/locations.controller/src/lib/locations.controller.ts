@@ -73,19 +73,19 @@ export class LocationsController {
   }
 
   @Admin()
-  @Delete(':id/referents/:referentRelationId')
+  @Delete(':id/referents/:referentId')
   async deleteReferent (
     @Param('id', ParseIntPipe) id: number,
-    @Param('referentRelationId', ParseIntPipe) referentRelationId: number
+    @Param('referentId', ParseIntPipe) referentId: number
   ) {
-    return this.locationsReferentsService.deleteReferent(id, referentRelationId)
+    return this.locationsReferentsService.deleteReferent(id, referentId)
   }
 
   @Admin()
-  @Put(':id/referents/:referentRelationId')
+  @Put(':id/referents/:referentId')
   async updateReferent (
     @Param('id', ParseIntPipe) id: number,
-    @Param('referentRelationId', ParseIntPipe) referentRelationId: number,
+    @Param('referentId', ParseIntPipe) referentRelationId: number,
     @Body() updatedRefRelation: LocationReferentModificationModel
   ) {
     return this.locationsReferentsService.updateReferent(id, referentRelationId, updatedRefRelation)

@@ -22,10 +22,10 @@ export class LocationsReferentsService {
           locationId: locationId
         },
         select: {
-          id: true,
           isMain: true,
           User: {
             select: {
+              id: true,
               username: true,
               email: true,
               picture: true
@@ -59,17 +59,19 @@ export class LocationsReferentsService {
 
   async updateReferent (
     locationId: number,
-    relId: number,
-    referent: LocationReferentModificationModel
+    userId: number,
+    updatedRelation: LocationReferentModificationModel
   ): Promise<LocationHasReferent> {
     return await this.prismaBase.locationHasReferent
       .update({
         where: {
-          id: relId,
-          locationId: locationId
+          userId_locationId: {
+            userId: userId,
+            locationId: locationId
+          }
         },
         data: {
-          isMain: referent.isMain
+          isMain: updatedRelation.isMain
         }
       })
       .catch((e: Error) => {
@@ -80,13 +82,15 @@ export class LocationsReferentsService {
 
   async deleteReferent (
     locationId: number,
-    relId: number
+    userId: number
   ): Promise<LocationHasReferent> {
     return await this.prismaBase.locationHasReferent
       .delete({
         where: {
-          id: relId,
-          locationId: locationId
+          userId_locationId: {
+            locationId: locationId,
+            userId: userId
+          }
         }
       })
       .catch((e: Error) => {
