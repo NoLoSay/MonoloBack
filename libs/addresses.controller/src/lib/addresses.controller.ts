@@ -6,13 +6,17 @@ import {
   Put,
   Param,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  UseGuards,
+  Request
 } from '@nestjs/common'
 import { Admin } from '@noloback/roles'
 import {
+  AddressAdminReturn,
   AddressManipulationModel,
   AddressesService
 } from '@noloback/addresses.service'
+import { JwtAuthGuard } from '@noloback/guards'
 
 @Controller('addresses')
 export class AddressesController {
@@ -20,13 +24,15 @@ export class AddressesController {
 
   @Admin()
   @Get()
-  async findAll () {
+  async findAll (): Promise<AddressAdminReturn[]> {
     return this.addressesService.findAll()
   }
 
   @Admin()
   @Get(':id')
-  async findOne (@Param('id', ParseIntPipe) id: number) {
+  async findOne (
+    @Param('id', ParseIntPipe) id: number
+  ): Promise<AddressAdminReturn> {
     return this.addressesService.findOne(id)
   }
 
@@ -36,13 +42,14 @@ export class AddressesController {
     return this.addressesService.create(addresses)
   }
 
-  @Admin()
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedAddress: AddressManipulationModel
   ) {
-    return this.addressesService.update(id, updatedAddress)
+    return this.addressesService.update(id, updatedAddress, request.user.role)
   }
 
   @Admin()

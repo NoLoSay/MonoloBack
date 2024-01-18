@@ -1,37 +1,56 @@
-import { PrismaBaseService, Address } from '@noloback/prisma-client-base'
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
-import { AddressManipulationModel } from './models/addressManipulation.model'
+import { PrismaBaseService, Prisma } from '@noloback/prisma-client-base'
+import {
+  BadGatewayException,
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common'
+import { AddressManipulationModel } from './models/address.manipulation.models'
+import {
+  AddressAdminReturn,
+  AddressAdminSelect,
+  AddressCommonReturn,
+  AddressCommonSelect
+} from './models/address.api.models'
 //import { LogCritiaddress } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class AddressesService {
   constructor (
-    private prismaBase: PrismaBaseService
-    //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
-  async findAll (): Promise<Address[]> {
-    return await this.prismaBase.address.findMany()
+  async findAll (): Promise<AddressAdminReturn[]> {
+    return (await this.prismaBase.address.findMany({
+      select: new AddressAdminSelect()
+    })) as AddressAdminReturn[]
   }
 
-  async findOne (id: number): Promise<Address | null> {
-    return await this.prismaBase.address.findUnique({
-      where: { id: id }
+  async findOne (id: number): Promise<AddressAdminReturn> {
+    const address = await this.prismaBase.address.findUnique({
+      where: { id: id },
+      select: new AddressAdminSelect()
     })
+
+    if (address === null) {
+      throw new NotFoundException(`Address with id ${id} not found`)
+    }
+    return address as AddressAdminReturn
   }
 
-  async create (address: AddressManipulationModel) {
+  async create (
+    address: AddressManipulationModel
+  ): Promise<AddressCommonReturn> {
     if (
       address.cityId === undefined ||
       address.cityId === null ||
       address.cityId <= 0
     ) {
-      throw new InternalServerErrorException(
-        "AddressId can't be null or empty"
-      )
+      throw new BadRequestException("AddressId can't be null or empty")
     }
-    const newAddress: Address = await this.prismaBase.address
+    const newAddress: AddressCommonReturn = (await this.prismaBase.address
       .create({
         data: {
           houseNumber: address.houseNumber,
@@ -45,33 +64,41 @@ export class AddressesService {
               id: address.cityId
             }
           }
-        }
+        },
+        select: new AddressCommonSelect()
       })
       .catch((e: Error) => {
         console.log(e)
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      })
-
-    return {
-      houseNumber: newAddress.houseNumber,
-      street: newAddress.street,
-      zip: newAddress.zip,
-      otherDetails: newAddress.otherDetails,
-    }
+      })) as AddressCommonReturn
+    return newAddress
   }
 
-  async update (id: number, updatedAddress: AddressManipulationModel) {
+  async update (
+    id: number,
+    updatedAddress: AddressManipulationModel,
+    role: 'USER' | 'ADMIN' | 'REFERENT'
+  ): Promise<AddressCommonReturn | AddressAdminReturn> {
     if (
       updatedAddress.cityId === undefined ||
       updatedAddress.cityId === null ||
       updatedAddress.cityId <= 0
     ) {
-      throw new InternalServerErrorException(
-        "AddressId can't be null or empty"
-      )
+      throw new BadGatewayException("cityId can't be null or empty")
     }
-    const updated: Address = await this.prismaBase.address
+
+    let selectOptions: Prisma.AddressSelect
+
+    switch (role) {
+      case 'ADMIN':
+        selectOptions = new AddressAdminSelect()
+        break
+      default:
+        selectOptions = new AddressCommonSelect()
+    }
+
+    const updated = (await this.prismaBase.address
       .update({
         where: { id: id },
         data: {
@@ -86,19 +113,19 @@ export class AddressesService {
               id: updatedAddress.cityId
             }
           }
-        }
+        },
+        select: selectOptions
       })
       .catch((e: Error) => {
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      })
-
-    return {
-      houseNumber: updated.houseNumber,
-      street: updated.street,
-      zip: updated.zip,
-      otherDetails: updated.otherDetails,
-    }
+      }))
+      switch (role) {
+        case 'ADMIN':
+          return updated as AddressAdminReturn
+        default:
+          return updated as AddressCommonReturn
+      }
   }
 
   async delete (id: number) {
