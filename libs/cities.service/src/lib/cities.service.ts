@@ -1,5 +1,5 @@
 import { PrismaBaseService, City, Prisma } from '@noloback/prisma-client-base'
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { CityManipulationModel } from './models/city.manipulation.models'
 import {
   CityAdminReturn,
@@ -34,6 +34,11 @@ export class CitiesService {
     const cities: unknown = await this.prismaBase.city.findMany({
       select: selectOptions
     })
+    .catch((e: Error) => {
+      console.log(e)
+      // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+      throw new InternalServerErrorException(e)
+    })
 
     switch (role) {
       case 'ADMIN':
@@ -59,6 +64,11 @@ export class CitiesService {
     const cities: unknown = await this.prismaBase.city.findUnique({
       where: { id: id },
       select: selectOptions
+    })
+    .catch((e: Error) => {
+      console.log(e)
+      // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+      throw new BadRequestException(e)
     })
 
     switch (role) {

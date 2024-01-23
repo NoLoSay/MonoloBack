@@ -6,42 +6,62 @@ import {
   Put,
   Param,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  UseGuards,
+  Request,
+  UnauthorizedException
 } from '@nestjs/common'
 import { Admin } from '@noloback/roles'
 import {
   ObjectManipulationModel,
   ObjectsService
 } from '@noloback/objects.service'
+import { JwtAuthGuard } from '@noloback/guards'
+import { LocationsReferentsService } from '@noloback/locations.referents.service'
 
 @Controller('objects')
 export class ObjectsController {
-  constructor (private readonly objectsService: ObjectsService) {}
+  constructor (
+    private readonly objectsService: ObjectsService,
+    private readonly locationsReferentsService: LocationsReferentsService // private loggingService: LoggerService
+  ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll () {
-    return this.objectsService.findAll()
+  async findAll (@Request() request: any) {
+    return this.objectsService.findAll(request.user.role)
   }
 
-  @Admin()
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async findOne (@Param('id', ParseIntPipe) id: number) {
-    return this.objectsService.findOne(id)
+  async findOne (
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: any
+  ) {
+    return this.objectsService.findOne(id, request.user.role)
   }
 
-  @Admin()
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create (@Body() objects: ObjectManipulationModel) {
-    return this.objectsService.create(objects)
+  async create (
+    @Request() request: any,
+    @Body() objects: ObjectManipulationModel
+  ) {
+    if (request.user.role === 'ADMIN' || request.user.role === 'REFERENT')
+      return this.objectsService.create(objects)
+    throw new UnauthorizedException()
   }
 
-  @Admin()
+  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedObject: ObjectManipulationModel
   ) {
-    return this.objectsService.update(id, updatedObject)
+    if (request.user.role === 'ADMIN' || request.user.role === 'REFERENT')
+      return this.objectsService.update(id, updatedObject)
+    throw new UnauthorizedException()
   }
 
   @Admin()

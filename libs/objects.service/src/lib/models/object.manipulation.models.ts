@@ -19,6 +19,11 @@ export class ObjectManipulationModel {
   description: string = ''
 
   @ApiProperty()
+  @IsString()
+  @IsOptional()
+  picture: string = ''
+
+  @ApiProperty()
   @IsNumber()
   @IsOptional()
   @IsPositive()

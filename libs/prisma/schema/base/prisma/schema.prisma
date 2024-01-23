@@ -228,6 +228,7 @@ model Object {
   id              Int               @id @default(autoincrement())
   name            String
   description     String?
+  picture         String?
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   deletedAt       DateTime?

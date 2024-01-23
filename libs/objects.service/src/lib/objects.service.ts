@@ -1,9 +1,16 @@
+import { Prisma, PrismaBaseService, Object } from '@noloback/prisma-client-base'
 import {
-  PrismaBaseService,
-  Object as PrismaObject
-} from '@noloback/prisma-client-base'
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
-import { ObjectManipulationModel } from './models/objectManipulation.model'
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException
+} from '@nestjs/common'
+import { ObjectManipulationModel } from './models/object.manipulation.models'
+import {
+  ObjectAdminSelect,
+  ObjectCommonSelect,
+  ObjectCommonReturn,
+  ObjectAdminReturn
+} from './models/object.api.models'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -13,17 +20,71 @@ export class ObjectsService {
     private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
-  async findAll (): Promise<PrismaObject[]> {
-    return await this.prismaBase.object.findMany()
+  async findAll (
+    role: 'USER' | 'ADMIN' | 'REFERENT'
+  ): Promise<ObjectCommonReturn[] | ObjectAdminReturn[]> {
+    let selectOptions: Prisma.ObjectSelect
+
+    switch (role) {
+      case 'ADMIN':
+        selectOptions = new ObjectAdminSelect()
+        break
+      default:
+        selectOptions = new ObjectCommonSelect()
+    }
+
+    const objects: unknown = await this.prismaBase.object
+      .findMany({
+        select: selectOptions
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      })
+
+    switch (role) {
+      case 'ADMIN':
+        return objects as ObjectAdminReturn[]
+      default:
+        return objects as ObjectCommonReturn[]
+    }
   }
 
-  async findOne (id: number): Promise<PrismaObject | null> {
-    return await this.prismaBase.object.findUnique({
-      where: { id: id }
-    })
+  async findOne (
+    id: number,
+    role: 'USER' | 'ADMIN' | 'REFERENT'
+  ): Promise<ObjectCommonReturn | ObjectAdminReturn> {
+    let selectOptions: Prisma.ObjectSelect
+
+    switch (role) {
+      case 'ADMIN':
+        selectOptions = new ObjectAdminSelect()
+        break
+      default:
+        selectOptions = new ObjectCommonSelect()
+    }
+
+    const object: unknown = await this.prismaBase.object
+      .findUnique({
+        where: { id: id },
+        select: selectOptions
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new BadRequestException(e)
+      })
+
+    switch (role) {
+      case 'ADMIN':
+        return object as ObjectAdminReturn
+      default:
+        return object as ObjectCommonReturn
+    }
   }
 
-  async create (object: ObjectManipulationModel) {
+  async create (object: ObjectManipulationModel): Promise<ObjectCommonReturn> {
     const newObjectData: {
       name: string
       description: string
@@ -58,9 +119,10 @@ export class ObjectsService {
       }
     }
 
-    const newObject: PrismaObject = await this.prismaBase.object
+    const newObject: unknown = await this.prismaBase.object
       .create({
-        data: newObjectData
+        data: newObjectData,
+        select: new ObjectAdminSelect()
       })
       .catch((e: Error) => {
         console.log(e)
@@ -68,13 +130,13 @@ export class ObjectsService {
         throw new InternalServerErrorException(e)
       })
 
-    return {
-      id: newObject.id,
-      name: newObject.name
-    }
+    return newObject as ObjectCommonReturn
   }
 
-  async update (id: number, updatedObject: ObjectManipulationModel) {
+  async update (
+    id: number,
+    updatedObject: ObjectManipulationModel
+  ): Promise<ObjectCommonReturn> {
     const updatedObjectData: {
       name: string
       description: string
@@ -108,7 +170,7 @@ export class ObjectsService {
         }
       }
     }
-    const updated: PrismaObject = await this.prismaBase.object
+    const updated: unknown = await this.prismaBase.object
       .update({
         where: { id: id },
         data: updatedObjectData
@@ -118,15 +180,20 @@ export class ObjectsService {
         throw new InternalServerErrorException(e)
       })
 
-    return {
-      id: updated.id,
-      name: updated.name
-    }
+    return updated as ObjectCommonReturn
   }
 
-  async delete (id: number) {
-    await this.prismaBase.object.delete({
-      where: { id: id }
-    })
+  async delete (id: number): Promise<ObjectCommonReturn> {
+    const deleted: unknown = (await this.prismaBase.object
+      .delete({
+        where: { id: id },
+        select: new ObjectCommonSelect()
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      }))
+      return deleted as ObjectCommonReturn
   }
 }
