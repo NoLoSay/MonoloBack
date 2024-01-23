@@ -25,11 +25,11 @@ export class AddressesService {
   async findAll (): Promise<AddressAdminReturn[]> {
     return (await this.prismaBase.address.findMany({
       select: new AddressAdminSelect()
-    })) as AddressAdminReturn[]
+    })) as unknown as AddressAdminReturn[]
   }
 
   async findOne (id: number): Promise<AddressAdminReturn> {
-    const address = await this.prismaBase.address.findUnique({
+    const address: unknown = await this.prismaBase.address.findUnique({
       where: { id: id },
       select: new AddressAdminSelect()
     })
@@ -71,7 +71,7 @@ export class AddressesService {
         console.log(e)
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      })) as AddressCommonReturn
+      })) as unknown as AddressCommonReturn
     return newAddress
   }
 
@@ -98,7 +98,7 @@ export class AddressesService {
         selectOptions = new AddressCommonSelect()
     }
 
-    const updated = (await this.prismaBase.address
+    const updated: unknown = (await this.prismaBase.address
       .update({
         where: { id: id },
         data: {

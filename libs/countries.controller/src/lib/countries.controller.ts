@@ -13,7 +13,9 @@ import {
 import { Admin } from '@noloback/roles'
 import {
   CountryManipulationModel,
-  CountriesService
+  CountriesService,
+  CountryAdminReturn,
+  CountryCommonReturn
 } from '@noloback/countries.service'
 import { JwtAuthGuard } from '@noloback/guards'
 
@@ -23,7 +25,9 @@ export class CountriesController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  async findAll (@Request() request: any) {
+  async findAll (
+    @Request() request: any
+  ): Promise<CountryCommonReturn[] | CountryAdminReturn[]> {
     return this.countriesService.findAll(request.user.role)
   }
 
@@ -32,13 +36,15 @@ export class CountriesController {
   async findOne (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
-  ) {
+  ): Promise<CountryCommonReturn | CountryAdminReturn> {
     return this.countriesService.findOne(id, request.user.role)
   }
 
   @Admin()
   @Post()
-  async create (@Body() country: CountryManipulationModel) {
+  async create (
+    @Body() country: CountryManipulationModel
+  ): Promise<CountryAdminReturn> {
     return this.countriesService.create(country)
   }
 
@@ -47,13 +53,15 @@ export class CountriesController {
   async update (
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedCountry: CountryManipulationModel
-  ) {
+  ): Promise<CountryAdminReturn> {
     return this.countriesService.update(id, updatedCountry)
   }
 
   @Admin()
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number) {
+  async delete (
+    @Param('id', ParseIntPipe) id: number
+  ): Promise<CountryAdminReturn> {
     return this.countriesService.delete(id)
   }
 }
