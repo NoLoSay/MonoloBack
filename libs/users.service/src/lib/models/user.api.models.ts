@@ -7,6 +7,7 @@ export class UserCommonReturn {
 export class UserMeReturn extends UserCommonReturn {
   email: string = ''
   createdAt: Date = new Date()
+  role: string = ''
 }
 
 export class UserAdminReturn extends UserMeReturn {
@@ -26,6 +27,7 @@ export class UserCommonSelect {
 export class UserMeSelect extends UserCommonSelect {
   email: boolean = true
   createdAt: boolean = true
+  role: boolean = true
 }
 
 export class UserAdminSelect extends UserMeSelect {

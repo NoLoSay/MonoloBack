@@ -40,7 +40,7 @@ export class VideoService {
   }
 
   async getYoutube(youtubeId: string): Promise<string> {
-    const video = await this.prismaBase.tmpVideo.findUnique({
+    const video = await this.prismaBase.video.findUnique({
       where: {
         uuid: youtubeId,
       },
@@ -50,7 +50,7 @@ export class VideoService {
       throw new NotFoundException();
     }
 
-    return video.providerId;
+    return video.externalProviderId;
   }
 
   async createYoutube(user: User, video: Express.Multer.File): Promise<string> {
@@ -97,9 +97,9 @@ export class VideoService {
       throw new InternalServerErrorException('Upload failed');
     }
 
-    const noloVideo = await this.prismaBase.tmpVideo.create({
+    const noloVideo = await this.prismaBase.video.create({
       data: {
-        providerId: res?.data?.id || '',
+        externalProviderId: res?.data?.id || '',
         userId: user.id,
       },
     });
