@@ -78,6 +78,7 @@ export class LocationsService {
           email: location.email,
           website: location.website,
           price: location.price,
+          picture: location.picture,
           type: location.type as unknown as LocationType,
           tags: location.tags as unknown[] as LocationTag[],
           Address: {
@@ -122,6 +123,7 @@ export class LocationsService {
           email: location.email,
           website: location.website,
           price: location.price,
+          picture: location.picture,
           type: location.type as unknown as LocationType,
           tags: location.tags as unknown[] as LocationTag[],
           Address: {

@@ -56,6 +56,11 @@ export class LocationManipulationModel {
   @IsPositive()
   price: number = 0;
 
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  picture?: string;
+
   @ApiProperty({ enum: LocationType })
   @IsEnum(LocationType)
   type: LocationType = LocationType.OTHER;

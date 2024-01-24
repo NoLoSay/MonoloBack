@@ -294,6 +294,7 @@ model Location {
   email                String?
   website              String?
   price                Float
+  picture              String?
   type                 LocationType
   tags                 LocationTag[]
   createdAt            DateTime              @default(now())
