@@ -154,8 +154,10 @@ model Video {
   updatedAt          DateTime          @updatedAt
   deletedAt          DateTime?
   userId             Int
+  objectId           Int
   PostedBy           User              @relation(fields: [userId], references: [id])
   LikedBy            UserlikesVideos[]
+  Object             Object            @relation(fields: [objectId], references: [id])
 }
 
 model UserlikesVideos {
@@ -233,6 +235,7 @@ model Object {
   ObjectType      ObjectType?       @relation(fields: [objectTypeId], references: [id])
   RelatedPerson   Person?           @relation(fields: [relatedPersonId], references: [id])
   ExhibitedBy     ExhibitedObject[]
+  Videos          Video[]
 }
 
 // -------------------------------

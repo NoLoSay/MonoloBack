@@ -11,6 +11,7 @@ import {
   ObjectCommonReturn,
   ObjectAdminReturn
 } from './models/object.api.models'
+import { empty } from '@prisma/client/runtime/library'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -184,7 +185,7 @@ export class ObjectsService {
   }
 
   async delete (id: number): Promise<ObjectCommonReturn> {
-    const deleted: unknown = (await this.prismaBase.object
+    const deleted: unknown = await this.prismaBase.object
       .delete({
         where: { id: id },
         select: new ObjectCommonSelect()
@@ -193,7 +194,20 @@ export class ObjectsService {
         console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      }))
-      return deleted as ObjectCommonReturn
+      })
+    return deleted as ObjectCommonReturn
+  }
+
+  async findAllVideoPendingObjects (): Promise<ObjectCommonReturn> {
+    const objects: unknown = this.prismaBase.object.findMany({
+      where: {
+        Videos: {
+          none: {
+            validationStatus: 'VALIDATED'
+          }
+        }
+      }
+    })
+    return objects as ObjectCommonReturn
   }
 }

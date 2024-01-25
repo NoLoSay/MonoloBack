@@ -33,6 +33,12 @@ export class ObjectsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('video-pending')
+  async findAllVideoPendingObjects () {
+    return this.objectsService.findAllVideoPendingObjects()
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne (
     @Param('id', ParseIntPipe) id: number,
