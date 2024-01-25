@@ -14,7 +14,7 @@ import {
 import { JwtAuthGuard } from '@noloback/guards'
 import { Admin } from '@noloback/roles'
 import {
-  CreateUserDto,
+  UserCreateModel,
   UserAdminUpdateModel,
   UserUpdateModel,
   UsersService
@@ -41,7 +41,7 @@ export class UsersController {
 
   @Admin()
   @Post()
-  async create (@Body() createUserDto: CreateUserDto) {
+  async create (@Body() createUserDto: UserCreateModel) {
     return this.usersService.create(createUserDto)
   }
 

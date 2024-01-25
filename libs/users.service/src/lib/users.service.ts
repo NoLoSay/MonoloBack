@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common'
 import { hash } from 'bcrypt'
 import { LoggerService } from '@noloback/logger-lib'
-import { CreateUserDto } from './dto/create-user.dto'
 import { LogCriticity } from '@prisma/client/logs'
 import {
   UserAdminReturn,
@@ -16,7 +15,7 @@ import {
   UserCommonReturn,
   UserCommonSelect
 } from './models/user.api.models'
-import { UserAdminUpdateModel, UserUpdateModel } from './users.service.module'
+import { UserAdminUpdateModel, UserCreateModel } from './models/user.manipulation.models'
 
 @Injectable()
 export class UsersService {
@@ -25,7 +24,7 @@ export class UsersService {
     private loggingService: LoggerService
   ) {}
 
-  async create (createUserDto: CreateUserDto) {
+  async create (createUserDto: UserCreateModel) {
     const userUsername: User | null = await this.prismaBase.user.findUnique({
       where: { username: createUserDto.username }
     })
@@ -45,7 +44,8 @@ export class UsersService {
         data: {
           username: createUserDto.username,
           email: createUserDto.email,
-          password: await hash(createUserDto.password, 12)
+          password: await hash(createUserDto.password, 12),
+          telNumber: createUserDto.telNumber
         }
       })
       .catch((e: Error) => {
@@ -159,6 +159,7 @@ export class UsersService {
       password?: string
       picture?: string
       role?: string
+      telNumber?: string
     } = {
       username: updateUser.username,
       email: updateUser.email,
@@ -166,7 +167,8 @@ export class UsersService {
       role: updateUser.role,
       password: updateUser.password
         ? await hash(updateUser.password, 12)
-        : undefined
+        : undefined,
+      telNumber: updateUser.telNumber
     }
 
     const filteredData = Object.fromEntries(

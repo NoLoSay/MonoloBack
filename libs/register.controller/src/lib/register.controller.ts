@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { Public } from '@noloback/jwt';
-import { CreateUserDto, UsersService } from '@noloback/users.service';
+import { UserCreateModel, UsersService } from '@noloback/users.service';
 
 @Controller('register')
 export class RegisterController {
@@ -8,7 +8,7 @@ export class RegisterController {
 
   @Post()
   @Public()
-  register(@Body() userRegister: CreateUserDto) {
+  register(@Body() userRegister: UserCreateModel) {
     return this.usersService.create(userRegister);
   }
 }
