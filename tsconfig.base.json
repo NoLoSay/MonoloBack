@@ -37,6 +37,8 @@
         "libs/register.controller/src/index.ts"
       ],
       "@noloback/roles": ["models/roles"],
+      "@nolofront/shared": ["shared/index.ts"],
+      "@nolofront/shared/*": ["shared/*"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],

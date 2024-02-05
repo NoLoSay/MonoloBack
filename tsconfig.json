@@ -1,0 +1,10 @@
+//tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@nolofront/shared": ["shared/index.ts"],
+      "@nolofront/shared/*": ["shared/*"]
+    }
+  }
+}
