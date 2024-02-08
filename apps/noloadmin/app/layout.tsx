@@ -2,6 +2,7 @@ import './global.css';
 import { Open_Sans } from 'next/font/google'
 import { ThemeProvider } from '@nolofront/shared/components/providers/theme-provider'
 import { cn } from '@nolofront/shared/lib/utils';
+import { Navbar } from '@nolofront/shared';
 
 const font = Open_Sans({ subsets: ['latin'] })
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         enableSystem={false}
         storageKey='app-theme'
       >
+        <Navbar />
         {/* <ModalProvider /> */}
         {children}
       </ThemeProvider>
