@@ -8,6 +8,7 @@ export class VideoCommonListReturn {
     id: number = 0
     duration: number = 0
     externalProviderId: string = ''
+    validationStatus: string = ''
     createdAt: Date = new Date()
     PostedBy: User = new User()
 }
@@ -25,6 +26,7 @@ export class VideoCommonListSelect {
     duration: boolean = true
     externalProviderId: boolean = true
     createdAt: boolean = true
+    validationStatus: boolean = true
     PostedBy: object = {
         select: new UserSelect()
     }

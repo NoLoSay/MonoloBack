@@ -11,7 +11,7 @@ import {
   Request,
   UnauthorizedException
 } from '@nestjs/common'
-import { Admin, Referent } from '@noloback/roles'
+import { Admin } from '@noloback/roles'
 import {
   ObjectAdminReturn,
   ObjectCommonReturn,
@@ -29,12 +29,14 @@ export class ObjectsController {
     private readonly objectsService: ObjectsService,
     private readonly locationsReferentsService: LocationsReferentsService,
     private readonly videoService: VideoService
-    // private loggingService: LoggerService
-  ) {}
+  ) // private loggingService: LoggerService
+  {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll (@Request() request: any): Promise<ObjectCommonReturn[] | ObjectAdminReturn[]> {
+  async findAll (
+    @Request() request: any
+  ): Promise<ObjectCommonReturn[] | ObjectAdminReturn[]> {
     return this.objectsService.findAll(request.user.role)
   }
 
@@ -49,7 +51,7 @@ export class ObjectsController {
   async findOne (
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any
-  ): Promise<ObjectDetailedReturn | ObjectAdminReturn>{
+  ): Promise<ObjectDetailedReturn | ObjectAdminReturn> {
     return this.objectsService.findOneDetailled(id, request.user.role)
   }
 

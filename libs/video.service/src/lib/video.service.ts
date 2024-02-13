@@ -2,16 +2,29 @@ import { google, youtube_v3 } from 'googleapis'
 import { JWT } from 'google-auth-library'
 import {
   Injectable,
-  InternalServerErrorException,
   NotFoundException
 } from '@nestjs/common'
-import { createReadStream, readFileSync, statSync } from 'fs'
-import { PrismaBaseService, User } from '@noloback/prisma-client-base'
+import { readFileSync } from 'fs'
+import { PrismaBaseService, ValdationStatus, } from '@noloback/prisma-client-base'
 import { LoggerService } from '@noloback/logger-lib'
 import {
   VideoCommonListReturn,
-  VideoCommonListSelect
+  VideoCommonListSelect,
 } from './models/video.api.models'
+
+
+export function getValidationStatusFromRole (
+  role: 'ADMIN' | 'REFERENT' | 'USER'
+): ValdationStatus[] {
+  switch (role) {
+    case 'ADMIN':
+      return ['VALIDATED', 'PENDING', 'REFUSED']
+    case 'REFERENT':
+      return ['VALIDATED', 'PENDING']
+    default:
+      return ['VALIDATED']
+  }
+}
 
 @Injectable()
 export class VideoService {
@@ -118,12 +131,12 @@ export class VideoService {
 
   async getVideosFromObject (
     objectId: number,
-    validationStatus: 'VALIDATED' | 'PENDING' | 'REFUSED' = 'VALIDATED'
+    role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videos = await this.prismaBase.video.findMany({
       where: {
         objectId: objectId,
-        validationStatus: validationStatus
+        validationStatus: { in: getValidationStatusFromRole(role) }
       },
       select: new VideoCommonListSelect()
     })
@@ -133,12 +146,12 @@ export class VideoService {
 
   async getVideosFromUser (
     userId: number,
-    validationStatus: 'VALIDATED' | 'PENDING' | 'REFUSED' = 'VALIDATED'
+    role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videos = await this.prismaBase.video.findMany({
       where: {
         userId: userId,
-        validationStatus: validationStatus
+        validationStatus: { in: getValidationStatusFromRole(role) }
       },
       select: new VideoCommonListSelect()
     })

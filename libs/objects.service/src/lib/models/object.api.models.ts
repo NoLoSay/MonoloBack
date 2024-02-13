@@ -1,6 +1,7 @@
 import {
   VideoCommonListReturn,
-  VideoCommonListSelect
+  VideoCommonListSelect,
+  getValidationStatusFromRole
 } from '@noloback/video.service'
 
 class Person {
@@ -72,8 +73,16 @@ export class ObjectCommonSelect {
 }
 
 export class ObjectDetailedSelect extends ObjectCommonSelect {
-  Videos: object = {
-    select: new VideoCommonListSelect()
+  Videos: object = {}
+
+  constructor (role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER') {
+    super()
+    this.Videos = {
+      select: new VideoCommonListSelect(),
+      where: {
+        validationStatus: { in: getValidationStatusFromRole(role) }
+      }
+    }
   }
 }
 
@@ -81,4 +90,7 @@ export class ObjectAdminSelect extends ObjectDetailedSelect {
   createdAt: boolean = true
   updatedAt: boolean = true
   deletedAt: boolean = true
+  constructor (role: 'ADMIN' | 'REFERENT' | 'USER' = 'ADMIN') {
+    super(role)
+  }
 }

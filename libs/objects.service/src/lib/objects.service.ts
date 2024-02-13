@@ -13,14 +13,17 @@ import {
   ObjectDetailedReturn,
   ObjectDetailedSelect
 } from './models/object.api.models'
+import { VideoService } from '@noloback/video.service'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ObjectsService {
   constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
-  ) {}
+    private prismaBase: PrismaBaseService,
+    private videoService: VideoService
+  ) //private loggingService: LoggerService
+  {}
 
   async findAll (
     role: 'USER' | 'ADMIN' | 'REFERENT'
@@ -58,18 +61,19 @@ export class ObjectsService {
     role: 'USER' | 'ADMIN' | 'REFERENT'
   ): Promise<ObjectDetailedReturn | ObjectAdminReturn> {
     let selectOptions: Prisma.ObjectSelect
-
     switch (role) {
       case 'ADMIN':
         selectOptions = new ObjectAdminSelect()
         break
       default:
-        selectOptions = new ObjectDetailedSelect()
+        selectOptions = new ObjectDetailedSelect(role)
     }
 
     const object: unknown = await this.prismaBase.object
       .findUnique({
-        where: { id: id },
+        where: {
+          id: id
+        },
         select: selectOptions
       })
       .catch((e: Error) => {
