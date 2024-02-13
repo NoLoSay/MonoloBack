@@ -16,8 +16,6 @@ import {
 
 @Injectable()
 export class CountriesService {
-  private countries: Country[] = []
-
   constructor (
     private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}

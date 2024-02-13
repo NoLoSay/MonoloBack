@@ -1,4 +1,4 @@
-import { Prisma, PrismaBaseService, Object } from '@noloback/prisma-client-base'
+import { Prisma, PrismaBaseService } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
@@ -9,9 +9,10 @@ import {
   ObjectAdminSelect,
   ObjectCommonSelect,
   ObjectCommonReturn,
-  ObjectAdminReturn
+  ObjectAdminReturn,
+  ObjectDetailedReturn,
+  ObjectDetailedSelect
 } from './models/object.api.models'
-import { empty } from '@prisma/client/runtime/library'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -52,10 +53,10 @@ export class ObjectsService {
     }
   }
 
-  async findOne (
+  async findOneDetailled (
     id: number,
     role: 'USER' | 'ADMIN' | 'REFERENT'
-  ): Promise<ObjectCommonReturn | ObjectAdminReturn> {
+  ): Promise<ObjectDetailedReturn | ObjectAdminReturn> {
     let selectOptions: Prisma.ObjectSelect
 
     switch (role) {
@@ -63,7 +64,7 @@ export class ObjectsService {
         selectOptions = new ObjectAdminSelect()
         break
       default:
-        selectOptions = new ObjectCommonSelect()
+        selectOptions = new ObjectDetailedSelect()
     }
 
     const object: unknown = await this.prismaBase.object
@@ -81,7 +82,7 @@ export class ObjectsService {
       case 'ADMIN':
         return object as ObjectAdminReturn
       default:
-        return object as ObjectCommonReturn
+        return object as ObjectDetailedReturn
     }
   }
 

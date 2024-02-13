@@ -11,24 +11,30 @@ import {
   Request,
   UnauthorizedException
 } from '@nestjs/common'
-import { Admin } from '@noloback/roles'
+import { Admin, Referent } from '@noloback/roles'
 import {
+  ObjectAdminReturn,
+  ObjectCommonReturn,
+  ObjectDetailedReturn,
   ObjectManipulationModel,
   ObjectsService
 } from '@noloback/objects.service'
 import { JwtAuthGuard } from '@noloback/guards'
 import { LocationsReferentsService } from '@noloback/locations.referents.service'
+import { VideoService } from '@noloback/video.service'
 
 @Controller('objects')
 export class ObjectsController {
   constructor (
     private readonly objectsService: ObjectsService,
-    private readonly locationsReferentsService: LocationsReferentsService // private loggingService: LoggerService
+    private readonly locationsReferentsService: LocationsReferentsService,
+    private readonly videoService: VideoService
+    // private loggingService: LoggerService
   ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll (@Request() request: any) {
+  async findAll (@Request() request: any): Promise<ObjectCommonReturn[] | ObjectAdminReturn[]> {
     return this.objectsService.findAll(request.user.role)
   }
 
@@ -43,8 +49,8 @@ export class ObjectsController {
   async findOne (
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any
-  ) {
-    return this.objectsService.findOne(id, request.user.role)
+  ): Promise<ObjectDetailedReturn | ObjectAdminReturn>{
+    return this.objectsService.findOneDetailled(id, request.user.role)
   }
 
   @UseGuards(JwtAuthGuard)
@@ -74,5 +80,14 @@ export class ObjectsController {
   @Delete(':id')
   async delete (@Param('id', ParseIntPipe) id: number) {
     return this.objectsService.delete(id)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/videos')
+  async getVideos (
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: any
+  ) {
+    return this.videoService.getVideosFromObject(id, request.user.role)
   }
 }

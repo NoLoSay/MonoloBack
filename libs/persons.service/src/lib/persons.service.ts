@@ -6,8 +6,6 @@ import { PersonManipulationModel } from './models/personManipulation.model'
 
 @Injectable()
 export class PersonsService {
-  private persons: Person[] = []
-
   constructor (
     private prismaBase: PrismaBaseService
   ) //private loggingService: LoggerService

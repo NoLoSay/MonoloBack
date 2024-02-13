@@ -6,8 +6,6 @@ import { ObjectCategoryManipulationModel } from './models/objectCategoriesManipu
 
 @Injectable()
 export class ObjectCategoriesService {
-  private objectCategories: ObjectCategory[] = []
-
   constructor (
     private prismaBase: PrismaBaseService
     //private loggingService: LoggerService

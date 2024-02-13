@@ -6,8 +6,6 @@ import { ObjectTypeManipulationModel } from './models/objectTypesManipulation.mo
 
 @Injectable()
 export class ObjectTypesService {
-  private objectTypes: ObjectType[] = []
-
   constructor (
     private prismaBase: PrismaBaseService
     //private loggingService: LoggerService

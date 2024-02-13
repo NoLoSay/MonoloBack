@@ -1,5 +1,9 @@
 import { PrismaBaseService, City, Prisma } from '@noloback/prisma-client-base'
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException
+} from '@nestjs/common'
 import { CityManipulationModel } from './models/city.manipulation.models'
 import {
   CityAdminReturn,
@@ -12,8 +16,6 @@ import {
 
 @Injectable()
 export class CitiesService {
-  private cities: City[] = []
-
   constructor (
     private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
@@ -31,14 +33,15 @@ export class CitiesService {
         selectOptions = new CityCommonSelect()
     }
 
-    const cities: unknown = await this.prismaBase.city.findMany({
-      select: selectOptions
-    })
-    .catch((e: Error) => {
-      console.log(e)
-      // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-      throw new InternalServerErrorException(e)
-    })
+    const cities: unknown = await this.prismaBase.city
+      .findMany({
+        select: selectOptions
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      })
 
     switch (role) {
       case 'ADMIN':
@@ -61,15 +64,16 @@ export class CitiesService {
         selectOptions = new CityCommonSelect()
     }
 
-    const cities: unknown = await this.prismaBase.city.findUnique({
-      where: { id: id },
-      select: selectOptions
-    })
-    .catch((e: Error) => {
-      console.log(e)
-      // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-      throw new BadRequestException(e)
-    })
+    const cities: unknown = await this.prismaBase.city
+      .findUnique({
+        where: { id: id },
+        select: selectOptions
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new BadRequestException(e)
+      })
 
     switch (role) {
       case 'ADMIN':
@@ -111,7 +115,10 @@ export class CitiesService {
     return newCity as CityAdminReturn
   }
 
-  async update (id: number, updatedCity: CityManipulationModel): Promise<CityAdminReturn> {
+  async update (
+    id: number,
+    updatedCity: CityManipulationModel
+  ): Promise<CityAdminReturn> {
     if (
       updatedCity.departmentId === undefined ||
       updatedCity.departmentId === null ||
@@ -144,7 +151,7 @@ export class CitiesService {
   }
 
   async delete (id: number): Promise<CityAdminReturn> {
-    const deleted: unknown  = await this.prismaBase.city.delete({
+    const deleted: unknown = await this.prismaBase.city.delete({
       where: { id: id },
       select: new CityAdminSelect()
     })
