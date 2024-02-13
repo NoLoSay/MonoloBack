@@ -19,10 +19,14 @@ import {
   UserUpdateModel,
   UsersService
 } from '@noloback/users.service'
+import { VideoService } from '@noloback/video.service'
 
 @Controller('users')
 export class UsersController {
-  constructor (private readonly usersService: UsersService) {}
+  constructor (
+    private readonly usersService: UsersService,
+    private readonly videoService: VideoService
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
@@ -68,5 +72,14 @@ export class UsersController {
   @Delete(':id')
   async remove (@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/videos')
+  async findItsVideos (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.videoService.getVideosFromUser(id, request.user.role)
   }
 }
