@@ -66,8 +66,8 @@ export class VideoController {
   ): Promise<string> {
     const user = req.user;
     console.log(user);
-    const youtube = this.videoservice.createYoutube(user, file);
+    //const youtube = this.videoservice.createYoutube(user, file);
 
-    return await youtube;
+    return 'Je suis perdu, OSECOUR !';
   }
 }
