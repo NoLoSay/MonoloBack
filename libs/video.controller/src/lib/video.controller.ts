@@ -6,46 +6,68 @@ import {
   HttpStatus,
   Param,
   Post,
+  Request,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger/dist';
-import { Public } from '@noloback/auth.service';
-import { VideoFile, VideoService } from '@noloback/video.service';
-import { Multer } from 'multer';
+import { VideoFile } from '@noloback/models/swagger';
+import { VideoService } from '@noloback/video.service';
+import { JwtAuthGuard } from '@noloback/guards';
+import multer = require('multer');
+import { extname } from 'path';
+
+const storage = multer.diskStorage({
+  // notice you are calling the multer.diskStorage() method here, not multer()
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now());
+  },
+});
+const upload = multer({ storage }); //provide the return value from
 
 @Controller('videos')
 export class VideoController {
-  constructor(private readonly videoService: VideoService) {}
+  constructor(private readonly videoservice: VideoService) {}
 
-  @Public()
   @Get(':id')
   @HttpCode(200)
-  async getVideo(@Param('id') id: string): Promise<string> {
-    const video = await this.videoService.getVideo(id);
-
-    if (!video) {
-      throw new HttpException('Video not found', HttpStatus.NOT_FOUND);
-    }
-
-    return (
-      '<body><script src="https://geo.dailymotion.com/libs/player/xcdyd.js"></script><div id="my-dailymotion-player">Loading player...</div><script>dailymotion.createPlayer("my-dailymotion-player", { video: "' +
-      video +
-      '" }).then((player) => console.log(player)).catch((e) => console.error(e));</script></body>'
-    );
+  async getYoutube(@Param('id') id: string): Promise<string> {
+    return await this.videoservice.getYoutube(id);
   }
 
   @ApiBody({ type: VideoFile })
   @ApiConsumes('multipart/form-data')
+  @UseGuards(JwtAuthGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
-  async createVideo(
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: multer.diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          // Generating a 32 random chars long string
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          //Calling the callback passing the random name generated with the original extension name
+          cb(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
+    })
+  )
+  async createYoutube(
+    @Request() req: any,
     @UploadedFile() file: Express.Multer.File
   ): Promise<string> {
-    const video = this.videoService.createVideo(file);
+    const user = req.user;
+    console.log(user);
+    const youtube = this.videoservice.createYoutube(user, file);
 
-    return await video;
+    return await youtube;
   }
 }

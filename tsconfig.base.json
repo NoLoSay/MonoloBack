@@ -36,7 +36,12 @@
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],
       "@noloback/video.controller": ["libs/video.controller/src/index.ts"],
-      "@noloback/video.service": ["libs/video.service/src/index.ts"]
+      "@noloback/video.service": ["libs/video.service/src/index.ts"],
+      "@noloback/models": ["models/index.ts"],
+      "@noloback/models/swagger": ["models/swagger/index.ts"],
+      "@noloback/guards": ["models/guards"],
+      "@noloback/roles": ["models/roles"],
+      "@noloback/jwt": ["models/jwt"]
     },
     "types": ["Multer"]
   },

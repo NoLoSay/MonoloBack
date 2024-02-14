@@ -50,6 +50,12 @@ export class UsersService {
         throw new InternalServerErrorException();
       });
 
+    await this.prismaBase.userLoginLog.create({
+      data: {
+        userId: newUser.id,
+      },
+    });
+
     return {
       id: newUser.id,
       username: newUser.username,

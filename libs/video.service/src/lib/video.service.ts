@@ -1,83 +1,109 @@
-import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
-import { lastValueFrom } from 'rxjs';
-import { Multer } from 'multer';
+import { google, youtube_v3 } from 'googleapis';
+import { JWT } from 'google-auth-library';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
+import { createReadStream, readFileSync, statSync } from 'fs';
+import { PrismaBaseService, User } from '@noloback/prisma-client-base';
+import { LoggerService } from '@noloback/logger-lib';
 
 @Injectable()
 export class VideoService {
-  constructor(private readonly httpService: HttpService) {}
+  private auth: JWT;
+  private youtube: youtube_v3.Youtube;
 
-  async getVideo(videoId: string): Promise<string | undefined> {
-    return videoId;
+  constructor(
+    private prismaBase: PrismaBaseService,
+    private loggerService: LoggerService
+  ) {
+    const serviceAccount = JSON.parse(
+      readFileSync('secrets/google-service-account.json', 'utf-8')
+    );
+
+    this.auth = new google.auth.JWT(
+      serviceAccount.client_email,
+      undefined,
+      serviceAccount.private_key,
+      [
+        'https://www.googleapis.com/auth/youtube.upload',
+        'https://www.googleapis.com/auth/youtube',
+      ],
+      undefined
+    );
+
+    this.youtube = google.youtube({
+      version: 'v3',
+      auth: this.auth,
+    });
   }
 
-  async createVideo(video: Express.Multer.File): Promise<string> {
-    const uploadUrl = await this.getUploadVideoUrl();
-    const videoCreationUrl = await this.uploadVideo(video, uploadUrl);
-    const distVideoId = await this.createDistVideo(videoCreationUrl);
-    const publishedVideoId = await this.publishVideo(distVideoId);
-
-    return publishedVideoId;
-  }
-
-  private async getUploadVideoUrl(): Promise<string> {
-    const videoUploadUrl = 'https://api.dailymotion.com/file/upload';
-
-    const uploadUrl$ = this.httpService.get(videoUploadUrl);
-    const uploadUrl = await lastValueFrom(uploadUrl$);
-
-    return uploadUrl.data.upload_url;
-  }
-
-  private async uploadVideo(
-    video: Express.Multer.File,
-    uploadUrl: string
-  ): Promise<string> {
-    const formData = new FormData();
-    const blob = new Blob([video.buffer], { type: video.mimetype });
-
-    formData.append('file', blob, 'video.mp4');
-
-    const response$ = this.httpService.post(uploadUrl, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+  async getYoutube(youtubeId: string): Promise<string> {
+    const video = await this.prismaBase.tmpVideo.findUnique({
+      where: {
+        uuid: youtubeId,
       },
     });
 
-    const uploadedVideo = await lastValueFrom(response$);
+    if (!video) {
+      throw new NotFoundException();
+    }
 
-    return uploadedVideo.data.url;
+    return video.providerId;
   }
 
-  private async createDistVideo(creationUrl: string): Promise<string> {
-    const videoCreationUrl = `https://api.dailymotion.com/user/${process.env['DAILYMOTION_USER_ID']}/videos`;
+  async createYoutube(user: User, video: Express.Multer.File): Promise<string> {
+    const fileSize = statSync(video.path).size;
 
-    const response$ = this.httpService.post(videoCreationUrl, {
+    let res: any;
+    try {
+      res = await this.youtube.videos.insert(
+        {
+          part: ['id', 'snippet', 'status'],
+          requestBody: {
+            snippet: {
+              title: 'Test video',
+              description: 'Test video',
+              tags: ['tag1', 'tag2'],
+              categoryId: '22',
+            },
+            status: {
+              privacyStatus: 'private',
+            },
+          },
+          media: {
+            body: createReadStream(video.path),
+          },
+        },
+        {
+          onUploadProgress: (event) => {
+            const progress = (event.bytesRead / fileSize) * 100;
+            console.log(`Progress: ${Math.round(progress)}%`);
+          },
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (!res.data.id || res.status !== 200) {
+      this.loggerService.log(
+        'Critical',
+        'VideoService',
+        undefined,
+        JSON.stringify(res)
+      );
+      throw new InternalServerErrorException('Upload failed');
+    }
+
+    const noloVideo = await this.prismaBase.tmpVideo.create({
       data: {
-        url: creationUrl,
-      },
-      headers: {
-        'Content-Type': 'multipart/form-data',
+        providerId: res?.data?.id || '',
+        userId: user.id,
       },
     });
 
-    const uploadedVideo = await lastValueFrom(response$);
-
-    return uploadedVideo.data.id;
-  }
-
-  private async publishVideo(videoId: string): Promise<string> {
-    const videoPublishUrl = `https://api.dailymotion.com/video/${videoId}`;
-
-    const response$ = this.httpService.post(videoPublishUrl, {
-      data: {
-        published: true,
-        is_created_for_kids: false,
-      },
-    });
-
-    const publishedVideo = await lastValueFrom(response$);
-
-    return publishedVideo.data.id;
+    return noloVideo.uuid;
   }
 }

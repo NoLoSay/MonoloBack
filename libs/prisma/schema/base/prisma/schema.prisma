@@ -26,35 +26,50 @@ model OAuthProviders {
   providerId        Int                 @id @default(autoincrement())
   provider          String              @unique
   OAuthProviderUser OAuthProviderUser[]
+  UserLoginLog      UserLoginLog[]
 }
 
 model OAuthProviderUser {
-  id         Int            @id @default(autoincrement())
-  user       User           @relation(fields: [userId], references: [id])
-  provider   OAuthProviders @relation(fields: [providerId], references: [providerId])
-  userId     Int
-  providerId Int
+  id             Int            @id @default(autoincrement())
+  user           User           @relation(fields: [userId], references: [id])
+  provider       OAuthProviders @relation(fields: [providerId], references: [providerId])
+  providerUserId String
+  userId         Int
+  providerId     Int
   // accessToken  String
   // refreshToken String
 
+  @@unique([providerUserId, providerId])
   @@unique([userId, providerId])
 }
 
+model UserLoginLog {
+  id          Int             @id @default(autoincrement())
+  loginTime   DateTime        @default(now())
+  // ip                       String
+  loginMethod OAuthProviders? @relation(fields: [providerId], references: [providerId])
+  User        User?           @relation(fields: [userId], references: [id])
+  userId      Int
+  providerId  Int?
+}
+
 model User {
-  id                Int                 @id @default(autoincrement())
-  uuid              String              @unique @default(uuid())
-  username          String              @unique @default(uuid())
-  email             String              @unique
-  password          String
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  deletedAt         DateTime?
-  picture           String?
-  role              Role                @default(USER)
-  Places            Place[]
-  postedVideos      UserhasVideos[]
-  likedVideos       UserlikesVideos[]
-  OAuthProviderUser OAuthProviderUser[]
+  id            Int                 @id @default(autoincrement())
+  uuid          String              @unique @default(uuid())
+  username      String              @unique @default(uuid())
+  email         String              @unique
+  password      String
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  deletedAt     DateTime?
+  picture       String?
+  role          Role                @default(USER)
+  Places        Place[]
+  postedVideos  UserhasVideos[]
+  likedVideos   UserlikesVideos[]
+  oAuthAccounts OAuthProviderUser[]
+  loginHistory  UserLoginLog[]
+  TmpVideo      TmpVideo[]
 }
 
 enum Role {
@@ -190,4 +205,15 @@ model UserlikesVideos {
   videoId   Int
   User      User      @relation(fields: [userId], references: [id])
   Video     Video     @relation(fields: [videoId], references: [id])
+}
+
+model TmpVideo {
+  id         Int       @id @default(autoincrement())
+  uuid       String    @unique @default(uuid())
+  providerId String    @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+  userId     Int
+  User       User      @relation(fields: [userId], references: [id])
 }
