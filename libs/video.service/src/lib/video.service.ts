@@ -73,7 +73,7 @@ export class VideoService {
   // async createYoutube (
   //   user: User,
   //   video: Express.Multer.File,
-  //   objectId: number
+  //   itemId: number
   // ): Promise<string> {
   //   const fileSize = statSync(video.path).size
 
@@ -122,20 +122,20 @@ export class VideoService {
   //     data: {
   //       externalProviderId: res?.data?.id || '',
   //       userId: user.id,
-  //       objectId: objectId
+  //       itemId: itemId
   //     }
   //   })
 
   //   return noloVideo.uuid
   // }
 
-  async getVideosFromObject(
-    objectId: number,
+  async getVideosFromItem(
+    itemId: number,
     role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videos = await this.prismaBase.video.findMany({
       where: {
-        objectId: objectId,
+        itemId: itemId,
         validationStatus: { in: getValidationStatusFromRole(role) },
       },
       select: new VideoCommonListSelect(),
@@ -163,7 +163,7 @@ export class VideoService {
     pageId: number,
     amount: number,
     validationStatus?: ValdationStatus | undefined,
-    objectId?: number | undefined
+    itemId?: number | undefined
   ): Promise<VideoCommonListReturn[]> {
     const videos = await this.prismaBase.video.findMany({
       skip: pageId * amount,
@@ -171,7 +171,7 @@ export class VideoService {
       select: new VideoCommonListSelect(),
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
-        objectId: objectId ? objectId : undefined,
+        itemId: itemId ? itemId : undefined,
       },
     });
 
