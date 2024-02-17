@@ -4,7 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { readFileSync } from 'fs'
 import {
   PrismaBaseService,
-  ValdationStatus
+  ValidationStatus
 } from '@noloback/prisma-client-base'
 import { LoggerService } from '@noloback/logger-lib'
 import {
@@ -15,7 +15,7 @@ import {
 
 export function getValidationStatusFromRole (
   role: 'ADMIN' | 'REFERENT' | 'USER'
-): ValdationStatus[] {
+): ValidationStatus[] {
   switch (role) {
     case 'ADMIN':
       return ['VALIDATED', 'PENDING', 'REFUSED']
@@ -174,7 +174,7 @@ export class VideoService {
   async getAllVideos (
     pageId: number,
     amount: number,
-    validationStatus?: ValdationStatus | undefined,
+    validationStatus?: ValidationStatus | undefined,
     itemId?: number | undefined
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({

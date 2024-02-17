@@ -9,7 +9,9 @@ import {
   ParseIntPipe,
   UseGuards,
   Request,
-  UnauthorizedException
+  UnauthorizedException,
+  Query,
+  ParseFloatPipe
 } from '@nestjs/common'
 import { Admin } from '@noloback/roles'
 import {
@@ -31,13 +33,13 @@ export class LocationsController {
     private readonly locationsReferentsService: LocationsReferentsService // private loggingService: LoggerService
   ) {}
 
+
   @Admin()
   @Get()
   async findAll () {
     return this.locationsService.findAll()
   }
-
-  @Admin()
+  
   @Get(':id')
   async findOne (@Param('id', ParseIntPipe) id: number) {
     return this.locationsService.findOne(id)
