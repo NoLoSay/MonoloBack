@@ -13,10 +13,10 @@ import { DepartmentsControllerModule } from '@noloback/departments.controller';
 import { CitiesControllerModule } from '@noloback/cities.controller';
 import { AddressesControllerModule } from '@noloback/addresses.controller';
 import { LocationsControllerModule } from '@noloback/locations.controller';
-import { ObjectCategoriesControllerModule } from '@noloback/object.categories.controller';
-import { ObjectTypesControllerModule } from '@noloback/object.types.controller';
+import { ItemCategoriesControllerModule } from '@noloback/item.categories.controller';
+import { ItemTypesControllerModule } from '@noloback/item.types.controller';
 import { PersonsControllerModule } from '@noloback/persons.controller';
-import { ObjectsControllerModule } from '@noloback/objects.controller';
+import { ItemsControllerModule } from '@noloback/items.controller';
 import { ExhibitionsControllerModule } from '@noloback/exhibitions.controller';
 
 @Module({
@@ -31,10 +31,10 @@ import { ExhibitionsControllerModule } from '@noloback/exhibitions.controller';
     CitiesControllerModule,
     AddressesControllerModule,
     LocationsControllerModule,
-    ObjectCategoriesControllerModule,
-    ObjectTypesControllerModule,
+    ItemCategoriesControllerModule,
+    ItemTypesControllerModule,
     PersonsControllerModule,
-    ObjectsControllerModule,
+    ItemsControllerModule,
     ExhibitionsControllerModule,
   ],
   controllers: [AppController],

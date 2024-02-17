@@ -112,7 +112,7 @@ CREATE TABLE "Person" (
 );
 
 -- CreateTable
-CREATE TABLE "ObjectCategory" (
+CREATE TABLE "ItemCategory" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
@@ -120,34 +120,34 @@ CREATE TABLE "ObjectCategory" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "deletedAt" TIMESTAMP(3),
 
-    CONSTRAINT "ObjectCategory_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ItemCategory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "ObjectType" (
+CREATE TABLE "ItemType" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "deletedAt" TIMESTAMP(3),
-    "objectCategoryId" INTEGER NOT NULL,
+    "itemCategoryId" INTEGER NOT NULL,
 
-    CONSTRAINT "ObjectType_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ItemType_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Object" (
+CREATE TABLE "Item" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "deletedAt" TIMESTAMP(3),
-    "objectTypeId" INTEGER,
+    "itemTypeId" INTEGER,
     "relatedPersonId" INTEGER,
 
-    CONSTRAINT "Object_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Item_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -181,16 +181,16 @@ CREATE TABLE "PlaceHasReferent" (
 );
 
 -- CreateTable
-CREATE TABLE "ExhibitedObjects" (
+CREATE TABLE "ExhibitedItems" (
     "exhibitionId" INTEGER NOT NULL,
-    "objectId" INTEGER NOT NULL
+    "itemId" INTEGER NOT NULL
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ExhibitedObjects_exhibitionId_objectId_unique" ON "ExhibitedObjects"("exhibitionId", "objectId");
+CREATE UNIQUE INDEX "ExhibitedItems_exhibitionId_itemId_unique" ON "ExhibitedItems"("exhibitionId", "itemId");
 
 -- CreateIndex
-CREATE INDEX "ExhibitedObjects_objectId_index" ON "ExhibitedObjects"("objectId");
+CREATE INDEX "ExhibitedItems_itemId_index" ON "ExhibitedItems"("itemId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Video_uuid_key" ON "Video"("uuid");
@@ -199,13 +199,13 @@ CREATE UNIQUE INDEX "Video_uuid_key" ON "Video"("uuid");
 ALTER TABLE "Video" ADD CONSTRAINT "Video_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ObjectType" ADD CONSTRAINT "ObjectType_objectCategoryId_fkey" FOREIGN KEY ("objectCategoryId") REFERENCES "ObjectCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ItemType" ADD CONSTRAINT "ItemType_itemCategoryId_fkey" FOREIGN KEY ("itemCategoryId") REFERENCES "ItemCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Object" ADD CONSTRAINT "Object_objectTypeId_fkey" FOREIGN KEY ("objectTypeId") REFERENCES "ObjectType"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Item" ADD CONSTRAINT "Item_itemTypeId_fkey" FOREIGN KEY ("itemTypeId") REFERENCES "ItemType"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Object" ADD CONSTRAINT "Object_relatedPersonId_fkey" FOREIGN KEY ("relatedPersonId") REFERENCES "Person"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Item" ADD CONSTRAINT "Item_relatedPersonId_fkey" FOREIGN KEY ("relatedPersonId") REFERENCES "Person"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Exhibition" ADD CONSTRAINT "Exhibition_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -223,7 +223,7 @@ ALTER TABLE "PlaceHasReferent" ADD CONSTRAINT "PlaceHasReferent_placeId_fkey" FO
 ALTER TABLE "PlaceHasReferent" ADD CONSTRAINT "PlaceHasReferent_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ExhibitedObjects" ADD CONSTRAINT "ExhibitedObjects_exhibitionId_fkey" FOREIGN KEY ("exhibitionId") REFERENCES "Exhibition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ExhibitedItems" ADD CONSTRAINT "ExhibitedItems_exhibitionId_fkey" FOREIGN KEY ("exhibitionId") REFERENCES "Exhibition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ExhibitedObjects" ADD CONSTRAINT "ExhibitedObjects_objectId_fkey" FOREIGN KEY ("objectId") REFERENCES "Object"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "ExhibitedItems" ADD CONSTRAINT "ExhibitedItems_itemId_fkey" FOREIGN KEY ("itemId") REFERENCES "Item"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -74,7 +74,7 @@ export class VideoService {
   // async createYoutube (
   //   user: User,
   //   video: Express.Multer.File,
-  //   objectId: number
+  //   itemId: number
   // ): Promise<string> {
   //   const fileSize = statSync(video.path).size
 
@@ -123,20 +123,20 @@ export class VideoService {
   //     data: {
   //       externalProviderId: res?.data?.id || '',
   //       userId: user.id,
-  //       objectId: objectId
+  //       itemId: itemId
   //     }
   //   })
 
   //   return noloVideo.uuid
   // }
 
-  async getVideosFromObject(
-    objectId: number,
+  async getVideosFromItem(
+    itemId: number,
     role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = await this.prismaBase.video.findMany({
       where: {
-        objectId: objectId,
+        itemId: itemId,
         validationStatus: { in: getValidationStatusFromRole(role) },
       },
       select: new VideoCommonListSelect()
@@ -160,7 +160,26 @@ export class VideoService {
     }) as unknown as VideoCommonListEntity[]
 
     const videos: VideoCommonListReturn[] = videoEntities.map((entity) => new VideoCommonListReturn(entity))
+    return videos as VideoCommonListReturn[];
+  }
 
-    return videos
+  async getAllVideos(
+    pageId: number,
+    amount: number,
+    validationStatus?: ValdationStatus | undefined,
+    itemId?: number | undefined
+  ): Promise<VideoCommonListReturn[]> {
+    const videoEntities = await this.prismaBase.video.findMany({
+      skip: pageId * amount,
+      take: amount,
+      select: new VideoCommonListSelect(),
+      where: {
+        validationStatus: validationStatus ? validationStatus : undefined,
+        itemId: itemId ? itemId : undefined,
+      },
+    })  as unknown as VideoCommonListEntity[]
+
+    const videos: VideoCommonListReturn[] = videoEntities.map((entity) => new VideoCommonListReturn(entity))
+    return videos as VideoCommonListReturn[];
   }
 }

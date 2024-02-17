@@ -1,7 +1,7 @@
 /*
  Warnings:
  - You are about to drop the column `placeId` on the `Exhibition` table. All the data in the column will be lost.
- - You are about to drop the `ExhibitedObjects` table. If the table is not empty, all the data it contains will be lost.
+ - You are about to drop the `ExhibitedItems` table. If the table is not empty, all the data it contains will be lost.
  - You are about to drop the `Place` table. If the table is not empty, all the data it contains will be lost.
  - You are about to drop the `PlaceHasReferent` table. If the table is not empty, all the data it contains will be lost.
  - Added the required column `locationId` to the `Exhibition` table without a default value. This is not possible if the table is not empty.
@@ -30,11 +30,11 @@ CREATE TYPE
 
 -- DropForeignKey
 ALTER TABLE
-    "ExhibitedObjects" DROP CONSTRAINT "ExhibitedObjects_exhibitionId_fkey";
+    "ExhibitedItems" DROP CONSTRAINT "ExhibitedItems_exhibitionId_fkey";
 
 -- DropForeignKey
 ALTER TABLE
-    "ExhibitedObjects" DROP CONSTRAINT "ExhibitedObjects_objectId_fkey";
+    "ExhibitedItems" DROP CONSTRAINT "ExhibitedItems_itemId_fkey";
 
 -- DropForeignKey
 ALTER TABLE "Exhibition" DROP CONSTRAINT "Exhibition_placeId_fkey";
@@ -57,7 +57,7 @@ ADD
     COLUMN "locationId" INTEGER NOT NULL;
 
 -- DropTable
-DROP TABLE "ExhibitedObjects";
+DROP TABLE "ExhibitedItems";
 
 -- DropTable
 DROP TABLE "Place";
@@ -106,17 +106,17 @@ CONSTRAINT "LocationHasReferent_pkey" PRIMARY KEY ("id") );
 
 -- CreateTable
 CREATE TABLE
-    "_ExhibitionToObject" (
+    "_ExhibitionToItem" (
         "A" INTEGER NOT NULL,
         "B" INTEGER NOT NULL
     );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_ExhibitionToObject_AB_unique" ON "_ExhibitionToObject"("A", "B");
+CREATE UNIQUE INDEX "_ExhibitionToItem_AB_unique" ON "_ExhibitionToItem"("A", "B");
 
 -- CreateIndex
 CREATE INDEX
-    "_ExhibitionToObject_B_index" ON "_ExhibitionToObject"("B");
+    "_ExhibitionToItem_B_index" ON "_ExhibitionToItem"("B");
 
 -- AddForeignKey
 ALTER TABLE "Exhibition"
@@ -142,12 +142,12 @@ ADD
 
 -- AddForeignKey
 ALTER TABLE
-    "_ExhibitionToObject"
+    "_ExhibitionToItem"
 ADD
-    CONSTRAINT "_ExhibitionToObject_A_fkey" FOREIGN KEY ("A") REFERENCES "Exhibition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+    CONSTRAINT "_ExhibitionToItem_A_fkey" FOREIGN KEY ("A") REFERENCES "Exhibition"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE
-    "_ExhibitionToObject"
+    "_ExhibitionToItem"
 ADD
-    CONSTRAINT "_ExhibitionToObject_B_fkey" FOREIGN KEY ("B") REFERENCES "Object"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+    CONSTRAINT "_ExhibitionToItem_B_fkey" FOREIGN KEY ("B") REFERENCES "Item"("id") ON DELETE CASCADE ON UPDATE CASCADE;

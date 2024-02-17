@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "Object" ADD COLUMN     "picture" TEXT;
+ALTER TABLE "Item" ADD COLUMN     "picture" TEXT;

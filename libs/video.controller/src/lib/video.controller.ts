@@ -41,7 +41,7 @@ export class VideoController {
     @Query('page') pageId: number = 0,
     @Query('amount') amount: number = 50,
     @Query('validationStatus') validationStatus?: string | undefined,
-    @Query('objectId') objectId?: number | undefined
+    @Query('itemId') itemId?: number | undefined
   ): Promise<string> {
     let validationStatusEnum: ValdationStatus | undefined;
     if (
@@ -58,7 +58,7 @@ export class VideoController {
           +pageId,
           +amount,
           validationStatusEnum,
-          objectId ? +objectId : undefined
+          itemId ? +itemId : undefined
         )
       )
     );
