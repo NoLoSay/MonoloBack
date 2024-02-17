@@ -33,8 +33,8 @@
       "@noloback/departments.service": [
         "libs/departments.service/src/index.ts"
       ],
-      "@noloback/exhibited.objects.service": [
-        "libs/exhibited.objects.service/src/index.ts"
+      "@noloback/exhibited.items.service": [
+        "libs/exhibited.items.service/src/index.ts"
       ],
       "@noloback/exhibitions.controller": [
         "libs/exhibitions.controller/src/index.ts"
@@ -54,20 +54,20 @@
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
       "@noloback/models": ["models/index.ts"],
       "@noloback/models/swagger": ["models/swagger/index.ts"],
-      "@noloback/object.categories.controller": [
-        "libs/object.categories.controller/src/index.ts"
+      "@noloback/item.categories.controller": [
+        "libs/item.categories.controller/src/index.ts"
       ],
-      "@noloback/object.categories.service": [
-        "libs/object.categories.service/src/index.ts"
+      "@noloback/item.categories.service": [
+        "libs/item.categories.service/src/index.ts"
       ],
-      "@noloback/object.types.controller": [
-        "libs/object.types.controller/src/index.ts"
+      "@noloback/item.types.controller": [
+        "libs/item.types.controller/src/index.ts"
       ],
-      "@noloback/object.types.service": [
-        "libs/object.types.service/src/index.ts"
+      "@noloback/item.types.service": [
+        "libs/item.types.service/src/index.ts"
       ],
-      "@noloback/objects.controller": ["libs/objects.controller/src/index.ts"],
-      "@noloback/objects.service": ["libs/objects.service/src/index.ts"],
+      "@noloback/items.controller": ["libs/items.controller/src/index.ts"],
+      "@noloback/items.service": ["libs/items.service/src/index.ts"],
       "@noloback/persons.controller": ["libs/persons.controller/src/index.ts"],
       "@noloback/persons.service": ["libs/persons.service/src/index.ts"],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],

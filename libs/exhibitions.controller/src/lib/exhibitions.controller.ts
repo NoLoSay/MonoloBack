@@ -16,8 +16,8 @@ import {
   ExhibitionManipulationModel,
   ExhibitionsService
 } from '@noloback/exhibitions.service'
-import { ExhibitedObjectsService } from '@noloback/exhibited.objects.service'
-import { ExhibitedObjectAdditionModel } from '@noloback/exhibited.objects.service'
+import { ExhibitedItemsService } from '@noloback/exhibited.items.service'
+import { ExhibitedItemAdditionModel } from '@noloback/exhibited.items.service'
 import { JwtAuthGuard } from '@noloback/guards'
 import { LocationsReferentsService } from '@noloback/locations.referents.service'
 import { Exhibition } from '@prisma/client/base'
@@ -26,7 +26,7 @@ import { Exhibition } from '@prisma/client/base'
 export class ExhibitionsController {
   constructor (
     private readonly exhibitionsService: ExhibitionsService,
-    private readonly exhibitedObjectsService: ExhibitedObjectsService,
+    private readonly exhibitedItemsService: ExhibitedItemsService,
     private readonly locationsReferentsService: LocationsReferentsService // private loggingService: LoggerService
   ) {}
 
@@ -94,17 +94,17 @@ export class ExhibitionsController {
     throw new UnauthorizedException()
   }
 
-  @Get(':id/objects')
-  async findExibitedObjects (@Param('id', ParseIntPipe) id: number) {
-    return this.exhibitedObjectsService.findExibitedObjects(id)
+  @Get(':id/items')
+  async findExibitedItems (@Param('id', ParseIntPipe) id: number) {
+    return this.exhibitedItemsService.findExibitedItems(id)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post(':id/objects')
-  async addExhibitedObject (
+  @Post(':id/items')
+  async addExhibitedItem (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() addedObject: ExhibitedObjectAdditionModel
+    @Body() addedItem: ExhibitedItemAdditionModel
   ) {
     const exhibition: Exhibition | null = await this.findOne(id)
     if (!exhibition) return null
@@ -116,16 +116,16 @@ export class ExhibitionsController {
           exhibition.locationId
         )))
     )
-      return this.exhibitedObjectsService.addExhibitedObject(id, addedObject)
+      return this.exhibitedItemsService.addExhibitedItem(id, addedItem)
     throw new UnauthorizedException()
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id/objects/:objectId')
-  async deleteExhibitedObject (
+  @Delete(':id/items/:itemId')
+  async deleteExhibitedItem (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Param('objectId', ParseIntPipe) objectId: number
+    @Param('itemId', ParseIntPipe) itemId: number
   ) {
     const exhibition: Exhibition | null = await this.findOne(id)
     if (!exhibition) return null
@@ -137,7 +137,7 @@ export class ExhibitionsController {
           exhibition.locationId
         )))
     )
-      return this.exhibitedObjectsService.deleteExhibitedObject(id, objectId)
+      return this.exhibitedItemsService.deleteExhibitedItem(id, itemId)
     throw new UnauthorizedException()
   }
 }

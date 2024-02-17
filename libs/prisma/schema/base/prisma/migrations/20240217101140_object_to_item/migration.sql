@@ -1,10 +1,10 @@
 /*
   Warnings:
 
-  - You are about to drop the column `objectId` on the `ExhibitedItem` table. All the data in the column will be lost.
-  - You are about to drop the column `objectTypeId` on the `Item` table. All the data in the column will be lost.
-  - You are about to drop the column `objectCategoryId` on the `ItemType` table. All the data in the column will be lost.
-  - You are about to drop the column `objectId` on the `Video` table. All the data in the column will be lost.
+  - You are about to drop the column `itemId` on the `ExhibitedItem` table. All the data in the column will be lost.
+  - You are about to drop the column `itemTypeId` on the `Item` table. All the data in the column will be lost.
+  - You are about to drop the column `itemCategoryId` on the `ItemType` table. All the data in the column will be lost.
+  - You are about to drop the column `itemId` on the `Video` table. All the data in the column will be lost.
   - A unique constraint covering the columns `[itemId,exhibitionId]` on the table `ExhibitedItem` will be added. If there are existing duplicate values, this will fail.
   - Added the required column `itemId` to the `ExhibitedItem` table without a default value. This is not possible if the table is not empty.
   - Added the required column `itemCategoryId` to the `ItemType` table without a default value. This is not possible if the table is not empty.
@@ -12,34 +12,34 @@
 
 */
 -- DropForeignKey
-ALTER TABLE "ExhibitedItem" DROP CONSTRAINT "ExhibitedItem_objectId_fkey";
+ALTER TABLE "ExhibitedItem" DROP CONSTRAINT "ExhibitedItem_itemId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "Item" DROP CONSTRAINT "Item_objectTypeId_fkey";
+ALTER TABLE "Item" DROP CONSTRAINT "Item_itemTypeId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "ItemType" DROP CONSTRAINT "ItemType_objectCategoryId_fkey";
+ALTER TABLE "ItemType" DROP CONSTRAINT "ItemType_itemCategoryId_fkey";
 
 -- DropForeignKey
-ALTER TABLE "Video" DROP CONSTRAINT "Video_objectId_fkey";
+ALTER TABLE "Video" DROP CONSTRAINT "Video_itemId_fkey";
 
 -- DropIndex
-DROP INDEX "ExhibitedItem_objectId_exhibitionId_key";
+DROP INDEX "ExhibitedItem_itemId_exhibitionId_key";
 
 -- AlterTable
-ALTER TABLE "ExhibitedItem" DROP COLUMN "objectId",
+ALTER TABLE "ExhibitedItem" DROP COLUMN "itemId",
 ADD COLUMN     "itemId" INTEGER NOT NULL;
 
 -- AlterTable
-ALTER TABLE "Item" DROP COLUMN "objectTypeId",
+ALTER TABLE "Item" DROP COLUMN "itemTypeId",
 ADD COLUMN     "itemTypeId" INTEGER;
 
 -- AlterTable
-ALTER TABLE "ItemType" DROP COLUMN "objectCategoryId",
+ALTER TABLE "ItemType" DROP COLUMN "itemCategoryId",
 ADD COLUMN     "itemCategoryId" INTEGER NOT NULL;
 
 -- AlterTable
-ALTER TABLE "Video" DROP COLUMN "objectId",
+ALTER TABLE "Video" DROP COLUMN "itemId",
 ADD COLUMN     "itemId" INTEGER NOT NULL;
 
 -- CreateIndex
