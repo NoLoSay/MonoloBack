@@ -9,6 +9,7 @@ import {
 } from '@noloback/prisma-client-base';
 import { LoggerService } from '@noloback/logger-lib';
 import {
+  VideoCommonListEntity,
   VideoCommonListReturn,
   VideoCommonListSelect,
 } from './models/video.api.models';
@@ -133,29 +134,32 @@ export class VideoService {
     itemId: number,
     role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
-    const videos = await this.prismaBase.video.findMany({
+    const videoEntities = await this.prismaBase.video.findMany({
       where: {
         itemId: itemId,
         validationStatus: { in: getValidationStatusFromRole(role) },
       },
-      select: new VideoCommonListSelect(),
-    });
+      select: new VideoCommonListSelect()
+    }) as unknown as VideoCommonListEntity[]
 
-    return videos as VideoCommonListReturn[];
+    const videos: VideoCommonListReturn[] = videoEntities.map((entity) => new VideoCommonListReturn(entity))
+
+    return videos
   }
 
   async getVideosFromUser(
     userId: number,
     role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
-    const videos = await this.prismaBase.video.findMany({
+    const videoEntities = await this.prismaBase.video.findMany({
       where: {
         userId: userId,
         validationStatus: { in: getValidationStatusFromRole(role) },
       },
-      select: new VideoCommonListSelect(),
-    });
+      select: new VideoCommonListSelect()
+    }) as unknown as VideoCommonListEntity[]
 
+    const videos: VideoCommonListReturn[] = videoEntities.map((entity) => new VideoCommonListReturn(entity))
     return videos as VideoCommonListReturn[];
   }
 
@@ -165,7 +169,7 @@ export class VideoService {
     validationStatus?: ValdationStatus | undefined,
     itemId?: number | undefined
   ): Promise<VideoCommonListReturn[]> {
-    const videos = await this.prismaBase.video.findMany({
+    const videoEntities = await this.prismaBase.video.findMany({
       skip: pageId * amount,
       take: amount,
       select: new VideoCommonListSelect(),
@@ -173,10 +177,9 @@ export class VideoService {
         validationStatus: validationStatus ? validationStatus : undefined,
         itemId: itemId ? itemId : undefined,
       },
-    });
+    })  as unknown as VideoCommonListEntity[]
 
-    // return videos
-
+    const videos: VideoCommonListReturn[] = videoEntities.map((entity) => new VideoCommonListReturn(entity))
     return videos as VideoCommonListReturn[];
   }
 }
