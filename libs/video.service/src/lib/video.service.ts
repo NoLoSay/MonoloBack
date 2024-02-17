@@ -4,8 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { readFileSync } from 'fs'
 import {
   PrismaBaseService,
-  ValdationStatus,
-  Video
+  ValdationStatus
 } from '@noloback/prisma-client-base'
 import { LoggerService } from '@noloback/logger-lib'
 import {
