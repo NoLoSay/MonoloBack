@@ -1,44 +1,44 @@
-import { google, youtube_v3 } from 'googleapis'
-import { JWT } from 'google-auth-library'
+import { google, youtube_v3 } from 'googleapis';
+import { JWT } from 'google-auth-library';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { readFileSync } from 'fs';
 import {
-  Injectable,
-  NotFoundException
-} from '@nestjs/common'
-import { readFileSync } from 'fs'
-import { PrismaBaseService, ValdationStatus, } from '@noloback/prisma-client-base'
-import { LoggerService } from '@noloback/logger-lib'
+  PrismaBaseService,
+  ValdationStatus,
+  Video,
+} from '@noloback/prisma-client-base';
+import { LoggerService } from '@noloback/logger-lib';
 import {
   VideoCommonListEntity,
   VideoCommonListReturn,
   VideoCommonListSelect,
-} from './models/video.api.models'
+} from './models/video.api.models';
 
-
-export function getValidationStatusFromRole (
+export function getValidationStatusFromRole(
   role: 'ADMIN' | 'REFERENT' | 'USER'
 ): ValdationStatus[] {
   switch (role) {
     case 'ADMIN':
-      return ['VALIDATED', 'PENDING', 'REFUSED']
+      return ['VALIDATED', 'PENDING', 'REFUSED'];
     case 'REFERENT':
-      return ['VALIDATED', 'PENDING']
+      return ['VALIDATED', 'PENDING'];
     default:
-      return ['VALIDATED']
+      return ['VALIDATED'];
   }
 }
 
 @Injectable()
 export class VideoService {
-  private auth: JWT
-  private youtube: youtube_v3.Youtube
+  private auth: JWT;
+  private youtube: youtube_v3.Youtube;
 
-  constructor (
+  constructor(
     private prismaBase: PrismaBaseService,
     private loggerService: LoggerService
   ) {
     const serviceAccount = JSON.parse(
       readFileSync('secrets/google-service-account.json', 'utf-8')
-    )
+    );
 
     this.auth = new google.auth.JWT(
       serviceAccount.client_email,
@@ -46,29 +46,29 @@ export class VideoService {
       serviceAccount.private_key,
       [
         'https://www.googleapis.com/auth/youtube.upload',
-        'https://www.googleapis.com/auth/youtube'
+        'https://www.googleapis.com/auth/youtube',
       ],
       undefined
-    )
+    );
 
     this.youtube = google.youtube({
       version: 'v3',
-      auth: this.auth
-    })
+      auth: this.auth,
+    });
   }
 
-  async getYoutube (youtubeId: string): Promise<string> {
+  async getYoutube(youtubeId: string): Promise<string> {
     const video = await this.prismaBase.video.findUnique({
       where: {
-        uuid: youtubeId
-      }
-    })
+        uuid: youtubeId,
+      },
+    });
 
     if (!video) {
-      throw new NotFoundException()
+      throw new NotFoundException();
     }
 
-    return video.externalProviderId
+    return video.externalProviderId;
   }
 
   // async createYoutube (
@@ -130,14 +130,14 @@ export class VideoService {
   //   return noloVideo.uuid
   // }
 
-  async getVideosFromObject (
+  async getVideosFromObject(
     objectId: number,
     role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = await this.prismaBase.video.findMany({
       where: {
         objectId: objectId,
-        validationStatus: { in: getValidationStatusFromRole(role) }
+        validationStatus: { in: getValidationStatusFromRole(role) },
       },
       select: new VideoCommonListSelect()
     }) as unknown as VideoCommonListEntity[]
@@ -147,14 +147,14 @@ export class VideoService {
     return videos
   }
 
-  async getVideosFromUser (
+  async getVideosFromUser(
     userId: number,
     role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = await this.prismaBase.video.findMany({
       where: {
         userId: userId,
-        validationStatus: { in: getValidationStatusFromRole(role) }
+        validationStatus: { in: getValidationStatusFromRole(role) },
       },
       select: new VideoCommonListSelect()
     }) as unknown as VideoCommonListEntity[]
