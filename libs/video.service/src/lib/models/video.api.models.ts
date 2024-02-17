@@ -4,6 +4,12 @@ class User {
     picture: string = ''
 }
 
+class Item {
+    id: number = 0
+    name: string = ''
+    picture: string = ''
+}
+
 export class VideoCommonListReturn {
     id: number = 0
     duration: number = 0
@@ -11,6 +17,12 @@ export class VideoCommonListReturn {
     validationStatus: string = ''
     createdAt: Date = new Date()
     PostedBy: User = new User()
+    Item: Item = new Item()
+}
+
+export class VideoItemListReturn {
+    videoList: VideoCommonListReturn[] = []
+    linkedItems: Item[] = []
 }
 
 /******* DATABASE REQUEST ******/
@@ -18,6 +30,12 @@ export class VideoCommonListReturn {
 class UserSelect {
     id: boolean = true
     username: boolean = true
+    picture: boolean = true
+}
+
+class ItemSelect {
+    id: boolean = true
+    name: boolean = true
     picture: boolean = true
 }
 
@@ -29,5 +47,8 @@ export class VideoCommonListSelect {
     validationStatus: boolean = true
     PostedBy: object = {
         select: new UserSelect()
+    }
+    Item: object = {
+        select: new ItemSelect()
     }
 }

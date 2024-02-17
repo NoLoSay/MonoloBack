@@ -142,6 +142,12 @@ export class VideoService {
     });
 
     return videos as VideoCommonListReturn[];
+
+    // let videosWithItems: VideoItemListReturn;
+
+    // videosWithItems.videoList = videos;
+
+    // return videosWithItems;
   }
 
   async getVideosFromUser(
@@ -176,6 +182,8 @@ export class VideoService {
     });
 
     // return videos
+
+    console.log(videos);
 
     return videos as VideoCommonListReturn[];
   }
