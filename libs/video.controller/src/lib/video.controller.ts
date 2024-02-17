@@ -46,7 +46,7 @@ export class VideoController {
     let validationStatusEnum: ValdationStatus | undefined;
     if (
       validationStatus &&
-      Item.values(ValdationStatus).includes(
+      Object.values(ValdationStatus).includes(
         validationStatus as ValdationStatus
       )
     ) {
