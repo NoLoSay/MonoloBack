@@ -1,4 +1,4 @@
-import { Controller, Get, Query, DefaultValuePipe } from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 import { LocationsService } from '@noloback/locations.service'
 
 @Controller('search')
