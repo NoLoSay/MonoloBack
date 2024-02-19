@@ -148,7 +148,7 @@ model Video {
   id                 Int               @id @default(autoincrement())
   uuid               String            @unique @default(uuid())
   externalProviderId String            @unique
-  validationStatus   ValidationStatus   @default(PENDING)
+  validationStatus   ValidationStatus  @default(PENDING)
   duration           Int               @default(0)
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
