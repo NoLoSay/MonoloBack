@@ -11,6 +11,7 @@ import { LoggerService } from '@noloback/logger-lib';
 import {
   VideoCommonListReturn,
   VideoCommonListSelect,
+  VideoItemReturn,
 } from './models/video.api.models';
 
 export function getValidationStatusFromRole(
@@ -56,10 +57,11 @@ export class VideoService {
     });
   }
 
-  async getYoutube(youtubeId: string): Promise<string> {
+  async getYoutube(youtubeUUID: string): Promise<VideoItemReturn> {
     const video = await this.prismaBase.video.findUnique({
+      select: new VideoCommonListSelect(),
       where: {
-        uuid: youtubeId,
+        uuid: youtubeUUID,
       },
     });
 
@@ -67,7 +69,12 @@ export class VideoService {
       throw new NotFoundException();
     }
 
-    return video.externalProviderId;
+    const fullVideo: VideoItemReturn = {
+      video: video as VideoCommonListReturn,
+      url: `https://www.youtube.com/watch?v=${video.externalProviderId}`,
+    };
+
+    return fullVideo;
   }
 
   // async createYoutube (

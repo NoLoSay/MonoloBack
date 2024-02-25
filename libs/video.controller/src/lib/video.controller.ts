@@ -64,10 +64,10 @@ export class VideoController {
     );
   }
 
-  @Get(':id')
+  @Get(':uuid')
   @HttpCode(200)
-  async getYoutube(@Param('id') id: string): Promise<string> {
-    return await this.videoservice.getYoutube(id);
+  async getYoutube(@Param('uuid') uuid: string) {
+    return await this.videoservice.getYoutube(uuid);
   }
 
   @ApiBody({ type: VideoFile })

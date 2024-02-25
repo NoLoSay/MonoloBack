@@ -12,6 +12,7 @@ class Item {
 
 export class VideoCommonListReturn {
     id: number = 0
+    uuid: string = ''
     duration: number = 0
     externalProviderId: string = ''
     validationStatus: string = ''
@@ -23,6 +24,11 @@ export class VideoCommonListReturn {
 export class VideoItemListReturn {
     videoList: VideoCommonListReturn[] = []
     linkedItems: Item[] = []
+}
+
+export class VideoItemReturn {
+    video: VideoCommonListReturn = new VideoCommonListReturn()
+    url: string = ''
 }
 
 /******* DATABASE REQUEST ******/
@@ -41,6 +47,7 @@ class ItemSelect {
 
 export class VideoCommonListSelect {
     id: boolean = true
+    uuid: boolean = true
     duration: boolean = true
     externalProviderId: boolean = true
     createdAt: boolean = true
