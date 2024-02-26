@@ -71,10 +71,23 @@ export class VideoService {
 
     const fullVideo: VideoItemReturn = {
       video: video as VideoCommonListReturn,
-      url: `https://www.youtube.com/watch?v=${video.externalProviderId}`,
+      url: `https://www.youtube.com/embed/${video.externalProviderId}`,
     };
 
     return fullVideo;
+  }
+
+  async updateYoutubeValidation(uuid: string, status: ValdationStatus) {
+    const video = await this.prismaBase.video.update({
+      data: {
+        validationStatus: status,
+      },
+      where: {
+        uuid: uuid,
+      }
+    });
+
+    return video;
   }
 
   // async createYoutube (

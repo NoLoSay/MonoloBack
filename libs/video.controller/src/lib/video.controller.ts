@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Put,
   HttpCode,
   HttpException,
   HttpStatus,
@@ -11,9 +12,10 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  Body,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger/dist';
+import { ApiBody, ApiConsumes, ApiProperty } from '@nestjs/swagger/dist';
 import { VideoFile } from '@noloback/models/swagger';
 import { VideoService } from '@noloback/video.service';
 import { JwtAuthGuard } from '@noloback/guards';
@@ -68,6 +70,38 @@ export class VideoController {
   @HttpCode(200)
   async getYoutube(@Param('uuid') uuid: string) {
     return await this.videoservice.getYoutube(uuid);
+  }
+
+  @Put(':uuid/validation')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        validationStatus: {
+          enum: ['VALIDATED', 'PENDING', 'REFUSED'],
+        },
+      },
+      required: ['validationStatus'],
+      example: { validationStatus: 'VALIDATED' },
+    },
+  })
+  @HttpCode(200)
+  // @UseGuards(JwtAuthGuard)
+  async updateYoutube(
+    @Request() req: any,
+    @Param('uuid') uuid: string,
+    @Body('validationStatus') validationStatus: ValdationStatus
+  ) {
+    // if (req.user.role !== 'ADMIN')
+    //   throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+
+    console.log(uuid, validationStatus);
+    console.log(req.body);
+
+    return await this.videoservice.updateYoutubeValidation(
+      uuid,
+      validationStatus
+    );
   }
 
   @ApiBody({ type: VideoFile })

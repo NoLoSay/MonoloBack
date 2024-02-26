@@ -6,7 +6,9 @@ class User {
 
 class Item {
     id: number = 0
+    uuid: string = ''
     name: string = ''
+    description: string = ''
     picture: string = ''
 }
 
@@ -41,7 +43,9 @@ class UserSelect {
 
 class ItemSelect {
     id: boolean = true
+    uuid: boolean = true
     name: boolean = true
+    description: boolean = true
     picture: boolean = true
 }
 
