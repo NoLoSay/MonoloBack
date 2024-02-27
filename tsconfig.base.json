@@ -17,7 +17,13 @@
     "paths": {
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
+      "@noloback/guards": ["models/guards"],
+      "@noloback/jwt": ["models/jwt"],
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
+      "@noloback/mail-confirmation": ["libs/mail-confirmation/src/index.ts"],
+      "@noloback/mailer": ["libs/mailer/src/index.ts"],
+      "@noloback/models": ["models/index.ts"],
+      "@noloback/models/swagger": ["models/swagger/index.ts"],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],
       "@noloback/prisma-client-logs": ["libs/prisma/client/logs/src/index.ts"],
       "@noloback/prisma-client-translator": [
@@ -32,16 +38,12 @@
       "@noloback/register.controller": [
         "libs/register.controller/src/index.ts"
       ],
+      "@noloback/roles": ["models/roles"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],
       "@noloback/video.controller": ["libs/video.controller/src/index.ts"],
-      "@noloback/video.service": ["libs/video.service/src/index.ts"],
-      "@noloback/models": ["models/index.ts"],
-      "@noloback/models/swagger": ["models/swagger/index.ts"],
-      "@noloback/guards": ["models/guards"],
-      "@noloback/roles": ["models/roles"],
-      "@noloback/jwt": ["models/jwt"]
+      "@noloback/video.service": ["libs/video.service/src/index.ts"]
     },
     "types": ["Multer"]
   },
