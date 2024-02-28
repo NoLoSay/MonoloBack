@@ -110,28 +110,41 @@ model OAuthProviderUser {
 // ---------------------------
 
 enum Role {
-  ADMIN
   USER
+  CREATOR
   REFERENT
+  MODERATOR
+  ADMIN
 }
 
 model User {
-  id            Int                   @id @default(autoincrement())
-  uuid          String                @unique @default(uuid())
-  username      String                @unique @default(uuid())
-  email         String                @unique
+  id            Int                 @id @default(autoincrement())
+  uuid          String              @unique @default(uuid())
+  username      String              @unique @default(uuid())
+  email         String              @unique
   password      String
   picture       String?
   telNumber     String?
-  role          Role                  @default(USER)
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
+  role          Role                @default(USER)
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
   deletedAt     DateTime?
-  LikedVideos   UserlikesVideos[]
   oAuthAccounts OAuthProviderUser[]
   loginHistory  UserLoginLog[]
-  Videos        Video[]
-  ReferentOf    LocationHasReferent[]
+  Profiles      Profile[]
+}
+
+model Profile {
+  id          Int                   @id @default(autoincrement())
+  role        Role                  @default(USER)
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  deletedAt   DateTime?
+  userId      Int
+  User        User                  @relation(fields: [userId], references: [id])
+  Videos      Video[]
+  LikedVideos UserlikesVideos[]
+  ReferentOf  LocationHasReferent[]
 }
 
 // ----------------------------
@@ -153,9 +166,9 @@ model Video {
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
   deletedAt          DateTime?
-  userId             Int
+  profileId          Int
   itemId             Int
-  PostedBy           User              @relation(fields: [userId], references: [id])
+  PostedBy           Profile           @relation(fields: [profileId], references: [id])
   LikedBy            UserlikesVideos[]
   Item               Item              @relation(fields: [itemId], references: [id])
 }
@@ -165,9 +178,9 @@ model UserlikesVideos {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  userId    Int
+  profileId Int
   videoId   Int
-  User      User      @relation(fields: [userId], references: [id])
+  Profile   Profile   @relation(fields: [profileId], references: [id])
   Video     Video     @relation(fields: [videoId], references: [id])
 }
 
@@ -317,11 +330,11 @@ model LocationHasReferent {
   updatedAt  DateTime  @updatedAt
   deletedAt  DateTime?
   locationId Int
-  userId     Int
+  profileId  Int
   Location   Location  @relation(fields: [locationId], references: [id])
-  User       User      @relation(fields: [userId], references: [id])
+  Profile    Profile   @relation(fields: [profileId], references: [id])
 
-  @@unique([userId, locationId])
+  @@unique([profileId, locationId])
   @@unique([isMain, locationId])
 }
 
