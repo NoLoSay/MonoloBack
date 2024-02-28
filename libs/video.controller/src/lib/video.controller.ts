@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Request,
   UploadedFile,
   UseGuards,
@@ -18,9 +19,9 @@ import { VideoService } from '@noloback/video.service';
 import { JwtAuthGuard } from '@noloback/guards';
 import multer = require('multer');
 import { extname } from 'path';
+import { ValidationStatus } from '@prisma/client/base';
 
 const storage = multer.diskStorage({
-  // notice you are calling the multer.diskStorage() method here, not multer()
   destination: function (req, file, cb) {
     cb(null, 'uploads/');
   },
@@ -28,11 +29,40 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + '-' + Date.now());
   },
 });
-const upload = multer({ storage }); //provide the return value from
+const upload = multer({ storage });
 
 @Controller('videos')
 export class VideoController {
   constructor(private readonly videoservice: VideoService) {}
+
+  @Get()
+  @HttpCode(200)
+  async getAllVideos(
+    @Query('page') pageId: number = 0,
+    @Query('amount') amount: number = 50,
+    @Query('validationStatus') validationStatus?: string | undefined,
+    @Query('itemId') itemId?: number | undefined
+  ): Promise<string> {
+    let validationStatusEnum: ValidationStatus | undefined;
+    if (
+      validationStatus &&
+      Object.values(ValidationStatus).includes(
+        validationStatus as ValidationStatus
+      )
+    ) {
+      validationStatusEnum = validationStatus as ValidationStatus;
+    }
+    return JSON.parse(
+      JSON.stringify(
+        await this.videoservice.getAllVideos(
+          +pageId,
+          +amount,
+          validationStatusEnum,
+          itemId ? +itemId : undefined
+        )
+      )
+    );
+  }
 
   @Get(':id')
   @HttpCode(200)
@@ -49,12 +79,10 @@ export class VideoController {
       storage: multer.diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
-          // Generating a 32 random chars long string
           const randomName = Array(32)
             .fill(null)
             .map(() => Math.round(Math.random() * 16).toString(16))
             .join('');
-          //Calling the callback passing the random name generated with the original extension name
           cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
@@ -66,8 +94,6 @@ export class VideoController {
   ): Promise<string> {
     const user = req.user;
     console.log(user);
-    const youtube = this.videoservice.createYoutube(user, file);
-
-    return await youtube;
+    return 'Je suis perdu, OSECOUR !';
   }
 }

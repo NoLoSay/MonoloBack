@@ -15,9 +15,59 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@noloback/addresses.controller": [
+        "libs/addresses.controller/src/index.ts"
+      ],
+      "@noloback/addresses.service": ["libs/addresses.service/src/index.ts"],
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
+      "@noloback/cities.controller": ["libs/cities.controller/src/index.ts"],
+      "@noloback/cities.service": ["libs/cities.service/src/index.ts"],
+      "@noloback/countries.controller": [
+        "libs/countries.controller/src/index.ts"
+      ],
+      "@noloback/countries.service": ["libs/countries.service/src/index.ts"],
+      "@noloback/departments.controller": [
+        "libs/departments.controller/src/index.ts"
+      ],
+      "@noloback/departments.service": [
+        "libs/departments.service/src/index.ts"
+      ],
+      "@noloback/exhibited.items.service": [
+        "libs/exhibited.items.service/src/index.ts"
+      ],
+      "@noloback/exhibitions.controller": [
+        "libs/exhibitions.controller/src/index.ts"
+      ],
+      "@noloback/exhibitions.service": [
+        "libs/exhibitions.service/src/index.ts"
+      ],
+      "@noloback/guards": ["models/guards"],
+      "@noloback/item.categories.controller": [
+        "libs/item.categories.controller/src/index.ts"
+      ],
+      "@noloback/item.categories.service": [
+        "libs/item.categories.service/src/index.ts"
+      ],
+      "@noloback/item.types.controller": [
+        "libs/item.types.controller/src/index.ts"
+      ],
+      "@noloback/item.types.service": ["libs/item.types.service/src/index.ts"],
+      "@noloback/items.controller": ["libs/items.controller/src/index.ts"],
+      "@noloback/items.service": ["libs/items.service/src/index.ts"],
+      "@noloback/jwt": ["models/jwt"],
+      "@noloback/locations.controller": [
+        "libs/locations.controller/src/index.ts"
+      ],
+      "@noloback/locations.referents.service": [
+        "libs/locations.referents.service/src/index.ts"
+      ],
+      "@noloback/locations.service": ["libs/locations.service/src/index.ts"],
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
+      "@noloback/models": ["models/index.ts"],
+      "@noloback/models/swagger": ["models/swagger/index.ts"],
+      "@noloback/persons.controller": ["libs/persons.controller/src/index.ts"],
+      "@noloback/persons.service": ["libs/persons.service/src/index.ts"],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],
       "@noloback/prisma-client-logs": ["libs/prisma/client/logs/src/index.ts"],
       "@noloback/prisma-client-translator": [
@@ -32,16 +82,13 @@
       "@noloback/register.controller": [
         "libs/register.controller/src/index.ts"
       ],
+      "@noloback/roles": ["models/roles"],
+      "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],
       "@noloback/video.controller": ["libs/video.controller/src/index.ts"],
-      "@noloback/video.service": ["libs/video.service/src/index.ts"],
-      "@noloback/models": ["models/index.ts"],
-      "@noloback/models/swagger": ["models/swagger/index.ts"],
-      "@noloback/guards": ["models/guards"],
-      "@noloback/roles": ["models/roles"],
-      "@noloback/jwt": ["models/jwt"]
+      "@noloback/video.service": ["libs/video.service/src/index.ts"]
     },
     "types": ["Multer"]
   },
