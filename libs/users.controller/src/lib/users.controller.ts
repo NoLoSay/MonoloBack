@@ -7,49 +7,79 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  ValidationPipe,
-} from '@nestjs/common';
-import { Admin } from '@noloback/roles';
+  Request,
+  UseGuards,
+  UnauthorizedException
+} from '@nestjs/common'
+import { JwtAuthGuard } from '@noloback/guards'
+import { Admin } from '@noloback/roles'
 import {
-  CreateUserDto,
-  UpdateUserDto,
-  UsersService,
-} from '@noloback/users.service';
+  UserCreateModel,
+  UserAdminUpdateModel,
+  UserUpdateModel,
+  UsersService
+} from '@noloback/users.service'
+import { VideoService } from '@noloback/video.service'
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor (
+    private readonly usersService: UsersService,
+    private readonly videoService: VideoService
+  ) {}
 
-  @Admin()
+  @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll() {
-    return this.usersService.findAll();
+  async findAll (@Request() request: any) {
+    return this.usersService.findAll(request.user.role)
   }
 
-  @Admin()
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  async findOne (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.usersService.findOne(id, request.user.role)
   }
 
   @Admin()
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create (@Body() createUserDto: UserCreateModel) {
+    return this.usersService.create(createUserDto)
   }
 
-  @Admin()
   @Put(':id')
-  async update(
+  @UseGuards(JwtAuthGuard)
+  async update (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: UpdateUserDto
+    @Body() updateUser: UserUpdateModel | UserAdminUpdateModel
   ) {
-    return this.usersService.update(id, updateUserDto);
+    if (id !== request.user.id || request.user.role !== 'ADMIN') {
+      throw new UnauthorizedException()
+    }
+    return this.usersService.update(
+      id,
+      request.user.role === 'ADMIN'
+        ? (updateUser as UserAdminUpdateModel)
+        : (updateUser as UserUpdateModel),
+      request.user.role
+    )
   }
 
   @Admin()
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.remove(id);
+  async remove (@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.remove(id)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/videos')
+  async findItsVideos (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.videoService.getVideosFromUser(id, request.user.role)
   }
 }
