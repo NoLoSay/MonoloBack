@@ -3,35 +3,14 @@ import {
   Get,
   Put,
   HttpCode,
-  HttpException,
-  HttpStatus,
   Param,
-  Post,
   Query,
   Request,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
   Body,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiProperty } from '@nestjs/swagger/dist';
-import { VideoFile } from '@noloback/models/swagger';
+import { ApiBody } from '@nestjs/swagger/dist';
 import { VideoService } from '@noloback/video.service';
-import { JwtAuthGuard } from '@noloback/guards';
-import multer = require('multer');
-import { extname } from 'path';
 import { ValdationStatus } from '@prisma/client/base';
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now());
-  },
-});
-const upload = multer({ storage });
 
 @Controller('videos')
 export class VideoController {
@@ -102,32 +81,5 @@ export class VideoController {
       uuid,
       validationStatus
     );
-  }
-
-  @ApiBody({ type: VideoFile })
-  @ApiConsumes('multipart/form-data')
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: multer.diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    })
-  )
-  async createYoutube(
-    @Request() req: any,
-    @UploadedFile() file: Express.Multer.File
-  ): Promise<string> {
-    const user = req.user;
-    console.log(user);
-    return 'Je suis perdu, OSECOUR !';
   }
 }
