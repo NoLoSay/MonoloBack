@@ -1,7 +1,22 @@
 class User {
     id: number = 0
     username: string = ''
-    picture: string = ''
+    picture: string|null = null
+}
+
+class UserLikeVideo {
+    User: User = new User()
+}
+
+export class VideoCommonListEntity {
+    id: number = 0
+    duration: number = 0
+    externalProviderId: string = ''
+    validationStatus: string = ''
+    createdAt: Date = new Date()
+    PostedBy: User = new User()
+    LikedBy: UserLikeVideo[] = []
+    Item: Item = new Item()
 }
 
 class Item {
@@ -20,17 +35,19 @@ export class VideoCommonListReturn {
     validationStatus: string = ''
     createdAt: Date = new Date()
     PostedBy: User = new User()
+    LikedBy: User[] = []
     Item: Item = new Item()
-}
 
-export class VideoItemListReturn {
-    videoList: VideoCommonListReturn[] = []
-    linkedItems: Item[] = []
-}
-
-export class VideoItemReturn {
-    video: VideoCommonListReturn = new VideoCommonListReturn()
-    url: string = ''
+    constructor (entity?: VideoCommonListEntity) {
+        this.id = entity?.id || 0
+        this.duration = entity?.duration || 0
+        this.externalProviderId = entity?.externalProviderId || ''
+        this.validationStatus = entity?.validationStatus || ''
+        this.createdAt = entity?.createdAt || new Date()
+        this.PostedBy = entity?.PostedBy || new User()
+        this.LikedBy = entity?.LikedBy.map((user) => user.User) || []
+        this.Item = entity?.Item || new Item()
+    }
 }
 
 /******* DATABASE REQUEST ******/
@@ -61,5 +78,12 @@ export class VideoCommonListSelect {
     }
     Item: object = {
         select: new ItemSelect()
+    }
+    LikedBy: object = {
+        select: {
+            User: {
+                select: new UserSelect()
+            }
+        }
     }
 }

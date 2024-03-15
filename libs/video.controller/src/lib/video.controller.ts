@@ -10,7 +10,10 @@ import {
 } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { VideoService } from '@noloback/video.service';
-import { ValdationStatus } from '@prisma/client/base';
+import { JwtAuthGuard } from '@noloback/guards';
+import multer = require('multer');
+import { extname } from 'path';
+import { ValidationStatus } from '@prisma/client/base';
 
 @Controller('videos')
 export class VideoController {
@@ -24,14 +27,14 @@ export class VideoController {
     @Query('validationStatus') validationStatus?: string | undefined,
     @Query('itemId') itemId?: number | undefined
   ): Promise<string> {
-    let validationStatusEnum: ValdationStatus | undefined;
+    let validationStatusEnum: ValidationStatus | undefined;
     if (
       validationStatus &&
-      Object.values(ValdationStatus).includes(
-        validationStatus as ValdationStatus
+      Object.values(ValidationStatus).includes(
+        validationStatus as ValidationStatus
       )
     ) {
-      validationStatusEnum = validationStatus as ValdationStatus;
+      validationStatusEnum = validationStatus as ValidationStatus;
     }
     return JSON.parse(
       JSON.stringify(
@@ -69,7 +72,7 @@ export class VideoController {
   async updateYoutube(
     @Request() req: any,
     @Param('uuid') uuid: string,
-    @Body('validationStatus') validationStatus: ValdationStatus
+    @Body('validationStatus') validationStatus: ValidationStatus
   ) {
     // if (req.user.role !== 'ADMIN')
     //   throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);

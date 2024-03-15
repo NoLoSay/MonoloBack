@@ -18,7 +18,7 @@ import {
   ItemDetailedReturn,
   ItemManipulationModel,
   ItemsService
-} from 'libs/items.service/src'
+} from '@noloback/items.service'
 import { JwtAuthGuard } from '@noloback/guards'
 import { LocationsReferentsService } from '@noloback/locations.referents.service'
 import { VideoService } from '@noloback/video.service'

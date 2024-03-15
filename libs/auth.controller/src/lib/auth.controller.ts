@@ -1,7 +1,7 @@
 import { Controller, Get, Request, Post, UseGuards, Req } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ApiBody } from '@nestjs/swagger/dist';
-import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
+import { AuthService, EmailPasswordCombo } from '@noloback/auth.service';
 import { LocalAuthGuard } from '@noloback/guards';
 import { Public } from '@noloback/jwt';
 import { GoogleOAuthGuard } from '@noloback/guards';
@@ -11,10 +11,11 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Public()
-  @ApiBody({ type: UsernamePasswordCombo })
+  @ApiBody({ type: EmailPasswordCombo })
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req: any) {
+    console.log('req.user', req.user);
     return this.authService.login(req.user);
   }
 

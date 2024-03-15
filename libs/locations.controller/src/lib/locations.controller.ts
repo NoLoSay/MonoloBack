@@ -31,13 +31,13 @@ export class LocationsController {
     private readonly locationsReferentsService: LocationsReferentsService // private loggingService: LoggerService
   ) {}
 
+
   @Admin()
   @Get()
   async findAll () {
     return this.locationsService.findAll()
   }
 
-  @Admin()
   @Get(':id')
   async findOne (@Param('id', ParseIntPipe) id: number) {
     return this.locationsService.findOne(id)

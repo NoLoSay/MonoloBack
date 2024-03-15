@@ -83,6 +83,7 @@
         "libs/register.controller/src/index.ts"
       ],
       "@noloback/roles": ["models/roles"],
+      "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
       "@noloback/upload.controller": ["libs/upload.controller/src/index.ts"],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
