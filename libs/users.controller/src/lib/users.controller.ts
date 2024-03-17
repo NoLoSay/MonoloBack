@@ -11,8 +11,9 @@ import {
   UseGuards,
   UnauthorizedException,
   Query,
+  Response,
 } from '@nestjs/common';
-import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
+import { ApiExtraModels } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@noloback/guards';
 import { Admin } from '@noloback/roles';
 import {
@@ -36,35 +37,25 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  @ApiOkResponse({
-    schema: {
-      allOf: [
-        { $ref: getSchemaPath(PaginatedDto) },
-        {
-          properties: {
-            results: {
-              type: 'array',
-              items: {
-                $ref: getSchemaPath(UserCommonReturn),
-              },
-            },
-          },
-        },
-      ],
-    },
-  })
   async findAll(
     @Request() request: any,
+    @Response() res: any,
     @Query('_start') firstElem: number = 10,
     @Query('_end') lastElem: number = 1
-  ): Promise<PaginatedDto<UserCommonReturn>> {
-    const results = await this.usersService.findAll(request.user.role, +firstElem, +lastElem);
-  return {
-    total: results.length,
-    limit: lastElem - firstElem,
-    offset: firstElem,
-    results: results
-  };
+  ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': (await this.usersService.count()).toString(),
+      })
+      .status(200)
+      .json(
+        await this.usersService.findAll(
+          request.user.role,
+          +firstElem,
+          +lastElem
+        )
+      );
   }
 
   @Get(':id')
