@@ -7,6 +7,7 @@ import {
   Query,
   Request,
   Body,
+  Response,
 } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { VideoService } from '@noloback/video.service';
@@ -32,8 +33,9 @@ export class VideoController {
   @Get()
   @HttpCode(200)
   async getAllVideos(
-    @Query('page') pageId: number = 0,
-    @Query('amount') amount: number = 50,
+    @Response() res: any,
+    @Query('_start') start: number = 0,
+    @Query('_end') end: number = 50,
     @Query('validationStatus') validationStatus?: string | undefined,
     @Query('itemId') itemId?: number | undefined
   ): Promise<string> {
@@ -46,16 +48,33 @@ export class VideoController {
     ) {
       validationStatusEnum = validationStatus as ValidationStatus;
     }
-    return JSON.parse(
-      JSON.stringify(
+
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.videoservice.countVideos(
+          validationStatusEnum,
+          itemId ? +itemId : undefined
+        ),
+      })
+      .json(
         await this.videoservice.getAllVideos(
-          +pageId,
-          +amount,
+          +start,
+          +end,
           validationStatusEnum,
           itemId ? +itemId : undefined
         )
-      )
-    );
+      );
+    // return JSON.parse(
+    //   JSON.stringify(
+    //     await this.videoservice.getAllVideos(
+    //       +start,
+    //       +end,
+    //       validationStatusEnum,
+    //       itemId ? +itemId : undefined
+    //     )
+    //   )
+    // );
   }
 
   @Get(':uuid')

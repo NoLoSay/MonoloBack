@@ -46,7 +46,7 @@ export class UsersController {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': (await this.usersService.count()).toString(),
+        'X-Total-Count': await this.usersService.count(),
       })
       .status(200)
       .json(
