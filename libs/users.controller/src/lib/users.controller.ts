@@ -12,6 +12,7 @@ import {
   UnauthorizedException,
   Query,
 } from '@nestjs/common';
+import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@noloback/guards';
 import { Admin } from '@noloback/roles';
 import {
@@ -19,10 +20,14 @@ import {
   UserAdminUpdateModel,
   UserUpdateModel,
   UsersService,
+  UserCommonReturn,
+  UserAdminReturn,
 } from '@noloback/users.service';
 import { VideoService } from '@noloback/video.service';
+import { PaginatedDto } from 'models/swagger/paginated-dto';
 
 @Controller('users')
+@ApiExtraModels(PaginatedDto)
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
@@ -31,12 +36,35 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
+  @ApiOkResponse({
+    schema: {
+      allOf: [
+        { $ref: getSchemaPath(PaginatedDto) },
+        {
+          properties: {
+            results: {
+              type: 'array',
+              items: {
+                $ref: getSchemaPath(UserCommonReturn),
+              },
+            },
+          },
+        },
+      ],
+    },
+  })
   async findAll(
     @Request() request: any,
     @Query('_start') firstElem: number = 10,
     @Query('_end') lastElem: number = 1
-  ) {
-    return this.usersService.findAll(request.user.role, +firstElem, +lastElem);
+  ): Promise<PaginatedDto<UserCommonReturn>> {
+    const results = await this.usersService.findAll(request.user.role, +firstElem, +lastElem);
+  return {
+    total: results.length,
+    limit: lastElem - firstElem,
+    offset: firstElem,
+    results: results
+  };
   }
 
   @Get(':id')
