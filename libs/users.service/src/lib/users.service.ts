@@ -27,6 +27,12 @@ export class UsersService {
     private loggingService: LoggerService
   ) {}
 
+  async count() {
+    return await this.prismaBase.user.count({
+      where: { deletedAt: null },
+    });
+  }
+
   async create(createUserDto: UserCreateModel) {
     const userUsername: User | null = await this.prismaBase.user.findUnique({
       where: { username: createUserDto.username },
