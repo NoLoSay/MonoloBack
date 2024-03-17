@@ -25,8 +25,14 @@ export class ItemsService {
   ) //private loggingService: LoggerService
   {}
 
+  async count(): Promise<number> {
+    return this.prismaBase.item.count()
+  }
+
   async findAll (
-    role: 'USER' | 'ADMIN' | 'REFERENT'
+    role: 'USER' | 'ADMIN' | 'REFERENT',
+    firstElem: number,
+    lastElem: number
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
     let selectOptions: Prisma.ItemSelect
 
@@ -40,6 +46,8 @@ export class ItemsService {
 
     const items: unknown = await this.prismaBase.item
       .findMany({
+        skip: firstElem,
+        take: lastElem - firstElem,
         select: selectOptions
       })
       .catch((e: Error) => {
