@@ -50,6 +50,7 @@ export class VideoCommonListReturn {
     }
 }
 
+
 /******* DATABASE REQUEST ******/
 
 class UserSelect {

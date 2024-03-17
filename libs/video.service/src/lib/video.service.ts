@@ -10,8 +10,8 @@ import { LoggerService } from '@noloback/logger-lib'
 import {
   VideoCommonListEntity,
   VideoCommonListReturn,
-  VideoCommonListSelect,
-} from './models/video.api.models';
+  VideoCommonListSelect
+} from './models/video.api.models'
 
 export function getValidationStatusFromRole (
   role: 'ADMIN' | 'REFERENT' | 'USER'

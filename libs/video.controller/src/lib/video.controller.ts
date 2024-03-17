@@ -15,6 +15,16 @@ import multer = require('multer');
 import { extname } from 'path';
 import { ValidationStatus } from '@prisma/client/base';
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now());
+  },
+});
+const upload = multer({ storage });
+
 @Controller('videos')
 export class VideoController {
   constructor(private readonly videoservice: VideoService) {}
