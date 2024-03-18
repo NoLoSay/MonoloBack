@@ -10,6 +10,7 @@ class UserLikeVideo {
 
 export class VideoCommonListEntity {
     id: number = 0
+    uuid: string = ''
     duration: number = 0
     externalProviderId: string = ''
     validationStatus: string = ''
@@ -40,6 +41,7 @@ export class VideoCommonListReturn {
 
     constructor (entity?: VideoCommonListEntity) {
         this.id = entity?.id || 0
+        this.uuid = entity?.uuid || ''
         this.duration = entity?.duration || 0
         this.externalProviderId = entity?.externalProviderId || ''
         this.validationStatus = entity?.validationStatus || ''
