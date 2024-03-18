@@ -1,20 +1,15 @@
 import {
   Controller,
   Get,
+  Put,
   HttpCode,
-  HttpException,
-  HttpStatus,
   Param,
-  Post,
   Query,
   Request,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
+  Body,
+  Response,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger/dist';
-import { VideoFile } from '@noloback/models/swagger';
+import { ApiBody } from '@nestjs/swagger/dist';
 import { VideoService } from '@noloback/video.service';
 import { JwtAuthGuard } from '@noloback/guards';
 import multer = require('multer');
@@ -38,8 +33,9 @@ export class VideoController {
   @Get()
   @HttpCode(200)
   async getAllVideos(
-    @Query('page') pageId: number = 0,
-    @Query('amount') amount: number = 50,
+    @Response() res: any,
+    @Query('_start') start: number = 0,
+    @Query('_end') end: number = 50,
     @Query('validationStatus') validationStatus?: string | undefined,
     @Query('itemId') itemId?: number | undefined
   ): Promise<string> {
@@ -52,48 +48,70 @@ export class VideoController {
     ) {
       validationStatusEnum = validationStatus as ValidationStatus;
     }
-    return JSON.parse(
-      JSON.stringify(
+
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.videoservice.countVideos(
+          validationStatusEnum,
+          itemId ? +itemId : undefined
+        ),
+      })
+      .json(
         await this.videoservice.getAllVideos(
-          +pageId,
-          +amount,
+          +start,
+          +end,
           validationStatusEnum,
           itemId ? +itemId : undefined
         )
-      )
-    );
+      );
+    // return JSON.parse(
+    //   JSON.stringify(
+    //     await this.videoservice.getAllVideos(
+    //       +start,
+    //       +end,
+    //       validationStatusEnum,
+    //       itemId ? +itemId : undefined
+    //     )
+    //   )
+    // );
   }
 
-  @Get(':id')
+  @Get(':uuid')
   @HttpCode(200)
-  async getYoutube(@Param('id') id: string): Promise<string> {
-    return await this.videoservice.getYoutube(id);
+  async getYoutube(@Param('uuid') uuid: string) {
+    return await this.videoservice.getYoutube(uuid);
   }
 
-  @ApiBody({ type: VideoFile })
-  @ApiConsumes('multipart/form-data')
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: multer.diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}${extname(file.originalname)}`);
+  @Put(':uuid/validation')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        validationStatus: {
+          enum: ['VALIDATED', 'PENDING', 'REFUSED'],
         },
-      }),
-    })
-  )
-  async createYoutube(
+      },
+      required: ['validationStatus'],
+      example: { validationStatus: 'VALIDATED' },
+    },
+  })
+  @HttpCode(200)
+  // @UseGuards(JwtAuthGuard)
+  async updateYoutube(
     @Request() req: any,
-    @UploadedFile() file: Express.Multer.File
-  ): Promise<string> {
-    const user = req.user;
-    console.log(user);
-    return 'Je suis perdu, OSECOUR !';
+    @Param('uuid') uuid: string,
+    @Body('validationStatus') validationStatus: ValidationStatus
+  ) {
+    // if (req.user.role !== 'ADMIN')
+    //   throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+
+    console.log(uuid, validationStatus);
+    console.log(req.body);
+
+    return await this.videoservice.updateYoutubeValidation(
+      uuid,
+      validationStatus
+    );
   }
 }

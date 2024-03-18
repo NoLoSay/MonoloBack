@@ -18,6 +18,7 @@ import { ItemTypesControllerModule } from '@noloback/item.types.controller';
 import { PersonsControllerModule } from '@noloback/persons.controller';
 import { ItemsControllerModule } from '@noloback/items.controller';
 import { ExhibitionsControllerModule } from '@noloback/exhibitions.controller';
+import { VideoControllerModule } from '@noloback/video.controller';
 import { SearchControllerModule } from '@noloback/search.controller';
 
 @Module({
@@ -37,6 +38,7 @@ import { SearchControllerModule } from '@noloback/search.controller';
     PersonsControllerModule,
     ItemsControllerModule,
     ExhibitionsControllerModule,
+    VideoControllerModule,
     SearchControllerModule
   ],
   controllers: [AppController],

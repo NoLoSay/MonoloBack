@@ -1,43 +1,43 @@
-import { google, youtube_v3 } from 'googleapis'
-import { JWT } from 'google-auth-library'
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { readFileSync } from 'fs'
+import { google, youtube_v3 } from 'googleapis';
+import { JWT } from 'google-auth-library';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { readFileSync } from 'fs';
 import {
   PrismaBaseService,
-  ValidationStatus
-} from '@noloback/prisma-client-base'
-import { LoggerService } from '@noloback/logger-lib'
+  ValidationStatus,
+} from '@noloback/prisma-client-base';
+import { LoggerService } from '@noloback/logger-lib';
 import {
   VideoCommonListEntity,
   VideoCommonListReturn,
-  VideoCommonListSelect
-} from './models/video.api.models'
+  VideoCommonListSelect,
+} from './models/video.api.models';
 
-export function getValidationStatusFromRole (
+export function getValidationStatusFromRole(
   role: 'ADMIN' | 'REFERENT' | 'USER'
 ): ValidationStatus[] {
   switch (role) {
     case 'ADMIN':
-      return ['VALIDATED', 'PENDING', 'REFUSED']
+      return ['VALIDATED', 'PENDING', 'REFUSED'];
     case 'REFERENT':
-      return ['VALIDATED', 'PENDING']
+      return ['VALIDATED', 'PENDING'];
     default:
-      return ['VALIDATED']
+      return ['VALIDATED'];
   }
 }
 
 @Injectable()
 export class VideoService {
-  private auth: JWT
-  private youtube: youtube_v3.Youtube
+  private auth: JWT;
+  private youtube: youtube_v3.Youtube;
 
-  constructor (
+  constructor(
     private prismaBase: PrismaBaseService,
     private loggerService: LoggerService
   ) {
     const serviceAccount = JSON.parse(
       readFileSync('secrets/google-service-account.json', 'utf-8')
-    )
+    );
 
     this.auth = new google.auth.JWT(
       serviceAccount.client_email,
@@ -45,29 +45,48 @@ export class VideoService {
       serviceAccount.private_key,
       [
         'https://www.googleapis.com/auth/youtube.upload',
-        'https://www.googleapis.com/auth/youtube'
+        'https://www.googleapis.com/auth/youtube',
       ],
       undefined
-    )
+    );
 
     this.youtube = google.youtube({
       version: 'v3',
-      auth: this.auth
-    })
+      auth: this.auth,
+    });
   }
 
-  async getYoutube (youtubeId: string): Promise<string> {
+  async getYoutube(youtubeUUID: string) {
     const video = await this.prismaBase.video.findUnique({
+      select: new VideoCommonListSelect(),
       where: {
-        uuid: youtubeId
-      }
-    })
+        uuid: youtubeUUID,
+      },
+    });
 
     if (!video) {
-      throw new NotFoundException()
+      throw new NotFoundException();
     }
 
-    return video.externalProviderId
+    const fullVideo = {
+      video: video,
+      url: `https://www.youtube.com/embed/${video.externalProviderId}`,
+    };
+
+    return fullVideo;
+  }
+
+  async updateYoutubeValidation(uuid: string, status: ValidationStatus) {
+    const video = await this.prismaBase.video.update({
+      data: {
+        validationStatus: status,
+      },
+      where: {
+        uuid: uuid,
+      },
+    });
+
+    return video;
   }
 
   // async createYoutube (
@@ -129,67 +148,79 @@ export class VideoService {
   //   return noloVideo.uuid
   // }
 
-  async getVideosFromItem (
+  async getVideosFromItem(
     itemId: number,
     role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
       where: {
         itemId: itemId,
-        validationStatus: { in: getValidationStatusFromRole(role) }
+        validationStatus: { in: getValidationStatusFromRole(role) },
       },
       select: new VideoCommonListSelect(),
       orderBy: {
         LikedBy: {
-          _count: 'desc'
-        }
-      }
-    })) as unknown as VideoCommonListEntity[]
+          _count: 'desc',
+        },
+      },
+    })) as unknown as VideoCommonListEntity[];
 
     const videos: VideoCommonListReturn[] = videoEntities.map(
-      entity => new VideoCommonListReturn(entity)
-    )
+      (entity) => new VideoCommonListReturn(entity)
+    );
 
-    return videos
+    return videos;
   }
 
-  async getVideosFromUser (
+  async getVideosFromUser(
     userId: number,
     role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
       where: {
         userId: userId,
-        validationStatus: { in: getValidationStatusFromRole(role) }
+        validationStatus: { in: getValidationStatusFromRole(role) },
       },
-      select: new VideoCommonListSelect()
-    })) as unknown as VideoCommonListEntity[]
+      select: new VideoCommonListSelect(),
+    })) as unknown as VideoCommonListEntity[];
 
     const videos: VideoCommonListReturn[] = videoEntities.map(
-      entity => new VideoCommonListReturn(entity)
-    )
-    return videos as VideoCommonListReturn[]
+      (entity) => new VideoCommonListReturn(entity)
+    );
+    return videos as VideoCommonListReturn[];
   }
 
-  async getAllVideos (
-    pageId: number,
-    amount: number,
+  async countVideos(
+    validationStatus?: ValidationStatus | undefined,
+    itemId?: number | undefined
+  ): Promise<number> {
+    return await this.prismaBase.video.count({
+      where: {
+        validationStatus: validationStatus ? validationStatus : undefined,
+        itemId: itemId ? itemId : undefined,
+      },
+    });
+  }
+
+  async getAllVideos(
+    start: number,
+    end: number,
     validationStatus?: ValidationStatus | undefined,
     itemId?: number | undefined
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
-      skip: pageId * amount,
-      take: amount,
+      skip: start,
+      take: end - start,
       select: new VideoCommonListSelect(),
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
-        itemId: itemId ? itemId : undefined
-      }
-    })) as unknown as VideoCommonListEntity[]
+        itemId: itemId ? itemId : undefined,
+      },
+    })) as unknown as VideoCommonListEntity[];
 
     const videos: VideoCommonListReturn[] = videoEntities.map(
-      entity => new VideoCommonListReturn(entity)
-    )
-    return videos as VideoCommonListReturn[]
+      (entity) => new VideoCommonListReturn(entity)
+    );
+    return videos as VideoCommonListReturn[];
   }
 }

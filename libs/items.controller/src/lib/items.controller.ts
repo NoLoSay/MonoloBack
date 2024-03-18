@@ -9,7 +9,9 @@ import {
   ParseIntPipe,
   UseGuards,
   Request,
-  UnauthorizedException
+  UnauthorizedException,
+  Response,
+  Query
 } from '@nestjs/common'
 import { Admin } from '@noloback/roles'
 import {
@@ -35,9 +37,21 @@ export class ItemsController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findAll (
-    @Request() request: any
+    @Request() request: any,
+    @Response() res: any,
+    @Query('_start') firstElem: number = 1,
+    @Query('_end') lastElem: number = 10
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
-    return this.itemsService.findAll(request.user.role)
+    // return this.itemsService.findAll(request.user.role)
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.itemsService.count()
+      })
+      .status(200)
+      .json(
+        await this.itemsService.findAll(request.user.role, +firstElem, +lastElem)
+      )
   }
 
   @UseGuards(JwtAuthGuard)

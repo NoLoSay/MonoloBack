@@ -16,25 +16,37 @@ export class VideoCommonListEntity {
     createdAt: Date = new Date()
     PostedBy: User = new User()
     LikedBy: UserLikeVideo[] = []
+    Item: Item = new Item()
+}
+
+class Item {
+    id: number = 0
+    uuid: string = ''
+    name: string = ''
+    description: string = ''
+    picture: string = ''
 }
 
 export class VideoCommonListReturn {
     id: number = 0
+    uuid: string = ''
     duration: number = 0
     externalProviderId: string = ''
     validationStatus: string = ''
     createdAt: Date = new Date()
     PostedBy: User = new User()
     LikedBy: User[] = []
+    Item: Item = new Item()
 
-    constructor (entity: VideoCommonListEntity) {
-        this.id = entity.id
-        this.duration = entity.duration
-        this.externalProviderId = entity.externalProviderId
-        this.validationStatus = entity.validationStatus
-        this.createdAt = entity.createdAt
-        this.PostedBy = entity.PostedBy
-        this.LikedBy = entity.LikedBy.map((user) => user.User)
+    constructor (entity?: VideoCommonListEntity) {
+        this.id = entity?.id || 0
+        this.duration = entity?.duration || 0
+        this.externalProviderId = entity?.externalProviderId || ''
+        this.validationStatus = entity?.validationStatus || ''
+        this.createdAt = entity?.createdAt || new Date()
+        this.PostedBy = entity?.PostedBy || new User()
+        this.LikedBy = entity?.LikedBy.map((user) => user.User) || []
+        this.Item = entity?.Item || new Item()
     }
 }
 
@@ -47,14 +59,26 @@ class UserSelect {
     picture: boolean = true
 }
 
+class ItemSelect {
+    id: boolean = true
+    uuid: boolean = true
+    name: boolean = true
+    description: boolean = true
+    picture: boolean = true
+}
+
 export class VideoCommonListSelect {
     id: boolean = true
+    uuid: boolean = true
     duration: boolean = true
     externalProviderId: boolean = true
     createdAt: boolean = true
     validationStatus: boolean = true
     PostedBy: object = {
         select: new UserSelect()
+    }
+    Item: object = {
+        select: new ItemSelect()
     }
     LikedBy: object = {
         select: {

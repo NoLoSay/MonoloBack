@@ -1,42 +1,51 @@
-import { Prisma, PrismaBaseService, User } from '@noloback/prisma-client-base'
+import { Prisma, PrismaBaseService, User } from '@noloback/prisma-client-base';
 import {
   ConflictException,
   HttpException,
   Injectable,
   InternalServerErrorException,
-  UnauthorizedException
-} from '@nestjs/common'
-import { hash } from 'bcrypt'
-import { LoggerService } from '@noloback/logger-lib'
-import { LogCriticity } from '@prisma/client/logs'
+  UnauthorizedException,
+} from '@nestjs/common';
+import { hash } from 'bcrypt';
+import { LoggerService } from '@noloback/logger-lib';
+import { LogCriticity } from '@prisma/client/logs';
 import {
   UserAdminReturn,
   UserAdminSelect,
   UserCommonReturn,
-  UserCommonSelect
-} from './models/user.api.models'
-import { UserAdminUpdateModel, UserCreateModel } from './models/user.manipulation.models'
+  UserCommonSelect,
+} from './models/user.api.models';
+import {
+  UserAdminUpdateModel,
+  UserCreateModel,
+} from './models/user.manipulation.models';
 
 @Injectable()
 export class UsersService {
-  constructor (
+  constructor(
     private prismaBase: PrismaBaseService,
     private loggingService: LoggerService
   ) {}
 
-  async create (createUserDto: UserCreateModel) {
+  async count() {
+    return await this.prismaBase.user.count({
+      where: { deletedAt: null },
+    });
+  }
+
+  async create(createUserDto: UserCreateModel) {
     const userUsername: User | null = await this.prismaBase.user.findUnique({
-      where: { username: createUserDto.username }
-    })
+      where: { username: createUserDto.username },
+    });
     if (userUsername != null) {
-      throw new ConflictException('Username already taken')
+      throw new ConflictException('Username already taken');
     }
 
     const userEmail: User | null = await this.prismaBase.user.findUnique({
-      where: { email: createUserDto.email }
-    })
+      where: { email: createUserDto.email },
+    });
     if (userEmail != null) {
-      throw new ConflictException('Email address already taken')
+      throw new ConflictException('Email address already taken');
     }
 
     const newUser: User = await this.prismaBase.user
@@ -45,121 +54,133 @@ export class UsersService {
           username: createUserDto.username,
           email: createUserDto.email,
           password: await hash(createUserDto.password, 12),
-          telNumber: createUserDto.telNumber
-        }
+          telNumber: createUserDto.telNumber,
+        },
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e
+        );
+        throw new InternalServerErrorException(e);
+      });
 
     await this.prismaBase.userLoginLog.create({
       data: {
-        userId: newUser.id
-      }
-    })
+        userId: newUser.id,
+      },
+    });
 
     return {
       id: newUser.id,
       username: newUser.username,
-      email: newUser.email
-    }
+      email: newUser.email,
+    };
   }
 
-  async findAll (
-    role: 'USER' | 'ADMIN' | 'REFERENT'
+  async findAll(
+    role: 'USER' | 'ADMIN' | 'REFERENT',
+    firstElem: number,
+    lastElem: number
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
-    let selectOptions: Prisma.UserSelect
+    let selectOptions: Prisma.UserSelect;
 
     switch (role) {
       case 'ADMIN':
-        selectOptions = new UserAdminSelect()
-        break
+        selectOptions = new UserAdminSelect();
+        break;
       default:
-        selectOptions = new UserCommonSelect()
+        selectOptions = new UserCommonSelect();
     }
+
+    const takeAmount = lastElem - firstElem;
 
     const users = await this.prismaBase.user.findMany({
+      take: takeAmount,
+      skip: firstElem,
       where: { deletedAt: null },
-      select: selectOptions
-    })
+      select: selectOptions,
+    });
 
     switch (role) {
       case 'ADMIN':
-        return users as UserAdminReturn[]
+        return users as UserAdminReturn[];
       default:
-        return users as UserCommonReturn[]
+        return users as UserCommonReturn[];
     }
   }
 
-  async findOne (id: number, role: 'USER' | 'ADMIN' | 'REFERENT') {
-    let selectOptions: Prisma.UserSelect
+  async findOne(id: number, role: 'USER' | 'ADMIN' | 'REFERENT') {
+    let selectOptions: Prisma.UserSelect;
 
     switch (role) {
       case 'ADMIN':
-        selectOptions = new UserAdminSelect()
-        break
+        selectOptions = new UserAdminSelect();
+        break;
       default:
-        selectOptions = new UserCommonSelect()
+        selectOptions = new UserCommonSelect();
     }
     const where: {
-      id: number
-      deletedAt?: Date | null
-    } = { id: id }
+      id: number;
+      deletedAt?: Date | null;
+    } = { id: id };
 
     if (role !== 'ADMIN') {
-      where.deletedAt = null
+      where.deletedAt = null;
     }
 
     const user = await this.prismaBase.user.findUnique({
       where: where,
-      select: selectOptions
-    })
+      select: selectOptions,
+    });
 
     switch (role) {
       case 'ADMIN':
-        return user as unknown as UserAdminReturn
+        return user as unknown as UserAdminReturn;
       default:
-        return user as unknown as UserCommonReturn
+        return user as unknown as UserCommonReturn;
     }
   }
 
-  async findOneByUsername (username: string) {
+  async findOneByUsername(username: string) {
     return await this.prismaBase.user.findUnique({
-      where: { username: username }
-    })
+      where: { username: username },
+    });
   }
 
-  async findOneByEmail (username: string) {
-    return await this.prismaBase.user.findUnique({ where: { email: username } })
+  async findOneByEmail(username: string) {
+    return await this.prismaBase.user.findUnique({
+      where: { email: username },
+    });
   }
 
-  async findUserByEmailOrUsername (search: string) {
+  async findUserByEmailOrUsername(search: string) {
     const user = await this.prismaBase.user.findFirst({
       where: {
-        OR: [{ email: search }, { username: search }]
-      }
-    })
+        OR: [{ email: search }, { username: search }],
+      },
+    });
 
-    return user
+    return user;
   }
 
-  async update (
+  async update(
     id: number,
     updateUser: UserAdminUpdateModel,
     role: 'USER' | 'ADMIN' | 'REFERENT'
   ) {
     if (updateUser.role && role !== 'ADMIN') {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException();
     }
 
     const data: {
-      username?: string
-      email?: string
-      password?: string
-      picture?: string
-      role?: string
-      telNumber?: string
+      username?: string;
+      email?: string;
+      password?: string;
+      picture?: string;
+      role?: string;
+      telNumber?: string;
     } = {
       username: updateUser.username,
       email: updateUser.email,
@@ -168,23 +189,23 @@ export class UsersService {
       password: updateUser.password
         ? await hash(updateUser.password, 12)
         : undefined,
-      telNumber: updateUser.telNumber
-    }
+      telNumber: updateUser.telNumber,
+    };
 
     const filteredData = Object.fromEntries(
       Object.entries(data).filter(([_, value]) => value !== undefined)
-    )
+    );
 
     return this.prismaBase.user.update({
       where: { id: id },
-      data: filteredData
-    })
+      data: filteredData,
+    });
   }
 
-  async remove (id: number) {
+  async remove(id: number) {
     return await this.prismaBase.user.update({
       where: { id: id },
-      data: { deletedAt: new Date() }
-    })
+      data: { deletedAt: new Date() },
+    });
   }
 }

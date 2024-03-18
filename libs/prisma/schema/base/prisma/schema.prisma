@@ -224,6 +224,7 @@ model ItemType {
 
 model Item {
   id              Int             @id @default(autoincrement())
+  uuid            String          @unique @default(uuid())
   name            String
   description     String?
   picture         String?

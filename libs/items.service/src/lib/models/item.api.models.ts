@@ -22,6 +22,7 @@ class ItemType {
 
 export class ItemCommonReturn {
   id: number = 0
+  uuid: string = ''
   name: string = ''
   description: string = ''
   picture: string = ''

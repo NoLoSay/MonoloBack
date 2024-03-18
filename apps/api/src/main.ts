@@ -3,21 +3,25 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, NestApplicationOptions } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-import * as fs from 'fs';
+// import * as fs from 'fs';
 
-const httpsOptions = {
-  key: fs.readFileSync('./secrets/cert.key'),
-  cert: fs.readFileSync('./secrets/cert.crt'),
+// const httpsOptions = {
+//   key: fs.readFileSync('./secrets/cert.key'),
+//   cert: fs.readFileSync('./secrets/cert.crt'),
+// };
+
+const options: NestApplicationOptions = {
+  cors: true,
 };
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule, options);
   const globalPrefix = '';
   // app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3001;
@@ -34,7 +38,7 @@ async function bootstrap() {
 
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: https://localhost:${port}/${globalPrefix}`
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );
 }
 
