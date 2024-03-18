@@ -94,11 +94,9 @@ export class UsersService {
         selectOptions = new UserCommonSelect();
     }
 
-    const takeAmount = lastElem - firstElem;
-
     const users = await this.prismaBase.user.findMany({
-      take: takeAmount,
-      skip: firstElem,
+      skip: firstElem - 1,
+      take: lastElem - firstElem,
       where: { deletedAt: null },
       select: selectOptions,
     });

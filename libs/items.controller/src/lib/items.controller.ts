@@ -42,6 +42,10 @@ export class ItemsController {
     @Query('_start') firstElem: number = 1,
     @Query('_end') lastElem: number = 10
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
+    if (firstElem < 1 || lastElem < 1) {
+      return res.status(400).json({ message: 'Invalid range' })
+    }
+
     // return this.itemsService.findAll(request.user.role)
     return res
       .set({

@@ -34,11 +34,15 @@ export class VideoController {
   @HttpCode(200)
   async getAllVideos(
     @Response() res: any,
-    @Query('_start') start: number = 0,
-    @Query('_end') end: number = 50,
+    @Query('_start') firstElem: number = 1,
+    @Query('_end') lastElem: number = 50,
     @Query('validationStatus') validationStatus?: string | undefined,
     @Query('itemId') itemId?: number | undefined
   ): Promise<string> {
+    if (firstElem < 1 || lastElem < 1) {
+      return res.status(400).json({ message: 'Invalid range' })
+    }
+
     let validationStatusEnum: ValidationStatus | undefined;
     if (
       validationStatus &&
@@ -59,8 +63,8 @@ export class VideoController {
       })
       .json(
         await this.videoservice.getAllVideos(
-          +start,
-          +end,
+          +firstElem,
+          +lastElem,
           validationStatusEnum,
           itemId ? +itemId : undefined
         )

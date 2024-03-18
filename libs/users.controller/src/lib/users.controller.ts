@@ -43,6 +43,10 @@ export class UsersController {
     @Query('_start') firstElem: number = 10,
     @Query('_end') lastElem: number = 1
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
+    if (firstElem < 1 || lastElem < 1) {
+      return res.status(400).json({ message: 'Invalid range' });
+    }
+
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
