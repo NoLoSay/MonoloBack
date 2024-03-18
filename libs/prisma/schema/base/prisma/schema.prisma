@@ -155,9 +155,9 @@ model Video {
   deletedAt          DateTime?
   userId             Int
   itemId             Int
-  PostedBy           User              @relation(fields: [userId], references: [id])
-  LikedBy            UserlikesVideos[]
-  Item               Item              @relation(fields: [itemId], references: [id])
+  postedBy           User              @relation(fields: [userId], references: [id])
+  likedBy            UserlikesVideos[]
+  item               Item              @relation(fields: [itemId], references: [id])
 }
 
 model UserlikesVideos {

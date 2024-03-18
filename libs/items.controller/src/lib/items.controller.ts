@@ -11,99 +11,101 @@ import {
   Request,
   UnauthorizedException,
   Response,
-  Query
-} from '@nestjs/common'
-import { Admin } from '@noloback/roles'
+  Query,
+} from '@nestjs/common';
+import { Admin } from '@noloback/roles';
 import {
   ItemAdminReturn,
   ItemCommonReturn,
   ItemDetailedReturn,
   ItemManipulationModel,
-  ItemsService
-} from '@noloback/items.service'
-import { JwtAuthGuard } from '@noloback/guards'
-import { LocationsReferentsService } from '@noloback/locations.referents.service'
-import { VideoService } from '@noloback/video.service'
+  ItemsService,
+} from '@noloback/items.service';
+import { JwtAuthGuard } from '@noloback/guards';
+import { LocationsReferentsService } from '@noloback/locations.referents.service';
+import { VideoService } from '@noloback/video.service';
 
 @Controller('items')
 export class ItemsController {
-  constructor (
+  constructor(
     private readonly itemsService: ItemsService,
     private readonly locationsReferentsService: LocationsReferentsService,
-    private readonly videoService: VideoService
-  ) // private loggingService: LoggerService
-  {}
+    private readonly videoService: VideoService // private loggingService: LoggerService
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findAll (
+  async findAll(
     @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
-    @Query('_end') lastElem: number = 10
+    @Query('_end') lastElem: number = 10,
+    @Query('name_like') nameLike?: string | undefined
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
     // return this.itemsService.findAll(request.user.role)
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': await this.itemsService.count()
+        'X-Total-Count': await this.itemsService.count(),
       })
       .status(200)
       .json(
-        await this.itemsService.findAll(request.user.role, +firstElem, +lastElem)
-      )
+        await this.itemsService.findAll(
+          request.user.role,
+          +firstElem,
+          +lastElem,
+          nameLike
+        )
+      );
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('video-pending')
-  async findAllVideoPendingItems () {
-    return this.itemsService.findAllVideoPendingItems()
+  async findAllVideoPendingItems() {
+    return this.itemsService.findAllVideoPendingItems();
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async findOne (
+  async findOne(
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any
   ): Promise<ItemDetailedReturn | ItemAdminReturn> {
-    return this.itemsService.findOneDetailled(id, request.user.role)
+    return this.itemsService.findOneDetailled(id, request.user.role);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create (
-    @Request() request: any,
-    @Body() items: ItemManipulationModel
-  ) {
+  async create(@Request() request: any, @Body() items: ItemManipulationModel) {
     if (request.user.role === 'ADMIN' || request.user.role === 'REFERENT')
-      return this.itemsService.create(items)
-    throw new UnauthorizedException()
+      return this.itemsService.create(items);
+    throw new UnauthorizedException();
   }
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  async update (
+  async update(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedItem: ItemManipulationModel
   ) {
     if (request.user.role === 'ADMIN' || request.user.role === 'REFERENT')
-      return this.itemsService.update(id, updatedItem)
-    throw new UnauthorizedException()
+      return this.itemsService.update(id, updatedItem);
+    throw new UnauthorizedException();
   }
 
   @Admin()
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number) {
-    return this.itemsService.delete(id)
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    return this.itemsService.delete(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id/videos')
-  async getVideos (
+  async getVideos(
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any
   ) {
-    return this.videoService.getVideosFromItem(id, request.user.role)
+    return this.videoService.getVideosFromItem(id, request.user.role);
   }
 }
