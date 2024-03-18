@@ -56,11 +56,20 @@ export class VideoService {
     });
   }
 
-  async getYoutube(youtubeUUID: string) {
+  async getYoutube(video: any) {
+    const fullVideo = {
+      video: video,
+      url: `https://www.youtube.com/embed/${video.externalProviderId}`,
+    };
+
+    return fullVideo;
+  }
+
+  async getYoutubeByUUID(youtubeId: string) {
     const video = await this.prismaBase.video.findUnique({
       select: new VideoCommonListSelect(),
       where: {
-        uuid: youtubeUUID,
+        uuid: youtubeId,
       },
     });
 
@@ -68,12 +77,22 @@ export class VideoService {
       throw new NotFoundException();
     }
 
-    const fullVideo = {
-      video: video,
-      url: `https://www.youtube.com/embed/${video.externalProviderId}`,
-    };
+    return this.getYoutube(video);
+  }
 
-    return fullVideo;
+  async getYoutubeById(youtubeId: number) {
+    const video = await this.prismaBase.video.findUnique({
+      select: new VideoCommonListSelect(),
+      where: {
+        id: youtubeId,
+      },
+    });
+
+    if (!video) {
+      throw new NotFoundException();
+    }
+
+    return this.getYoutube(video);
   }
 
   async updateYoutubeValidation(uuid: string, status: ValidationStatus) {

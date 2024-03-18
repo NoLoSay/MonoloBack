@@ -79,8 +79,13 @@ export class VideoController {
 
   @Get(':uuid')
   @HttpCode(200)
-  async getYoutube(@Param('uuid') uuid: string) {
-    return await this.videoservice.getYoutube(uuid);
+  async getYoutubeByUUID(@Param('uuid') uuid: string) {
+    const isnum = /^\d+$/.test(uuid);
+
+    if (isnum) {
+      return await this.videoservice.getYoutubeById(parseInt(uuid, 10));
+    }
+    return await this.videoservice.getYoutubeByUUID(uuid);
   }
 
   @Put(':uuid/validation')
