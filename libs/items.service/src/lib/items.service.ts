@@ -46,7 +46,7 @@ export class ItemsService {
 
     const items: unknown = await this.prismaBase.item
       .findMany({
-        skip: firstElem - 1,
+        skip: firstElem,
         take: lastElem - firstElem,
         select: selectOptions
       })

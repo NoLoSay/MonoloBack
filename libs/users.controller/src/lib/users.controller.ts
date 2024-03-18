@@ -40,13 +40,9 @@ export class UsersController {
   async findAll(
     @Request() request: any,
     @Response() res: any,
-    @Query('_start') firstElem: number = 10,
-    @Query('_end') lastElem: number = 1
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 10
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
-    if (firstElem < 1 || lastElem < 1) {
-      return res.status(400).json({ message: 'Invalid range' });
-    }
-
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',

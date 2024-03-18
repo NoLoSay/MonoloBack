@@ -95,7 +95,7 @@ export class UsersService {
     }
 
     const users = await this.prismaBase.user.findMany({
-      skip: firstElem - 1,
+      skip: firstElem,
       take: lastElem - firstElem,
       where: { deletedAt: null },
       select: selectOptions,

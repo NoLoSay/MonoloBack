@@ -228,7 +228,7 @@ export class VideoService {
     itemId?: number | undefined
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
-      skip: start - 1,
+      skip: start,
       take: end - start,
       select: new VideoCommonListSelect(),
       where: {
