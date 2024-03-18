@@ -40,8 +40,8 @@ export class UsersController {
   async findAll(
     @Request() request: any,
     @Response() res: any,
-    @Query('_start') firstElem: number = 10,
-    @Query('_end') lastElem: number = 1
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 10
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
     return res
       .set({

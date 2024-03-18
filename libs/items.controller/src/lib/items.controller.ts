@@ -39,7 +39,7 @@ export class ItemsController {
   async findAll (
     @Request() request: any,
     @Response() res: any,
-    @Query('_start') firstElem: number = 1,
+    @Query('_start') firstElem: number = 0,
     @Query('_end') lastElem: number = 10
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
     // return this.itemsService.findAll(request.user.role)

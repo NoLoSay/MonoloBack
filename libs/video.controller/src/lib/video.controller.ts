@@ -34,8 +34,8 @@ export class VideoController {
   @HttpCode(200)
   async getAllVideos(
     @Response() res: any,
-    @Query('_start') start: number = 0,
-    @Query('_end') end: number = 50,
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 50,
     @Query('validationStatus') validationStatus?: string | undefined,
     @Query('itemId') itemId?: number | undefined
   ): Promise<string> {
@@ -59,8 +59,8 @@ export class VideoController {
       })
       .json(
         await this.videoservice.getAllVideos(
-          +start,
-          +end,
+          +firstElem,
+          +lastElem,
           validationStatusEnum,
           itemId ? +itemId : undefined
         )
@@ -79,8 +79,13 @@ export class VideoController {
 
   @Get(':uuid')
   @HttpCode(200)
-  async getYoutube(@Param('uuid') uuid: string) {
-    return await this.videoservice.getYoutube(uuid);
+  async getYoutubeByUUID(@Param('uuid') uuid: string) {
+    const isnum = /^\d+$/.test(uuid);
+
+    if (isnum) {
+      return await this.videoservice.getYoutubeById(parseInt(uuid, 10));
+    }
+    return await this.videoservice.getYoutubeByUUID(uuid);
   }
 
   @Put(':uuid/validation')
