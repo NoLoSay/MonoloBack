@@ -36,8 +36,13 @@ export class VideoController {
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
     @Query('_end') lastElem: number = 50,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: string | undefined,
     @Query('validationStatus') validationStatus?: string | undefined,
-    @Query('itemId') itemId?: number | undefined
+    @Query('item') itemId?: number | undefined,
+    @Query('user') userId?: number | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined
   ): Promise<string> {
     let validationStatusEnum: ValidationStatus | undefined;
     if (
@@ -54,15 +59,23 @@ export class VideoController {
         'Access-Control-Expose-Headers': 'X-Total-Count',
         'X-Total-Count': await this.videoservice.countVideos(
           validationStatusEnum,
-          itemId ? +itemId : undefined
+          itemId ? +itemId : undefined,
+          userId ? +userId : undefined,
+          createdAtGte,
+          createdAtLte
         ),
       })
       .json(
         await this.videoservice.getAllVideos(
           +firstElem,
           +lastElem,
+          sort,
+          order,
           validationStatusEnum,
-          itemId ? +itemId : undefined
+          itemId ? +itemId : undefined,
+          userId ? +userId : undefined,
+          createdAtGte,
+          createdAtLte
         )
       );
     // return JSON.parse(

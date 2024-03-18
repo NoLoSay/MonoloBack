@@ -15,9 +15,9 @@ export class VideoCommonListEntity {
     externalProviderId: string = ''
     validationStatus: string = ''
     createdAt: Date = new Date()
-    PostedBy: User = new User()
-    LikedBy: UserLikeVideo[] = []
-    Item: Item = new Item()
+    postedBy: User = new User()
+    likedBy: UserLikeVideo[] = []
+    item: Item = new Item()
 }
 
 class Item {
@@ -35,9 +35,9 @@ export class VideoCommonListReturn {
     externalProviderId: string = ''
     validationStatus: string = ''
     createdAt: Date = new Date()
-    PostedBy: User = new User()
-    LikedBy: User[] = []
-    Item: Item = new Item()
+    postedBy: User = new User()
+    likedBy: User[] = []
+    item: Item = new Item()
 
     constructor (entity?: VideoCommonListEntity) {
         this.id = entity?.id || 0
@@ -46,9 +46,9 @@ export class VideoCommonListReturn {
         this.externalProviderId = entity?.externalProviderId || ''
         this.validationStatus = entity?.validationStatus || ''
         this.createdAt = entity?.createdAt || new Date()
-        this.PostedBy = entity?.PostedBy || new User()
-        this.LikedBy = entity?.LikedBy.map((user) => user.User) || []
-        this.Item = entity?.Item || new Item()
+        this.postedBy = entity?.postedBy || new User()
+        this.likedBy = entity?.likedBy.map((user) => user.User) || []
+        this.item = entity?.item || new Item()
     }
 }
 
@@ -76,13 +76,13 @@ export class VideoCommonListSelect {
     externalProviderId: boolean = true
     createdAt: boolean = true
     validationStatus: boolean = true
-    PostedBy: object = {
+    postedBy: object = {
         select: new UserSelect()
     }
-    Item: object = {
+    item: object = {
         select: new ItemSelect()
     }
-    LikedBy: object = {
+    likedBy: object = {
         select: {
             User: {
                 select: new UserSelect()

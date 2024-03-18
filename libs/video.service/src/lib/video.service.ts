@@ -211,12 +211,20 @@ export class VideoService {
 
   async countVideos(
     validationStatus?: ValidationStatus | undefined,
-    itemId?: number | undefined
+    itemId?: number | undefined,
+    userId?: number | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
   ): Promise<number> {
     return await this.prismaBase.video.count({
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
         itemId: itemId ? itemId : undefined,
+        userId: userId ? userId : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
       },
     });
   }
@@ -224,8 +232,13 @@ export class VideoService {
   async getAllVideos(
     start: number,
     end: number,
+    sort?: string | undefined,
+    order?: string | undefined,
     validationStatus?: ValidationStatus | undefined,
-    itemId?: number | undefined
+    itemId?: number | undefined,
+    userId?: number | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
       skip: start,
@@ -234,6 +247,14 @@ export class VideoService {
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
         itemId: itemId ? itemId : undefined,
+        userId: userId ? userId : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+      },
+      orderBy: {
+        [sort ?? 'id']: order === 'asc' ? 'asc' : 'desc',
       },
     })) as unknown as VideoCommonListEntity[];
 
