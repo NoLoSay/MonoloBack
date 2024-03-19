@@ -11,10 +11,9 @@ import {
 } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { VideoService } from '@noloback/video.service';
-import { JwtAuthGuard } from '@noloback/guards';
 import multer = require('multer');
-import { extname } from 'path';
 import { ValidationStatus } from '@prisma/client/base';
+import { FiltersGetMany } from 'models/filters-get-many';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -37,7 +36,7 @@ export class VideoController {
     @Query('_start') firstElem: number = 0,
     @Query('_end') lastElem: number = 50,
     @Query('_sort') sort?: string | undefined,
-    @Query('_order') order?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
     @Query('validationStatus') validationStatus?: string | undefined,
     @Query('item') itemId?: number | undefined,
     @Query('user') userId?: number | undefined,
@@ -51,7 +50,7 @@ export class VideoController {
         validationStatus as ValidationStatus
       )
     ) {
-      validationStatusEnum = validationStatus as ValidationStatus;
+      validationStatusEnum = validationStatus as unknown as ValidationStatus;
     }
 
     return res
@@ -67,10 +66,14 @@ export class VideoController {
       })
       .json(
         await this.videoservice.getAllVideos(
-          +firstElem,
-          +lastElem,
-          sort,
-          order,
+          new FiltersGetMany(
+            firstElem,
+            lastElem,
+            sort,
+            order,
+            ['id', 'validationStatus', 'createdAt'],
+            'id'
+          ),
           validationStatusEnum,
           itemId ? +itemId : undefined,
           userId ? +userId : undefined,

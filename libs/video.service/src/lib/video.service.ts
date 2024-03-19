@@ -12,6 +12,7 @@ import {
   VideoCommonListReturn,
   VideoCommonListSelect,
 } from './models/video.api.models';
+import { FiltersGetMany } from 'models/filters-get-many';
 
 export function getValidationStatusFromRole(
   role: 'ADMIN' | 'REFERENT' | 'USER'
@@ -230,10 +231,7 @@ export class VideoService {
   }
 
   async getAllVideos(
-    start: number,
-    end: number,
-    sort?: string | undefined,
-    order?: string | undefined,
+    filters: FiltersGetMany,
     validationStatus?: ValidationStatus | undefined,
     itemId?: number | undefined,
     userId?: number | undefined,
@@ -241,8 +239,8 @@ export class VideoService {
     createdAtLte?: string | undefined
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
-      skip: start,
-      take: end - start,
+      skip: filters.start,
+      take: filters.end - filters.start,
       select: new VideoCommonListSelect(),
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
@@ -254,7 +252,7 @@ export class VideoService {
         },
       },
       orderBy: {
-        [sort ?? 'id']: order === 'asc' ? 'asc' : 'desc',
+        [filters.sort]: filters.order,
       },
     })) as unknown as VideoCommonListEntity[];
 
