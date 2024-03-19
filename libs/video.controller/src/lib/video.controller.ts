@@ -12,6 +12,7 @@ import {
   UseGuards,
   HttpException,
   HttpStatus,
+  Delete,
 } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { VideoService } from '@noloback/video.service';
@@ -109,36 +110,24 @@ export class VideoController {
     return await this.videoservice.getYoutubeByUUID(uuid);
   }
 
-  @Patch(':uuid')
+  @Patch(':id')
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
   async patchYoutube(
     @Request() req: any,
-    @Param('uuid') uuid: string,
+    @Param('id') id: number,
     @Body('validationStatus') validationStatus: ValidationStatus
   ) {
     if (req.user.role !== 'ADMIN')
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
 
-    const isnum = /^\d+$/.test(uuid);
-
-    console.log(uuid, validationStatus);
-    console.log(req.body);
-
-    if (isnum) {
-      return await this.videoservice.patchYoutubeValidationById(
-        parseInt(uuid, 10),
-        validationStatus
-      );
-    }
-
     return await this.videoservice.patchYoutubeValidation(
-      uuid,
+      +id,
       validationStatus
     );
   }
 
-  @Put(':uuid/validation')
+  @Put(':id/validation')
   @ApiBody({
     schema: {
       type: 'object',
@@ -155,18 +144,29 @@ export class VideoController {
   @UseGuards(JwtAuthGuard)
   async updateYoutube(
     @Request() req: any,
-    @Param('uuid') uuid: string,
+    @Param('id') id: number,
     @Body('validationStatus') validationStatus: ValidationStatus
   ) {
     if (req.user.role !== 'ADMIN')
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
 
-    console.log(uuid, validationStatus);
-    console.log(req.body);
-
     return await this.videoservice.updateYoutubeValidation(
-      uuid,
+      +id,
       validationStatus
     );
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
+  async deleteYoutube(
+    @Request() req: any,
+    @Param('id') id: number,
+    @Query('deletedReason') deletedReason: string
+  ) {
+    if (req.user.role !== 'ADMIN')
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+
+    return await this.videoservice.deleteVideo(+id, deletedReason);
   }
 }

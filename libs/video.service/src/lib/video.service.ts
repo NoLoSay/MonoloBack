@@ -66,20 +66,7 @@ export class VideoService {
     return fullVideo;
   }
 
-  async patchYoutubeValidation(uuid: string, validationStatus: ValidationStatus) {
-    const video = await this.prismaBase.video.update({
-      data: {
-        validationStatus: validationStatus,
-      },
-      where: {
-        uuid: uuid,
-      },
-    });
-
-    return video;
-  }
-
-  async patchYoutubeValidationById(id: number, validationStatus: ValidationStatus) {
+  async patchYoutubeValidation(id: number, validationStatus: ValidationStatus) {
     const video = await this.prismaBase.video.update({
       data: {
         validationStatus: validationStatus,
@@ -122,13 +109,13 @@ export class VideoService {
     return this.getYoutube(video);
   }
 
-  async updateYoutubeValidation(uuid: string, status: ValidationStatus) {
+  async updateYoutubeValidation(id: number, status: ValidationStatus) {
     const video = await this.prismaBase.video.update({
       data: {
         validationStatus: status,
       },
       where: {
-        uuid: uuid,
+        id: id,
       },
     });
 
@@ -286,5 +273,17 @@ export class VideoService {
       (entity) => new VideoCommonListReturn(entity)
     );
     return videos as VideoCommonListReturn[];
+  }
+
+  async deleteVideo(id: number, deleteReason: string) {
+    return await this.prismaBase.video.update({
+      data: {
+        deletedAt: new Date(Date.now()),
+        deletedReason: deleteReason,
+      },
+      where: {
+        id: id,
+      },
+    });
   }
 }

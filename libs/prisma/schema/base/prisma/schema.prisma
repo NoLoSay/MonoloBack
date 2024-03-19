@@ -153,6 +153,7 @@ model Video {
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
   deletedAt          DateTime?
+  deletedReason      String?
   userId             Int
   itemId             Int
   postedBy           User              @relation(fields: [userId], references: [id])
