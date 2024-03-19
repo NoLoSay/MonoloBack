@@ -4,7 +4,7 @@ import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
 import { LocalAuthGuard } from '@noloback/guards';
 import { Public } from '@noloback/jwt';
-import { GoogleOAuthGuard } from '@noloback/guards';
+import { GoogleOAuthGuard, EmailConfirmationGuard } from '@noloback/guards';
 
 @Controller('auth')
 export class AuthController {
@@ -26,6 +26,12 @@ export class AuthController {
     const user = req.user;
 
     return this.authService.login(user);
+  }
+
+  @UseGuards(EmailConfirmationGuard)
+  @Get('test-email-guards')
+  async testEmailGuard() {
+    return 'email Verified !';
   }
 
   // // @Public()

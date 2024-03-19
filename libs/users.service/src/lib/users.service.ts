@@ -39,6 +39,7 @@ export class UsersService {
           username: createUserDto.username,
           email: createUserDto.email,
           password: await hash(createUserDto.password, 12),
+          emailVerified: false,
         },
       })
       .catch((e: Error) => {
@@ -61,6 +62,14 @@ export class UsersService {
       username: newUser.username,
       email: newUser.email,
     };
+  }
+  async markEmailAsConfirmed(email: string) {
+    return this.prismaBase.user.update({
+      where: { email: email },
+      data: {
+        emailVerified: true,
+      },
+    });
   }
 
   findAll() {

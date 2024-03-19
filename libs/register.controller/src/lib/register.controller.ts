@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Get, Query } from '@nestjs/common';
 import { Public } from '@noloback/jwt';
 import { CreateUserDto, UsersService } from '@noloback/users.service';
 import {MailConfirmationService } from '@noloback/mail-confirmation'
@@ -14,5 +14,12 @@ export class RegisterController {
   async register(@Body() userRegister: CreateUserDto) {
     await this.mailConfirmationService.sendVerificationLink(userRegister.email);
     return this.usersService.create(userRegister);
+  }
+
+  @Get('confirm')
+  @Public()
+  async confirm(@Query('token') token: string) {
+    const email = await this.mailConfirmationService.decodeConfirmationToken(token);
+    await this.mailConfirmationService.confirmEmail(email);
   }
 }

@@ -7,6 +7,7 @@ import { LoggerLibModule } from '@noloback/logger-lib';
 import { TranslatorLibModule } from '@noloback/translator-lib';
 import { UsersControllerModule } from '@noloback/users.controller';
 import { AuthControllerModule } from '@noloback/auth.controller';
+import { MailConfirmationControllerModule } from '@noloback/mail-confirmation.controller';
 import { RegisterModule } from '@noloback/register.controller';
 
 @Module({
@@ -16,6 +17,7 @@ import { RegisterModule } from '@noloback/register.controller';
     TranslatorLibModule,
     UsersControllerModule,
     RegisterModule,
+    MailConfirmationControllerModule
   ],
   controllers: [AppController],
   providers: [AppService],

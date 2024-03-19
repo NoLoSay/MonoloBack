@@ -21,6 +21,9 @@
       "@noloback/jwt": ["models/jwt"],
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
       "@noloback/mail-confirmation": ["libs/mail-confirmation/src/index.ts"],
+      "@noloback/mail-confirmation.controller": [
+        "libs/mail-confirmation.controller/src/index.ts"
+      ],
       "@noloback/mailer": ["libs/mailer/src/index.ts"],
       "@noloback/models": ["models/index.ts"],
       "@noloback/models/swagger": ["models/swagger/index.ts"],
