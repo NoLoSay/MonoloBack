@@ -66,6 +66,32 @@ export class VideoService {
     return fullVideo;
   }
 
+  async patchYoutubeValidation(uuid: string, validationStatus: ValidationStatus) {
+    const video = await this.prismaBase.video.update({
+      data: {
+        validationStatus: validationStatus,
+      },
+      where: {
+        uuid: uuid,
+      },
+    });
+
+    return video;
+  }
+
+  async patchYoutubeValidationById(id: number, validationStatus: ValidationStatus) {
+    const video = await this.prismaBase.video.update({
+      data: {
+        validationStatus: validationStatus,
+      },
+      where: {
+        id: id,
+      },
+    });
+
+    return video;
+  }
+
   async getYoutubeByUUID(youtubeId: string) {
     const video = await this.prismaBase.video.findUnique({
       select: new VideoCommonListSelect(),

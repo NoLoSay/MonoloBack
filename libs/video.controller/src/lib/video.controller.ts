@@ -8,12 +8,17 @@ import {
   Request,
   Body,
   Response,
+  Patch,
+  UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { VideoService } from '@noloback/video.service';
 import multer = require('multer');
 import { ValidationStatus } from '@prisma/client/base';
 import { FiltersGetMany } from 'models/filters-get-many';
+import { JwtAuthGuard } from '@noloback/guards';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -104,6 +109,35 @@ export class VideoController {
     return await this.videoservice.getYoutubeByUUID(uuid);
   }
 
+  @Patch(':uuid')
+  @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
+  async patchYoutube(
+    @Request() req: any,
+    @Param('uuid') uuid: string,
+    @Body('validationStatus') validationStatus: ValidationStatus
+  ) {
+    if (req.user.role !== 'ADMIN')
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+
+    const isnum = /^\d+$/.test(uuid);
+
+    console.log(uuid, validationStatus);
+    console.log(req.body);
+
+    if (isnum) {
+      return await this.videoservice.patchYoutubeValidationById(
+        parseInt(uuid, 10),
+        validationStatus
+      );
+    }
+
+    return await this.videoservice.patchYoutubeValidation(
+      uuid,
+      validationStatus
+    );
+  }
+
   @Put(':uuid/validation')
   @ApiBody({
     schema: {
@@ -118,14 +152,14 @@ export class VideoController {
     },
   })
   @HttpCode(200)
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async updateYoutube(
     @Request() req: any,
     @Param('uuid') uuid: string,
     @Body('validationStatus') validationStatus: ValidationStatus
   ) {
-    // if (req.user.role !== 'ADMIN')
-    //   throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+    if (req.user.role !== 'ADMIN')
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
 
     console.log(uuid, validationStatus);
     console.log(req.body);
