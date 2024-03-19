@@ -10,31 +10,45 @@ class UserLikeVideo {
 
 export class VideoCommonListEntity {
     id: number = 0
+    uuid: string = ''
     duration: number = 0
     externalProviderId: string = ''
     validationStatus: string = ''
     createdAt: Date = new Date()
-    PostedBy: User = new User()
-    LikedBy: UserLikeVideo[] = []
+    postedBy: User = new User()
+    likedBy: UserLikeVideo[] = []
+    item: Item = new Item()
+}
+
+class Item {
+    id: number = 0
+    uuid: string = ''
+    name: string = ''
+    description: string = ''
+    picture: string = ''
 }
 
 export class VideoCommonListReturn {
     id: number = 0
+    uuid: string = ''
     duration: number = 0
     externalProviderId: string = ''
     validationStatus: string = ''
     createdAt: Date = new Date()
-    PostedBy: User = new User()
-    LikedBy: User[] = []
+    postedBy: User = new User()
+    likedBy: User[] = []
+    item: Item = new Item()
 
-    constructor (entity: VideoCommonListEntity) {
-        this.id = entity.id
-        this.duration = entity.duration
-        this.externalProviderId = entity.externalProviderId
-        this.validationStatus = entity.validationStatus
-        this.createdAt = entity.createdAt
-        this.PostedBy = entity.PostedBy
-        this.LikedBy = entity.LikedBy.map((user) => user.User)
+    constructor (entity?: VideoCommonListEntity) {
+        this.id = entity?.id || 0
+        this.uuid = entity?.uuid || ''
+        this.duration = entity?.duration || 0
+        this.externalProviderId = entity?.externalProviderId || ''
+        this.validationStatus = entity?.validationStatus || ''
+        this.createdAt = entity?.createdAt || new Date()
+        this.postedBy = entity?.postedBy || new User()
+        this.likedBy = entity?.likedBy.map((user) => user.User) || []
+        this.item = entity?.item || new Item()
     }
 }
 
@@ -47,16 +61,28 @@ class UserSelect {
     picture: boolean = true
 }
 
+class ItemSelect {
+    id: boolean = true
+    uuid: boolean = true
+    name: boolean = true
+    description: boolean = true
+    picture: boolean = true
+}
+
 export class VideoCommonListSelect {
     id: boolean = true
+    uuid: boolean = true
     duration: boolean = true
     externalProviderId: boolean = true
     createdAt: boolean = true
     validationStatus: boolean = true
-    PostedBy: object = {
+    postedBy: object = {
         select: new UserSelect()
     }
-    LikedBy: object = {
+    item: object = {
+        select: new ItemSelect()
+    }
+    likedBy: object = {
         select: {
             User: {
                 select: new UserSelect()

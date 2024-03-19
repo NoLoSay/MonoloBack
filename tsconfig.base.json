@@ -85,6 +85,7 @@
       "@noloback/roles": ["models/roles"],
       "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
+      "@noloback/upload.controller": ["libs/upload.controller/src/index.ts"],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],
       "@noloback/video.controller": ["libs/video.controller/src/index.ts"],

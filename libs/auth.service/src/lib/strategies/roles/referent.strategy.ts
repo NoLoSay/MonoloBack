@@ -21,7 +21,7 @@ export class ReferentStrategy extends PassportStrategy(
   }
 
   async validate(payload: any) {
-    const user = await this.authService.findUserByEmail(payload.email);
+    const user = await this.authService.findUserByEmail(payload.username);
     if (!user || (user.role !== 'REFERENT' && user.role !== 'ADMIN')) {
       throw new UnauthorizedException();
     }

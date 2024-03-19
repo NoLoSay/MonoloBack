@@ -4,15 +4,13 @@ import { MulterModule } from '@nestjs/platform-express';
 import { VideoService } from './video.service';
 import { PrismaClientBaseModule } from '@noloback/prisma-client-base';
 import { LoggerLibModule } from '@noloback/logger-lib';
-export { VideoCommonListReturn, VideoCommonListSelect } from './models/video.api.models';
+export {
+  VideoCommonListReturn,
+  VideoCommonListSelect,
+} from './models/video.api.models';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    MulterModule.register({ dest: './uploads' }),
-    PrismaClientBaseModule,
-    LoggerLibModule,
-  ],
+  imports: [PrismaClientBaseModule, LoggerLibModule],
   providers: [VideoService],
   exports: [VideoService],
 })

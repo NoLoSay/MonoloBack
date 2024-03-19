@@ -5,12 +5,8 @@ import { VideoController } from './video.controller';
 import { VideoService, VideoServiceModule } from '@noloback/video.service';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    MulterModule.register({ dest: './uploads' }),
-    VideoServiceModule,
-  ],
-  providers: [VideoService],
+  imports: [VideoServiceModule],
+  providers: [],
   controllers: [VideoController],
 })
 export class VideoControllerModule {}
