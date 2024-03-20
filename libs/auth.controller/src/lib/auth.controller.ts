@@ -1,5 +1,4 @@
 import { Controller, Get, Request, Post, UseGuards, Req } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
 import { LocalAuthGuard } from '@noloback/guards';
@@ -15,7 +14,6 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req: any) {
-    console.log('req.user', req.user);
     return this.authService.login(req.user);
   }
 

@@ -104,6 +104,7 @@ export class UsersController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
+    console.log('request.user', request.user);
     return this.videoService.getVideosFromUser(id, request.user.role);
   }
 }
