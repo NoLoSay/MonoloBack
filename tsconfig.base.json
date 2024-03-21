@@ -79,6 +79,8 @@
       "@noloback/prisma-schema-translator": [
         "libs/prisma/schema/translator/src/index.ts"
       ],
+      "@noloback/profile.controller": ["libs/profile.controller/src/index.ts"],
+      "@noloback/profile.service": ["libs/profile.service/src/index.ts"],
       "@noloback/register.controller": [
         "libs/register.controller/src/index.ts"
       ],

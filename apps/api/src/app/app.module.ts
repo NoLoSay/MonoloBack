@@ -20,6 +20,7 @@ import { ItemsControllerModule } from '@noloback/items.controller';
 import { ExhibitionsControllerModule } from '@noloback/exhibitions.controller';
 import { VideoControllerModule } from '@noloback/video.controller';
 import { SearchControllerModule } from '@noloback/search.controller';
+import { ProfileControllerModule } from '@noloback/profile.controller';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { SearchControllerModule } from '@noloback/search.controller';
     ItemsControllerModule,
     ExhibitionsControllerModule,
     VideoControllerModule,
-    SearchControllerModule
+    SearchControllerModule,
+    ProfileControllerModule
   ],
   controllers: [AppController],
   providers: [AppService],

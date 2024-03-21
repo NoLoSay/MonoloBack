@@ -142,43 +142,42 @@ export class UsersService {
     }
   }
 
-  private formatUser (user: any) {
-    return user
+  private formatUser (user: any, withPassword = true) {
+    const formatedUser = user
       ? {
           id: user.id,
           username: user.username,
-          password: user.password ?? undefined,
+          password: user.password,
           email: user.email,
           picture: user.picture,
           telNumber: user.telNumber,
           role: user.role,
-          profile: user.profiles[0]
+          createdAt: user.createdAt,
+          activeProfile: user.profiles[0]
         }
       : null
+      if (formatedUser && !withPassword) {
+        delete formatedUser.password
+      }
+      return formatedUser
   }
 
   async findOneByUsername (username: string) {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
         where: { username: username },
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          picture: true,
-          telNumber: true,
-          role: true,
+        include: {
           profiles: {
             select: {
               id: true,
               role: true
             },
             where: {
-              role: 'USER'
+              isActive: true
             }
           }
         }
-      })
+      }), false
     )
   }
 
@@ -186,24 +185,18 @@ export class UsersService {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
         where: { email: username },
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          picture: true,
-          telNumber: true,
-          role: true,
+        include: {
           profiles: {
             select: {
               id: true,
               role: true
             },
             where: {
-              role: 'USER'
+              isActive: true
             }
           }
         }
-      })
+      }), false
     )
   }
 
@@ -212,27 +205,22 @@ export class UsersService {
       where: {
         OR: [{ email: search }, { username: search }]
       },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        password: true,
-        picture: true,
-        telNumber: true,
-        role: true,
+      include: {
         profiles: {
           select: {
             id: true,
             role: true
           },
           where: {
-            role: 'USER'
+            isActive: true
           }
         }
       }
     })
 
-    return user && user?.profiles.length ? this.formatUser(user) : null
+    return user && user?.profiles.length && !user?.deletedAt
+      ? this.formatUser(user)
+      : null
   }
 
   async update (
