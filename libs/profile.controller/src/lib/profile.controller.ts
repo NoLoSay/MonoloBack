@@ -13,29 +13,27 @@ import {
   Response
 } from '@nestjs/common'
 import { ApiExtraModels } from '@nestjs/swagger'
-import { JwtAuthGuard } from '@noloback/guards'
 import { ProfileService } from '@noloback/profile.service'
+import { Roles } from '@noloback/roles'
 
 @Controller('profiles')
 @ApiExtraModels()
 export class ProfileController {
   constructor (private profileService: ProfileService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async getProfiles (@Request() request: any, @Response() res: any) {
     return res
       .status(200)
-      .json(await this.profileService.getUserProfilesFromId(request.user.id))
+      .json(await this.profileService.getUserProfilesFromId(request.user.id, request.user.role))
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles(['ADMIN'])
   @Get('active')
   async getActiveProfile (@Request() request: any, @Response() res: any) {
-    return res.status(200).json(request.user.activeProfile)
+    return res.status(200).json(await this.profileService.getActiveProfile(request.user.id))
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('change')
   async changeActiveProfile (
     @Request() request: any,

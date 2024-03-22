@@ -17,6 +17,7 @@ export class AdminStrategy extends PassportStrategy(Strategy, 'role.admin') {
 
   async validate(payload: any) {
     const user = await this.authService.connectUserByEmail(payload.username);
+    console.log('AdminStrategy')
     if (!user || user.role !== 'ADMIN') {
       throw new UnauthorizedException();
     }

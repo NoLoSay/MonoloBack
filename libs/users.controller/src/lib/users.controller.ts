@@ -59,7 +59,6 @@ export class UsersController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   async findOne(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
@@ -74,7 +73,6 @@ export class UsersController {
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
   async update(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
