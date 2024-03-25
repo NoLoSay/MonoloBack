@@ -125,7 +125,6 @@ model User {
   password      String
   picture       String?
   telNumber     String?
-  role          Role                  @default(USER)
   createdAt     DateTime              @default(now())
   updatedAt     DateTime              @updatedAt
   deletedAt     DateTime?
@@ -149,6 +148,8 @@ model Profile {
   // Videos      Video[]
   // LikedVideos UserlikesVideos[]
   // ReferentOf  LocationHasReferent[]
+
+  @@unique([userId, role])
 }
 
 // ----------------------------

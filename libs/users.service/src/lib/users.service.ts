@@ -19,6 +19,7 @@ import {
   UserAdminUpdateModel,
   UserCreateModel
 } from './models/user.manipulation.models'
+import { UserRequestModel } from '@noloback/requests'
 
 @Injectable()
 export class UsersService {
@@ -57,7 +58,8 @@ export class UsersService {
           telNumber: createUserDto.telNumber,
           profiles: {
             create: {
-              role: 'USER'
+              role: 'USER',
+              isActive: true
             }
           }
         }
@@ -142,7 +144,7 @@ export class UsersService {
     }
   }
 
-  private formatUser (user: any, withPassword = true) {
+  private formatUser (user: any, withPassword = true): UserRequestModel | null {
     const formatedUser = user
       ? {
           id: user.id,
@@ -151,18 +153,17 @@ export class UsersService {
           email: user.email,
           picture: user.picture,
           telNumber: user.telNumber,
-          role: user.role,
           createdAt: user.createdAt,
           activeProfile: user.profiles[0]
         }
       : null
-      if (formatedUser && !withPassword) {
-        delete formatedUser.password
-      }
-      return formatedUser
+    if (formatedUser && !withPassword) {
+      delete formatedUser.password
+    }
+    return formatedUser as UserRequestModel
   }
 
-  async findOneByUsername (username: string) {
+  async findOneByUsername (username: string): Promise<UserRequestModel | null> {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
         where: { username: username },
@@ -177,11 +178,12 @@ export class UsersService {
             }
           }
         }
-      }), false
+      }),
+      false
     )
   }
 
-  async findOneByEmail (username: string) {
+  async findOneByEmail (username: string): Promise<UserRequestModel | null> {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
         where: { email: username },
@@ -196,11 +198,14 @@ export class UsersService {
             }
           }
         }
-      }), false
+      }),
+      false
     )
   }
 
-  async connectUserByEmailOrUsername (search: string) {
+  async connectUserByEmailOrUsername (
+    search: string
+  ): Promise<UserRequestModel | null> {
     const user = await this.prismaBase.user.findFirst({
       where: {
         OR: [{ email: search }, { username: search }]
