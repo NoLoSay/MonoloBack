@@ -8,11 +8,11 @@ import {
   Delete,
   ParseIntPipe
 } from '@nestjs/common'
-import { Admin } from '@noloback/roles'
 import {
   ItemCategoryManipulationModel,
   ItemCategoriesService
 } from '@noloback/item.categories.service'
+import { ADMIN, Roles } from '@noloback/roles'
 
 @Controller('item-categories')
 export class ItemCategoriesController {
@@ -23,19 +23,19 @@ export class ItemCategoriesController {
     return this.itemCategoriesService.findAll()
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Get(':id')
   async findOne (@Param('id', ParseIntPipe) id: number) {
     return this.itemCategoriesService.findOne(id)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Post()
   async create (@Body() itemCategory: ItemCategoryManipulationModel) {
     return this.itemCategoriesService.create(itemCategory)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Put(':id')
   async update (
     @Param('id', ParseIntPipe) id: number,
@@ -44,7 +44,7 @@ export class ItemCategoriesController {
     return this.itemCategoriesService.update(id, updatedItemCategory)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Delete(':id')
   async delete (@Param('id', ParseIntPipe) id: number) {
     return this.itemCategoriesService.delete(id)

@@ -15,6 +15,17 @@ export class LocationsReferentsService {
     private prismaBase: PrismaBaseService // private loggingService: LoggerService
   ) {}
 
+  async isAllowedToModify (
+    user: { id: number; activeProfile: { role: string } },
+    locationId: number
+  ): Promise<boolean> {
+    return (
+      user.activeProfile.role === 'ADMIN' ||
+      (user.activeProfile.role === 'REFERENT' &&
+        (await this.isReferentOfLocation(user.id, locationId)))
+    )
+  }
+
   async findReferents (locationId: number): Promise<object[]> {
     return await this.prismaBase.locationHasReferent
       .findMany({

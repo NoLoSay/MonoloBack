@@ -7,40 +7,36 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  UseGuards,
   Request
 } from '@nestjs/common'
-import { Admin } from '@noloback/roles'
 import {
   CityManipulationModel,
   CitiesService,
   CityCommonReturn,
   CityAdminReturn
 } from '@noloback/cities.service'
-import { JwtAuthGuard } from '@noloback/guards'
+import { ADMIN, Roles } from '@noloback/roles'
 
 @Controller('cities')
 export class CitiesController {
   constructor (private readonly citiesService: CitiesService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async findAll (
     @Request() request: any
   ): Promise<CityCommonReturn[] | CityAdminReturn[]> {
-    return this.citiesService.findAll(request.user.role)
+    return this.citiesService.findAll(request.user.activeProfile.role)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
-    return this.citiesService.findOne(id, request.user.role)
+    return this.citiesService.findOne(id, request.user.activeProfile.role)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Post()
   async create (
     @Body() cities: CityManipulationModel
@@ -48,7 +44,7 @@ export class CitiesController {
     return this.citiesService.create(cities)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Put(':id')
   async update (
     @Param('id', ParseIntPipe) id: number,
@@ -57,7 +53,7 @@ export class CitiesController {
     return this.citiesService.update(id, updatedCity)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Delete(':id')
   async delete (
     @Param('id', ParseIntPipe) id: number

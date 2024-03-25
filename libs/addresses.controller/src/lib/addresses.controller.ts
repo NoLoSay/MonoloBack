@@ -7,28 +7,26 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  UseGuards,
   Request
 } from '@nestjs/common'
-import { Admin } from '@noloback/roles'
+import { ADMIN, Roles } from '@noloback/roles'
 import {
   AddressAdminReturn,
   AddressManipulationModel,
   AddressesService
 } from '@noloback/addresses.service'
-import { JwtAuthGuard } from '@noloback/guards'
 
 @Controller('addresses')
 export class AddressesController {
   constructor (private readonly addressesService: AddressesService) {}
 
-  @Admin()
+  @Roles([ADMIN])
   @Get()
   async findAll (): Promise<AddressAdminReturn[]> {
     return this.addressesService.findAll()
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Get(':id')
   async findOne (
     @Param('id', ParseIntPipe) id: number
@@ -36,23 +34,22 @@ export class AddressesController {
     return this.addressesService.findOne(id)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Post()
   async create (@Body() addresses: AddressManipulationModel) {
     return this.addressesService.create(addresses)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedAddress: AddressManipulationModel
   ) {
-    return this.addressesService.update(id, updatedAddress, request.user.role)
+    return this.addressesService.update(id, updatedAddress, request.user.activeProfile.role)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Delete(':id')
   async delete (@Param('id', ParseIntPipe) id: number) {
     return this.addressesService.delete(id)

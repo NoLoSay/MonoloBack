@@ -7,20 +7,18 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  UseGuards,
   Request,
   UnauthorizedException
 } from '@nestjs/common'
-import { Admin } from '@noloback/roles'
 import {
   ExhibitionManipulationModel,
   ExhibitionsService
 } from '@noloback/exhibitions.service'
 import { ExhibitedItemsService } from '@noloback/exhibited.items.service'
 import { ExhibitedItemAdditionModel } from '@noloback/exhibited.items.service'
-import { JwtAuthGuard } from '@noloback/guards'
-import { LocationsReferentsService } from '@noloback/locations.referents.service'
 import { Exhibition } from '@prisma/client/base'
+import { ADMIN, REFERENT, Roles } from '@noloback/roles'
+import { LocationsReferentsService } from '@noloback/locations.referents.service'
 
 @Controller('exhibitions')
 export class ExhibitionsController {
@@ -40,25 +38,23 @@ export class ExhibitionsController {
     return this.exhibitionsService.findOne(id)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles([ADMIN, REFERENT])
   @Post()
   async create (
     @Request() request: any,
-    @Body() exhibitions: ExhibitionManipulationModel
+    @Body() exhibition: ExhibitionManipulationModel
   ) {
     if (
-      request.user.role === 'ADMIN' ||
-      (request.user.role === 'REFERENT' &&
-        (await this.locationsReferentsService.isReferentOfLocation(
-          request.user.id,
-          exhibitions.locationId
-        )))
+      await this.locationsReferentsService.isAllowedToModify(
+        request.user,
+        exhibition.locationId
+      )
     )
-      return this.exhibitionsService.create(exhibitions)
+      return this.exhibitionsService.create(exhibition)
     throw new UnauthorizedException()
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles([ADMIN, REFERENT])
   @Put(':id')
   async update (
     @Request() request: any,
@@ -66,29 +62,25 @@ export class ExhibitionsController {
     @Body() updatedExhibition: ExhibitionManipulationModel
   ) {
     if (
-      request.user.role === 'ADMIN' ||
-      (request.user.role === 'REFERENT' &&
-        (await this.locationsReferentsService.isReferentOfLocation(
-          request.user.id,
-          updatedExhibition.locationId
-        )))
+      await this.locationsReferentsService.isAllowedToModify(
+        request.user,
+        updatedExhibition.locationId
+      )
     )
       return this.exhibitionsService.update(id, updatedExhibition)
     throw new UnauthorizedException()
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles([ADMIN, REFERENT])
   @Delete(':id')
   async delete (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
     const exhibition: Exhibition | null = await this.findOne(id)
     if (!exhibition) return null
     if (
-      request.user.role === 'ADMIN' ||
-      (request.user.role === 'REFERENT' &&
-        (await this.locationsReferentsService.isReferentOfLocation(
-          request.user.id,
-          exhibition.locationId
-        )))
+      await this.locationsReferentsService.isAllowedToModify(
+        request.user,
+        exhibition.locationId
+      )
     )
       return this.exhibitionsService.delete(id)
     throw new UnauthorizedException()
@@ -99,7 +91,7 @@ export class ExhibitionsController {
     return this.exhibitedItemsService.findExibitedItems(id)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles([ADMIN, REFERENT])
   @Post(':id/items')
   async addExhibitedItem (
     @Request() request: any,
@@ -109,18 +101,16 @@ export class ExhibitionsController {
     const exhibition: Exhibition | null = await this.findOne(id)
     if (!exhibition) return null
     if (
-      request.user.role === 'ADMIN' ||
-      (request.user.role === 'REFERENT' &&
-        (await this.locationsReferentsService.isReferentOfLocation(
-          request.user.id,
-          exhibition.locationId
-        )))
+      await this.locationsReferentsService.isAllowedToModify(
+        request.user,
+        exhibition.locationId
+      )
     )
       return this.exhibitedItemsService.addExhibitedItem(id, addedItem)
     throw new UnauthorizedException()
   }
 
-  @UseGuards(JwtAuthGuard)
+  @Roles([ADMIN, REFERENT])
   @Delete(':id/items/:itemId')
   async deleteExhibitedItem (
     @Request() request: any,
@@ -130,12 +120,10 @@ export class ExhibitionsController {
     const exhibition: Exhibition | null = await this.findOne(id)
     if (!exhibition) return null
     if (
-      request.user.role === 'ADMIN' ||
-      (request.user.role === 'REFERENT' &&
-        (await this.locationsReferentsService.isReferentOfLocation(
-          request.user.id,
-          exhibition.locationId
-        )))
+      await this.locationsReferentsService.isAllowedToModify(
+        request.user,
+        exhibition.locationId
+      )
     )
       return this.exhibitedItemsService.deleteExhibitedItem(id, itemId)
     throw new UnauthorizedException()

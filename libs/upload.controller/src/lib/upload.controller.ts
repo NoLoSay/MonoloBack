@@ -30,7 +30,6 @@ export class UploadController {
 
   @ApiBody({ type: VideoFile })
   @ApiConsumes('multipart/form-data')
-  @UseGuards(JwtAuthGuard)
   @Post()
   @UseInterceptors(
     FileInterceptor('file', {

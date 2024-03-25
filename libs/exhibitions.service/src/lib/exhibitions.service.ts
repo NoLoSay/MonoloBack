@@ -8,8 +8,8 @@ import { ExhibitionManipulationModel } from './models/exhibitionManipulation.mod
 export class ExhibitionsService {
   constructor (
     private prismaBase: PrismaBaseService
-    //private loggingService: LoggerService
-  ) {}
+  ) //private loggingService: LoggerService
+  {}
 
   async findAll (): Promise<Exhibition[]> {
     return await this.prismaBase.exhibition.findMany()
