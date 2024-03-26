@@ -1,9 +1,4 @@
-import {
-  Prisma,
-  PrismaBaseService,
-  Profile,
-  User
-} from '@noloback/prisma-client-base'
+import { Prisma, PrismaBaseService } from '@noloback/prisma-client-base'
 import {
   ConflictException,
   ForbiddenException,
@@ -15,11 +10,13 @@ import {
 import {
   ProfileCommonReturn,
   ProfileListReturn,
-  ProfileAdminReturn,
+  ProfileAdminReturn
+} from '@noloback/api.returns'
+import {
   ProfileCommonSelect,
   ProfileListSelect,
   ProfileAdminSelect
-} from './models/profile.api.models'
+} from '@noloback/db.calls'
 import { UserRequestModel } from '@noloback/requests'
 
 @Injectable()
@@ -27,12 +24,11 @@ export class ProfileService {
   constructor (private prismaBase: PrismaBaseService) {}
 
   async getUserProfiles (
-    user: UserRequestModel,
-    role: 'USER' | 'ADMIN' | 'REFERENT'
+    user: UserRequestModel
   ): Promise<ProfileListReturn[]> {
     let selectOptions: Prisma.ProfileSelect
 
-    switch (role) {
+    switch (user.activeProfile.role) {
       case 'ADMIN':
         selectOptions = new ProfileAdminSelect()
         break
@@ -43,7 +39,7 @@ export class ProfileService {
       where: { userId: user.id, deletedAt: null },
       select: selectOptions
     })
-    switch (role) {
+    switch (user.activeProfile.role) {
       case 'ADMIN':
         return profiles as ProfileAdminReturn[]
       default:
@@ -52,17 +48,17 @@ export class ProfileService {
   }
 
   async getActiveProfile (user: UserRequestModel): Promise<ProfileCommonReturn> {
-    const activeProfile = await this.prismaBase.profile.findMany({
+    const activeProfiles = await this.prismaBase.profile.findMany({
       where: {
         userId: user.id,
         isActive: true
       },
       select: new ProfileCommonSelect()
     })
-    if (activeProfile.length === 0 || activeProfile.length > 1) {
+    if (activeProfiles.length === 0 || activeProfiles.length > 1) {
       throw new UnauthorizedException('No active profile found')
     }
-    return activeProfile[0] as ProfileCommonReturn
+    return activeProfiles[0] as ProfileCommonReturn
   }
 
   async changeActiveProfile (

@@ -19,6 +19,7 @@
         "libs/addresses.controller/src/index.ts"
       ],
       "@noloback/addresses.service": ["libs/addresses.service/src/index.ts"],
+      "@noloback/api.returns": ["models/api.returns"],
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
       "@noloback/cities.controller": ["libs/cities.controller/src/index.ts"],
@@ -27,6 +28,7 @@
         "libs/countries.controller/src/index.ts"
       ],
       "@noloback/countries.service": ["libs/countries.service/src/index.ts"],
+      "@noloback/db.calls": ["models/db.calls"],
       "@noloback/departments.controller": [
         "libs/departments.controller/src/index.ts"
       ],

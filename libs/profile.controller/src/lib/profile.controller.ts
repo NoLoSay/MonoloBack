@@ -8,12 +8,9 @@ import {
   Delete
 } from '@nestjs/common'
 import { ApiExtraModels } from '@nestjs/swagger'
-import {
-  ProfileCommonReturn,
-  ProfileListReturn,
-  ProfileService
-} from '@noloback/profile.service'
-import { ADMIN, REFERENT, Roles } from '@noloback/roles'
+import { ProfileService } from '@noloback/profile.service'
+import { ProfileListReturn, ProfileCommonReturn } from '@noloback/api.returns'
+import { ADMIN, MODERATOR, REFERENT, Roles } from '@noloback/roles'
 
 @Controller('profiles')
 @ApiExtraModels()
@@ -29,8 +26,7 @@ export class ProfileController {
       .status(200)
       .json(
         await this.profileService.getUserProfiles(
-          request.user,
-          request.user.role
+          request.user
         )
       )
   }
@@ -42,7 +38,7 @@ export class ProfileController {
   ): Promise<ProfileCommonReturn> {
     return res
       .status(200)
-      .json(await this.profileService.getActiveProfile(request.user.id))
+      .json(await this.profileService.getActiveProfile(request.user))
   }
 
   @Post('change')
@@ -64,7 +60,7 @@ export class ProfileController {
   async createAdminProfile (
     @Request() request: any,
     @Response() res: any,
-    @Body() whoPromote: {userId: number}
+    @Body() whoPromote: { userId: number }
   ): Promise<ProfileCommonReturn> {
     return res
       .status(200)
@@ -76,41 +72,48 @@ export class ProfileController {
   async deleteAdminProfile (
     @Request() request: any,
     @Response() res: any,
-    @Body() whoUnpromote: {userId: number}
+    @Body() whoUnpromote: { userId: number }
   ): Promise<ProfileCommonReturn> {
     return res
       .status(200)
-      .json(await this.profileService.deleteUsersProfileByRole(whoUnpromote.userId, ADMIN))
+      .json(
+        await this.profileService.deleteUsersProfileByRole(
+          whoUnpromote.userId,
+          ADMIN
+        )
+      )
   }
 
-  // @Roles([ADMIN])
-  // @Post('create/moderator')
-  // async createModeratorProfile (
-  //   @Request() request: any,
-  //   @Response() res: any,
-  //   @Body() body: {userId: number}
-  // ): Promise<ProfileCommonReturn> {
-  //   return res
-  //     .status(200)
-  //     .json(
-  //       await this.profileService.createModeratorProfile(
-  //         request.user.id,
-  //         userId
-  //       )
-  //     )
-  // }
+  @Roles([ADMIN])
+  @Post('create/moderator')
+  async createModeratorProfile (
+    @Request() request: any,
+    @Response() res: any,
+    @Body() whoPromote: { userId: number }
+  ): Promise<ProfileCommonReturn> {
+    return res
+      .status(200)
+      .json(
+        await this.profileService.createProfile(whoPromote.userId, MODERATOR)
+      )
+  }
 
-  // @Roles([ADMIN])
-  // @Delete('delete/moderator')
-  // async deleteModeratorProfile (
-  //   @Request() request: any,
-  //   @Response() res: any,
-  //   @Body() body: {userId: number}
-  // ): Promise<ProfileCommonReturn> {
-  //   return res
-  //     .status(200)
-  //     .json(await this.profileService.deleteProfileByRole(body.userId, MODERATOR))
-  // }
+  @Roles([ADMIN])
+  @Delete('delete/moderator')
+  async deleteModeratorProfile (
+    @Request() request: any,
+    @Response() res: any,
+    @Body() whoUnpromote: { userId: number }
+  ): Promise<ProfileCommonReturn> {
+    return res
+      .status(200)
+      .json(
+        await this.profileService.deleteUsersProfileByRole(
+          whoUnpromote.userId,
+          MODERATOR
+        )
+      )
+  }
 
   // @Roles([ADMIN, REFERENT])
   // @Post('create/referent')
