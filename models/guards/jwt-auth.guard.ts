@@ -7,7 +7,6 @@ import { Reflector } from '@nestjs/core'
 import { AuthGuard } from '@nestjs/passport'
 import { Observable } from 'rxjs'
 import { IS_PUBLIC_KEY } from '../jwt/public.decorator'
-import { Roles } from '@noloback/roles'
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -21,7 +20,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (this._isPublic(context)) {
       return true
     }
-    const roles = this.reflector.get(Roles, context.getHandler())
     return super.canActivate(context)
   }
 
