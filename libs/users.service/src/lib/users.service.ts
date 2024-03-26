@@ -9,12 +9,8 @@ import {
 import { hash } from 'bcrypt'
 import { LoggerService } from '@noloback/logger-lib'
 import { LogCriticity } from '@prisma/client/logs'
-import {
-  UserAdminReturn,
-  UserAdminSelect,
-  UserCommonReturn,
-  UserCommonSelect
-} from './models/user.api.models'
+import { UserAdminReturn, UserCommonReturn, UserMeReturn } from '@noloback/api.returns'
+import { UserAdminSelect, UserCommonSelect, UserMeSelect } from '@noloback/db.calls'
 import {
   UserAdminUpdateModel,
   UserCreateModel
@@ -110,6 +106,15 @@ export class UsersService {
       default:
         return users as UserCommonReturn[]
     }
+  }
+
+  async findMe (user: UserRequestModel) {
+    const userMe = await this.prismaBase.user.findUnique({
+      where: { id: user.id },
+      select: new UserMeSelect()
+    })
+
+    return userMe as UserMeReturn
   }
 
   async findOne (id: number, role: 'USER' | 'ADMIN' | 'REFERENT') {

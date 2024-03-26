@@ -18,10 +18,9 @@ import {
   UserCreateModel,
   UserAdminUpdateModel,
   UserUpdateModel,
-  UsersService,
-  UserCommonReturn,
-  UserAdminReturn
+  UsersService
 } from '@noloback/users.service'
+import { UserAdminReturn, UserCommonReturn } from '@noloback/api.returns'
 import { VideoService } from '@noloback/video.service'
 import { PaginatedDto } from 'models/swagger/paginated-dto'
 
@@ -53,6 +52,11 @@ export class UsersController {
           +lastElem
         )
       )
+  }
+
+  @Get('me')
+  async findMe (@Request() request: any) {
+    return this.usersService.findMe(request.user)
   }
 
   @Get(':id')

@@ -1,1 +1,2 @@
-export * from './profile.db.calls';
+export * from './profiles.db.calls';
+export * from './users.db.calls';
