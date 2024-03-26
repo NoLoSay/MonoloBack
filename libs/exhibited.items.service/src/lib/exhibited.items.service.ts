@@ -23,7 +23,7 @@ export class ExhibitedItemsService {
           Exhibition: {
             select: {
               name: true,
-              Location: {
+              Site: {
                 select: {
                   name: true
                 }

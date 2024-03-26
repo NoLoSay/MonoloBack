@@ -23,9 +23,9 @@ export class ExhibitionsService {
 
   async create (exhibition: ExhibitionManipulationModel) {
     if (
-      exhibition.locationId === undefined ||
-      exhibition.locationId === null ||
-      exhibition.locationId <= 0
+      exhibition.siteId === undefined ||
+      exhibition.siteId === null ||
+      exhibition.siteId <= 0
     ) {
       throw new InternalServerErrorException(
         "ExhibitionId can't be null or empty"
@@ -39,9 +39,9 @@ export class ExhibitionsService {
           longDescription: exhibition.longDescription,
           startDate: exhibition.startDate,
           endDate: exhibition.endDate,
-          Location: {
+          Site: {
             connect: {
-              id: exhibition.locationId
+              id: exhibition.siteId
             }
           }
         }
@@ -60,9 +60,9 @@ export class ExhibitionsService {
 
   async update (id: number, updatedExhibition: ExhibitionManipulationModel) {
     if (
-      updatedExhibition.locationId === undefined ||
-      updatedExhibition.locationId === null ||
-      updatedExhibition.locationId <= 0
+      updatedExhibition.siteId === undefined ||
+      updatedExhibition.siteId === null ||
+      updatedExhibition.siteId <= 0
     ) {
       throw new InternalServerErrorException(
         "ExhibitionId can't be null or empty"
@@ -77,9 +77,9 @@ export class ExhibitionsService {
           longDescription: updatedExhibition.longDescription,
           startDate: updatedExhibition.startDate,
           endDate: updatedExhibition.endDate,
-          Location: {
+          Site: {
             connect: {
-              id: updatedExhibition.locationId
+              id: updatedExhibition.siteId
             }
           }
         }

@@ -37,5 +37,5 @@ export class ExhibitionManipulationModel {
   @ApiProperty()
   @IsNumber()
   @IsPositive()
-  locationId: number = 0
+  siteId: number = 0
 }

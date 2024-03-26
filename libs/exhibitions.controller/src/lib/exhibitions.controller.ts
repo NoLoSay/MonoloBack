@@ -17,15 +17,15 @@ import {
 import { ExhibitedItemsService } from '@noloback/exhibited.items.service'
 import { ExhibitedItemAdditionModel } from '@noloback/exhibited.items.service'
 import { Exhibition } from '@prisma/client/base'
-import { ADMIN, REFERENT, Roles } from '@noloback/roles'
-import { LocationsReferentsService } from '@noloback/locations.referents.service'
+import { ADMIN, MANAGER, Roles } from '@noloback/roles'
+import { SitesManagersService } from '@noloback/sites.managers.service'
 
 @Controller('exhibitions')
 export class ExhibitionsController {
   constructor (
     private readonly exhibitionsService: ExhibitionsService,
     private readonly exhibitedItemsService: ExhibitedItemsService,
-    private readonly locationsReferentsService: LocationsReferentsService // private loggingService: LoggerService
+    private readonly sitesManagersService: SitesManagersService // private loggingService: LoggerService
   ) {}
 
   @Get()
@@ -38,23 +38,23 @@ export class ExhibitionsController {
     return this.exhibitionsService.findOne(id)
   }
 
-  @Roles([ADMIN, REFERENT])
+  @Roles([ADMIN, MANAGER])
   @Post()
   async create (
     @Request() request: any,
     @Body() exhibition: ExhibitionManipulationModel
   ) {
     if (
-      await this.locationsReferentsService.isAllowedToModify(
+      await this.sitesManagersService.isAllowedToModify(
         request.user,
-        exhibition.locationId
+        exhibition.siteId
       )
     )
       return this.exhibitionsService.create(exhibition)
     throw new UnauthorizedException()
   }
 
-  @Roles([ADMIN, REFERENT])
+  @Roles([ADMIN, MANAGER])
   @Put(':id')
   async update (
     @Request() request: any,
@@ -62,24 +62,24 @@ export class ExhibitionsController {
     @Body() updatedExhibition: ExhibitionManipulationModel
   ) {
     if (
-      await this.locationsReferentsService.isAllowedToModify(
+      await this.sitesManagersService.isAllowedToModify(
         request.user,
-        updatedExhibition.locationId
+        updatedExhibition.siteId
       )
     )
       return this.exhibitionsService.update(id, updatedExhibition)
     throw new UnauthorizedException()
   }
 
-  @Roles([ADMIN, REFERENT])
+  @Roles([ADMIN, MANAGER])
   @Delete(':id')
   async delete (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
     const exhibition: Exhibition | null = await this.findOne(id)
     if (!exhibition) return null
     if (
-      await this.locationsReferentsService.isAllowedToModify(
+      await this.sitesManagersService.isAllowedToModify(
         request.user,
-        exhibition.locationId
+        exhibition.siteId
       )
     )
       return this.exhibitionsService.delete(id)
@@ -91,7 +91,7 @@ export class ExhibitionsController {
     return this.exhibitedItemsService.findExibitedItems(id)
   }
 
-  @Roles([ADMIN, REFERENT])
+  @Roles([ADMIN, MANAGER])
   @Post(':id/items')
   async addExhibitedItem (
     @Request() request: any,
@@ -101,16 +101,16 @@ export class ExhibitionsController {
     const exhibition: Exhibition | null = await this.findOne(id)
     if (!exhibition) return null
     if (
-      await this.locationsReferentsService.isAllowedToModify(
+      await this.sitesManagersService.isAllowedToModify(
         request.user,
-        exhibition.locationId
+        exhibition.siteId
       )
     )
       return this.exhibitedItemsService.addExhibitedItem(id, addedItem)
     throw new UnauthorizedException()
   }
 
-  @Roles([ADMIN, REFERENT])
+  @Roles([ADMIN, MANAGER])
   @Delete(':id/items/:itemId')
   async deleteExhibitedItem (
     @Request() request: any,
@@ -120,9 +120,9 @@ export class ExhibitionsController {
     const exhibition: Exhibition | null = await this.findOne(id)
     if (!exhibition) return null
     if (
-      await this.locationsReferentsService.isAllowedToModify(
+      await this.sitesManagersService.isAllowedToModify(
         request.user,
-        exhibition.locationId
+        exhibition.siteId
       )
     )
       return this.exhibitedItemsService.deleteExhibitedItem(id, itemId)

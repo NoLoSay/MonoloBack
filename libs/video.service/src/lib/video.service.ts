@@ -15,12 +15,12 @@ import {
 import { FiltersGetMany } from 'models/filters-get-many';
 
 export function getValidationStatusFromRole(
-  role: 'ADMIN' | 'REFERENT' | 'USER'
+  role: 'ADMIN' | 'MANAGER' | 'USER'
 ): ValidationStatus[] {
   switch (role) {
     case 'ADMIN':
       return ['VALIDATED', 'PENDING', 'REFUSED'];
-    case 'REFERENT':
+    case 'MANAGER':
       return ['VALIDATED', 'PENDING'];
     default:
       return ['VALIDATED'];
@@ -183,7 +183,7 @@ export class VideoService {
 
   async getVideosFromItem(
     itemId: number,
-    role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
+    role: 'ADMIN' | 'MANAGER' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
       where: {
@@ -207,7 +207,7 @@ export class VideoService {
 
   async getVideosFromUser(
     userId: number,
-    role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER'
+    role: 'ADMIN' | 'MANAGER' | 'USER' = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
       where: {

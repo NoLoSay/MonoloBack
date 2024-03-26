@@ -10,7 +10,7 @@ import {
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ProfileService } from '@noloback/profile.service'
 import { ProfileListReturn, ProfileCommonReturn } from '@noloback/api.returns'
-import { ADMIN, MODERATOR, REFERENT, Roles } from '@noloback/roles'
+import { ADMIN, MODERATOR, MANAGER, Roles } from '@noloback/roles'
 
 @Controller('profiles')
 @ApiExtraModels()
@@ -115,9 +115,9 @@ export class ProfileController {
       )
   }
 
-  // @Roles([ADMIN, REFERENT])
-  // @Post('create/referent')
-  // async createReferentProfile (
+  // @Roles([ADMIN, MANAGER])
+  // @Post('create/manager')
+  // async createManagerProfile (
   //   @Request() request: any,
   //   @Response() res: any,
   //   @Body() body: {userId: number}
@@ -125,13 +125,13 @@ export class ProfileController {
   //   return res
   //     .status(200)
   //     .json(
-  //       await this.profileService.createReferentProfile(request.user.id, userId)
+  //       await this.profileService.createManagerProfile(request.user.id, userId)
   //     )
   // }
 
-  // @Roles([ADMIN, REFERENT])
-  // @Delete('delete/referent')
-  // async deleteReferentProfile (
+  // @Roles([ADMIN, MANAGER])
+  // @Delete('delete/manager')
+  // async deleteManagerProfile (
   //   @Request() request: any,
   //   @Response() res: any,
   //   @Body() body: {userId: number}
@@ -139,7 +139,7 @@ export class ProfileController {
   //   return res
   //     .status(200)
   //     .json(
-  //       await this.profileService.deleteReferentProfile(request.user.id, userId)
+  //       await this.profileService.deleteManagerProfile(request.user.id, userId)
   //     )
   // }
 }

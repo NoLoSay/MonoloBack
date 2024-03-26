@@ -79,7 +79,7 @@ export class UsersService {
   }
 
   async findAll (
-    role: 'USER' | 'ADMIN' | 'REFERENT',
+    role: 'USER' | 'ADMIN' | 'MANAGER',
     firstElem: number,
     lastElem: number
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
@@ -117,7 +117,7 @@ export class UsersService {
     return userMe as UserMeReturn
   }
 
-  async findOne (id: number, role: 'USER' | 'ADMIN' | 'REFERENT') {
+  async findOne (id: number, role: 'USER' | 'ADMIN' | 'MANAGER') {
     let selectOptions: Prisma.UserSelect
 
     switch (role) {
@@ -236,7 +236,7 @@ export class UsersService {
   async update (
     id: number,
     updateUser: UserAdminUpdateModel,
-    role: 'USER' | 'ADMIN' | 'REFERENT'
+    role: 'USER' | 'ADMIN' | 'MANAGER'
   ) {
     if (updateUser.role && role !== 'ADMIN') {
       throw new UnauthorizedException()

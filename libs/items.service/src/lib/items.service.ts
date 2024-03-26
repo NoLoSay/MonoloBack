@@ -29,7 +29,7 @@ export class ItemsService {
   }
 
   async findAll(
-    role: 'USER' | 'ADMIN' | 'REFERENT',
+    role: 'USER' | 'ADMIN' | 'MANAGER',
     firstElem: number,
     lastElem: number,
     nameLike: string | undefined
@@ -73,7 +73,7 @@ export class ItemsService {
 
   async findOneDetailled(
     id: number,
-    role: 'USER' | 'ADMIN' | 'REFERENT'
+    role: 'USER' | 'ADMIN' | 'MANAGER'
   ): Promise<ItemDetailedReturn | ItemAdminReturn> {
     let selectOptions: Prisma.ItemSelect;
     switch (role) {

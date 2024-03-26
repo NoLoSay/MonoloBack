@@ -58,13 +58,6 @@
       "@noloback/items.controller": ["libs/items.controller/src/index.ts"],
       "@noloback/items.service": ["libs/items.service/src/index.ts"],
       "@noloback/jwt": ["models/jwt"],
-      "@noloback/locations.controller": [
-        "libs/locations.controller/src/index.ts"
-      ],
-      "@noloback/locations.referents.service": [
-        "libs/locations.referents.service/src/index.ts"
-      ],
-      "@noloback/locations.service": ["libs/locations.service/src/index.ts"],
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
       "@noloback/models": ["models/index.ts"],
       "@noloback/models/swagger": ["models/swagger/index.ts"],
@@ -89,6 +82,13 @@
       "@noloback/requests": ["models/requests"],
       "@noloback/roles": ["models/roles"],
       "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
+      "@noloback/sites.controller": [
+        "libs/sites.controller/src/index.ts"
+      ],
+      "@noloback/sites.managers.service": [
+        "libs/sites.managers.service/src/index.ts"
+      ],
+      "@noloback/sites.service": ["libs/sites.service/src/index.ts"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
       "@noloback/upload.controller": ["libs/upload.controller/src/index.ts"],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],

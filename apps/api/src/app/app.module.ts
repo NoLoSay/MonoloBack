@@ -12,7 +12,7 @@ import { CountriesControllerModule } from '@noloback/countries.controller'
 import { DepartmentsControllerModule } from '@noloback/departments.controller'
 import { CitiesControllerModule } from '@noloback/cities.controller'
 import { AddressesControllerModule } from '@noloback/addresses.controller'
-import { LocationsControllerModule } from '@noloback/locations.controller'
+import { SitesControllerModule } from '@noloback/sites.controller'
 import { ItemCategoriesControllerModule } from '@noloback/item.categories.controller'
 import { ItemTypesControllerModule } from '@noloback/item.types.controller'
 import { PersonsControllerModule } from '@noloback/persons.controller'
@@ -36,7 +36,7 @@ import { APP_GUARD } from '@nestjs/core'
     DepartmentsControllerModule,
     CitiesControllerModule,
     AddressesControllerModule,
-    LocationsControllerModule,
+    SitesControllerModule,
     ItemCategoriesControllerModule,
     ItemTypesControllerModule,
     PersonsControllerModule,

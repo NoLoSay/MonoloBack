@@ -23,9 +23,7 @@ import { UserRequestModel } from '@noloback/requests'
 export class ProfileService {
   constructor (private prismaBase: PrismaBaseService) {}
 
-  async getUserProfiles (
-    user: UserRequestModel
-  ): Promise<ProfileListReturn[]> {
+  async getUserProfiles (user: UserRequestModel): Promise<ProfileListReturn[]> {
     let selectOptions: Prisma.ProfileSelect
 
     switch (user.activeProfile.role) {
@@ -90,7 +88,7 @@ export class ProfileService {
 
   async createProfile (
     userId: number,
-    role: 'USER' | 'ADMIN' | 'REFERENT' | 'CREATOR' | 'MODERATOR'
+    role: 'USER' | 'ADMIN' | 'MANAGER' | 'CREATOR' | 'MODERATOR'
   ): Promise<ProfileCommonReturn> {
     const toWho = await this.prismaBase.user.findUnique({
       where: { id: userId },
@@ -137,7 +135,7 @@ export class ProfileService {
 
   async deleteUsersProfileByRole (
     userId: number,
-    role: 'USER' | 'ADMIN' | 'REFERENT' | 'CREATOR' | 'MODERATOR'
+    role: 'USER' | 'ADMIN' | 'MANAGER' | 'CREATOR' | 'MODERATOR'
   ): Promise<ProfileCommonReturn> {
     const toWho = await this.prismaBase.user.findUnique({
       where: { id: userId },
@@ -145,7 +143,8 @@ export class ProfileService {
         profiles: {
           select: {
             id: true,
-            role: true
+            role: true,
+            deletedAt: true
           }
         }
       }
@@ -156,10 +155,11 @@ export class ProfileService {
     if (toWho.deletedAt) {
       throw new ForbiddenException('User is deleted')
     }
-    const profileToDelete: { id: number; role: string } | undefined =
-      toWho.profiles.find(profile => profile.role === role)
-    if (!profileToDelete) {
-      throw new ConflictException('Profile not found')
+    const profileToDelete:
+      | { id: number; role: string; deletedAt: Date | null }
+      | undefined = toWho.profiles.find(profile => profile.role === role)
+    if (!profileToDelete || profileToDelete.deletedAt) {
+      throw new ConflictException('Profile not found or already deleted')
     }
     const deletedProfile = await this.prismaBase.profile.update({
       where: { id: profileToDelete.id },

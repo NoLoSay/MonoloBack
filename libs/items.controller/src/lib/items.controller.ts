@@ -12,7 +12,7 @@ import {
   Response,
   Query
 } from '@nestjs/common'
-import { ADMIN, CREATOR, REFERENT, Roles } from '@noloback/roles'
+import { ADMIN, CREATOR, MANAGER, Roles } from '@noloback/roles'
 import {
   ItemAdminReturn,
   ItemCommonReturn,
@@ -20,14 +20,14 @@ import {
   ItemManipulationModel,
   ItemsService
 } from '@noloback/items.service'
-import { LocationsReferentsService } from '@noloback/locations.referents.service'
+import { SitesManagersService } from '@noloback/sites.managers.service'
 import { VideoService } from '@noloback/video.service'
 
 @Controller('items')
 export class ItemsController {
   constructor (
     private readonly itemsService: ItemsService,
-    private readonly locationsReferentsService: LocationsReferentsService,
+    private readonly sitesManagersService: SitesManagersService,
     private readonly videoService: VideoService // private loggingService: LoggerService
   ) {}
 
@@ -56,7 +56,7 @@ export class ItemsController {
       )
   }
 
-  @Roles([ADMIN, CREATOR, REFERENT])
+  @Roles([ADMIN, CREATOR, MANAGER])
   @Get('video-pending')
   async findAllVideoPendingItems () {
     return this.itemsService.findAllVideoPendingItems()
@@ -73,13 +73,13 @@ export class ItemsController {
     )
   }
 
-  @Roles([ADMIN, REFERENT])
+  @Roles([ADMIN, MANAGER])
   @Post()
   async create (@Request() request: any, @Body() items: ItemManipulationModel) {
     return this.itemsService.create(items)
   }
 
-  @Roles([ADMIN, REFERENT])
+  @Roles([ADMIN, MANAGER])
   @Put(':id')
   async update (
     @Request() request: any,

@@ -77,7 +77,7 @@ model Address {
   deletedAt    DateTime?
   cityId       Int
   City         City       @relation(fields: [cityId], references: [id])
-  Locations    Location[]
+  Sites    Site[]
 }
 
 // ---------------------------
@@ -112,7 +112,7 @@ model OAuthProviderUser {
 enum Role {
   USER
   CREATOR
-  REFERENT
+  MANAGER
   MODERATOR
   ADMIN
 }
@@ -132,7 +132,7 @@ model User {
   oAuthAccounts OAuthProviderUser[]
   loginHistory  UserLoginLog[]
   Videos        Video[]
-  ReferentOf    LocationHasReferent[]
+  ManagerOf    SiteHasManager[]
   profiles      Profile[]
 }
 
@@ -147,7 +147,7 @@ model Profile {
   user      User      @relation(fields: [userId], references: [id])
   // Videos      Video[]
   // LikedVideos UserlikesVideos[]
-  // ReferentOf  LocationHasReferent[]
+  // ManagerOf  SiteHasManager[]
 
   @@unique([userId, role])
 }
@@ -272,8 +272,8 @@ model Exhibition {
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   deletedAt        DateTime?
-  locationId       Int
-  Location         Location        @relation(fields: [locationId], references: [id])
+  siteId       Int
+  Site         Site        @relation(fields: [siteId], references: [id])
   ExhibitedItems   ExhibitedItem[]
 }
 
@@ -288,10 +288,10 @@ model ExhibitedItem {
 }
 
 // ----------------------------
-// ---------- Locations ----------
+// ---------- Sites ----------
 // ----------------------------
 
-enum LocationType {
+enum SiteType {
   MUSEUM
   LIBRARY
   ARCHIVE
@@ -301,7 +301,7 @@ enum LocationType {
   OTHER
 }
 
-enum LocationTag {
+enum SiteTag {
   NOLOSAY
   DISABILITY_FRIENDLY
   DEAF_FRIENDLY
@@ -309,7 +309,7 @@ enum LocationTag {
   OTHER
 }
 
-model Location {
+model Site {
   id                   Int                   @id @default(autoincrement())
   name                 String
   shortDescription     String?
@@ -319,30 +319,30 @@ model Location {
   website              String?
   price                Float
   picture              String?
-  type                 LocationType
-  tags                 LocationTag[]
+  type                 SiteType
+  tags                 SiteTag[]
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
   deletedAt            DateTime?
   addressId            Int
   Address              Address               @relation(fields: [addressId], references: [id])
   Exhibition           Exhibition[]
-  LocationHasReferents LocationHasReferent[]
+  SiteHasManagers SiteHasManager[]
 }
 
-model LocationHasReferent {
+model SiteHasManager {
   id         Int       @id @default(autoincrement())
   isMain     Boolean   @default(false)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   deletedAt  DateTime?
-  locationId Int
+  siteId Int
   userId     Int
-  Location   Location  @relation(fields: [locationId], references: [id])
+  Site   Site  @relation(fields: [siteId], references: [id])
   User       User      @relation(fields: [userId], references: [id])
 
-  @@unique([userId, locationId])
-  @@unique([isMain, locationId])
+  @@unique([userId, siteId])
+  @@unique([isMain, siteId])
 }
 
 // --------------------------

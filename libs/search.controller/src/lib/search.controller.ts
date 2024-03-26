@@ -1,19 +1,19 @@
 import { Controller, Get, Query } from '@nestjs/common'
-import { LocationsService } from '@noloback/locations.service'
+import { SitesService } from '@noloback/sites.service'
 
 @Controller('search')
 export class SearchController {
 
-  constructor(private readonly locationsService: LocationsService) {}
+  constructor(private readonly sitesService: SitesService) {}
 
-  @Get('locations')
+  @Get('sites')
   async search (
     @Query('q') query?: string | undefined,
     @Query('lng') lng?: string | undefined,
     @Query('lat') lat?: string | undefined,
     @Query('r') radius?: string | undefined
   ) {
-    return this.locationsService.searchLocationInSquare(
+    return this.sitesService.searchSiteInSquare(
       lng ? parseFloat(lng) : null,
       lat ? parseFloat(lat) : null,
       radius ? parseFloat(radius) : null,

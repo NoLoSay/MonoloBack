@@ -78,7 +78,7 @@ export class AddressesService {
   async update (
     id: number,
     updatedAddress: AddressManipulationModel,
-    role: 'USER' | 'ADMIN' | 'REFERENT'
+    role: 'USER' | 'ADMIN' | 'MANAGER'
   ): Promise<AddressCommonReturn | AddressAdminReturn> {
     if (
       updatedAddress.cityId === undefined ||

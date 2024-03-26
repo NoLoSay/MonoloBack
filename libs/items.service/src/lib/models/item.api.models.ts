@@ -76,7 +76,7 @@ export class ItemCommonSelect {
 export class ItemDetailedSelect extends ItemCommonSelect {
   Videos: object = {}
 
-  constructor (role: 'ADMIN' | 'REFERENT' | 'USER' = 'USER') {
+  constructor (role: 'ADMIN' | 'MANAGER' | 'USER' = 'USER') {
     super()
     this.Videos = {
       select: new VideoCommonListSelect(),
@@ -91,7 +91,7 @@ export class ItemAdminSelect extends ItemDetailedSelect {
   createdAt: boolean = true
   updatedAt: boolean = true
   deletedAt: boolean = true
-  constructor (role: 'ADMIN' | 'REFERENT' | 'USER' = 'ADMIN') {
+  constructor (role: 'ADMIN' | 'MANAGER' | 'USER' = 'ADMIN') {
     super(role)
   }
 }
