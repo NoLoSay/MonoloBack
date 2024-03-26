@@ -12,16 +12,12 @@ import {
   UnauthorizedException
 } from '@nestjs/common'
 import { ADMIN, MANAGER, Roles } from '@noloback/roles'
-import {
-  SiteManipulationModel,
-  SitesService
-} from '@noloback/sites.service'
+import { SiteManipulationModel, SitesService } from '@noloback/sites.service'
 import {
   SiteManagerAdditionModel,
   SiteManagerModificationModel,
   SitesManagersService
 } from '@noloback/sites.managers.service'
-import { JwtAuthGuard } from '@noloback/guards'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('sites')
@@ -69,12 +65,7 @@ export class SitesController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
-    if (
-      await this.sitesManagersService.isAllowedToModify(
-        request.user.id,
-        id
-      )
-    )
+    if (await this.sitesManagersService.isAllowedToModify(request.user, id))
       return this.sitesManagersService.findManagers(id)
     throw new UnauthorizedException()
   }
@@ -87,12 +78,9 @@ export class SitesController {
     @Body() managerRelationId: SiteManagerAdditionModel
   ) {
     if (
-      (await this.sitesManagersService.isAllowedToModify(
-        request.user.id,
-        id
-      )) &&
+      (await this.sitesManagersService.isAllowedToModify(request.user, id)) &&
       (await this.sitesManagersService.isMainManagerOfSite(
-        request.user.id,
+        request.user.activeProfile.id,
         id
       ))
     )
@@ -108,12 +96,9 @@ export class SitesController {
     @Param('managerId', ParseIntPipe) managerId: number
   ) {
     if (
-      (await this.sitesManagersService.isAllowedToModify(
-        request.user.id,
-        id
-      )) &&
+      (await this.sitesManagersService.isAllowedToModify(request.user, id)) &&
       (await this.sitesManagersService.isMainManagerOfSite(
-        request.user.id,
+        request.user.activeProfile.id,
         id
       ))
     )
@@ -130,12 +115,9 @@ export class SitesController {
     @Body() updatedRefRelation: SiteManagerModificationModel
   ) {
     if (
-      (await this.sitesManagersService.isAllowedToModify(
-        request.user.id,
-        id
-      )) &&
+      (await this.sitesManagersService.isAllowedToModify(request.user, id)) &&
       (await this.sitesManagersService.isMainManagerOfSite(
-        request.user.id,
+        request.user.activeProfile.id,
         id
       ))
     )

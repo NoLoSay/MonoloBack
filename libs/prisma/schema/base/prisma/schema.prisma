@@ -65,19 +65,19 @@ model City {
 }
 
 model Address {
-  id           Int        @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   houseNumber  String?
   street       String
   zip          String
   otherDetails String?
   longitude    Float?
   latitude     Float?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
   cityId       Int
-  City         City       @relation(fields: [cityId], references: [id])
-  Sites    Site[]
+  City         City      @relation(fields: [cityId], references: [id])
+  Sites        Site[]
 }
 
 // ---------------------------
@@ -118,36 +118,35 @@ enum Role {
 }
 
 model User {
-  id            Int                   @id @default(autoincrement())
-  uuid          String                @unique @default(uuid())
-  username      String                @unique @default(uuid())
-  email         String                @unique
+  id            Int                 @id @default(autoincrement())
+  uuid          String              @unique @default(uuid())
+  username      String              @unique @default(uuid())
+  email         String              @unique
   password      String
   picture       String?
   telNumber     String?
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
   deletedAt     DateTime?
   likedVideos   UserlikesVideos[]
   oAuthAccounts OAuthProviderUser[]
   loginHistory  UserLoginLog[]
   Videos        Video[]
-  ManagerOf    SiteHasManager[]
   profiles      Profile[]
 }
 
 model Profile {
-  id        Int       @id @default(autoincrement())
-  role      Role      @default(USER)
-  isActive  Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        Int              @id @default(autoincrement())
+  role      Role             @default(USER)
+  isActive  Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
   deletedAt DateTime?
   userId    Int
-  user      User      @relation(fields: [userId], references: [id])
+  user      User             @relation(fields: [userId], references: [id])
   // Videos      Video[]
   // LikedVideos UserlikesVideos[]
-  // ManagerOf  SiteHasManager[]
+  managerOf SiteHasManager[]
 
   @@unique([userId, role])
 }
@@ -272,8 +271,8 @@ model Exhibition {
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   deletedAt        DateTime?
-  siteId       Int
-  Site         Site        @relation(fields: [siteId], references: [id])
+  siteId           Int
+  Site             Site            @relation(fields: [siteId], references: [id])
   ExhibitedItems   ExhibitedItem[]
 }
 
@@ -310,38 +309,38 @@ enum SiteTag {
 }
 
 model Site {
-  id                   Int                   @id @default(autoincrement())
-  name                 String
-  shortDescription     String?
-  longDescription      String?
-  telNumber            String?
-  email                String?
-  website              String?
-  price                Float
-  picture              String?
-  type                 SiteType
-  tags                 SiteTag[]
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  deletedAt            DateTime?
-  addressId            Int
-  Address              Address               @relation(fields: [addressId], references: [id])
-  Exhibition           Exhibition[]
-  SiteHasManagers SiteHasManager[]
+  id               Int              @id @default(autoincrement())
+  name             String
+  shortDescription String?
+  longDescription  String?
+  telNumber        String?
+  email            String?
+  website          String?
+  price            Float
+  picture          String?
+  type             SiteType
+  tags             SiteTag[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  deletedAt        DateTime?
+  addressId        Int
+  Address          Address          @relation(fields: [addressId], references: [id])
+  Exhibition       Exhibition[]
+  SiteHasManagers  SiteHasManager[]
 }
 
 model SiteHasManager {
-  id         Int       @id @default(autoincrement())
-  isMain     Boolean   @default(false)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
-  siteId Int
-  userId     Int
-  Site   Site  @relation(fields: [siteId], references: [id])
-  User       User      @relation(fields: [userId], references: [id])
+  id        Int       @id @default(autoincrement())
+  isMain    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  siteId    Int
+  profileId Int
+  Site      Site      @relation(fields: [siteId], references: [id])
+  profile   Profile   @relation(fields: [profileId], references: [id])
 
-  @@unique([userId, siteId])
+  @@unique([profileId, siteId])
   @@unique([isMain, siteId])
 }
 

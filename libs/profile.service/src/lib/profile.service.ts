@@ -17,11 +17,13 @@ import {
   ProfileListSelect,
   ProfileAdminSelect
 } from '@noloback/db.calls'
-import { UserRequestModel } from '@noloback/requests'
+import { UserRequestModel } from '@noloback/requests.constructor'
 
 @Injectable()
 export class ProfileService {
-  constructor (private prismaBase: PrismaBaseService) {}
+  constructor (
+    private readonly prismaBase: PrismaBaseService
+  ) {}
 
   async getUserProfiles (user: UserRequestModel): Promise<ProfileListReturn[]> {
     let selectOptions: Prisma.ProfileSelect

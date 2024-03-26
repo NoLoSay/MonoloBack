@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsOptional, IsString, MinLength, IsEmail, IsStrongPassword } from 'class-validator'
+import {
+  IsOptional,
+  IsString,
+  MinLength,
+  IsEmail,
+  IsStrongPassword
+} from 'class-validator'
 
 export class UserCreateModel {
   @ApiProperty()
@@ -17,7 +23,7 @@ export class UserCreateModel {
     minLowercase: 1,
     minUppercase: 1,
     minNumbers: 1,
-    minSymbols: 1,
+    minSymbols: 1
   })
   password: string = ''
 
@@ -48,7 +54,7 @@ export class UserUpdateModel {
     minLowercase: 1,
     minUppercase: 1,
     minNumbers: 1,
-    minSymbols: 1,
+    minSymbols: 1
   })
   @IsOptional()
   password?: string

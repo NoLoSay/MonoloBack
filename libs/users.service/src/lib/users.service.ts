@@ -15,7 +15,7 @@ import {
   UserAdminUpdateModel,
   UserCreateModel
 } from './models/user.manipulation.models'
-import { UserRequestModel } from '@noloback/requests'
+import { UserRequestModel } from '@noloback/requests.constructor'
 
 @Injectable()
 export class UsersService {

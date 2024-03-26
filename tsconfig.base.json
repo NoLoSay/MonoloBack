@@ -20,6 +20,7 @@
       ],
       "@noloback/addresses.service": ["libs/addresses.service/src/index.ts"],
       "@noloback/api.returns": ["models/api.returns"],
+      "@noloback/api.request.bodies": ["models/api.request.bodies"],
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
       "@noloback/cities.controller": ["libs/cities.controller/src/index.ts"],
@@ -79,7 +80,7 @@
       "@noloback/register.controller": [
         "libs/register.controller/src/index.ts"
       ],
-      "@noloback/requests": ["models/requests"],
+      "@noloback/requests.constructor": ["models/requests.constructor"],
       "@noloback/roles": ["models/roles"],
       "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
       "@noloback/sites.controller": [

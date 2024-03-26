@@ -1,12 +1,10 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
-import {
-  PrismaBaseService,
-  SiteHasManager
-} from '@noloback/prisma-client-base'
+import { PrismaBaseService, SiteHasManager } from '@noloback/prisma-client-base'
 import {
   SiteManagerAdditionModel,
   SiteManagerModificationModel
 } from './models/siteManagerManipulation.model'
+import { UserRequestModel } from '@noloback/requests.constructor'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
@@ -16,7 +14,7 @@ export class SitesManagersService {
   ) {}
 
   async isAllowedToModify (
-    user: { id: number; activeProfile: { role: string } },
+    user: UserRequestModel,
     siteId: number
   ): Promise<boolean> {
     return (
@@ -33,15 +31,15 @@ export class SitesManagersService {
           siteId: siteId
         },
         select: {
-          isMain: true,
-          User: {
-            select: {
-              id: true,
-              username: true,
-              email: true,
-              picture: true
-            }
-          }
+          isMain: true
+          // User: {
+          //   select: {
+          //     id: true,
+          //     username: true,
+          //     email: true,
+          //     picture: true
+          //   }
+          // }
         }
       })
       .catch((e: Error) => {
@@ -59,7 +57,7 @@ export class SitesManagersService {
         data: {
           isMain: manager.isMain,
           siteId: siteId,
-          userId: manager.managerId
+          profileId: manager.managerId
         }
       })
       .catch((e: Error) => {
@@ -76,8 +74,8 @@ export class SitesManagersService {
     return await this.prismaBase.siteHasManager
       .update({
         where: {
-          userId_siteId: {
-            userId: userId,
+          profileId_siteId: {
+            profileId: userId,
             siteId: siteId
           }
         },
@@ -91,16 +89,13 @@ export class SitesManagersService {
       })
   }
 
-  async deleteManager (
-    siteId: number,
-    userId: number
-  ): Promise<SiteHasManager> {
+  async deleteManager (siteId: number, userId: number): Promise<SiteHasManager> {
     return await this.prismaBase.siteHasManager
       .delete({
         where: {
-          userId_siteId: {
+          profileId_siteId: {
             siteId: siteId,
-            userId: userId
+            profileId: userId
           }
         }
       })
@@ -110,40 +105,38 @@ export class SitesManagersService {
       })
   }
 
-  async isManagerOfSite (managerId: number, siteId: number) {
-    const relation: SiteHasManager | null =
-      await this.prismaBase.siteHasManager
-        .findUnique({
-          where: {
-            userId_siteId: {
-              siteId: siteId,
-              userId: managerId
-            }
+  async isManagerOfSite (managerProfileId: number, siteId: number) {
+    const relation: SiteHasManager | null = await this.prismaBase.siteHasManager
+      .findUnique({
+        where: {
+          profileId_siteId: {
+            siteId: siteId,
+            profileId: managerProfileId
           }
-        })
-        .catch((e: Error) => {
-          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
-          throw new InternalServerErrorException(e)
-        })
+        }
+      })
+      .catch((e: Error) => {
+        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      })
     return relation !== null
   }
 
-  async isMainManagerOfSite (managerId: number, siteId: number) {
-    const relation: SiteHasManager | null =
-      await this.prismaBase.siteHasManager
-        .findUnique({
-          where: {
-            userId_siteId: {
-              siteId: siteId,
-              userId: managerId,
-              isMain: true
-            }
+  async isMainManagerOfSite (managerProfileId: number, siteId: number) {
+    const relation: SiteHasManager | null = await this.prismaBase.siteHasManager
+      .findUnique({
+        where: {
+          profileId_siteId: {
+            siteId: siteId,
+            profileId: managerProfileId,
+            isMain: true
           }
-        })
-        .catch((e: Error) => {
-          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
-          throw new InternalServerErrorException(e)
-        })
+        }
+      })
+      .catch((e: Error) => {
+        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      })
     return relation !== null
   }
 }

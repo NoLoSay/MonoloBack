@@ -5,17 +5,23 @@ import {
   Body,
   Request,
   Response,
-  Delete
+  Delete,
+  UnauthorizedException
 } from '@nestjs/common'
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ProfileService } from '@noloback/profile.service'
 import { ProfileListReturn, ProfileCommonReturn } from '@noloback/api.returns'
 import { ADMIN, MODERATOR, MANAGER, Roles } from '@noloback/roles'
+import { SitesManagersService } from '@noloback/sites.managers.service'
+import { CreateAdminProfileRequestBody, CreateManagerProfileRequestBody, CreateModeratorProfileRequestBody, DeleteAdminProfileRequestBody, DeleteManagerProfileRequestBody, DeleteModeratorProfileRequestBody } from '@noloback/api.request.bodies'
 
 @Controller('profiles')
 @ApiExtraModels()
 export class ProfileController {
-  constructor (private profileService: ProfileService) {}
+  constructor (
+    private readonly profileService: ProfileService,
+    private readonly sitesManagerService: SitesManagersService
+  ) {}
 
   @Get()
   async getProfiles (
@@ -24,11 +30,7 @@ export class ProfileController {
   ): Promise<ProfileListReturn[]> {
     return res
       .status(200)
-      .json(
-        await this.profileService.getUserProfiles(
-          request.user
-        )
-      )
+      .json(await this.profileService.getUserProfiles(request.user))
   }
 
   @Get('active')
@@ -60,7 +62,7 @@ export class ProfileController {
   async createAdminProfile (
     @Request() request: any,
     @Response() res: any,
-    @Body() whoPromote: { userId: number }
+    @Body() whoPromote: CreateAdminProfileRequestBody
   ): Promise<ProfileCommonReturn> {
     return res
       .status(200)
@@ -72,7 +74,7 @@ export class ProfileController {
   async deleteAdminProfile (
     @Request() request: any,
     @Response() res: any,
-    @Body() whoUnpromote: { userId: number }
+    @Body() whoUnpromote: DeleteAdminProfileRequestBody
   ): Promise<ProfileCommonReturn> {
     return res
       .status(200)
@@ -89,7 +91,7 @@ export class ProfileController {
   async createModeratorProfile (
     @Request() request: any,
     @Response() res: any,
-    @Body() whoPromote: { userId: number }
+    @Body() whoPromote: CreateModeratorProfileRequestBody
   ): Promise<ProfileCommonReturn> {
     return res
       .status(200)
@@ -103,7 +105,7 @@ export class ProfileController {
   async deleteModeratorProfile (
     @Request() request: any,
     @Response() res: any,
-    @Body() whoUnpromote: { userId: number }
+    @Body() whoUnpromote: DeleteModeratorProfileRequestBody
   ): Promise<ProfileCommonReturn> {
     return res
       .status(200)
@@ -115,31 +117,32 @@ export class ProfileController {
       )
   }
 
-  // @Roles([ADMIN, MANAGER])
-  // @Post('create/manager')
-  // async createManagerProfile (
-  //   @Request() request: any,
-  //   @Response() res: any,
-  //   @Body() body: {userId: number}
-  // ): Promise<ProfileCommonReturn> {
-  //   return res
-  //     .status(200)
-  //     .json(
-  //       await this.profileService.createManagerProfile(request.user.id, userId)
-  //     )
-  // }
+  @Roles([ADMIN])
+  @Post('create/manager')
+  async createManagerProfile (
+    @Request() request: any,
+    @Response() res: any,
+    @Body() whoPromote: CreateManagerProfileRequestBody
+  ): Promise<ProfileCommonReturn> {
+    return res
+      .status(200)
+      .json(await this.profileService.createProfile(whoPromote.userId, MANAGER))
+  }
 
-  // @Roles([ADMIN, MANAGER])
-  // @Delete('delete/manager')
-  // async deleteManagerProfile (
-  //   @Request() request: any,
-  //   @Response() res: any,
-  //   @Body() body: {userId: number}
-  // ): Promise<ProfileCommonReturn> {
-  //   return res
-  //     .status(200)
-  //     .json(
-  //       await this.profileService.deleteManagerProfile(request.user.id, userId)
-  //     )
-  // }
+  @Roles([ADMIN])
+  @Delete('delete/manager')
+  async deleteManagerProfile (
+    @Request() request: any,
+    @Response() res: any,
+    @Body() whoUnpromote: DeleteManagerProfileRequestBody
+  ): Promise<ProfileCommonReturn> {
+    return res
+      .status(200)
+      .json(
+        await this.profileService.deleteUsersProfileByRole(
+          whoUnpromote.userId,
+          MANAGER
+        )
+      )
+  }
 }
