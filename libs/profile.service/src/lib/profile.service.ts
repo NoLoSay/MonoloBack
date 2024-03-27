@@ -1,4 +1,4 @@
-import { Prisma, PrismaBaseService } from '@noloback/prisma-client-base'
+import { Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
 import {
   ConflictException,
   ForbiddenException,
@@ -29,7 +29,7 @@ export class ProfileService {
     let selectOptions: Prisma.ProfileSelect
 
     switch (user.activeProfile.role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new ProfileAdminSelect()
         break
       default:
@@ -40,7 +40,7 @@ export class ProfileService {
       select: selectOptions
     })
     switch (user.activeProfile.role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return profiles as ProfileAdminReturn[]
       default:
         return profiles as ProfileListReturn[]
@@ -90,7 +90,7 @@ export class ProfileService {
 
   async createProfile (
     userId: number,
-    role: 'USER' | 'ADMIN' | 'MANAGER' | 'CREATOR' | 'MODERATOR'
+    role: Role
   ): Promise<ProfileCommonReturn> {
     const toWho = await this.prismaBase.user.findUnique({
       where: { id: userId },
@@ -137,7 +137,7 @@ export class ProfileService {
 
   async deleteUsersProfileByRole (
     userId: number,
-    role: 'USER' | 'ADMIN' | 'MANAGER' | 'CREATOR' | 'MODERATOR'
+    role: Role
   ): Promise<ProfileCommonReturn> {
     const toWho = await this.prismaBase.user.findUnique({
       where: { id: userId },
@@ -173,7 +173,7 @@ export class ProfileService {
       data: { isActive: false }
     })
     await this.prismaBase.profile.updateMany({
-      where: { userId: userId, role: 'USER' },
+      where: { userId: userId, role: Role.USER },
       data: { isActive: true }
     })
 

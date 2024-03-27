@@ -10,11 +10,9 @@ import {
   Request
 } from '@nestjs/common'
 import { ADMIN, Roles } from '@noloback/roles'
-import {
-  AddressAdminReturn,
-  AddressManipulationModel,
-  AddressesService
-} from '@noloback/addresses.service'
+import { AddressAdminReturn } from '@noloback/api.returns'
+import { AddressManipulationModel } from '@noloback/api.request.bodies'
+import { AddressesService } from '@noloback/addresses.service'
 
 @Controller('addresses')
 export class AddressesController {
@@ -46,7 +44,11 @@ export class AddressesController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedAddress: AddressManipulationModel
   ) {
-    return this.addressesService.update(id, updatedAddress, request.user.activeProfile.role)
+    return this.addressesService.update(
+      id,
+      updatedAddress,
+      request.user.activeProfile.role
+    )
   }
 
   @Roles([ADMIN])

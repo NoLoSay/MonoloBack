@@ -1,4 +1,4 @@
-import { Prisma, PrismaBaseService, User } from '@noloback/prisma-client-base'
+import { Prisma, PrismaBaseService, Role, User } from '@noloback/prisma-client-base'
 import {
   ConflictException,
   HttpException,
@@ -208,6 +208,23 @@ export class UsersService {
     )
   }
 
+  private async reactivateUserProfile(user: User): Promise<UserRequestModel | null> {
+    const reactivatedProfiles = await this.prismaBase.profile.updateMany({
+      where: {
+        userId: user.id,
+        role: Role.USER,
+        deletedAt: null
+      },
+      data: {
+        isActive: true
+      }
+    })
+    if (reactivatedProfiles.count === 0) {
+      throw new InternalServerErrorException('User has no activable profile. Please contact us.')
+    }
+    return this.connectUserByEmailOrUsername(user.email)
+  }
+
   async connectUserByEmailOrUsername (
     search: string
   ): Promise<UserRequestModel | null> {
@@ -219,18 +236,21 @@ export class UsersService {
         profiles: {
           select: {
             id: true,
-            role: true
-          },
-          where: {
+            role: true,
             isActive: true
           }
         }
       }
     })
-
-    return user && user?.profiles.length && !user?.deletedAt
-      ? this.formatUser(user)
-      : null
+    if (!user || user.deletedAt) return null
+    const activeProfile = user.profiles.find((profile) => profile.isActive === true)
+    if (!activeProfile) {
+      return this.reactivateUserProfile(user)
+    }
+    if (!activeProfile)
+      throw new InternalServerErrorException('User has no activable profile. Please contact us.')
+    user.profiles = [activeProfile];
+    return this.formatUser(user)
   }
 
   async update (

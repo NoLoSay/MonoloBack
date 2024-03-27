@@ -324,9 +324,9 @@ model Site {
   updatedAt        DateTime         @updatedAt
   deletedAt        DateTime?
   addressId        Int
-  Address          Address          @relation(fields: [addressId], references: [id])
-  Exhibition       Exhibition[]
-  SiteHasManagers  SiteHasManager[]
+  address          Address          @relation(fields: [addressId], references: [id])
+  exhibition       Exhibition[]
+  siteHasManagers  SiteHasManager[]
 }
 
 model SiteHasManager {
@@ -337,11 +337,10 @@ model SiteHasManager {
   deletedAt DateTime?
   siteId    Int
   profileId Int
-  Site      Site      @relation(fields: [siteId], references: [id])
+  site      Site      @relation(fields: [siteId], references: [id])
   profile   Profile   @relation(fields: [profileId], references: [id])
 
   @@unique([profileId, siteId])
-  @@unique([isMain, siteId])
 }
 
 // --------------------------

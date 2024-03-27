@@ -7,17 +7,20 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  UseGuards,
   Request,
+  Response,
   UnauthorizedException
 } from '@nestjs/common'
 import { ADMIN, MANAGER, Roles } from '@noloback/roles'
-import { SiteManipulationModel, SitesService } from '@noloback/sites.service'
+import { SitesService } from '@noloback/sites.service'
 import {
-  SiteManagerAdditionModel,
-  SiteManagerModificationModel,
-  SitesManagersService
-} from '@noloback/sites.managers.service'
+  InviteManagerRequestBody,
+  RemoveManagerRequestBody,
+  SiteManagerModificationRequestBody,
+  SiteManipulationRequestBody
+} from '@noloback/api.request.bodies'
+import { SitesManagersService } from '@noloback/sites.managers.service'
+import { Role } from '@prisma/client/base'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('sites')
@@ -27,46 +30,63 @@ export class SitesController {
     private readonly sitesManagersService: SitesManagersService // private loggingService: LoggerService
   ) {}
 
-  @Roles([ADMIN])
   @Get()
-  async findAll () {
-    return this.sitesService.findAll()
+  async findAll (@Request() request: any, @Response() res: any) {
+    return res.status(200).json(await this.sitesService.findAll(request.user))
   }
 
   @Get(':id')
-  async findOne (@Param('id', ParseIntPipe) id: number) {
-    return this.sitesService.findOne(id)
+  async findOne (
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: any,
+    @Response() res: any
+  ) {
+    return res
+      .status(200)
+      .json(await this.sitesService.findOne(id, request.user))
   }
 
   @Roles([ADMIN])
   @Post()
-  async create (@Body() sites: SiteManipulationModel) {
-    return this.sitesService.create(sites)
+  async create (
+    @Response() res: any,
+    @Body() sites: SiteManipulationRequestBody
+  ) {
+    return res.status(200).json(await this.sitesService.create(sites))
   }
 
-  @Roles([ADMIN])
+  @Roles([ADMIN, MANAGER])
   @Put(':id')
   async update (
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatedSite: SiteManipulationModel
+    @Request() request: any,
+    @Response() res: any,
+    @Body() updatedSite: SiteManipulationRequestBody
   ) {
-    return this.sitesService.update(id, updatedSite)
+    if (await this.sitesManagersService.isAllowedToModify(request.user, id))
+      return res
+        .status(200)
+        .json(await this.sitesService.update(id, updatedSite))
+    throw new UnauthorizedException()
   }
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number) {
-    return this.sitesService.delete(id)
+  async delete (@Param('id', ParseIntPipe) id: number, @Response() res: any) {
+    return res.status(200).json(await this.sitesService.delete(id))
   }
 
   @Roles([ADMIN, MANAGER])
   @Get(':id/managers')
   async findManagers (
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
+    @Response() res: any
   ) {
     if (await this.sitesManagersService.isAllowedToModify(request.user, id))
-      return this.sitesManagersService.findManagers(id)
+      return res
+        .status(200)
+        .json(await this.sitesManagersService.findManagers(id))
     throw new UnauthorizedException()
   }
 
@@ -74,58 +94,66 @@ export class SitesController {
   @Post(':id/managers')
   async addManager (
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number,
-    @Body() managerRelationId: SiteManagerAdditionModel
+    @Response() res: any,
+    @Param('id', ParseIntPipe) siteId: number,
+    @Body() invitation: InviteManagerRequestBody
   ) {
     if (
-      (await this.sitesManagersService.isAllowedToModify(request.user, id)) &&
+      request.user.activeProfile.role === ADMIN ||
       (await this.sitesManagersService.isMainManagerOfSite(
         request.user.activeProfile.id,
-        id
+        siteId
       ))
     )
-      return this.sitesManagersService.addManager(id, managerRelationId)
+      return res
+        .status(200)
+        .json(
+          await this.sitesManagersService.addManager(siteId, invitation.email)
+        )
     throw new UnauthorizedException()
   }
 
   @Roles([ADMIN, MANAGER])
-  @Delete(':id/managers/:managerId')
+  @Delete(':id/managers')
   async deleteManager (
     @Request() request: any,
+    @Response() res: any,
     @Param('id', ParseIntPipe) id: number,
-    @Param('managerId', ParseIntPipe) managerId: number
+    @Body() removedManager: RemoveManagerRequestBody
   ) {
     if (
-      (await this.sitesManagersService.isAllowedToModify(request.user, id)) &&
+      request.user.activeProfile.role == Role.ADMIN ||
       (await this.sitesManagersService.isMainManagerOfSite(
         request.user.activeProfile.id,
         id
       ))
     )
-      return this.sitesManagersService.deleteManager(id, managerId)
+      return res
+        .status(200)
+        .json(await this.sitesManagersService.deleteManager(id, removedManager))
     throw new UnauthorizedException()
   }
 
   @Roles([ADMIN, MANAGER])
-  @Put(':id/managers/:managerId')
+  @Put(':id/managers')
   async updateManager (
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number,
-    @Param('managerId', ParseIntPipe) managerRelationId: number,
-    @Body() updatedRefRelation: SiteManagerModificationModel
+    @Response() res: any,
+    @Param('id', ParseIntPipe) siteId: number,
+    @Body() updatedRelation: SiteManagerModificationRequestBody
   ) {
     if (
-      (await this.sitesManagersService.isAllowedToModify(request.user, id)) &&
+      request.user.activeProfile.role == Role.ADMIN ||
       (await this.sitesManagersService.isMainManagerOfSite(
         request.user.activeProfile.id,
-        id
+        siteId
       ))
     )
-      return this.sitesManagersService.updateManager(
-        id,
-        managerRelationId,
-        updatedRefRelation
-      )
+      return res
+        .status(200)
+        .json(
+          await this.sitesManagersService.updateManager(siteId, updatedRelation)
+        )
     throw new UnauthorizedException()
   }
 }

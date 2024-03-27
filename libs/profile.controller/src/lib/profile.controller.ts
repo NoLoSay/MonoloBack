@@ -5,15 +5,14 @@ import {
   Body,
   Request,
   Response,
-  Delete,
-  UnauthorizedException
+  Delete
 } from '@nestjs/common'
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ProfileService } from '@noloback/profile.service'
 import { ProfileListReturn, ProfileCommonReturn } from '@noloback/api.returns'
 import { ADMIN, MODERATOR, MANAGER, Roles } from '@noloback/roles'
 import { SitesManagersService } from '@noloback/sites.managers.service'
-import { CreateAdminProfileRequestBody, CreateManagerProfileRequestBody, CreateModeratorProfileRequestBody, DeleteAdminProfileRequestBody, DeleteManagerProfileRequestBody, DeleteModeratorProfileRequestBody } from '@noloback/api.request.bodies'
+import { ChangeProfileRequestBody, CreateAdminProfileRequestBody, CreateManagerProfileRequestBody, CreateModeratorProfileRequestBody, DeleteAdminProfileRequestBody, DeleteManagerProfileRequestBody, DeleteModeratorProfileRequestBody } from '@noloback/api.request.bodies'
 
 @Controller('profiles')
 @ApiExtraModels()
@@ -47,7 +46,7 @@ export class ProfileController {
   async changeActiveProfile (
     @Request() request: any,
     @Response() res: any,
-    @Body() profile: { profileId: number }
+    @Body() profile: ChangeProfileRequestBody
   ): Promise<ProfileCommonReturn> {
     return res.status(200).json({
       activeProfile: await this.profileService.changeActiveProfile(
