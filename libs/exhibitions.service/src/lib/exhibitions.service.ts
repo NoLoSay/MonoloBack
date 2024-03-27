@@ -39,7 +39,7 @@ export class ExhibitionsService {
           longDescription: exhibition.longDescription,
           startDate: exhibition.startDate,
           endDate: exhibition.endDate,
-          Site: {
+          site: {
             connect: {
               id: exhibition.siteId
             }
@@ -77,7 +77,7 @@ export class ExhibitionsService {
           longDescription: updatedExhibition.longDescription,
           startDate: updatedExhibition.startDate,
           endDate: updatedExhibition.endDate,
-          Site: {
+          site: {
             connect: {
               id: updatedExhibition.siteId
             }

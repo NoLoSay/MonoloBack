@@ -36,7 +36,7 @@ export class ItemTypesService {
         data: {
           name: itemType.name,
           description: itemType.description,
-          ItemCategory: {
+          itemCategory: {
             connect: {
               id: itemType.itemCategoryId
             }
@@ -71,7 +71,7 @@ export class ItemTypesService {
         data: {
           name: updatedItemType.name,
           description: updatedItemType.description,
-          ItemCategory: {
+          itemCategory: {
             connect: {
               id: updatedItemType.itemCategoryId
             }

@@ -1,47 +1,59 @@
-import { Prisma, PrismaBaseService } from '@noloback/prisma-client-base';
+import { Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
 import {
-  BadRequestException,
   Injectable,
   InternalServerErrorException,
-} from '@nestjs/common';
-import { ItemManipulationModel } from './models/item.manipulation.models';
+  NotFoundException
+} from '@nestjs/common'
+import { VideoService } from '@noloback/video.service'
+import {
+  ItemAdminReturn,
+  ItemCommonReturn,
+  ItemDetailedReturn
+} from '@noloback/api.returns'
 import {
   ItemAdminSelect,
   ItemCommonSelect,
-  ItemCommonReturn,
-  ItemAdminReturn,
-  ItemDetailedReturn,
-  ItemDetailedSelect,
-} from './models/item.api.models';
-import { VideoService } from '@noloback/video.service';
+  ItemDetailedSelect
+} from '@noloback/db.calls'
+import { ItemManipulationModel } from '@noloback/api.request.bodies'
+import { UserRequestModel } from '@noloback/requests.constructor'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ItemsService {
-  constructor(
+  constructor (
     private prismaBase: PrismaBaseService,
     private videoService: VideoService //private loggingService: LoggerService
   ) {}
 
-  async count(): Promise<number> {
-    return this.prismaBase.item.count();
+  async count (): Promise<number> {
+    return this.prismaBase.item.count({ where: { deletedAt: null } })
   }
 
-  async findAll(
-    role: 'USER' | 'ADMIN' | 'MANAGER',
+  private async checkExistingItem (id: number) {
+    if (
+      (await this.prismaBase.item.count({
+        where: { id: id, deletedAt: null }
+      })) === 0
+    )
+      throw new NotFoundException('Item not found')
+  }
+
+  async findAll (
+    role: Role,
     firstElem: number,
     lastElem: number,
     nameLike: string | undefined
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
-    let selectOptions: Prisma.ItemSelect;
+    let selectOptions: Prisma.ItemSelect
 
     switch (role) {
-      case 'ADMIN':
-        selectOptions = new ItemAdminSelect();
-        break;
+      case Role.ADMIN:
+        selectOptions = new ItemAdminSelect()
+        break
       default:
-        selectOptions = new ItemCommonSelect();
+        selectOptions = new ItemCommonSelect()
     }
 
     const items: unknown = await this.prismaBase.item
@@ -49,185 +61,192 @@ export class ItemsService {
         skip: firstElem,
         take: lastElem - firstElem,
         select: selectOptions,
-        where: nameLike
-          ? {
-              name: {
-                contains: nameLike,
-              },
-            }
-          : undefined,
+        where: {
+          name: nameLike
+            ? {
+                contains: nameLike
+              }
+            : undefined,
+          deletedAt: role === Role.ADMIN ? undefined : null
+        }
       })
       .catch((e: Error) => {
-        console.log(e);
+        console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e);
-      });
+        throw new InternalServerErrorException(e)
+      })
 
     switch (role) {
-      case 'ADMIN':
-        return items as ItemAdminReturn[];
+      case Role.ADMIN:
+        return items as ItemAdminReturn[]
       default:
-        return items as ItemCommonReturn[];
+        return items as ItemCommonReturn[]
     }
   }
 
-  async findOneDetailled(
+  async findOneDetailled (
     id: number,
-    role: 'USER' | 'ADMIN' | 'MANAGER'
+    user: UserRequestModel
   ): Promise<ItemDetailedReturn | ItemAdminReturn> {
-    let selectOptions: Prisma.ItemSelect;
-    switch (role) {
-      case 'ADMIN':
-        selectOptions = new ItemAdminSelect();
-        break;
+    let selectOptions: Prisma.ItemSelect
+    switch (user.activeProfile.role) {
+      case Role.ADMIN:
+        selectOptions = new ItemAdminSelect()
+        break
       default:
-        selectOptions = new ItemDetailedSelect(role);
+        selectOptions = new ItemDetailedSelect(user.activeProfile.role)
     }
 
     const item: unknown = await this.prismaBase.item
       .findUnique({
         where: {
           id: id,
+          deletedAt: user.activeProfile.role === Role.ADMIN ? null : undefined
         },
-        select: selectOptions,
+        select: selectOptions
       })
       .catch((e: Error) => {
-        console.log(e);
+        console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new BadRequestException(e);
-      });
+        throw new InternalServerErrorException(e)
+      })
 
-    switch (role) {
-      case 'ADMIN':
-        return item as ItemAdminReturn;
+    if (item == null) throw new NotFoundException('Item not found')
+    switch (user.activeProfile.role) {
+      case Role.ADMIN:
+        return item as ItemAdminReturn
       default:
-        return item as ItemDetailedReturn;
+        return item as ItemDetailedReturn
     }
   }
 
-  async create(item: ItemManipulationModel): Promise<ItemCommonReturn> {
+  async create (item: ItemManipulationModel): Promise<ItemCommonReturn> {
     const newItemData: {
-      name: string;
-      description: string;
-      RelatedPerson?: {
+      name: string
+      description: string
+      relatedPerson?: {
         connect: {
-          id: number;
-        };
-      };
-      ItemType?: {
+          id: number
+        }
+      }
+      itemType?: {
         connect: {
-          id: number;
-        };
-      };
+          id: number
+        }
+      }
     } = {
       name: item.name,
-      description: item.description,
-    };
+      description: item.description
+    }
 
     if (item.relatedPersonId != null) {
-      newItemData.RelatedPerson = {
+      newItemData.relatedPerson = {
         connect: {
-          id: item.relatedPersonId,
-        },
-      };
+          id: item.relatedPersonId
+        }
+      }
     }
 
     if (item.itemTypeId != null) {
-      newItemData.ItemType = {
+      newItemData.itemType = {
         connect: {
-          id: item.itemTypeId,
-        },
-      };
+          id: item.itemTypeId
+        }
+      }
     }
 
     const newItem: unknown = await this.prismaBase.item
       .create({
         data: newItemData,
-        select: new ItemAdminSelect(),
+        select: new ItemAdminSelect()
       })
       .catch((e: Error) => {
-        console.log(e);
+        console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e);
-      });
+        throw new InternalServerErrorException(e)
+      })
 
-    return newItem as ItemCommonReturn;
+    return newItem as ItemCommonReturn
   }
 
-  async update(
+  async update (
     id: number,
     updatedItem: ItemManipulationModel
   ): Promise<ItemCommonReturn> {
+    this.checkExistingItem(id)
     const updatedItemData: {
-      name: string;
-      description: string;
-      RelatedPerson?: {
+      name: string
+      description: string
+      relatedPerson?: {
         connect: {
-          id: number;
-        };
-      };
-      ItemType?: {
+          id: number
+        }
+      }
+      itemType?: {
         connect: {
-          id: number;
-        };
-      };
+          id: number
+        }
+      }
     } = {
       name: updatedItem.name,
-      description: updatedItem.description,
-    };
+      description: updatedItem.description
+    }
 
     if (updatedItem.relatedPersonId != null) {
-      updatedItemData.RelatedPerson = {
+      updatedItemData.relatedPerson = {
         connect: {
-          id: updatedItem.relatedPersonId,
-        },
-      };
+          id: updatedItem.relatedPersonId
+        }
+      }
     }
 
     if (updatedItem.itemTypeId != null) {
-      updatedItemData.ItemType = {
+      updatedItemData.itemType = {
         connect: {
-          id: updatedItem.itemTypeId,
-        },
-      };
+          id: updatedItem.itemTypeId
+        }
+      }
     }
     const updated: unknown = await this.prismaBase.item
       .update({
         where: { id: id },
-        data: updatedItemData,
+        data: updatedItemData
       })
       .catch((e: Error) => {
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e);
-      });
+        throw new InternalServerErrorException(e)
+      })
 
-    return updated as ItemCommonReturn;
+    return updated as ItemCommonReturn
   }
 
-  async delete(id: number): Promise<ItemCommonReturn> {
+  async delete (id: number): Promise<ItemCommonReturn> {
+    this.checkExistingItem(id)
     const deleted: unknown = await this.prismaBase.item
-      .delete({
+      .update({
         where: { id: id },
-        select: new ItemCommonSelect(),
+        data: { deletedAt: new Date() },
+        select: new ItemCommonSelect()
       })
       .catch((e: Error) => {
-        console.log(e);
+        console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e);
-      });
-    return deleted as ItemCommonReturn;
+        throw new InternalServerErrorException(e)
+      })
+    return deleted as ItemCommonReturn
   }
 
-  async findAllVideoPendingItems(): Promise<ItemCommonReturn> {
+  async findAllVideoPendingItems (): Promise<ItemCommonReturn> {
     const items: unknown = this.prismaBase.item.findMany({
       where: {
-        Videos: {
+        deletedAt: null,
+        videos: {
           none: {
-            validationStatus: 'VALIDATED',
-          },
-        },
-      },
-    });
-    return items as ItemCommonReturn;
+            validationStatus: 'VALIDATED'
+          }
+        }
+      }
+    })
+    return items as ItemCommonReturn
   }
 }

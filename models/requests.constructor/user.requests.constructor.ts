@@ -1,5 +1,7 @@
+import { Role } from "@prisma/client/base"
+
 export class RequestActiveProfile {
-  role: string = ''
+  role: Role = Role.USER
   id: number = 0
 }
 

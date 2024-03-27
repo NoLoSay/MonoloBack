@@ -20,32 +20,32 @@ export class ExhibitedItemsService {
         },
         select: {
           id: true,
-          Exhibition: {
+          exhibition: {
             select: {
               name: true,
-              Site: {
+              site: {
                 select: {
                   name: true
                 }
               }
             }
           },
-          Item: {
+          item: {
             select: {
               id: true,
               name: true,
               description: true,
-              RelatedPerson: {
+              relatedPerson: {
                 select: {
                   name: true,
                   bio: true
                 }
               },
-              ItemType: {
+              itemType: {
                 select: {
                   name: true,
                   description: true,
-                  ItemCategory: {
+                  itemCategory: {
                     select: {
                       name: true,
                       description: true
@@ -70,12 +70,12 @@ export class ExhibitedItemsService {
     return await this.prismaBase.exhibitedItem
       .create({
         data: {
-          Exhibition: {
+          exhibition: {
             connect: {
               id: exhibitionId
             }
           },
-          Item: {
+          item: {
             connect: {
               id: exhibitedItem.itemId
             }

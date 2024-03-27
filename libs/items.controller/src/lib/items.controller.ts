@@ -8,20 +8,15 @@ import {
   Delete,
   ParseIntPipe,
   Request,
-  UnauthorizedException,
   Response,
   Query
 } from '@nestjs/common'
 import { ADMIN, CREATOR, MANAGER, Roles } from '@noloback/roles'
-import {
-  ItemAdminReturn,
-  ItemCommonReturn,
-  ItemDetailedReturn,
-  ItemManipulationModel,
-  ItemsService
-} from '@noloback/items.service'
+import { ItemsService } from '@noloback/items.service'
 import { SitesManagersService } from '@noloback/sites.managers.service'
 import { VideoService } from '@noloback/video.service'
+import { ItemAdminReturn, ItemCommonReturn, ItemDetailedReturn } from '@noloback/api.returns'
+import { ItemManipulationModel } from '@noloback/api.request.bodies'
 
 @Controller('items')
 export class ItemsController {
@@ -69,7 +64,7 @@ export class ItemsController {
   ): Promise<ItemDetailedReturn | ItemAdminReturn> {
     return this.itemsService.findOneDetailled(
       id,
-      request.user.activeProfile.role
+      request.user
     )
   }
 

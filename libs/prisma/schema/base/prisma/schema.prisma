@@ -225,7 +225,7 @@ model ItemCategory {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   deletedAt   DateTime?
-  ItemTypes   ItemType[]
+  itemTypes   ItemType[]
 }
 
 model ItemType {
@@ -236,8 +236,8 @@ model ItemType {
   updatedAt      DateTime     @updatedAt
   deletedAt      DateTime?
   itemCategoryId Int
-  ItemCategory   ItemCategory @relation(fields: [itemCategoryId], references: [id])
-  Items          Item[]
+  itemCategory   ItemCategory @relation(fields: [itemCategoryId], references: [id])
+  items          Item[]
 }
 
 model Item {
@@ -251,10 +251,10 @@ model Item {
   deletedAt       DateTime?
   itemTypeId      Int?
   relatedPersonId Int?
-  ItemType        ItemType?       @relation(fields: [itemTypeId], references: [id])
-  RelatedPerson   Person?         @relation(fields: [relatedPersonId], references: [id])
-  ExhibitedBy     ExhibitedItem[]
-  Videos          Video[]
+  itemType        ItemType?       @relation(fields: [itemTypeId], references: [id])
+  relatedPerson   Person?         @relation(fields: [relatedPersonId], references: [id])
+  exhibitedBy     ExhibitedItem[]
+  videos          Video[]
 }
 
 // -------------------------------
@@ -272,16 +272,16 @@ model Exhibition {
   updatedAt        DateTime        @updatedAt
   deletedAt        DateTime?
   siteId           Int
-  Site             Site            @relation(fields: [siteId], references: [id])
-  ExhibitedItems   ExhibitedItem[]
+  site             Site            @relation(fields: [siteId], references: [id])
+  exhibitedItems   ExhibitedItem[]
 }
 
 model ExhibitedItem {
   id           Int        @id @default(autoincrement())
   itemId       Int
   exhibitionId Int
-  Item         Item       @relation(fields: [itemId], references: [id])
-  Exhibition   Exhibition @relation(fields: [exhibitionId], references: [id])
+  item         Item       @relation(fields: [itemId], references: [id])
+  exhibition   Exhibition @relation(fields: [exhibitionId], references: [id])
 
   @@unique([itemId, exhibitionId])
 }

@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import {
-  IsOptional,
-  IsEmail,
-  IsNumber,
-  IsPositive
+  IsEmail
 } from 'class-validator'
 
 export class InviteManagerRequestBody {
