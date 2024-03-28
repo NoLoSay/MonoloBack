@@ -8,6 +8,7 @@ import {
   Delete,
   ParseIntPipe,
   Request,
+  Response,
   UnauthorizedException
 } from '@nestjs/common'
 import {
@@ -16,9 +17,13 @@ import {
 } from '@noloback/exhibitions.service'
 import { ExhibitedItemsService } from '@noloback/exhibited.items.service'
 import { ExhibitedItemAdditionModel } from '@noloback/exhibited.items.service'
-import { Exhibition } from '@prisma/client/base'
 import { ADMIN, MANAGER, Roles } from '@noloback/roles'
 import { SitesManagersService } from '@noloback/sites.managers.service'
+import {
+  ExhibitionAdminDetailedReturn,
+  ExhibitionManagerDetailedReturn,
+  ExhibitionCommonDetailedReturn
+} from '@noloback/api.returns'
 
 @Controller('exhibitions')
 export class ExhibitionsController {
@@ -29,19 +34,28 @@ export class ExhibitionsController {
   ) {}
 
   @Get()
-  async findAll () {
-    return this.exhibitionsService.findAll()
+  async findAll (@Request() request: any, @Response() res: any) {
+    return res
+      .status(200)
+      .json(await this.exhibitionsService.findAll(request.user))
   }
 
   @Get(':id')
-  async findOne (@Param('id', ParseIntPipe) id: number) {
-    return this.exhibitionsService.findOne(id)
+  async findOne (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Response() res: any
+  ) {
+    return res
+      .status(200)
+      .json(await this.exhibitionsService.findOne(id, request.user))
   }
 
   @Roles([ADMIN, MANAGER])
   @Post()
   async create (
     @Request() request: any,
+    @Response() res: any,
     @Body() exhibition: ExhibitionManipulationModel
   ) {
     if (
@@ -50,7 +64,9 @@ export class ExhibitionsController {
         exhibition.siteId
       )
     )
-      return this.exhibitionsService.create(exhibition)
+      return res
+        .status(200)
+        .json(await this.exhibitionsService.create(exhibition))
     throw new UnauthorizedException()
   }
 
@@ -58,6 +74,7 @@ export class ExhibitionsController {
   @Put(':id')
   async update (
     @Request() request: any,
+    @Response() res: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedExhibition: ExhibitionManipulationModel
   ) {
@@ -67,22 +84,34 @@ export class ExhibitionsController {
         updatedExhibition.siteId
       )
     )
-      return this.exhibitionsService.update(id, updatedExhibition)
+      return res
+        .status(200)
+        .json(await this.exhibitionsService.update(id, updatedExhibition))
     throw new UnauthorizedException()
   }
 
   @Roles([ADMIN, MANAGER])
   @Delete(':id')
-  async delete (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
-    const exhibition: Exhibition | null = await this.findOne(id)
+  async delete (
+    @Request() request: any,
+    @Response() res: any,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    const exhibition:
+      | ExhibitionAdminDetailedReturn
+      | ExhibitionManagerDetailedReturn
+      | ExhibitionCommonDetailedReturn = await this.exhibitionsService.findOne(
+      id,
+      request.user
+    )
     if (!exhibition) return null
     if (
       await this.sitesManagersService.isAllowedToModify(
         request.user,
-        exhibition.siteId
+        exhibition.site.id
       )
     )
-      return this.exhibitionsService.delete(id)
+      return res.status(200).json(await this.exhibitionsService.delete(id))
     throw new UnauthorizedException()
   }
 
@@ -98,15 +127,15 @@ export class ExhibitionsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() addedItem: ExhibitedItemAdditionModel
   ) {
-    const exhibition: Exhibition | null = await this.findOne(id)
+    const exhibition = await this.exhibitionsService.findOne(id, request.user)
     if (!exhibition) return null
-    if (
-      await this.sitesManagersService.isAllowedToModify(
-        request.user,
-        exhibition.siteId
-      )
-    )
-      return this.exhibitedItemsService.addExhibitedItem(id, addedItem)
+    // if (
+    //   await this.sitesManagersService.isAllowedToModify(
+    //     request.user,
+    //     exhibition.siteId
+    //   )
+    // )
+    return this.exhibitedItemsService.addExhibitedItem(id, addedItem)
     throw new UnauthorizedException()
   }
 
@@ -117,15 +146,15 @@ export class ExhibitionsController {
     @Param('id', ParseIntPipe) id: number,
     @Param('itemId', ParseIntPipe) itemId: number
   ) {
-    const exhibition: Exhibition | null = await this.findOne(id)
+    const exhibition = await this.exhibitionsService.findOne(id, request.user)
     if (!exhibition) return null
-    if (
-      await this.sitesManagersService.isAllowedToModify(
-        request.user,
-        exhibition.siteId
-      )
-    )
-      return this.exhibitedItemsService.deleteExhibitedItem(id, itemId)
+    // if (
+    //   await this.sitesManagersService.isAllowedToModify(
+    //     request.user,
+    //     exhibition.siteId
+    //   )
+    // )
+    return this.exhibitedItemsService.deleteExhibitedItem(id, itemId)
     throw new UnauthorizedException()
   }
 }

@@ -1,4 +1,5 @@
 export * from './addresses.api.returns';
+export * from './exhibitions.api.returns';
 export * from './items.api.returns';
 export * from './profiles.api.returns';
 export * from './site.managers.api.returns';
