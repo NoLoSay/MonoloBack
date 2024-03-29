@@ -116,26 +116,34 @@ export class ExhibitionsController {
   }
 
   @Get(':id/items')
-  async findExibitedItems (@Param('id', ParseIntPipe) id: number) {
-    return this.exhibitedItemsService.findExibitedItems(id)
+  async findExibitedItems (
+    @Response() res: any,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return res
+      .status(200)
+      .json(await this.exhibitedItemsService.findExibitedItems(id))
   }
 
   @Roles([ADMIN, MANAGER])
   @Post(':id/items')
   async addExhibitedItem (
     @Request() request: any,
+    @Response() res: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() addedItem: ExhibitedItemAdditionModel
   ) {
     const exhibition = await this.exhibitionsService.findOne(id, request.user)
     if (!exhibition) return null
-    // if (
-    //   await this.sitesManagersService.isAllowedToModify(
-    //     request.user,
-    //     exhibition.siteId
-    //   )
-    // )
-    return this.exhibitedItemsService.addExhibitedItem(id, addedItem)
+    if (
+      await this.sitesManagersService.isAllowedToModify(
+        request.user,
+        exhibition.site.id
+      )
+    )
+      return res
+        .status(200)
+        .json(await this.exhibitedItemsService.addExhibitedItem(id, addedItem))
     throw new UnauthorizedException()
   }
 
@@ -148,13 +156,13 @@ export class ExhibitionsController {
   ) {
     const exhibition = await this.exhibitionsService.findOne(id, request.user)
     if (!exhibition) return null
-    // if (
-    //   await this.sitesManagersService.isAllowedToModify(
-    //     request.user,
-    //     exhibition.siteId
-    //   )
-    // )
-    return this.exhibitedItemsService.deleteExhibitedItem(id, itemId)
+    if (
+      await this.sitesManagersService.isAllowedToModify(
+        request.user,
+        exhibition.site.id
+      )
+    )
+      return this.exhibitedItemsService.deleteExhibitedItem(id, itemId)
     throw new UnauthorizedException()
   }
 }

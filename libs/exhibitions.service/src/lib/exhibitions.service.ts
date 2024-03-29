@@ -96,7 +96,10 @@ export class ExhibitionsService {
         selectOptions = new ExhibitionCommonDetailedSelect()
     }
     const exhibition: unknown = await this.prismaBase.exhibition.findUnique({
-      where: { id: id, deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null },
+      where: {
+        id: id,
+        deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null
+      },
       select: selectOptions
     })
     if (!exhibition) throw new NotFoundException('Exhibition not found')
@@ -177,11 +180,12 @@ export class ExhibitionsService {
         deletedAt: true
       }
     })
-    if (!exhibition || exhibition.deletedAt) throw new NotFoundException('Exhibition not found')
+    if (!exhibition || exhibition.deletedAt)
+      throw new NotFoundException('Exhibition not found')
 
     const updated: unknown = await this.prismaBase.exhibition
       .update({
-        where: { id: id},
+        where: { id: id },
         data: {
           name: updatedExhibition.name,
           shortDescription: updatedExhibition.shortDescription,
