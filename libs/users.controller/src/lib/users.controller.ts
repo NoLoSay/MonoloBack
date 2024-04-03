@@ -78,7 +78,7 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUser: UserUpdateModel
   ) {
-    if (id !== request.user.id || request.user.activeProfile.role !== 'ADMIN') {
+    if (id !== request.user.id && request.user.activeProfile.role !== 'ADMIN') {
       throw new UnauthorizedException()
     }
     return this.usersService.update(id, updateUser)
@@ -86,7 +86,10 @@ export class UsersController {
 
   @Roles([ADMIN])
   @Delete(':id')
-  async remove (@Param('id', ParseIntPipe) id: number) {
+  async remove (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+    if (id !== request.user.id && request.user.activeProfile.role !== 'ADMIN') {
+      throw new UnauthorizedException()
+    }
     return this.usersService.remove(id)
   }
 
