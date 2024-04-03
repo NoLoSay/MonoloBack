@@ -16,7 +16,6 @@ import { ApiExtraModels } from '@nestjs/swagger'
 import { ADMIN, Roles } from '@noloback/roles'
 import {
   UserCreateModel,
-  UserAdminUpdateModel,
   UserUpdateModel,
   UsersService
 } from '@noloback/users.service'
@@ -77,7 +76,7 @@ export class UsersController {
   async update (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateUser: UserUpdateModel | UserAdminUpdateModel
+    @Body() updateUser: UserUpdateModel
   ) {
     if (id !== request.user.id || request.user.activeProfile.role !== 'ADMIN') {
       throw new UnauthorizedException()
