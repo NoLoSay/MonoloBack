@@ -82,13 +82,7 @@ export class UsersController {
     if (id !== request.user.id || request.user.activeProfile.role !== 'ADMIN') {
       throw new UnauthorizedException()
     }
-    return this.usersService.update(
-      id,
-      request.user.activeProfile.role === 'ADMIN'
-        ? (updateUser as UserAdminUpdateModel)
-        : (updateUser as UserUpdateModel),
-      request.user.activeProfile.role
-    )
+    return this.usersService.update(id, updateUser)
   }
 
   @Roles([ADMIN])

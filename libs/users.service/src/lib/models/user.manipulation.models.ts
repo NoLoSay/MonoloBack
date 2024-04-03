@@ -64,10 +64,3 @@ export class UserUpdateModel {
   @IsOptional()
   telNumber?: string
 }
-
-export class UserAdminUpdateModel extends UserUpdateModel {
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  role?: string
-}
