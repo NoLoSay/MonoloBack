@@ -14,6 +14,8 @@ import {
   VideoCommonListSelect
 } from './models/video.api.models'
 import { FiltersGetMany } from 'models/filters-get-many'
+import { UserRequestModel } from '@noloback/requests.constructor'
+import { ProfileService } from '@noloback/profile.service'
 
 export function getValidationStatusFromRole (role: Role): ValidationStatus[] {
   switch (role) {
@@ -35,7 +37,8 @@ export class VideoService {
 
   constructor (
     private prismaBase: PrismaBaseService,
-    private loggerService: LoggerService
+    private loggerService: LoggerService,
+    private readonly profileService: ProfileService
   ) {
     const serviceAccount = JSON.parse(
       readFileSync('secrets/google-service-account.json', 'utf-8')
@@ -124,7 +127,7 @@ export class VideoService {
   }
 
   // async createYoutube (
-  //   user: User,
+  //   user: UserRequestModel,
   //   video: Express.Multer.File,
   //   itemId: number
   // ): Promise<string> {
@@ -173,18 +176,50 @@ export class VideoService {
 
   //   const noloVideo = await this.prismaBase.video.create({
   //     data: {
-  //       externalProviderId: res?.data?.id || '',
-  //       userId: user.id,
-  //       itemId: itemId
-  //     }
+  //       externalProviderId: res?.data?.id || ''
+  //     },
+  //    connect: {
+  //       postedBy: {
+  //         userId: user.id
+  //      },
+  //      item: {
+  //        id: itemId
+  //      }
   //   })
 
   //   return noloVideo.uuid
   // }
 
+  async uploadVideoTemplate (user: UserRequestModel) {
+    if (user.activeProfile.role !== Role.CREATOR) {
+      if (
+        !(await this.profileService.canUserUseThisProfileRole(
+          user.id,
+          Role.CREATOR
+        ))
+      )
+        await this.profileService.createProfile(user.id, Role.CREATOR)
+      await this.profileService.changeActiveProfileWithRole(user, Role.CREATOR)
+    }
+    //  ----- HERE INSERT THE LOGIC -----
+    //  const noloVideo = await this.prismaBase.video.create({
+    //     data: {
+    //       externalProviderId: res?.data?.id || ''
+    //     },
+    //    connect: {
+    //       postedBy: {
+    //         userId: user.id
+    //      },
+    //      item: {
+    //        id: itemId
+    //      }
+    //   })
+    return true
+  }
+
   async getVideosFromItem (
     itemId: number,
-    role: 'ADMIN' | 'MANAGER' | 'USER' = 'USER'
+    role: Role = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
       where: {
@@ -208,11 +243,14 @@ export class VideoService {
 
   async getVideosFromUser (
     userId: number,
-    role: 'ADMIN' | 'MANAGER' | 'USER' = 'USER'
+    role: Role = 'USER'
   ): Promise<VideoCommonListReturn[]> {
     const videoEntities = (await this.prismaBase.video.findMany({
       where: {
-        userId: userId,
+        postedBy: {
+          role: Role.CREATOR,
+          userId: userId
+        },
         validationStatus: { in: getValidationStatusFromRole(role) }
       },
       select: new VideoCommonListSelect()
@@ -235,7 +273,12 @@ export class VideoService {
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
         itemId: itemId ? itemId : undefined,
-        userId: userId ? userId : undefined,
+        postedBy: userId
+          ? {
+              role: Role.CREATOR,
+              userId: userId
+            }
+          : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined
@@ -259,7 +302,12 @@ export class VideoService {
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
         itemId: itemId ? itemId : undefined,
-        userId: userId ? userId : undefined,
+        postedBy: userId
+          ? {
+              role: Role.CREATOR,
+              userId: userId
+            }
+          : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined

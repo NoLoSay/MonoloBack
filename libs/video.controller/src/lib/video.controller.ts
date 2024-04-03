@@ -37,6 +37,7 @@ export class VideoController {
   @Get()
   @HttpCode(200)
   async getAllVideos (
+    @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
     @Query('_end') lastElem: number = 50,

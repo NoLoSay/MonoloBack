@@ -2,9 +2,8 @@ import { Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
 import {
   ConflictException,
   ForbiddenException,
-  HttpException,
   Injectable,
-  InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException
 } from '@nestjs/common'
 import {
@@ -21,9 +20,7 @@ import { UserRequestModel } from '@noloback/requests.constructor'
 
 @Injectable()
 export class ProfileService {
-  constructor (
-    private readonly prismaBase: PrismaBaseService
-  ) {}
+  constructor (private readonly prismaBase: PrismaBaseService) {}
 
   async getUserProfiles (user: UserRequestModel): Promise<ProfileListReturn[]> {
     let selectOptions: Prisma.ProfileSelect
@@ -61,31 +58,80 @@ export class ProfileService {
     return activeProfiles[0] as ProfileCommonReturn
   }
 
+  private async unactiveAllProfiles (userId: number) {
+    return this.prismaBase.profile.updateMany({
+      where: { userId: userId },
+      data: { isActive: false }
+    })
+  }
+
+  private async unactiveAllProfilesExceptOne (
+    userId: number,
+    profileId: number
+  ) {
+    return this.prismaBase.profile.updateMany({
+      where: { userId: userId, NOT: { id: profileId } },
+      data: { isActive: false }
+    })
+  }
+
+  private async activateProfile (profileId: number) {
+    return this.prismaBase.profile.update({
+      where: { id: profileId },
+      data: { isActive: true },
+      select: new ProfileCommonSelect()
+    })
+  }
+
+  private async activateProfileByRole (userId: number, role: Role) {
+    return this.prismaBase.profile.update({
+      where: { userId_role: { userId: userId, role: role } },
+      data: { isActive: true },
+      select: new ProfileCommonSelect()
+    })
+  }
+
+  async canUserUseThisProfileRole (
+    userId: number,
+    role: Role
+  ): Promise<boolean> {
+    const profile = await this.prismaBase.profile.findFirst({
+      where: { userId: userId, role: role }
+    })
+    return !!(profile && !profile.deletedAt)
+  }
+
+  async canUserUseThisProfileId (
+    userId: number,
+    profileId: number
+  ): Promise<boolean> {
+    const profile = await this.prismaBase.profile.findFirst({
+      where: { userId: userId, id: profileId }
+    })
+    return !!(profile && !profile.deletedAt)
+  }
+
   async changeActiveProfile (
     user: UserRequestModel,
     profileId: number
   ): Promise<ProfileCommonReturn> {
-    const requestedProfile = await this.prismaBase.profile.findUnique({
-      where: {
-        id: profileId,
-        userId: user.id,
-        deletedAt: null
-      },
-      select: new ProfileCommonSelect()
-    })
-    if (!requestedProfile) {
+    if (!this.canUserUseThisProfileId(user.id, profileId))
       throw new UnauthorizedException('Profile not found')
-    }
-    await this.prismaBase.profile.updateMany({
-      where: { userId: user.id },
-      data: { isActive: false }
-    })
+    await this.unactiveAllProfiles(user.id)
+    return (await this.activateProfile(profileId)) as ProfileCommonReturn
+  }
 
-    await this.prismaBase.profile.update({
-      where: { id: profileId },
-      data: { isActive: true }
-    })
-    return requestedProfile as ProfileCommonReturn
+  async changeActiveProfileWithRole (
+    user: UserRequestModel,
+    role: Role
+  ): Promise<ProfileCommonReturn> {
+    if (!this.canUserUseThisProfileRole(user.id, role))
+      throw new NotFoundException('Profile not found')
+    await this.unactiveAllProfiles(user.id)
+    return (await this.activateProfileByRole(
+      user.id,
+      role
+    )) as ProfileCommonReturn
   }
 
   async createProfile (
@@ -158,7 +204,7 @@ export class ProfileService {
       throw new ForbiddenException('User is deleted')
     }
     const profileToDelete:
-      | { id: number; role: string; deletedAt: Date | null }
+      | { id: number; role: Role; deletedAt: Date | null }
       | undefined = toWho.profiles.find(profile => profile.role === role)
     if (!profileToDelete || profileToDelete.deletedAt) {
       throw new ConflictException('Profile not found or already deleted')
@@ -168,14 +214,8 @@ export class ProfileService {
       data: { isActive: false, deletedAt: new Date() },
       select: new ProfileCommonSelect()
     })
-    await this.prismaBase.profile.updateMany({
-      where: { userId: userId },
-      data: { isActive: false }
-    })
-    await this.prismaBase.profile.updateMany({
-      where: { userId: userId, role: Role.USER },
-      data: { isActive: true }
-    })
+    await this.unactiveAllProfiles(userId)
+    await this.activateProfileByRole(userId, Role.USER)
 
     return deletedProfile as ProfileCommonReturn
   }

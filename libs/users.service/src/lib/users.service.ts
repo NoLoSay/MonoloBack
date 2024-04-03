@@ -1,7 +1,6 @@
 import { Prisma, PrismaBaseService, Role, User } from '@noloback/prisma-client-base'
 import {
   ConflictException,
-  HttpException,
   Injectable,
   InternalServerErrorException,
   UnauthorizedException

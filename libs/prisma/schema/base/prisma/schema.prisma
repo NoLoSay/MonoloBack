@@ -131,7 +131,6 @@ model User {
   likedVideos   UserlikesVideos[]
   oAuthAccounts OAuthProviderUser[]
   loginHistory  UserLoginLog[]
-  Videos        Video[]
   profiles      Profile[]
 }
 
@@ -144,7 +143,7 @@ model Profile {
   deletedAt DateTime?
   userId    Int
   user      User             @relation(fields: [userId], references: [id])
-  // Videos      Video[]
+  videos    Video[]
   // LikedVideos UserlikesVideos[]
   managerOf SiteHasManager[]
 
@@ -171,11 +170,11 @@ model Video {
   updatedAt          DateTime          @updatedAt
   deletedAt          DateTime?
   deletedReason      String?
-  userId             Int
   itemId             Int
-  postedBy           User              @relation(fields: [userId], references: [id])
+  profileId          Int
   likedBy            UserlikesVideos[]
   item               Item              @relation(fields: [itemId], references: [id])
+  postedBy           Profile           @relation(fields: [profileId], references: [id])
 }
 
 model UserlikesVideos {
