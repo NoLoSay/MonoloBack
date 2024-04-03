@@ -219,4 +219,43 @@ export class ProfileService {
 
     return deletedProfile as ProfileCommonReturn
   }
+
+  async deleteProfileById(
+    userId: number,
+    profileId: number
+  ): Promise<ProfileCommonReturn> {
+    const toWho = await this.prismaBase.user.findUnique({
+      where: { id: userId },
+      include: {
+        profiles: {
+          select: {
+            id: true,
+            role: true,
+            deletedAt: true
+          }
+        }
+      }
+    })
+    if (!toWho) {
+      throw new UnauthorizedException('User not found')
+    }
+    if (toWho.deletedAt) {
+      throw new ForbiddenException('User is deleted')
+    }
+    const profileToDelete:
+      | { id: number; role: Role; deletedAt: Date | null }
+      | undefined = toWho.profiles.find(profile => profile.id === profileId)
+    if (!profileToDelete || profileToDelete.deletedAt) {
+      throw new ConflictException('Profile not found or already deleted')
+    }
+    const deletedProfile = await this.prismaBase.profile.update({
+      where: { id: profileToDelete.id },
+      data: { isActive: false, deletedAt: new Date() },
+      select: new ProfileCommonSelect()
+    })
+    await this.unactiveAllProfiles(userId)
+    await this.activateProfileByRole(userId, Role.USER)
+
+    return deletedProfile as ProfileCommonReturn
+  }
 }
