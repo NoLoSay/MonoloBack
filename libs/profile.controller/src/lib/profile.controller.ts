@@ -5,7 +5,9 @@ import {
   Body,
   Request,
   Response,
-  Delete
+  Delete,
+  Param,
+  ParseIntPipe
 } from '@nestjs/common'
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ProfileService } from '@noloback/profile.service'
@@ -54,6 +56,17 @@ export class ProfileController {
         profile.profileId
       )
     })
+  }
+
+  @Delete(':id')
+  async deleteProfile (
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: any,
+    @Response() res: any
+  ): Promise<ProfileCommonReturn> {
+    return res
+      .status(200)
+      .json(await this.profileService.deleteProfileById(request.user.id, id))
   }
 
   @Roles([ADMIN])
