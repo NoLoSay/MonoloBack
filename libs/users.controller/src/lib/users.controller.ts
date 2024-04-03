@@ -84,7 +84,6 @@ export class UsersController {
     return this.usersService.update(id, updateUser);
   }
 
-  @Roles([ADMIN])
   @Delete(':id')
   async remove (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
     if (id !== request.user.id && request.user.activeProfile.role !== 'ADMIN') {

@@ -107,7 +107,7 @@ export class UsersService {
     const users = await this.prismaBase.user.findMany({
       skip: firstElem,
       take: lastElem - firstElem,
-      where: { deletedAt: null },
+      where: role === Role.ADMIN ? undefined : { deletedAt: null },
       select: selectOptions
     })
 
@@ -182,7 +182,7 @@ export class UsersService {
   async findOneByUsername (username: string): Promise<UserRequestModel | null> {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
-        where: { username: username },
+        where: { username: username, deletedAt: null },
         include: {
           profiles: {
             select: {
@@ -202,7 +202,7 @@ export class UsersService {
   async findOneByEmail (username: string): Promise<UserRequestModel | null> {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
-        where: { email: username },
+        where: { email: username, deletedAt: null  },
         include: {
           profiles: {
             select: {
@@ -245,6 +245,7 @@ export class UsersService {
   ): Promise<UserRequestModel | null> {
     const user = await this.prismaBase.user.findFirst({
       where: {
+        deletedAt: null,
         OR: [{ email: search }, { username: search }]
       },
       include: {
@@ -303,7 +304,8 @@ export class UsersService {
   async remove (id: number) {
     return await this.prismaBase.user.update({
       where: { id: id },
-      data: { deletedAt: new Date() }
-    })
+      data: { deletedAt: new Date() },
+      select: new UserMeSelect()
+    }) as unknown as UserMeReturn
   }
 }
