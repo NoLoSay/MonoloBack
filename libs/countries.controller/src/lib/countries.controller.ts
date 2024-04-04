@@ -10,37 +10,34 @@ import {
   Request,
   UseGuards
 } from '@nestjs/common'
-import { Admin } from '@noloback/roles'
 import {
   CountryManipulationModel,
   CountriesService,
   CountryAdminReturn,
   CountryCommonReturn
 } from '@noloback/countries.service'
-import { JwtAuthGuard } from '@noloback/guards'
+import { ADMIN, Roles } from '@noloback/roles'
 
 @Controller('countries')
 export class CountriesController {
   constructor (private readonly countriesService: CountriesService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async findAll (
     @Request() request: any
   ): Promise<CountryCommonReturn[] | CountryAdminReturn[]> {
-    return this.countriesService.findAll(request.user.role)
+    return this.countriesService.findAll(request.user.activeProfile.role)
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   async findOne (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<CountryCommonReturn | CountryAdminReturn> {
-    return this.countriesService.findOne(id, request.user.role)
+    return this.countriesService.findOne(id, request.user.activeProfile.role)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Post()
   async create (
     @Body() country: CountryManipulationModel
@@ -48,7 +45,7 @@ export class CountriesController {
     return this.countriesService.create(country)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Put(':id')
   async update (
     @Param('id', ParseIntPipe) id: number,
@@ -57,7 +54,7 @@ export class CountriesController {
     return this.countriesService.update(id, updatedCountry)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Delete(':id')
   async delete (
     @Param('id', ParseIntPipe) id: number

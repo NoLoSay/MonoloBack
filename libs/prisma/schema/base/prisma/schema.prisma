@@ -65,19 +65,19 @@ model City {
 }
 
 model Address {
-  id           Int        @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   houseNumber  String?
   street       String
   zip          String
   otherDetails String?
   longitude    Float?
   latitude     Float?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
   cityId       Int
-  City         City       @relation(fields: [cityId], references: [id])
-  Locations    Location[]
+  City         City      @relation(fields: [cityId], references: [id])
+  Sites        Site[]
 }
 
 // ---------------------------
@@ -110,28 +110,44 @@ model OAuthProviderUser {
 // ---------------------------
 
 enum Role {
-  ADMIN
   USER
-  REFERENT
+  CREATOR
+  MANAGER
+  MODERATOR
+  ADMIN
 }
 
 model User {
-  id            Int                   @id @default(autoincrement())
-  uuid          String                @unique @default(uuid())
-  username      String                @unique @default(uuid())
-  email         String                @unique
+  id            Int                 @id @default(autoincrement())
+  uuid          String              @unique @default(uuid())
+  username      String              @unique @default(uuid())
+  email         String              @unique
   password      String
   picture       String?
   telNumber     String?
-  role          Role                  @default(USER)
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
   deletedAt     DateTime?
-  LikedVideos   UserlikesVideos[]
+  likedVideos   UserlikesVideos[]
   oAuthAccounts OAuthProviderUser[]
   loginHistory  UserLoginLog[]
-  Videos        Video[]
-  ReferentOf    LocationHasReferent[]
+  profiles      Profile[]
+}
+
+model Profile {
+  id        Int              @id @default(autoincrement())
+  role      Role             @default(USER)
+  isActive  Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  deletedAt DateTime?
+  userId    Int
+  user      User             @relation(fields: [userId], references: [id])
+  videos    Video[]
+  // LikedVideos UserlikesVideos[]
+  managerOf SiteHasManager[]
+
+  @@unique([userId, role])
 }
 
 // ----------------------------
@@ -154,11 +170,11 @@ model Video {
   updatedAt          DateTime          @updatedAt
   deletedAt          DateTime?
   deletedReason      String?
-  userId             Int
   itemId             Int
-  postedBy           User              @relation(fields: [userId], references: [id])
+  profileId          Int
   likedBy            UserlikesVideos[]
   item               Item              @relation(fields: [itemId], references: [id])
+  postedBy           Profile           @relation(fields: [profileId], references: [id])
 }
 
 model UserlikesVideos {
@@ -208,7 +224,7 @@ model ItemCategory {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   deletedAt   DateTime?
-  ItemTypes   ItemType[]
+  itemTypes   ItemType[]
 }
 
 model ItemType {
@@ -219,8 +235,8 @@ model ItemType {
   updatedAt      DateTime     @updatedAt
   deletedAt      DateTime?
   itemCategoryId Int
-  ItemCategory   ItemCategory @relation(fields: [itemCategoryId], references: [id])
-  Items          Item[]
+  itemCategory   ItemCategory @relation(fields: [itemCategoryId], references: [id])
+  items          Item[]
 }
 
 model Item {
@@ -234,10 +250,10 @@ model Item {
   deletedAt       DateTime?
   itemTypeId      Int?
   relatedPersonId Int?
-  ItemType        ItemType?       @relation(fields: [itemTypeId], references: [id])
-  RelatedPerson   Person?         @relation(fields: [relatedPersonId], references: [id])
-  ExhibitedBy     ExhibitedItem[]
-  Videos          Video[]
+  itemType        ItemType?       @relation(fields: [itemTypeId], references: [id])
+  relatedPerson   Person?         @relation(fields: [relatedPersonId], references: [id])
+  exhibitedBy     ExhibitedItem[]
+  videos          Video[]
 }
 
 // -------------------------------
@@ -254,26 +270,26 @@ model Exhibition {
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   deletedAt        DateTime?
-  locationId       Int
-  Location         Location        @relation(fields: [locationId], references: [id])
-  ExhibitedItems   ExhibitedItem[]
+  siteId           Int
+  site             Site            @relation(fields: [siteId], references: [id])
+  exhibitedItems   ExhibitedItem[]
 }
 
 model ExhibitedItem {
   id           Int        @id @default(autoincrement())
   itemId       Int
   exhibitionId Int
-  Item         Item       @relation(fields: [itemId], references: [id])
-  Exhibition   Exhibition @relation(fields: [exhibitionId], references: [id])
+  item         Item       @relation(fields: [itemId], references: [id])
+  exhibition   Exhibition @relation(fields: [exhibitionId], references: [id])
 
   @@unique([itemId, exhibitionId])
 }
 
 // ----------------------------
-// ---------- Locations ----------
+// ---------- Sites ----------
 // ----------------------------
 
-enum LocationType {
+enum SiteType {
   MUSEUM
   LIBRARY
   ARCHIVE
@@ -283,7 +299,7 @@ enum LocationType {
   OTHER
 }
 
-enum LocationTag {
+enum SiteTag {
   NOLOSAY
   DISABILITY_FRIENDLY
   DEAF_FRIENDLY
@@ -291,40 +307,39 @@ enum LocationTag {
   OTHER
 }
 
-model Location {
-  id                   Int                   @id @default(autoincrement())
-  name                 String
-  shortDescription     String?
-  longDescription      String?
-  telNumber            String?
-  email                String?
-  website              String?
-  price                Float
-  picture              String?
-  type                 LocationType
-  tags                 LocationTag[]
-  createdAt            DateTime              @default(now())
-  updatedAt            DateTime              @updatedAt
-  deletedAt            DateTime?
-  addressId            Int
-  Address              Address               @relation(fields: [addressId], references: [id])
-  Exhibition           Exhibition[]
-  LocationHasReferents LocationHasReferent[]
+model Site {
+  id               Int              @id @default(autoincrement())
+  name             String
+  shortDescription String?
+  longDescription  String?
+  telNumber        String?
+  email            String?
+  website          String?
+  price            Float
+  picture          String?
+  type             SiteType
+  tags             SiteTag[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  deletedAt        DateTime?
+  addressId        Int
+  address          Address          @relation(fields: [addressId], references: [id])
+  exhibition       Exhibition[]
+  siteHasManagers  SiteHasManager[]
 }
 
-model LocationHasReferent {
-  id         Int       @id @default(autoincrement())
-  isMain     Boolean   @default(false)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
-  locationId Int
-  userId     Int
-  Location   Location  @relation(fields: [locationId], references: [id])
-  User       User      @relation(fields: [userId], references: [id])
+model SiteHasManager {
+  id        Int       @id @default(autoincrement())
+  isMain    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  siteId    Int
+  profileId Int
+  site      Site      @relation(fields: [siteId], references: [id])
+  profile   Profile   @relation(fields: [profileId], references: [id])
 
-  @@unique([userId, locationId])
-  @@unique([isMain, locationId])
+  @@unique([profileId, siteId])
 }
 
 // --------------------------

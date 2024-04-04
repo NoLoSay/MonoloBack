@@ -3,7 +3,7 @@ import { AuthServiceModule } from '@noloback/auth.service'
 import { ExhibitionsServiceModule } from '@noloback/exhibitions.service'
 import { ExhibitionsController } from './exhibitions.controller'
 import { ExhibitedItemsServiceModule } from '@noloback/exhibited.items.service'
-import { LocationsReferentsServiceModule } from '@noloback/locations.referents.service'
+import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
 
 @Module({
   controllers: [ExhibitionsController],
@@ -13,7 +13,7 @@ import { LocationsReferentsServiceModule } from '@noloback/locations.referents.s
     AuthServiceModule,
     ExhibitionsServiceModule,
     ExhibitedItemsServiceModule,
-    LocationsReferentsServiceModule
+    SitesManagersServiceModule
   ]
 })
 export class ExhibitionsControllerModule {}

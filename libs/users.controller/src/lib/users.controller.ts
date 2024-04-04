@@ -8,22 +8,18 @@ import {
   Delete,
   ParseIntPipe,
   Request,
-  UseGuards,
   UnauthorizedException,
   Query,
   Response,
 } from '@nestjs/common';
 import { ApiExtraModels } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@noloback/guards';
-import { Admin } from '@noloback/roles';
+import { ADMIN, Roles } from '@noloback/roles';
 import {
   UserCreateModel,
-  UserAdminUpdateModel,
   UserUpdateModel,
   UsersService,
-  UserCommonReturn,
-  UserAdminReturn,
 } from '@noloback/users.service';
+import { UserAdminReturn, UserCommonReturn } from '@noloback/api.returns';
 import { VideoService } from '@noloback/video.service';
 import { PaginatedDto } from 'models/swagger/paginated-dto';
 
@@ -35,7 +31,6 @@ export class UsersController {
     private readonly videoService: VideoService
   ) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async findAll(
     @Request() request: any,
@@ -51,59 +46,61 @@ export class UsersController {
       .status(200)
       .json(
         await this.usersService.findAll(
-          request.user.role,
+          request.user.activeProfile.role,
           +firstElem,
           +lastElem
         )
       );
   }
 
+  @Get('me')
+  async findMe(@Request() request: any) {
+    return this.usersService.findMe(request.user);
+  }
+
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
   async findOne(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
-    return this.usersService.findOne(id, request.user.role);
+    return this.usersService.findOne(id, request.user.activeProfile.role);
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Post()
   async create(@Body() createUserDto: UserCreateModel) {
     return this.usersService.create(createUserDto);
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
   async update(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateUser: UserUpdateModel | UserAdminUpdateModel
+    @Body() updateUser: UserUpdateModel
   ) {
-    if (id !== request.user.id || request.user.role !== 'ADMIN') {
-      throw new UnauthorizedException();
+    if (id !== request.user.id && request.user.activeProfile.role !== 'ADMIN') {
+      throw new UnauthorizedException()
     }
-    return this.usersService.update(
-      id,
-      request.user.role === 'ADMIN'
-        ? (updateUser as UserAdminUpdateModel)
-        : (updateUser as UserUpdateModel),
-      request.user.role
-    );
+    return this.usersService.update(id, updateUser);
   }
 
-  @Admin()
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.remove(id);
+  async remove (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+    if (id !== request.user.id && request.user.activeProfile.role !== 'ADMIN') {
+      throw new UnauthorizedException()
+    }
+    return this.usersService.remove(id)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id/videos')
   async findItsVideos(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
-    return this.videoService.getVideosFromUser(id, request.user.role);
+    console.log('request.user', request.user);
+    return this.videoService.getVideosFromUser(
+      id,
+      request.user.activeProfile.role
+    );
   }
 }

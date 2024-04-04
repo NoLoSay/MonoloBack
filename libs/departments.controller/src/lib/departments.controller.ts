@@ -8,11 +8,11 @@ import {
   Delete,
   ParseIntPipe
 } from '@nestjs/common'
-import { Admin } from '@noloback/roles'
 import {
   DepartmentManipulationModel,
   DepartmentsService
 } from '@noloback/departments.service'
+import { ADMIN, Roles } from '@noloback/roles'
 
 @Controller('departments')
 export class DepartmentsController {
@@ -23,19 +23,19 @@ export class DepartmentsController {
     return this.departmentsService.findAll()
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Get(':id')
   async findOne (@Param('id', ParseIntPipe) id: number) {
     return this.departmentsService.findOne(id)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Post()
   async create (@Body() departments: DepartmentManipulationModel) {
     return this.departmentsService.create(departments)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Put(':id')
   async update (
     @Param('id', ParseIntPipe) id: number,
@@ -44,7 +44,7 @@ export class DepartmentsController {
     return this.departmentsService.update(id, updatedDepartment)
   }
 
-  @Admin()
+  @Roles([ADMIN])
   @Delete(':id')
   async delete (@Param('id', ParseIntPipe) id: number) {
     return this.departmentsService.delete(id)

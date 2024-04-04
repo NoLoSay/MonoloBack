@@ -1,5 +1,5 @@
 import { PrismaBaseService, ItemCategory } from '@noloback/prisma-client-base'
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { ItemCategoryManipulationModel } from './models/itemCategoriesManipulation.model'
 //import { LogCritiitemCategory } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
@@ -18,6 +18,9 @@ export class ItemCategoriesService {
   async findOne (id: number): Promise<ItemCategory | null> {
     return await this.prismaBase.itemCategory.findUnique({
       where: { id: id }
+    }).catch((e: Error) => {
+      // this.loggingService.log(LogCritiitemCategory.Critical, this.constructor.name, e)
+      throw new NotFoundException('Item category not found')
     })
   }
 

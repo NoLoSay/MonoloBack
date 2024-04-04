@@ -12,9 +12,8 @@ export class AuthService {
   ) {}
 
   async validateUser(login: string, pass: string): Promise<any> {
-    console.log('login', login);
-    const user = await this.usersService.findUserByEmailOrUsername(login);
-    if (user && (await compare(pass, user.password))) {
+    const user = await this.usersService.connectUserByEmailOrUsername(login);
+    if (user && user.password && (await compare(pass, user.password))) {
       const { password, ...result } = user;
       return result;
     }
@@ -32,11 +31,11 @@ export class AuthService {
     return result;
   }
 
-  async findUserByUsername(username: string) {
+  async connectUserByUsername(username: string) {
     return this.usersService.findOneByUsername(username);
   }
 
-  async findUserByEmail(email: string) {
+  async connectUserByEmail(email: string) {
     return this.usersService.findOneByEmail(email);
   }
 }

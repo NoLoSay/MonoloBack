@@ -6,13 +6,9 @@ import {
   InternalServerErrorException,
   NotFoundException
 } from '@nestjs/common'
-import { AddressManipulationModel } from './models/address.manipulation.models'
-import {
-  AddressAdminReturn,
-  AddressAdminSelect,
-  AddressCommonReturn,
-  AddressCommonSelect
-} from './models/address.api.models'
+import { AddressManipulationModel } from '@noloback/api.request.bodies'
+import { AddressAdminReturn, AddressCommonReturn } from '@noloback/api.returns'
+import { AddressAdminSelect, AddressCommonSelect } from '@noloback/db.calls'
 //import { LogCritiaddress } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -78,7 +74,7 @@ export class AddressesService {
   async update (
     id: number,
     updatedAddress: AddressManipulationModel,
-    role: 'USER' | 'ADMIN' | 'REFERENT'
+    role: 'USER' | 'ADMIN' | 'MANAGER'
   ): Promise<AddressCommonReturn | AddressAdminReturn> {
     if (
       updatedAddress.cityId === undefined ||
@@ -98,7 +94,7 @@ export class AddressesService {
         selectOptions = new AddressCommonSelect()
     }
 
-    const updated: unknown = (await this.prismaBase.address
+    const updated: unknown = await this.prismaBase.address
       .update({
         where: { id: id },
         data: {
@@ -119,13 +115,13 @@ export class AddressesService {
       .catch((e: Error) => {
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      }))
-      switch (role) {
-        case 'ADMIN':
-          return updated as AddressAdminReturn
-        default:
-          return updated as AddressCommonReturn
-      }
+      })
+    switch (role) {
+      case 'ADMIN':
+        return updated as AddressAdminReturn
+      default:
+        return updated as AddressCommonReturn
+    }
   }
 
   async delete (id: number) {

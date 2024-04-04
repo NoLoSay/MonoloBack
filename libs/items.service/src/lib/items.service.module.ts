@@ -3,11 +3,6 @@ import { LoggerLibModule } from '@noloback/logger-lib'
 import { PrismaClientBaseModule } from '@noloback/prisma-client-base'
 import { ItemsService } from './items.service'
 import { VideoServiceModule } from '@noloback/video.service'
-export { ItemManipulationModel } from './models/item.manipulation.models'
-export {
-  ItemCommonReturn,
-  ItemAdminReturn
-} from './models/item.api.models'
 
 @Module({
   controllers: [],

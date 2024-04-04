@@ -1,9 +1,14 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import {
-  PrismaBaseService,
-  ExhibitedItem
-} from '@noloback/prisma-client-base'
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common'
+import { PrismaBaseService, ExhibitedItem } from '@noloback/prisma-client-base'
 import { ExhibitedItemAdditionModel } from './models/exhibitedItemManipulation.model'
+import { ExhibitionCommonSelect, ItemCommonSelect } from '@noloback/db.calls'
+import { UserRequestModel } from '@noloback/requests.constructor'
+import { ExhibitionCommonReturn, ItemCommonReturn } from '@noloback/api.returns'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
@@ -12,48 +17,18 @@ export class ExhibitedItemsService {
     private prismaBase: PrismaBaseService // private loggingService: LoggerService
   ) {}
 
-  async findExibitedItems (exhibitionId: number): Promise<object[]> {
-    return await this.prismaBase.exhibitedItem
+  async findExibitedItems (exhibitionId: number): Promise<ItemCommonReturn[]> {
+    const exhibitedItems = await this.prismaBase.exhibitedItem
       .findMany({
         where: {
-          exhibitionId: exhibitionId
+          exhibitionId: exhibitionId,
+          item: {
+            deletedAt: null
+          }
         },
         select: {
-          id: true,
-          Exhibition: {
-            select: {
-              name: true,
-              Location: {
-                select: {
-                  name: true
-                }
-              }
-            }
-          },
-          Item: {
-            select: {
-              id: true,
-              name: true,
-              description: true,
-              RelatedPerson: {
-                select: {
-                  name: true,
-                  bio: true
-                }
-              },
-              ItemType: {
-                select: {
-                  name: true,
-                  description: true,
-                  ItemCategory: {
-                    select: {
-                      name: true,
-                      description: true
-                    }
-                  }
-                }
-              }
-            }
+          item: {
+            select: new ItemCommonSelect()
           }
         }
       })
@@ -61,24 +36,41 @@ export class ExhibitedItemsService {
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
+    return exhibitedItems.map(exhibitedItem => {
+      return exhibitedItem.item as unknown as ItemCommonReturn
+    })
   }
 
   async addExhibitedItem (
     exhibitionId: number,
     exhibitedItem: ExhibitedItemAdditionModel
-  ): Promise<ExhibitedItem> {
-    return await this.prismaBase.exhibitedItem
+  ): Promise<{ item: ItemCommonReturn; exhibition: ExhibitionCommonReturn }> {
+    if (
+      (await this.prismaBase.exhibitedItem.count({
+        where: { itemId: exhibitedItem.itemId, exhibitionId: exhibitionId }
+      })) > 0
+    )
+      throw new ConflictException('Item already exhibited in this exhibition.')
+    const createdExhibitedItem = await this.prismaBase.exhibitedItem
       .create({
         data: {
-          Exhibition: {
+          exhibition: {
             connect: {
               id: exhibitionId
             }
           },
-          Item: {
+          item: {
             connect: {
               id: exhibitedItem.itemId
             }
+          }
+        },
+        select: {
+          item: {
+            select: new ItemCommonSelect()
+          },
+          exhibition: {
+            select: new ExhibitionCommonSelect()
           }
         }
       })
@@ -86,19 +78,35 @@ export class ExhibitedItemsService {
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
+
+    return {
+      item: createdExhibitedItem.item as unknown as ItemCommonReturn,
+      exhibition:
+        createdExhibitedItem.exhibition as unknown as ExhibitionCommonReturn
+    }
   }
 
   async deleteExhibitedItem (
     exhibitionId: number,
     itemId: number
-  ): Promise<ExhibitedItem> {
+  ): Promise<{ itemId: number; exhibitionId: number }> {
+    if (
+      !(await this.prismaBase.exhibitedItem.count({
+        where: { itemId: itemId, exhibitionId: exhibitionId }
+      }))
+    )
+      throw new NotFoundException('Item not exhibited in this exhibition.')
     return await this.prismaBase.exhibitedItem
       .delete({
         where: {
           itemId_exhibitionId: {
-          itemId: itemId,
-          exhibitionId: exhibitionId
+            itemId: itemId,
+            exhibitionId: exhibitionId
           }
+        },
+        select: {
+          itemId: true,
+          exhibitionId: true
         }
       })
       .catch((e: Error) => {

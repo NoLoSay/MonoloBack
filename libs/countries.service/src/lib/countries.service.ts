@@ -21,7 +21,7 @@ export class CountriesService {
   ) {}
 
   async findAll (
-    role: 'USER' | 'ADMIN' | 'REFERENT'
+    role: 'USER' | 'ADMIN' | 'MANAGER'
   ): Promise<CountryCommonReturn[] | CountryAdminReturn[]> {
     let selectOptions: Prisma.CountrySelect
 
@@ -52,7 +52,7 @@ export class CountriesService {
 
   async findOne (
     id: number,
-    role: 'USER' | 'ADMIN' | 'REFERENT'
+    role: 'USER' | 'ADMIN' | 'MANAGER'
   ): Promise<CountryCommonReturn | CountryAdminReturn> {
     let selectOptions: Prisma.CountrySelect
 
