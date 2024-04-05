@@ -10,29 +10,29 @@ import {
   Request,
   UnauthorizedException,
   Query,
-  Response,
-} from '@nestjs/common';
-import { ApiExtraModels } from '@nestjs/swagger';
-import { ADMIN, Roles } from '@noloback/roles';
+  Response
+} from '@nestjs/common'
+import { ApiExtraModels } from '@nestjs/swagger'
+import { ADMIN, Roles } from '@noloback/roles'
 import {
   UserCreateModel,
   UserUpdateModel,
-  UsersService,
-} from '@noloback/users.service';
-import { UserAdminReturn, UserCommonReturn } from '@noloback/api.returns';
-import { VideoService } from '@noloback/video.service';
-import { PaginatedDto } from 'models/swagger/paginated-dto';
+  UsersService
+} from '@noloback/users.service'
+import { UserAdminReturn, UserCommonReturn } from '@noloback/api.returns'
+import { VideoService } from '@noloback/video.service'
+import { PaginatedDto } from 'models/swagger/paginated-dto'
 
 @Controller('users')
 @ApiExtraModels(PaginatedDto)
 export class UsersController {
-  constructor(
+  constructor (
     private readonly usersService: UsersService,
     private readonly videoService: VideoService
   ) {}
 
   @Get()
-  async findAll(
+  async findAll (
     @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
@@ -41,7 +41,7 @@ export class UsersController {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': await this.usersService.count(),
+        'X-Total-Count': await this.usersService.count()
       })
       .status(200)
       .json(
@@ -50,30 +50,36 @@ export class UsersController {
           +firstElem,
           +lastElem
         )
-      );
+      )
   }
 
   @Get('me')
-  async findMe(@Request() request: any) {
-    return this.usersService.findMe(request.user);
+  async findMe (@Request() request: any) {
+    return this.usersService.findMe(request.user)
+  }
+
+  @Put('me')
+  async updateMe (@Request() request: any, @Body() updateUser: UserUpdateModel) {
+    return this.usersService.update(request.user.id, updateUser)
   }
 
   @Get(':id')
-  async findOne(
+  async findOne (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
-    return this.usersService.findOne(id, request.user.activeProfile.role);
+    return this.usersService.findOne(id, request.user.activeProfile.role)
   }
 
   @Roles([ADMIN])
   @Post()
-  async create(@Body() createUserDto: UserCreateModel) {
-    return this.usersService.create(createUserDto);
+  async create (@Body() createUserDto: UserCreateModel) {
+    return this.usersService.create(createUserDto)
   }
 
+  @Roles([ADMIN])
   @Put(':id')
-  async update(
+  async update (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUser: UserUpdateModel
@@ -81,7 +87,7 @@ export class UsersController {
     if (id !== request.user.id && request.user.activeProfile.role !== 'ADMIN') {
       throw new UnauthorizedException()
     }
-    return this.usersService.update(id, updateUser);
+    return this.usersService.update(id, updateUser)
   }
 
   @Delete(':id')
@@ -93,14 +99,10 @@ export class UsersController {
   }
 
   @Get(':id/videos')
-  async findItsVideos(
+  async findItsVideos (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
-    console.log('request.user', request.user);
-    return this.videoService.getVideosFromUser(
-      id,
-      request.user.activeProfile.role
-    );
+    return this.videoService.getVideosFromUser(id, request.user)
   }
 }
