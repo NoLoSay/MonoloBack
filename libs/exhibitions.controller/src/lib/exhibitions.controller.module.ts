@@ -1,0 +1,19 @@
+import { Module } from '@nestjs/common'
+import { AuthServiceModule } from '@noloback/auth.service'
+import { ExhibitionsServiceModule } from '@noloback/exhibitions.service'
+import { ExhibitionsController } from './exhibitions.controller'
+import { ExhibitedItemsServiceModule } from '@noloback/exhibited.items.service'
+import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
+
+@Module({
+  controllers: [ExhibitionsController],
+  providers: [],
+  exports: [],
+  imports: [
+    AuthServiceModule,
+    ExhibitionsServiceModule,
+    ExhibitedItemsServiceModule,
+    SitesManagersServiceModule
+  ]
+})
+export class ExhibitionsControllerModule {}

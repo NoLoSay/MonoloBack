@@ -1,73 +1,162 @@
 import {
   Controller,
   Get,
+  Put,
   HttpCode,
+  Param,
+  Query,
+  Request,
+  Body,
+  Response,
+  Patch,
   HttpException,
   HttpStatus,
-  Param,
-  Post,
-  Request,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger/dist';
-import { VideoFile } from '@noloback/models/swagger';
-import { VideoService } from '@noloback/video.service';
-import { JwtAuthGuard } from '@noloback/guards';
-import multer = require('multer');
-import { extname } from 'path';
+  Delete
+} from '@nestjs/common'
+import { ApiBody } from '@nestjs/swagger/dist'
+import { VideoService } from '@noloback/video.service'
+import multer = require('multer')
+import { ValidationStatus } from '@prisma/client/base'
+import { FiltersGetMany } from 'models/filters-get-many'
+import { ADMIN, MODERATOR, Roles } from '@noloback/roles'
 
 const storage = multer.diskStorage({
-  // notice you are calling the multer.diskStorage() method here, not multer()
   destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+    cb(null, 'uploads/')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now());
-  },
-});
-const upload = multer({ storage }); //provide the return value from
+    cb(null, file.fieldname + '-' + Date.now())
+  }
+})
+const upload = multer({ storage })
 
 @Controller('videos')
 export class VideoController {
-  constructor(private readonly videoservice: VideoService) {}
+  constructor (private readonly videoservice: VideoService) {}
 
-  @Get(':id')
+  @Get()
   @HttpCode(200)
-  async getYoutube(@Param('id') id: string): Promise<string> {
-    return await this.videoservice.getYoutube(id);
+  async getAllVideos (
+    @Request() request: any,
+    @Response() res: any,
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 50,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
+    @Query('validationStatus') validationStatus?: string | undefined,
+    @Query('item') itemId?: number | undefined,
+    @Query('user') userId?: number | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined
+  ): Promise<string> {
+    let validationStatusEnum: ValidationStatus | undefined
+    if (
+      validationStatus &&
+      Object.values(ValidationStatus).includes(
+        validationStatus as ValidationStatus
+      )
+    ) {
+      validationStatusEnum = validationStatus as unknown as ValidationStatus
+    }
+
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.videoservice.countVideos(
+          validationStatusEnum,
+          itemId ? +itemId : undefined,
+          userId ? +userId : undefined,
+          createdAtGte,
+          createdAtLte
+        )
+      })
+      .json(
+        await this.videoservice.getAllVideos(
+          new FiltersGetMany(
+            firstElem,
+            lastElem,
+            sort,
+            order,
+            ['id', 'validationStatus', 'createdAt'],
+            'id'
+          ),
+          validationStatusEnum,
+          itemId ? +itemId : undefined,
+          userId ? +userId : undefined,
+          createdAtGte,
+          createdAtLte
+        )
+      )
+    // return JSON.parse(
+    //   JSON.stringify(
+    //     await this.videoservice.getAllVideos(
+    //       +start,
+    //       +end,
+    //       validationStatusEnum,
+    //       itemId ? +itemId : undefined
+    //     )
+    //   )
+    // );
   }
 
-  @ApiBody({ type: VideoFile })
-  @ApiConsumes('multipart/form-data')
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: multer.diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          // Generating a 32 random chars long string
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          //Calling the callback passing the random name generated with the original extension name
-          cb(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    })
-  )
-  async createYoutube(
-    @Request() req: any,
-    @UploadedFile() file: Express.Multer.File
-  ): Promise<string> {
-    const user = req.user;
-    console.log(user);
-    const youtube = this.videoservice.createYoutube(user, file);
+  @Get(':uuid')
+  @HttpCode(200)
+  async getYoutubeByUUID (@Param('uuid') uuid: string) {
+    const isnum = /^\d+$/.test(uuid)
 
-    return await youtube;
+    if (isnum) {
+      return await this.videoservice.getYoutubeById(parseInt(uuid, 10))
+    }
+    return await this.videoservice.getYoutubeByUUID(uuid)
+  }
+
+  @Patch(':id')
+  @HttpCode(200)
+  async patchYoutube (
+    @Request() req: any,
+    @Param('id') id: number,
+    @Body('validationStatus') validationStatus: ValidationStatus
+  ) {
+    if (req.user.role !== 'ADMIN')
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
+
+    return await this.videoservice.patchYoutubeValidation(+id, validationStatus)
+  }
+
+  @Roles([ADMIN, MODERATOR])
+  @Put(':id/validation')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        validationStatus: {
+          enum: ['VALIDATED', 'PENDING', 'REFUSED']
+        }
+      },
+      required: ['validationStatus'],
+      example: { validationStatus: 'VALIDATED' }
+    }
+  })
+  @HttpCode(200)
+  async updateYoutube (
+    @Request() req: any,
+    @Param('id') id: number,
+    @Body('validationStatus') validationStatus: ValidationStatus
+  ) {
+    return await this.videoservice.updateYoutubeValidation(
+      +id,
+      validationStatus
+    )
+  }
+
+  @Roles([ADMIN, MODERATOR])
+  @Delete(':id')
+  @HttpCode(200)
+  async deleteYoutube (
+    @Request() req: any,
+    @Param('id') id: number,
+    @Query('deletedReason') deletedReason: string
+  ) {
+    return await this.videoservice.deleteVideo(+id, deletedReason)
   }
 }

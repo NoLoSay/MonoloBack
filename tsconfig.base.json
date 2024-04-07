@@ -15,18 +15,61 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@noloback/addresses.controller": [
+        "libs/addresses.controller/src/index.ts"
+      ],
+      "@noloback/addresses.service": ["libs/addresses.service/src/index.ts"],
+      "@noloback/api.returns": ["models/api.returns"],
+      "@noloback/api.request.bodies": ["models/api.request.bodies"],
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
-      "@noloback/guards": ["models/guards"],
-      "@noloback/jwt": ["models/jwt"],
-      "@noloback/logger-lib": ["libs/logger/src/index.ts"],
       "@noloback/mail-confirmation": ["libs/mail-confirmation/src/index.ts"],
       "@noloback/mail-confirmation.controller": [
         "libs/mail-confirmation.controller/src/index.ts"
       ],
       "@noloback/mailer": ["libs/mailer/src/index.ts"],
+      "@noloback/cities.controller": ["libs/cities.controller/src/index.ts"],
+      "@noloback/cities.service": ["libs/cities.service/src/index.ts"],
+      "@noloback/countries.controller": [
+        "libs/countries.controller/src/index.ts"
+      ],
+      "@noloback/countries.service": ["libs/countries.service/src/index.ts"],
+      "@noloback/db.calls": ["models/db.calls"],
+      "@noloback/db.returns": ["models/db.returns"],
+      "@noloback/departments.controller": [
+        "libs/departments.controller/src/index.ts"
+      ],
+      "@noloback/departments.service": [
+        "libs/departments.service/src/index.ts"
+      ],
+      "@noloback/exhibited.items.service": [
+        "libs/exhibited.items.service/src/index.ts"
+      ],
+      "@noloback/exhibitions.controller": [
+        "libs/exhibitions.controller/src/index.ts"
+      ],
+      "@noloback/exhibitions.service": [
+        "libs/exhibitions.service/src/index.ts"
+      ],
+      "@noloback/guards": ["models/guards"],
+      "@noloback/item.categories.controller": [
+        "libs/item.categories.controller/src/index.ts"
+      ],
+      "@noloback/item.categories.service": [
+        "libs/item.categories.service/src/index.ts"
+      ],
+      "@noloback/item.types.controller": [
+        "libs/item.types.controller/src/index.ts"
+      ],
+      "@noloback/item.types.service": ["libs/item.types.service/src/index.ts"],
+      "@noloback/items.controller": ["libs/items.controller/src/index.ts"],
+      "@noloback/items.service": ["libs/items.service/src/index.ts"],
+      "@noloback/jwt": ["models/jwt"],
+      "@noloback/logger-lib": ["libs/logger/src/index.ts"],
       "@noloback/models": ["models/index.ts"],
       "@noloback/models/swagger": ["models/swagger/index.ts"],
+      "@noloback/persons.controller": ["libs/persons.controller/src/index.ts"],
+      "@noloback/persons.service": ["libs/persons.service/src/index.ts"],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],
       "@noloback/prisma-client-logs": ["libs/prisma/client/logs/src/index.ts"],
       "@noloback/prisma-client-translator": [
@@ -38,11 +81,23 @@
       "@noloback/prisma-schema-translator": [
         "libs/prisma/schema/translator/src/index.ts"
       ],
+      "@noloback/profile.controller": ["libs/profile.controller/src/index.ts"],
+      "@noloback/profile.service": ["libs/profile.service/src/index.ts"],
       "@noloback/register.controller": [
         "libs/register.controller/src/index.ts"
       ],
+      "@noloback/requests.constructor": ["models/requests.constructor"],
       "@noloback/roles": ["models/roles"],
+      "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
+      "@noloback/sites.controller": [
+        "libs/sites.controller/src/index.ts"
+      ],
+      "@noloback/sites.managers.service": [
+        "libs/sites.managers.service/src/index.ts"
+      ],
+      "@noloback/sites.service": ["libs/sites.service/src/index.ts"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
+      "@noloback/upload.controller": ["libs/upload.controller/src/index.ts"],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],
       "@noloback/video.controller": ["libs/video.controller/src/index.ts"],

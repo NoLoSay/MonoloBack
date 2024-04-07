@@ -1,5 +1,4 @@
-import { Controller, Get, Request, Query, Post, UseGuards, Req, Body } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Controller, Get, Request, Post, UseGuards, Req, Body } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
 import { LocalAuthGuard } from '@noloback/guards';

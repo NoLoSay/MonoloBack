@@ -1,0 +1,103 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  ParseIntPipe,
+  Request,
+  Response,
+  Query
+} from '@nestjs/common'
+import { ADMIN, CREATOR, MANAGER, Roles } from '@noloback/roles'
+import { ItemsService } from '@noloback/items.service'
+import { SitesManagersService } from '@noloback/sites.managers.service'
+import { VideoService } from '@noloback/video.service'
+import { ItemAdminReturn, ItemCommonReturn, ItemDetailedReturn } from '@noloback/api.returns'
+import { ItemManipulationModel } from '@noloback/api.request.bodies'
+
+@Controller('items')
+export class ItemsController {
+  constructor (
+    private readonly itemsService: ItemsService,
+    private readonly sitesManagersService: SitesManagersService,
+    private readonly videoService: VideoService // private loggingService: LoggerService
+  ) {}
+
+  @Get()
+  async findAll (
+    @Request() request: any,
+    @Response() res: any,
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 10,
+    @Query('name_like') nameLike?: string | undefined
+  ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
+    // return this.itemsService.findAll(request.user.role)
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.itemsService.count()
+      })
+      .status(200)
+      .json(
+        await this.itemsService.findAll(
+          request.user.activeProfile.role,
+          +firstElem,
+          +lastElem,
+          nameLike
+        )
+      )
+  }
+
+  @Roles([ADMIN, CREATOR, MANAGER])
+  @Get('video-pending')
+  async findAllVideoPendingItems () {
+    return this.itemsService.findAllVideoPendingItems()
+  }
+
+  @Get(':id')
+  async findOne (
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: any
+  ): Promise<ItemDetailedReturn | ItemAdminReturn> {
+    return this.itemsService.findOneDetailled(
+      id,
+      request.user
+    )
+  }
+
+  @Roles([ADMIN, MANAGER])
+  @Post()
+  async create (@Request() request: any, @Body() items: ItemManipulationModel) {
+    return this.itemsService.create(items)
+  }
+
+  @Roles([ADMIN, MANAGER])
+  @Put(':id')
+  async update (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatedItem: ItemManipulationModel
+  ) {
+    return this.itemsService.update(id, updatedItem)
+  }
+
+  @Roles([ADMIN])
+  @Delete(':id')
+  async delete (@Param('id', ParseIntPipe) id: number) {
+    return this.itemsService.delete(id)
+  }
+
+  @Get(':id/videos')
+  async getVideos (
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: any
+  ) {
+    return this.videoService.getVideosFromItem(
+      id,
+      request.user.activeProfile.role
+    )
+  }
+}
