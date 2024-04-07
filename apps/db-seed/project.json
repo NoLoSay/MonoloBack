@@ -1,0 +1,31 @@
+{
+  "name": "db-seed",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/db-seed/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "db-seed:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "db-seed:build:development"
+        },
+        "production": {
+          "buildTarget": "db-seed:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/db-seed/jest.config.ts"
+      }
+    }
+  }
+}
