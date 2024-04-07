@@ -35,6 +35,7 @@ export class DepartmentsService {
       .create({
         data: {
           name: department.name,
+          code: department.code,
           latitude: department.latitude,
           longitude: department.longitude,
           Country: {
@@ -71,6 +72,7 @@ export class DepartmentsService {
         where: { id: id },
         data: {
           name: updatedDepartment.name,
+          code: updatedDepartment.code,
           latitude: updatedDepartment.latitude,
           longitude: updatedDepartment.longitude,
           Country: {
