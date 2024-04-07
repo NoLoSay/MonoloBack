@@ -41,6 +41,7 @@ model Country {
 model Department {
   id        Int       @id @default(autoincrement())
   name      String
+  code      String
   longitude Float?
   latitude  Float?
   createdAt DateTime  @default(now())
@@ -49,6 +50,9 @@ model Department {
   countryId Int
   Country   Country   @relation(fields: [countryId], references: [id])
   Cities    City[]
+
+  @@unique([name, countryId])
+  @@unique([code, countryId])
 }
 
 model City {
@@ -63,6 +67,9 @@ model City {
   departmentId Int
   Department   Department @relation(fields: [departmentId], references: [id])
   Addresses    Address[]
+
+  @@unique([name, departmentId])
+  @@unique([zip, departmentId])
 }
 
 model Address {

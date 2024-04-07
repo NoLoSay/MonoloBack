@@ -1,6 +1,8 @@
 import { PrismaClient as PrismaBaseClient } from '@prisma/client/base';
 import { seedUsers } from './users';
 import { seedCountries } from './countries';
+import { seedDepartments } from './departments';
+import { seedCities } from './cities';
 
 const prisma = new PrismaBaseClient();
 async function main() {
@@ -9,6 +11,12 @@ async function main() {
 
   const countries = await seedCountries();
   console.log(countries);
+
+  const departments = await seedDepartments(countries);
+  console.log(departments);
+
+  const cities = await seedCities(countries, departments);
+  console.log(cities);
 }
 
 main()
