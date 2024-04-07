@@ -3,13 +3,12 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/prisma/client/logs/src",
   "projectType": "library",
+  "tags": [],
+  "implicitDependencies": ["prisma-schema-logs"],
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/prisma/client/logs/**/*.ts"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
@@ -25,7 +24,5 @@
         }
       }
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["prisma-schema-logs"]
+  }
 }
