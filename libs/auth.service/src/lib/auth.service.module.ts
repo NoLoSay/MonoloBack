@@ -14,6 +14,7 @@ import { PrismaBaseService } from '@noloback/prisma-client-base';
 import { JwtModule } from '@nestjs/jwt';
 import { InstagramStrategy } from './strategies/instagram.strategy';
 import { FacebookStrategy } from './strategies/facebook.strategy';
+import { MailerServiceModule } from '@noloback/mailer';
 
 @Module({
   controllers: [],
@@ -38,6 +39,7 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
       signOptions: { expiresIn: '30d' },
     }),
     PassportModule,
+    MailerServiceModule,
   ],
 })
 export class AuthServiceModule {}

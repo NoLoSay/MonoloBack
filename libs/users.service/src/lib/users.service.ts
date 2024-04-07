@@ -72,6 +72,15 @@ export class UsersService {
     });
   }
 
+  async changePassword(userId: number, newPassword: string) {
+    return this.prismaBase.user.update({
+      where: { id: userId },
+      data: {
+        password: await hash(newPassword, 12),
+      },
+    });
+  }
+
   findAll() {
     return this.prismaBase.user.findMany({ where: { deletedAt: null } });
   }
