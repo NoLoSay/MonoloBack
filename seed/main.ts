@@ -1,12 +1,14 @@
 import { PrismaClient as PrismaBaseClient } from '@prisma/client/base';
-import { hash } from 'bcrypt';
 import { seedUsers } from './users';
+import { seedCountries } from './countries';
 
 const prisma = new PrismaBaseClient();
 async function main() {
   const users = await seedUsers();
   console.log(users);
 
+  const countries = await seedCountries();
+  console.log(countries);
 }
 
 main()

@@ -28,7 +28,8 @@ datasource db {
 
 model Country {
   id          Int          @id @default(autoincrement())
-  name        String
+  name        String       @unique
+  code        String       @unique
   longitude   Float?
   latitude    Float?
   createdAt   DateTime     @default(now())
