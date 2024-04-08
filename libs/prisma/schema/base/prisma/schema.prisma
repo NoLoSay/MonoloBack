@@ -86,6 +86,8 @@ model Address {
   cityId       Int
   City         City      @relation(fields: [cityId], references: [id])
   Sites        Site[]
+
+  @@unique([houseNumber, street, zip, cityId])
 }
 
 // ---------------------------
