@@ -229,7 +229,7 @@ model Person {
 
 model ItemCategory {
   id          Int        @id @default(autoincrement())
-  name        String
+  name        String     @unique
   description String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
@@ -247,6 +247,8 @@ model ItemType {
   itemCategoryId Int
   itemCategory   ItemCategory @relation(fields: [itemCategoryId], references: [id])
   items          Item[]
+
+  @@unique([name, itemCategoryId])
 }
 
 model Item {

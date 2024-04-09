@@ -4,6 +4,8 @@ import { seedCountries } from './countries';
 import { seedDepartments } from './departments';
 import { seedCities } from './cities';
 import { seedSites } from './sites';
+import { seedItemTypes } from './item-types';
+import { seedItems } from './items';
 
 const prisma = new PrismaBaseClient();
 async function main() {
@@ -19,8 +21,16 @@ async function main() {
   const cities = await seedCities(countries, departments);
   console.log(cities);
 
-  const addresses = await seedSites(countries, departments, cities);
-  console.log(addresses);
+  const sites = await seedSites(countries, departments, cities);
+  console.log(sites);
+
+  const itemTypes = await seedItemTypes();
+  console.log(itemTypes);
+
+  const items = await seedItems();
+  console.log(items);
+
+  console.log('Seeding completed');
 }
 
 main()
