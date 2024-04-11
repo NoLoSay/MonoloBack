@@ -87,6 +87,7 @@ export class CountriesService {
       .create({
         data: {
           name: country.name,
+          code: country.code,
           latitude: country.latitude,
           longitude: country.longitude
         },
@@ -107,6 +108,7 @@ export class CountriesService {
         where: { id: id },
         data: {
           name: updatedCountry.name,
+          code: updatedCountry.code,
           latitude: updatedCountry.latitude,
           longitude: updatedCountry.longitude
         }
