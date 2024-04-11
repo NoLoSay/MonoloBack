@@ -74,11 +74,11 @@ export class VideoListedFromUserCommonSelect extends VideoDefaultSelect {
 export class VideoManagerSelect extends VideoDefaultSelect {
   validationStatus: boolean = true
 
-  // constructor (entity?: VideoListedFromUserCommonSelect | VideoListedFromUserCommonSelect | VideoCommonSelect) {
-  //   super()
-  //   this.item = entity?.item || undefined
-  //   this.postedBy = entity?.postedBy || undefined
-  // }
+  constructor (entity: VideoDefaultSelect) {
+    super()
+    this.item = entity.item
+    this.postedBy = entity.postedBy
+  }
 }
 
 export class VideoCreatorSelect extends VideoManagerSelect {
