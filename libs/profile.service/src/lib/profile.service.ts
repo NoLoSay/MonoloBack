@@ -245,9 +245,10 @@ export class ProfileService {
     const profileToDelete:
       | { id: number; role: Role; deletedAt: Date | null }
       | undefined = toWho.profiles.find(profile => profile.id === profileId)
-    if (!profileToDelete || profileToDelete.deletedAt) {
-      throw new ConflictException('Profile not found or already deleted')
-    }
+    if (!profileToDelete || profileToDelete.deletedAt)
+      throw new NotFoundException('Profile not found or already deleted')
+    if (profileToDelete.role === Role.USER)
+      throw new ForbiddenException('Cannot delete user profile')
     const deletedProfile = await this.prismaBase.profile.update({
       where: { id: profileToDelete.id },
       data: { isActive: false, deletedAt: new Date() },
