@@ -8,6 +8,11 @@ export class CountryManipulationModel {
   name: string = ''
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  code: string = ''
+
+  @ApiProperty()
   @IsNumber()
   @IsOptional()
   longitude?: number

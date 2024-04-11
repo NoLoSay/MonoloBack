@@ -28,7 +28,8 @@ datasource db {
 
 model Country {
   id          Int          @id @default(autoincrement())
-  name        String
+  name        String       @unique
+  code        String       @unique
   longitude   Float?
   latitude    Float?
   createdAt   DateTime     @default(now())
@@ -40,6 +41,7 @@ model Country {
 model Department {
   id        Int       @id @default(autoincrement())
   name      String
+  code      String
   longitude Float?
   latitude  Float?
   createdAt DateTime  @default(now())
@@ -48,6 +50,9 @@ model Department {
   countryId Int
   Country   Country   @relation(fields: [countryId], references: [id])
   Cities    City[]
+
+  @@unique([name, countryId])
+  @@unique([code, countryId])
 }
 
 model City {
@@ -62,6 +67,9 @@ model City {
   departmentId Int
   Department   Department @relation(fields: [departmentId], references: [id])
   Addresses    Address[]
+
+  @@unique([name, departmentId])
+  @@unique([zip, departmentId])
 }
 
 model Address {
@@ -78,6 +86,8 @@ model Address {
   cityId       Int
   City         City      @relation(fields: [cityId], references: [id])
   Sites        Site[]
+
+  @@unique([houseNumber, street, zip, cityId])
 }
 
 // ---------------------------
@@ -219,7 +229,7 @@ model Person {
 
 model ItemCategory {
   id          Int        @id @default(autoincrement())
-  name        String
+  name        String     @unique
   description String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
@@ -237,6 +247,8 @@ model ItemType {
   itemCategoryId Int
   itemCategory   ItemCategory @relation(fields: [itemCategoryId], references: [id])
   items          Item[]
+
+  @@unique([name, itemCategoryId])
 }
 
 model Item {

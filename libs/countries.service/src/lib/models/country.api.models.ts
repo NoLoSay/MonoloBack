@@ -1,6 +1,7 @@
 export class CountryCommonReturn {
   id: number = 0
   name: string = ''
+  code: string = ''
   longitude: number | null = null;
   latitude: number | null = null;
 }
@@ -16,6 +17,7 @@ export class CountryAdminReturn extends CountryCommonReturn {
 export class CountryCommonSelect {
   id: boolean = true
   name: boolean = true
+  code: boolean = true
   longitude: boolean = true
   latitude: boolean = true
 }
