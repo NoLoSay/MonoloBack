@@ -251,10 +251,10 @@ export class VideoService {
 
     switch (user.activeProfile.role) {
       case Role.ADMIN:
-        selectOptions = new VideoAdminSelect()
+        selectOptions = new VideoAdminSelect(new VideoListedFromItemCommonSelect())
         break
       case Role.MODERATOR:
-        selectOptions = new VideoModeratorSelect()
+        selectOptions = new VideoModeratorSelect(new VideoListedFromItemCommonSelect())
         break
       // case Role.MANAGER:
       //   if (this.sitesManagersService)
@@ -310,13 +310,13 @@ export class VideoService {
 
     switch (user.activeProfile.role) {
       case Role.ADMIN:
-        selectOptions = new VideoAdminSelect()
+        selectOptions = new VideoAdminSelect(new VideoListedFromUserCommonSelect())
         break
       case Role.MODERATOR:
-        selectOptions = new VideoModeratorSelect()
+        selectOptions = new VideoModeratorSelect(new VideoListedFromUserCommonSelect())
         break
       case Role.CREATOR:
-        if (user.id === userId) selectOptions = new VideoCreatorSelect()
+        if (user.id === userId) selectOptions = new VideoCreatorSelect(new VideoListedFromUserCommonSelect())
         else selectOptions = new VideoListedFromUserCommonSelect()
         break
       default:
@@ -405,10 +405,10 @@ export class VideoService {
 
     switch (user.activeProfile.role) {
       case Role.ADMIN:
-        selectOptions = new VideoAdminSelect()
+        selectOptions = new VideoAdminSelect(new VideoListedFromItemCommonSelect())
         break
       case Role.MODERATOR:
-        selectOptions = new VideoModeratorSelect()
+        selectOptions = new VideoModeratorSelect(new VideoListedFromItemCommonSelect())
         break
       default:
         selectOptions = new VideoListedFromItemCommonSelect()
