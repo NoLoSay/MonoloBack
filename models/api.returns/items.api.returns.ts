@@ -1,6 +1,4 @@
-import {
-  VideoCommonListReturn,
-} from '@noloback/video.service'
+import { VideoCommonReturn } from "./videos.api.returns"
 
 class Person {
   id: number = 0
@@ -29,7 +27,7 @@ export class ItemCommonReturn {
 }
 
 export class ItemDetailedReturn extends ItemCommonReturn {
-  videos: VideoCommonListReturn[] = []
+  videos: VideoCommonReturn[] = []
 }
 
 export class ItemManagerReturn extends ItemDetailedReturn {

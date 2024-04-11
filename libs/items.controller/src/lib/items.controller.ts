@@ -15,7 +15,11 @@ import { ADMIN, CREATOR, MANAGER, Roles } from '@noloback/roles'
 import { ItemsService } from '@noloback/items.service'
 import { SitesManagersService } from '@noloback/sites.managers.service'
 import { VideoService } from '@noloback/video.service'
-import { ItemAdminReturn, ItemCommonReturn, ItemDetailedReturn } from '@noloback/api.returns'
+import {
+  ItemAdminReturn,
+  ItemCommonReturn,
+  ItemDetailedReturn
+} from '@noloback/api.returns'
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
 
 @Controller('items')
@@ -62,10 +66,7 @@ export class ItemsController {
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any
   ): Promise<ItemDetailedReturn | ItemAdminReturn> {
-    return this.itemsService.findOneDetailled(
-      id,
-      request.user
-    )
+    return this.itemsService.findOneDetailled(id, request.user)
   }
 
   @Roles([ADMIN, MANAGER])
@@ -95,9 +96,6 @@ export class ItemsController {
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any
   ) {
-    return this.videoService.getVideosFromItem(
-      id,
-      request.user.activeProfile.role
-    )
+    return this.videoService.getVideosFromItem(id, request.user)
   }
 }

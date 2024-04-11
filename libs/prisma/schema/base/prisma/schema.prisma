@@ -154,7 +154,6 @@ model Profile {
   userId    Int
   user      User             @relation(fields: [userId], references: [id])
   videos    Video[]
-  // LikedVideos UserlikesVideos[]
   managerOf SiteHasManager[]
 
   @@unique([userId, role])

@@ -90,14 +90,14 @@ export class UsersService {
   }
 
   async findAll (
-    role: 'USER' | 'ADMIN' | 'MANAGER',
+    role: Role,
     firstElem: number,
     lastElem: number
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
     let selectOptions: Prisma.UserSelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new UserAdminSelect()
         break
       default:
@@ -112,7 +112,7 @@ export class UsersService {
     })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return users as UserAdminReturn[]
       default:
         return users as UserCommonReturn[]
@@ -128,11 +128,11 @@ export class UsersService {
     return userMe as UserMeReturn
   }
 
-  async findOne (id: number, role: 'USER' | 'ADMIN' | 'MANAGER') {
+  async findOne (id: number, role: Role) {
     let selectOptions: Prisma.UserSelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new UserAdminSelect()
         break
       default:
@@ -143,7 +143,7 @@ export class UsersService {
       deletedAt?: Date | null
     } = { id: id }
 
-    if (role !== 'ADMIN') {
+    if (role !== Role.ADMIN) {
       where.deletedAt = null
     }
 
@@ -153,7 +153,7 @@ export class UsersService {
     })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return user as unknown as UserAdminReturn
       default:
         return user as unknown as UserCommonReturn

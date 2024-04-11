@@ -3,19 +3,39 @@ import { JWT } from 'google-auth-library'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { readFileSync } from 'fs'
 import {
+  Prisma,
   PrismaBaseService,
   Role,
   ValidationStatus
 } from '@noloback/prisma-client-base'
 import { LoggerService } from '@noloback/logger-lib'
-import {
-  VideoCommonListEntity,
-  VideoCommonListReturn,
-  VideoCommonListSelect
-} from './models/video.api.models'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import { ProfileService } from '@noloback/profile.service'
+import {
+  VideoAdminReturn,
+  VideoCommonReturn,
+  VideoCreatorReturn,
+  VideoManagerReturn,
+  VideoModeratorReturn
+} from '@noloback/api.returns'
+import {
+  VideoAdminSelect,
+  VideoCommonSelect,
+  VideoCreatorSelect,
+  VideoListedFromItemCommonSelect,
+  VideoListedFromUserCommonSelect,
+  VideoManagerSelect,
+  VideoModeratorSelect
+} from '@noloback/db.calls'
+import {
+  VideoAdminDbReturn,
+  VideoCommonDbReturn,
+  VideoCreatorDbReturn,
+  VideoListedFromItemCommonDbReturn,
+  VideoModeratorDbReturn
+} from '@noloback/db.returns'
+import { SitesManagersService } from '@noloback/sites.managers.service'
 
 export function getValidationStatusFromRole (role: Role): ValidationStatus[] {
   switch (role) {
@@ -38,7 +58,8 @@ export class VideoService {
   constructor (
     private prismaBase: PrismaBaseService,
     private loggerService: LoggerService,
-    private readonly profileService: ProfileService
+    private readonly profileService: ProfileService,
+    private sitesManagersService: SitesManagersService
   ) {
     const serviceAccount = JSON.parse(
       readFileSync('secrets/google-service-account.json', 'utf-8')
@@ -61,7 +82,7 @@ export class VideoService {
     })
   }
 
-  async getYoutube (video: any) {
+  async getYoutube (video: VideoCommonReturn) {
     const fullVideo = {
       video: video,
       url: `https://www.youtube.com/embed/${video.externalProviderId}`
@@ -84,8 +105,8 @@ export class VideoService {
   }
 
   async getYoutubeByUUID (youtubeId: string) {
-    const video = await this.prismaBase.video.findUnique({
-      select: new VideoCommonListSelect(),
+    const video: unknown = await this.prismaBase.video.findUnique({
+      select: new VideoCommonSelect(),
       where: {
         uuid: youtubeId
       }
@@ -95,12 +116,12 @@ export class VideoService {
       throw new NotFoundException()
     }
 
-    return this.getYoutube(video)
+    return this.getYoutube(new VideoCommonReturn(video as VideoCommonDbReturn))
   }
 
   async getYoutubeById (youtubeId: number) {
-    const video = await this.prismaBase.video.findUnique({
-      select: new VideoCommonListSelect(),
+    const video: unknown = await this.prismaBase.video.findUnique({
+      select: new VideoCommonSelect(),
       where: {
         id: youtubeId
       }
@@ -110,7 +131,7 @@ export class VideoService {
       throw new NotFoundException()
     }
 
-    return this.getYoutube(video)
+    return this.getYoutube(new VideoCommonReturn(video as VideoCommonDbReturn))
   }
 
   async updateYoutubeValidation (id: number, status: ValidationStatus) {
@@ -219,47 +240,129 @@ export class VideoService {
 
   async getVideosFromItem (
     itemId: number,
-    role: Role = 'USER'
-  ): Promise<VideoCommonListReturn[]> {
-    const videoEntities = (await this.prismaBase.video.findMany({
+    user: UserRequestModel
+  ): Promise<
+    | VideoCommonReturn[]
+    //| VideoManagerReturn[]
+    | VideoModeratorReturn[]
+    | VideoAdminReturn[]
+  > {
+    let selectOptions: Prisma.VideoSelect
+
+    switch (user.activeProfile.role) {
+      case Role.ADMIN:
+        selectOptions = new VideoAdminSelect()
+        break
+      case Role.MODERATOR:
+        selectOptions = new VideoModeratorSelect()
+        break
+      // case Role.MANAGER:
+      //   if (this.sitesManagersService)
+      //   selectOptions = new VideoManagerSelect()
+      //   break
+      default:
+        selectOptions = new VideoListedFromItemCommonSelect()
+    }
+
+    const videoEntities: unknown[] = await this.prismaBase.video.findMany({
       where: {
         itemId: itemId,
-        validationStatus: { in: getValidationStatusFromRole(role) }
+        validationStatus: {
+          in: getValidationStatusFromRole(user.activeProfile.role)
+        }
       },
-      select: new VideoCommonListSelect(),
+      select: selectOptions,
       orderBy: {
         likedBy: {
           _count: 'desc'
         }
       }
-    })) as unknown as VideoCommonListEntity[]
+    })
 
-    const videos: VideoCommonListReturn[] = videoEntities.map(
-      entity => new VideoCommonListReturn(entity)
-    )
-
-    return videos
+    switch (user.activeProfile.role) {
+      case Role.ADMIN:
+        return videoEntities.map(
+          entity => new VideoAdminReturn(entity as VideoAdminDbReturn)
+        )
+      case Role.MODERATOR:
+        return videoEntities.map(
+          entity => new VideoModeratorReturn(entity as VideoModeratorDbReturn)
+        )
+      // case Role.MANAGER:
+      //   return videoEntities.map(entity => new VideoManagerReturn(entity as VideoManagerDbReturn))
+      default:
+        return videoEntities.map(
+          entity => new VideoCommonReturn(entity as VideoCommonDbReturn)
+        )
+    }
   }
 
   async getVideosFromUser (
     userId: number,
-    role: Role = 'USER'
-  ): Promise<VideoCommonListReturn[]> {
-    const videoEntities = (await this.prismaBase.video.findMany({
+    user: UserRequestModel
+  ): Promise<
+    | VideoCommonReturn[]
+    | VideoCreatorReturn[]
+    | VideoModeratorReturn[]
+    | VideoAdminReturn[]
+  > {
+    let selectOptions: Prisma.VideoSelect
+
+    switch (user.activeProfile.role) {
+      case Role.ADMIN:
+        selectOptions = new VideoAdminSelect()
+        break
+      case Role.MODERATOR:
+        selectOptions = new VideoModeratorSelect()
+        break
+      case Role.CREATOR:
+        if (user.id === userId) selectOptions = new VideoCreatorSelect()
+        else selectOptions = new VideoListedFromUserCommonSelect()
+        break
+      default:
+        selectOptions = new VideoListedFromUserCommonSelect()
+    }
+
+    const videoEntities: unknown[] = await this.prismaBase.video.findMany({
       where: {
         postedBy: {
           role: Role.CREATOR,
           userId: userId
         },
-        validationStatus: { in: getValidationStatusFromRole(role) }
+        validationStatus: {
+          in: getValidationStatusFromRole(
+            user.activeProfile.role === Role.CREATOR && user.id === userId
+              ? Role.MANAGER
+              : user.activeProfile.role
+          )
+        }
       },
-      select: new VideoCommonListSelect()
-    })) as unknown as VideoCommonListEntity[]
+      select: selectOptions
+    })
 
-    const videos: VideoCommonListReturn[] = videoEntities.map(
-      entity => new VideoCommonListReturn(entity)
-    )
-    return videos as VideoCommonListReturn[]
+    switch (user.activeProfile.role) {
+      case Role.ADMIN:
+        return videoEntities.map(
+          entity => new VideoAdminReturn(entity as VideoAdminDbReturn)
+        )
+      case Role.MODERATOR:
+        return videoEntities.map(
+          entity => new VideoModeratorReturn(entity as VideoModeratorDbReturn)
+        )
+      case Role.CREATOR:
+        if (user.id === userId)
+          return videoEntities.map(
+            entity => new VideoCreatorReturn(entity as VideoCreatorDbReturn)
+          )
+        else
+          return videoEntities.map(
+            entity => new VideoCommonReturn(entity as VideoCommonDbReturn)
+          )
+      default:
+        return videoEntities.map(
+          entity => new VideoCommonReturn(entity as VideoCommonDbReturn)
+        )
+    }
   }
 
   async countVideos (
@@ -288,17 +391,33 @@ export class VideoService {
   }
 
   async getAllVideos (
+    user: UserRequestModel,
     filters: FiltersGetMany,
     validationStatus?: ValidationStatus | undefined,
     itemId?: number | undefined,
     userId?: number | undefined,
     createdAtGte?: string | undefined,
     createdAtLte?: string | undefined
-  ): Promise<VideoCommonListReturn[]> {
-    const videoEntities = (await this.prismaBase.video.findMany({
+  ): Promise<
+    VideoCommonReturn[] | VideoModeratorReturn[] | VideoAdminReturn[]
+  > {
+    let selectOptions: Prisma.VideoSelect
+
+    switch (user.activeProfile.role) {
+      case Role.ADMIN:
+        selectOptions = new VideoAdminSelect()
+        break
+      case Role.MODERATOR:
+        selectOptions = new VideoModeratorSelect()
+        break
+      default:
+        selectOptions = new VideoListedFromItemCommonSelect()
+    }
+
+    const videoEntities: unknown[] = await this.prismaBase.video.findMany({
       skip: filters.start,
       take: filters.end - filters.start,
-      select: new VideoCommonListSelect(),
+      select: selectOptions,
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
         itemId: itemId ? itemId : undefined,
@@ -316,12 +435,22 @@ export class VideoService {
       orderBy: {
         [filters.sort]: filters.order
       }
-    })) as unknown as VideoCommonListEntity[]
+    })
 
-    const videos: VideoCommonListReturn[] = videoEntities.map(
-      entity => new VideoCommonListReturn(entity)
-    )
-    return videos as VideoCommonListReturn[]
+    switch (user.activeProfile.role) {
+      case Role.ADMIN:
+        return videoEntities.map(
+          entity => new VideoAdminReturn(entity as VideoAdminDbReturn)
+        )
+      case Role.MODERATOR:
+        return videoEntities.map(
+          entity => new VideoModeratorReturn(entity as VideoModeratorDbReturn)
+        )
+      default:
+        return videoEntities.map(
+          entity => new VideoCommonReturn(entity as VideoCommonDbReturn)
+        )
+    }
   }
 
   async deleteVideo (id: number, deleteReason: string) {

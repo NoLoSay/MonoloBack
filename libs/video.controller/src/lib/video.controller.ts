@@ -72,6 +72,7 @@ export class VideoController {
       })
       .json(
         await this.videoservice.getAllVideos(
+          request.user,
           new FiltersGetMany(
             firstElem,
             lastElem,
