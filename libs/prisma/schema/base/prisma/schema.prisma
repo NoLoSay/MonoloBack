@@ -197,7 +197,7 @@ model HostingProvider {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  Video     Video[]
+  videos    Video[]
 }
 
 model UserlikesVideos {
