@@ -39,6 +39,8 @@ export async function seedSites(
             street: 'Pl. Marc Elder',
             zip: '44000',
             cityId: nantes.id,
+            longitude: -1.550475,
+            latitude: 47.216379,
             Sites: {
               createMany: {
                 data: [
