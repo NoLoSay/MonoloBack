@@ -215,6 +215,17 @@ export class VideoService {
       throw new InternalServerErrorException('No available provider');
     }
 
+    if (user.activeProfile.role !== Role.CREATOR) {
+      if (
+        !(await this.profileService.canUserUseThisProfileRole(
+          user.id,
+          Role.CREATOR
+        ))
+      )
+        await this.profileService.createProfile(user.id, Role.CREATOR);
+      await this.profileService.changeActiveProfileWithRole(user, Role.CREATOR);
+    }
+
     return await this.prismaBase.video.create({
       data: {
         hostingProvider: {
@@ -304,33 +315,6 @@ export class VideoService {
 
   //   return noloVideo.uuid
   // }
-
-  async uploadVideoTemplate(user: UserRequestModel) {
-    if (user.activeProfile.role !== Role.CREATOR) {
-      if (
-        !(await this.profileService.canUserUseThisProfileRole(
-          user.id,
-          Role.CREATOR
-        ))
-      )
-        await this.profileService.createProfile(user.id, Role.CREATOR);
-      await this.profileService.changeActiveProfileWithRole(user, Role.CREATOR);
-    }
-    //  ----- HERE INSERT THE LOGIC -----
-    //  const noloVideo = await this.prismaBase.video.create({
-    //     data: {
-    //       externalProviderId: res?.data?.id || ''
-    //     },
-    //    connect: {
-    //       postedBy: {
-    //         userId: user.id
-    //      },
-    //      item: {
-    //        id: itemId
-    //      }
-    //   })
-    return true;
-  }
 
   async getVideosFromItem(
     itemId: number,
