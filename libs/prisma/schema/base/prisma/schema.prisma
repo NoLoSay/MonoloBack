@@ -284,6 +284,8 @@ model Exhibition {
   siteId           Int
   site             Site            @relation(fields: [siteId], references: [id])
   exhibitedItems   ExhibitedItem[]
+
+  @@unique([name, siteId])
 }
 
 model ExhibitedItem {
