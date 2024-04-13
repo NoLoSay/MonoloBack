@@ -44,24 +44,41 @@ export async function seedItems(): Promise<Item[]> {
       });
 
       if (manager) {
-        items.push(
-          await prisma.item.upsert({
-            where: {
-              id: chateauDucBretagne.id,
-            },
-            update: {},
-            create: {
-              name: 'Chateau des Ducs de Bretagne',
-              itemType: {
-                connect: {
-                  id: castle.id,
+        const exhibition = await prisma.exhibition.findFirst({
+          where: {
+            siteId: chateauDucBretagne.id,
+          },
+        });
+
+        if (exhibition) {
+          items.push(
+            await prisma.item.upsert({
+              where: {
+                id: chateauDucBretagne.id,
+              },
+              update: {},
+              create: {
+                name: 'Chateau des Ducs de Bretagne',
+                itemType: {
+                  connect: {
+                    id: castle.id,
+                  },
+                },
+                picture: chateauDucBretagne.picture,
+                description: chateauDucBretagne.longDescription,
+                exhibitedBy: {
+                  createMany: {
+                    data: [
+                      {
+                        exhibitionId: exhibition.id,
+                      },
+                    ],
+                  },
                 },
               },
-              picture: chateauDucBretagne.picture,
-              description: chateauDucBretagne.longDescription,
-            },
-          })
-        );
+            })
+          );
+        }
       }
     }
   }

@@ -7,6 +7,7 @@ import { seedSites } from './sites';
 import { seedItemTypes } from './item-types';
 import { seedItems } from './items';
 import { seedVideos } from './videos';
+import { seedExhibitions } from './exhibitions';
 
 const prisma = new PrismaBaseClient();
 async function main() {
@@ -24,6 +25,9 @@ async function main() {
 
   const sites = await seedSites(countries, departments, cities);
   console.log(sites);
+
+  const exhibitions = await seedExhibitions();
+  console.log(exhibitions);
 
   const itemTypes = await seedItemTypes();
   console.log(itemTypes);
