@@ -1,5 +1,7 @@
 import {
   Controller,
+  Param,
+  ParseIntPipe,
   Post,
   Request,
   UploadedFile,
@@ -10,6 +12,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@noloback/guards';
 import { VideoService } from '@noloback/video.service';
+import { Video } from '@prisma/client/base';
+import { randomUUID } from 'crypto';
 import { VideoFile } from 'models/swagger/youtube-file';
 import multer = require('multer');
 import { extname } from 'path';
@@ -30,27 +34,25 @@ export class UploadController {
 
   @ApiBody({ type: VideoFile })
   @ApiConsumes('multipart/form-data')
-  @Post()
+  @Post(':itemId')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: multer.diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}${extname(file.originalname)}`);
+          const uuid = randomUUID();
+          cb(null, `${uuid}${extname(file.originalname)}`);
         },
       }),
     })
   )
   async createYoutube(
-    @Request() req: any,
-    @UploadedFile() file: Express.Multer.File
-  ): Promise<string> {
-    const user = req.user;
+    @Request() request: any,
+    @UploadedFile() file: Express.Multer.File,
+    @Param('itemId', ParseIntPipe) itemId: number
+  ): Promise<Video> {
+    const user = request.user;
     console.log(user);
-    return 'Je suis perdu, OSECOUR !';
+    return await this.videoService.createYoutube(user, file, itemId);
   }
 }
