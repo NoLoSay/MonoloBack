@@ -1,8 +1,16 @@
 import { google, youtube_v3 } from 'googleapis';
 import { JWT } from 'google-auth-library';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { readFileSync } from 'fs';
 import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  Redirect,
+} from '@nestjs/common';
+import { ReadStream, createReadStream, readFileSync } from 'fs';
+import {
+  HostingProvider,
   Prisma,
   PrismaBaseService,
   Role,
@@ -37,6 +45,7 @@ import {
   VideoModeratorDbReturn,
 } from '@noloback/db.returns';
 import { SitesManagersService } from '@noloback/sites.managers.service';
+import multer = require('multer');
 
 export function getValidationStatusFromRole(role: Role): ValidationStatus[] {
   switch (role) {
@@ -83,10 +92,54 @@ export class VideoService {
     });
   }
 
+  async watchVideo(videoUUID: string): Promise<ReadStream> {
+    const video: Video = await this.prismaBase.video
+      .findUniqueOrThrow({
+        where: {
+          uuid: videoUUID,
+        },
+      })
+      .catch(() => {
+        throw new NotFoundException();
+      });
+
+    const provider = await this.prismaBase.hostingProvider.findUnique({
+      where: {
+        id: video.hostingProviderId,
+      },
+    });
+
+    if (!provider) {
+      throw new NotFoundException('Provider not found');
+    }
+
+    if (provider?.name !== 'NoLoSay')
+      throw new BadRequestException('Provider not supported');
+    // Redirect(
+    //   provider.url
+    //     .replace('${videoUUID}', video.uuid)
+    //     .replace('$(providerVideoId)', video.hostingProviderVideoId)
+    // );
+
+    return createReadStream(`uploads/${video.hostingProviderVideoId}`);
+  }
+
   async getYoutube(video: VideoCommonReturn) {
+    const provider = await this.prismaBase.hostingProvider.findUnique({
+      where: {
+        id: video.hostingProviderId,
+      },
+    });
+
+    if (!provider) {
+      throw new NotFoundException('Provider not found');
+    }
+
     const fullVideo = {
       video: video,
-      url: `https://www.youtube.com/embed/${video.externalProviderId}`,
+      url: provider.url
+        .replace('${videoUUID}', video.uuid)
+        .replace('${providerVideoId}', video.hostingProviderVideoId),
     };
 
     return fullVideo;
@@ -153,9 +206,23 @@ export class VideoService {
     video: Express.Multer.File,
     itemId: number
   ): Promise<Video> {
+    const provider = await this.prismaBase.hostingProvider.findUnique({
+      where: {
+        name: 'NoLoSay',
+      },
+    });
+    if (!provider) {
+      throw new InternalServerErrorException('No available provider');
+    }
+
     return await this.prismaBase.video.create({
       data: {
-        externalProviderId: video.filename,
+        hostingProvider: {
+          connect: {
+            id: provider.id,
+          },
+        },
+        hostingProviderVideoId: video.filename,
         postedBy: {
           connect: {
             userId_role: {

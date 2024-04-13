@@ -22,7 +22,8 @@ abstract class VideoDefaultSelect {
   id: boolean = true
   uuid: boolean = true
   duration: boolean = true
-  externalProviderId: boolean = true
+  hostingProviderId: boolean = true
+  hostingProviderVideoId: boolean = true
   createdAt: boolean = true
   likedBy: object = {
     select: {

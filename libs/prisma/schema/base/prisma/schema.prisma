@@ -193,6 +193,7 @@ model Video {
 model HostingProvider {
   id        Int       @id @default(autoincrement())
   name      String    @unique
+  url       String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?

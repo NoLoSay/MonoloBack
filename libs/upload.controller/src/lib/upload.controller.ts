@@ -35,6 +35,7 @@ export class UploadController {
   @ApiBody({ type: VideoFile })
   @ApiConsumes('multipart/form-data')
   @Post(':itemId')
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: multer.diskStorage({

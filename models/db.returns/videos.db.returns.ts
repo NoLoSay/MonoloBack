@@ -23,7 +23,8 @@ export abstract class VideoDefaultDbReturn {
   id: number = 0
   uuid: string = ''
   duration: number = 0
-  externalProviderId: string = ''
+  hostingProviderId: number = 0
+  hostingProviderVideoId: string = ''
   createdAt: Date = new Date()
   likedBy: UserLikeVideo[] = []
   item: Item | undefined = undefined

@@ -22,6 +22,7 @@ export async function seedVideos(): Promise<Video[]> {
     update: {},
     create: {
       name: 'NoLoSay',
+      url: 'http://localhost:3002/watch/${videoUUID}',
     },
   });
 
@@ -30,6 +31,7 @@ export async function seedVideos(): Promise<Video[]> {
     update: {},
     create: {
       name: 'Youtube',
+      url: 'https://www.youtube.com/embed/${providerVideoId}',
     },
   });
 
