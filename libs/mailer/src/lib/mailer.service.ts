@@ -8,11 +8,12 @@ export class MailerService {
  
   constructor() {
     this.nodemailerTransport = createTransport({
-      service: process.env['EMAIL_SERVICE'],
-      name:"www.hotmail.com",
+      host:"smtp.gmail.com",
+      port: 587,
+      name:"Nolosay",
       auth: {
         user: process.env['EMAIL_USER'],
-        pass: process.env['EMAIL_PASSWORD'],
+        pass: process.env['APP_PASSWORD'],
       },
       from: process.env['EMAIL_USER'],
     });
