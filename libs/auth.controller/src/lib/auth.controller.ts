@@ -17,7 +17,7 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
-  // @Public()
+  @Public()
   @UseGuards(GoogleOAuthGuard)
   @Get('google')
   // eslint-disable-next-line @typescript-eslint/no-empty-function

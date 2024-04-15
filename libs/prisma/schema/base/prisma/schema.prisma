@@ -170,20 +170,34 @@ enum ValidationStatus {
 }
 
 model Video {
-  id                 Int               @id @default(autoincrement())
-  uuid               String            @unique @default(uuid())
-  externalProviderId String            @unique
-  validationStatus   ValidationStatus  @default(PENDING)
-  duration           Int               @default(0)
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
-  deletedAt          DateTime?
-  deletedReason      String?
-  itemId             Int
-  profileId          Int
-  likedBy            UserlikesVideos[]
-  item               Item              @relation(fields: [itemId], references: [id])
-  postedBy           Profile           @relation(fields: [profileId], references: [id])
+  id                     Int               @id @default(autoincrement())
+  uuid                   String            @unique @default(uuid())
+  hostingProviderId      Int
+  hostingProviderVideoId String
+  validationStatus       ValidationStatus  @default(PENDING)
+  duration               Int               @default(0)
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
+  deletedAt              DateTime?
+  deletedReason          String?
+  itemId                 Int
+  profileId              Int
+  likedBy                UserlikesVideos[]
+  item                   Item              @relation(fields: [itemId], references: [id])
+  postedBy               Profile           @relation(fields: [profileId], references: [id])
+  hostingProvider        HostingProvider   @relation(fields: [hostingProviderId], references: [id])
+
+  @@unique([hostingProviderId, hostingProviderVideoId])
+}
+
+model HostingProvider {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  url       String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  videos    Video[]
 }
 
 model UserlikesVideos {

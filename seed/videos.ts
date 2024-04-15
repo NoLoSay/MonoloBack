@@ -17,13 +17,37 @@ export async function seedVideos(): Promise<Video[]> {
     },
   });
 
-  if (item && profile) {
+  const providerNoLoSay = await prisma.hostingProvider.upsert({
+    where: { name: 'NoLoSay' },
+    update: {},
+    create: {
+      name: 'NoLoSay',
+      url: 'http://localhost:3002/watch/${videoUUID}',
+    },
+  });
+
+  const providerYoutube = await prisma.hostingProvider.upsert({
+    where: { name: 'Youtube' },
+    update: {},
+    create: {
+      name: 'Youtube',
+      url: 'https://www.youtube.com/embed/${providerVideoId}',
+    },
+  });
+
+  if (item && profile && providerYoutube) {
     videos.push(
       await prisma.video.upsert({
-        where: { externalProviderId: 'cn14EKeW2qE' },
+        where: {
+          hostingProviderId_hostingProviderVideoId: {
+            hostingProviderId: providerYoutube.id,
+            hostingProviderVideoId: 'cn14EKeW2qE',
+          },
+        },
         update: {},
         create: {
-          externalProviderId: 'cn14EKeW2qE',
+          hostingProviderId: providerYoutube.id,
+          hostingProviderVideoId: 'cn14EKeW2qE',
           validationStatus: 'VALIDATED',
           itemId: item.id,
           profileId: profile.id,
@@ -33,10 +57,16 @@ export async function seedVideos(): Promise<Video[]> {
 
     videos.push(
       await prisma.video.upsert({
-        where: { externalProviderId: 'jOF8nFZeOPY' },
+        where: {
+          hostingProviderId_hostingProviderVideoId: {
+            hostingProviderId: providerYoutube.id,
+            hostingProviderVideoId: 'jOF8nFZeOPY',
+          },
+        },
         update: {},
         create: {
-          externalProviderId: 'jOF8nFZeOPY',
+          hostingProviderId: providerYoutube.id,
+          hostingProviderVideoId: 'jOF8nFZeOPY',
           validationStatus: 'REFUSED',
           itemId: item.id,
           profileId: profile.id,
@@ -46,10 +76,16 @@ export async function seedVideos(): Promise<Video[]> {
 
     videos.push(
       await prisma.video.upsert({
-        where: { externalProviderId: 'QDEryRnm-RA' },
+        where: {
+          hostingProviderId_hostingProviderVideoId: {
+            hostingProviderId: providerYoutube.id,
+            hostingProviderVideoId: 'QDEryRnm-RA',
+          },
+        },
         update: {},
         create: {
-          externalProviderId: 'QDEryRnm-RA',
+          hostingProviderId: providerYoutube.id,
+          hostingProviderVideoId: 'QDEryRnm-RA',
           validationStatus: 'PENDING',
           itemId: item.id,
           profileId: profile.id,

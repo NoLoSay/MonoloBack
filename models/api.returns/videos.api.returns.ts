@@ -24,7 +24,8 @@ abstract class VideoDefaultReturn {
   id: number = 0
   uuid: string = ''
   duration: number = 0
-  externalProviderId: string = ''
+  hostingProviderId: number = 0
+  hostingProviderVideoId: string = ''
   createdAt: Date = new Date()
   likedBy: User[] = []
   item: Item | undefined = undefined
@@ -34,7 +35,8 @@ abstract class VideoDefaultReturn {
     this.id = dbReturn.id
     this.uuid = dbReturn.uuid
     this.duration = dbReturn.duration
-    this.externalProviderId = dbReturn.externalProviderId
+    this.hostingProviderId = dbReturn.hostingProviderId
+    this.hostingProviderVideoId = dbReturn.hostingProviderVideoId
     this.createdAt = dbReturn.createdAt
     this.likedBy = dbReturn.likedBy.map(like => like.User)
     this.item = dbReturn.item ?? undefined

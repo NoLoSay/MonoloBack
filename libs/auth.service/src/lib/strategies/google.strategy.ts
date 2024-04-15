@@ -32,16 +32,15 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       picture: photos[0].value,
     };
 
-    const oAuthProvider =
-      await this.prismaBaseService.oAuthProviders.upsert({
-        where: {
-          provider: user.provider,
-        },
-        create: {
-          provider: user.provider,
-        },
-        update: {},
-      });
+    const oAuthProvider = await this.prismaBaseService.oAuthProviders.upsert({
+      where: {
+        provider: user.provider,
+      },
+      create: {
+        provider: user.provider,
+      },
+      update: {},
+    });
 
     let dbUser = await this.prismaBaseService.oAuthProviderUser.findFirst({
       where: {
@@ -67,6 +66,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
                 email: user.email,
                 password: await hash(randomUUID(), 12),
                 picture: user.picture,
+                profiles: {
+                  create: {
+                    role: 'USER',
+                    isActive: true,
+                  },
+                },
               },
             })
           ).id,
