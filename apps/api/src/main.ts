@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger, NestApplicationOptions } from '@nestjs/common';
+import { Logger, NestApplicationOptions, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
@@ -22,6 +22,7 @@ const options: NestApplicationOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, options);
+  app.useGlobalPipes(new ValidationPipe());
   const globalPrefix = '';
   // app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3001;

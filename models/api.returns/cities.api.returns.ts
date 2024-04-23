@@ -6,14 +6,14 @@ class Country {
 class Department {
     id: number = 0
     name: string = ''
-    Country: Country = new Country()
+    country: Country = new Country()
 }
 
 export class CityCommonReturn {
     id: number = 0
     name: string = ''
     zip: string = ''
-    Department: Department = new Department()
+    department: Department = new Department()
     longitude: number = 0
     latitude: number = 0
 }

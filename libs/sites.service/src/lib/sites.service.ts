@@ -113,7 +113,7 @@ export class SitesService {
               otherDetails: site.address.otherDetails,
               latitude: site.address.latitude,
               longitude: site.address.longitude,
-              City: {
+              city: {
                 connect: {
                   id: site.address.cityId
                 }
@@ -158,7 +158,7 @@ export class SitesService {
               otherDetails: site.address.otherDetails,
               latitude: site.address.latitude,
               longitude: site.address.longitude,
-              City: {
+              city: {
                 connect: {
                   id: site.address.cityId
                 }
@@ -256,13 +256,13 @@ export class SitesService {
               otherDetails: true,
               latitude: true,
               longitude: true,
-              City: {
+              city: {
                 select: {
                   name: true,
-                  Department: {
+                  department: {
                     select: {
                       name: true,
-                      Country: {
+                      country: {
                         select: {
                           name: true
                         }

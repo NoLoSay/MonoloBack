@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common'
 import { LoggerLibModule } from '@noloback/logger-lib'
 import { PrismaClientBaseModule } from '@noloback/prisma-client-base'
 import { DepartmentsService } from './departments.service'
-export { DepartmentManipulationModel } from './models/departmentManipulation.model'
 
 @Module({
   controllers: [],

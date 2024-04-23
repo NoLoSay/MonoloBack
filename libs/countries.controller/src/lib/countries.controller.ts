@@ -7,8 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request,
-  UseGuards
+  Request
 } from '@nestjs/common'
 import { CountriesService } from '@noloback/countries.service'
 import { CountryManipulationModel } from '@noloback/api.request.bodies'

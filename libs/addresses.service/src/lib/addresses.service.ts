@@ -55,7 +55,7 @@ export class AddressesService {
           otherDetails: address.otherDetails,
           latitude: address.latitude,
           longitude: address.longitude,
-          City: {
+          city: {
             connect: {
               id: address.cityId
             }
@@ -104,7 +104,7 @@ export class AddressesService {
           otherDetails: updatedAddress.otherDetails,
           latitude: updatedAddress.latitude,
           longitude: updatedAddress.longitude,
-          City: {
+          city: {
             connect: {
               id: updatedAddress.cityId
             }

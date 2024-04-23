@@ -94,7 +94,7 @@ export class CitiesService {
           zip: city.zip,
           latitude: city.latitude,
           longitude: city.longitude,
-          Department: {
+          department: {
             connect: {
               id: city.departmentId
             }
@@ -130,7 +130,7 @@ export class CitiesService {
           zip: updatedCity.zip,
           latitude: updatedCity.latitude,
           longitude: updatedCity.longitude,
-          Department: {
+          department: {
             connect: {
               id: updatedCity.departmentId
             }

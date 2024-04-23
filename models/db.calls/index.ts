@@ -1,6 +1,7 @@
 export * from './addresses.db.calls';
 export * from './cities.db.calls';
 export * from './countries.db.calls';
+export * from './departments.db.calls';
 export * from './exhibitions.db.calls';
 export * from './items.db.calls';
 export * from './profiles.db.calls';

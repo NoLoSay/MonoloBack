@@ -4,7 +4,8 @@ import {
   IsNumber,
   IsOptional,
   IsNotEmpty,
-  IsPositive
+  IsPositive,
+  IsInt
 } from 'class-validator'
 
 export class DepartmentManipulationModel {
@@ -29,7 +30,7 @@ export class DepartmentManipulationModel {
   latitude?: number
 
   @ApiProperty()
-  @IsNumber()
+  @IsInt()
   @IsPositive()
   countryId: number = 0
 }

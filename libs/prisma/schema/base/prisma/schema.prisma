@@ -35,7 +35,7 @@ model Country {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   deletedAt   DateTime?
-  Departments Department[]
+  departments Department[]
 }
 
 model Department {
@@ -48,8 +48,8 @@ model Department {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
   countryId Int
-  Country   Country   @relation(fields: [countryId], references: [id])
-  Cities    City[]
+  country   Country   @relation(fields: [countryId], references: [id])
+  cities    City[]
 
   @@unique([name, countryId])
   @@unique([code, countryId])
@@ -65,8 +65,8 @@ model City {
   updatedAt    DateTime   @updatedAt
   deletedAt    DateTime?
   departmentId Int
-  Department   Department @relation(fields: [departmentId], references: [id])
-  Addresses    Address[]
+  department   Department @relation(fields: [departmentId], references: [id])
+  addresses    Address[]
 
   @@unique([name, departmentId])
   @@unique([zip, departmentId])
@@ -84,8 +84,8 @@ model Address {
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
   cityId       Int
-  City         City      @relation(fields: [cityId], references: [id])
-  Sites        Site[]
+  city         City      @relation(fields: [cityId], references: [id])
+  sites        Site[]
 
   @@unique([houseNumber, street, zip, cityId])
 }

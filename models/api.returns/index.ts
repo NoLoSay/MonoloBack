@@ -1,6 +1,7 @@
 export * from './addresses.api.returns';
 export * from './cities.api.returns';
 export * from './countries.api.returns';
+export * from './departments.api.returns';
 export * from './exhibitions.api.returns';
 export * from './items.api.returns';
 export * from './profiles.api.returns';

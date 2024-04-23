@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
@@ -17,7 +17,7 @@ export class CountriesService {
   ) {}
 
   async findAll (
-    role: 'USER' | 'ADMIN' | 'MANAGER'
+    role: Role
   ): Promise<CountryCommonReturn[] | CountryAdminReturn[]> {
     let selectOptions: Prisma.CountrySelect
 
@@ -49,7 +49,7 @@ export class CountriesService {
 
   async findOne (
     id: number,
-    role: 'USER' | 'ADMIN' | 'MANAGER'
+    role: Role
   ): Promise<CountryCommonReturn | CountryAdminReturn> {
     let selectOptions: Prisma.CountrySelect
 
@@ -69,7 +69,7 @@ export class CountriesService {
       .catch((e: Error) => {
         console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new BadRequestException(e)
+        throw new BadRequestException("Country not found")
       })
 
     switch (role) {
