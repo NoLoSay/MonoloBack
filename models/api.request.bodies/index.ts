@@ -1,4 +1,5 @@
 export * from './addresses.request.bodies'
+export * from './cities.request.bodies'
 export * from './items.request.bodies'
 export * from './profiles.request.bodies'
 export * from './site.managers.request.bodies'

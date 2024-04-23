@@ -9,12 +9,9 @@ import {
   ParseIntPipe,
   Request
 } from '@nestjs/common'
-import {
-  CityManipulationModel,
-  CitiesService,
-  CityCommonReturn,
-  CityAdminReturn
-} from '@noloback/cities.service'
+import { CitiesService } from '@noloback/cities.service'
+import { CityManipulationModel } from '@noloback/api.request.bodies'
+import { CityCommonReturn, CityAdminReturn } from '@noloback/api.returns'
 import { ADMIN, Roles } from '@noloback/roles'
 
 @Controller('cities')

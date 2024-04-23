@@ -1,16 +1,12 @@
-import { PrismaBaseService, City, Prisma } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
   InternalServerErrorException
 } from '@nestjs/common'
-import { CityManipulationModel } from './models/city.manipulation.models'
-import {
-  CityAdminReturn,
-  CityAdminSelect,
-  CityCommonReturn,
-  CityCommonSelect
-} from './models/city.api.models'
+import { CityManipulationModel } from '@noloback/api.request.bodies'
+import { CityCommonReturn, CityAdminReturn } from '@noloback/api.returns'
+import { CityAdminSelect, CityCommonSelect } from '@noloback/db.calls'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
