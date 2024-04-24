@@ -41,7 +41,7 @@ export async function seedSites(
             cityId: nantes.id,
             longitude: -1.550475,
             latitude: 47.216379,
-            Sites: {
+            sites: {
               createMany: {
                 data: [
                   {
