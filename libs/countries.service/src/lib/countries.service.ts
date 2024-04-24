@@ -112,7 +112,8 @@ export class CountriesService {
           code: updatedCountry.code,
           latitude: updatedCountry.latitude,
           longitude: updatedCountry.longitude
-        }
+        },
+        select: new CountryAdminSelect()
       })
       .catch((e: Error) => {
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)

@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger/dist'
-import { IsString, IsOptional, IsNotEmpty, IsDate, IsEnum } from 'class-validator'
+import {
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+  IsDateString,
+  IsEnum
+} from 'class-validator'
 
 enum PersonType {
   ARTIST,
@@ -21,16 +27,16 @@ export class PersonManipulationModel {
   bio?: string
 
   @ApiProperty()
-  @IsDate()
+  @IsDateString()
   @IsOptional()
   birthDate?: Date
 
   @ApiProperty()
-  @IsDate()
+  @IsDateString()
   @IsOptional()
   deathDate?: Date
 
   @ApiProperty({ enum: PersonType })
   @IsEnum(PersonType)
-  type: PersonType = PersonType.OTHER;
+  type: PersonType = PersonType.OTHER
 }

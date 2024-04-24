@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsNotEmpty,
   IsPositive,
-  IsDate
+  IsDateString
 } from 'class-validator'
 
 export class ExhibitionManipulationModel {
@@ -26,12 +26,12 @@ export class ExhibitionManipulationModel {
 
   @ApiProperty()
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   startDate?: Date
 
   @ApiProperty()
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   endDate?: Date
 
   @ApiProperty()

@@ -233,7 +233,7 @@ model Person {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   deletedAt DateTime?
-  Items     Item[]
+  items     Item[]
 }
 
 // -----------------------------

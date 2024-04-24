@@ -6,6 +6,7 @@ export * from './exhibitions.api.returns';
 export * from './item.categories.api.returns';
 export * from './item.types.api.returns';
 export * from './items.api.returns';
+export * from './persons.api.returns';
 export * from './profiles.api.returns';
 export * from './site.managers.api.returns';
 export * from './sites.api.returns';

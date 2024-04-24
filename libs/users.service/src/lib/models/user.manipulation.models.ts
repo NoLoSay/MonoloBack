@@ -28,15 +28,15 @@ export class UserCreateModel {
   password: string = ''
 
   @ApiProperty()
-  @IsString()
   @IsOptional()
-  telNumber: string = ''
+  @IsString()
+  telNumber?: string
 }
 
 export class UserUpdateModel {
   @ApiProperty()
-  @IsString()
   @IsOptional()
+  @IsString()
   username?: string
 
   @ApiProperty()
