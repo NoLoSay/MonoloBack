@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
 import {
   BadGatewayException,
   BadRequestException,
@@ -87,7 +87,7 @@ export class AddressesService {
     let selectOptions: Prisma.AddressSelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new AddressAdminSelect()
         break
       default:
@@ -117,7 +117,7 @@ export class AddressesService {
         throw new InternalServerErrorException(e)
       })
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return updated as AddressAdminReturn
       default:
         return updated as AddressCommonReturn

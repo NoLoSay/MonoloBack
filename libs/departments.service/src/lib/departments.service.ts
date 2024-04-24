@@ -28,7 +28,7 @@ export class DepartmentsService {
     let selectOptions: Prisma.DepartmentSelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new DepartmentAdminSelect()
         break
       default:
@@ -44,7 +44,7 @@ export class DepartmentsService {
         throw new InternalServerErrorException(e)
       })
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return departments as DepartmentAdminReturn[]
       default:
         return departments as DepartmentCommonReturn[]
@@ -58,7 +58,7 @@ export class DepartmentsService {
     let selectOptions: Prisma.DepartmentSelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new DepartmentAdminSelect()
         break
       default:
@@ -75,7 +75,7 @@ export class DepartmentsService {
         throw new BadRequestException('Department not found')
       })
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return department as DepartmentAdminReturn
       default:
         return department as DepartmentCommonReturn

@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
   NotFoundException
 } from '@nestjs/common'
-import { ExhibitionManipulationModel } from './models/exhibitionManipulation.model'
+import { ExhibitionManipulationModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import {
   ExhibitionAdminDetailedReturn,

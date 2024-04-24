@@ -4,7 +4,8 @@ import {
   SiteTag,
   SiteType,
   PrismaBaseService,
-  Prisma
+  Prisma,
+  Role
 } from '@noloback/prisma-client-base'
 import { SiteManipulationRequestBody } from '@noloback/api.request.bodies'
 import {
@@ -33,7 +34,7 @@ export class SitesService {
   ): Promise<SiteCommonReturn[] | SiteAdminReturn[]> {
     let selectOptions: Prisma.SiteSelect
     switch (user.activeProfile.role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new SiteAdminSelect()
         break
       default:
@@ -44,7 +45,7 @@ export class SitesService {
       select: selectOptions
     })) as unknown
     switch (user.activeProfile.role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return sites as SiteAdminReturn[]
       default:
         return sites as SiteCommonReturn[]
@@ -58,7 +59,7 @@ export class SitesService {
     let selectOptions: Prisma.SiteSelect
     console.log(user.activeProfile.role)
     switch (user.activeProfile.role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new SiteAdminSelect()
         break
       case 'MANAGER':
@@ -75,7 +76,7 @@ export class SitesService {
 
     if (!site) throw new InternalServerErrorException('Site not found')
     switch (user.activeProfile.role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return site as SiteAdminReturn
       case 'MANAGER':
         if (

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger/dist'
 import {
   IsString,
-  IsNumber,
+  IsInt,
   IsOptional,
   IsNotEmpty,
   IsPositive,
@@ -35,7 +35,7 @@ export class ExhibitionManipulationModel {
   endDate?: Date
 
   @ApiProperty()
-  @IsNumber()
+  @IsInt()
   @IsPositive()
   siteId: number = 0
 }

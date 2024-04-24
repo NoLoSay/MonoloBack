@@ -11,12 +11,9 @@ import {
   Response,
   UnauthorizedException
 } from '@nestjs/common'
-import {
-  ExhibitionManipulationModel,
-  ExhibitionsService
-} from '@noloback/exhibitions.service'
+import { ExhibitionsService } from '@noloback/exhibitions.service'
+import { ExhibitionManipulationModel, ExhibitedItemAdditionModel } from '@noloback/api.request.bodies'
 import { ExhibitedItemsService } from '@noloback/exhibited.items.service'
-import { ExhibitedItemAdditionModel } from '@noloback/exhibited.items.service'
 import { ADMIN, MANAGER, Roles } from '@noloback/roles'
 import { SitesManagersService } from '@noloback/sites.managers.service'
 import {

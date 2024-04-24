@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
@@ -22,7 +22,7 @@ export class CitiesService {
     let selectOptions: Prisma.CitySelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new CityAdminSelect()
         break
       default:
@@ -40,7 +40,7 @@ export class CitiesService {
       })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return cities as CityAdminReturn[]
       default:
         return cities as CityCommonReturn[]
@@ -53,7 +53,7 @@ export class CitiesService {
   ): Promise<CityCommonReturn | CityAdminReturn> {
     let selectOptions: Prisma.CitySelect
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new CityAdminSelect()
         break
       default:
@@ -72,7 +72,7 @@ export class CitiesService {
       })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return cities as CityAdminReturn
       default:
         return cities as CityCommonReturn

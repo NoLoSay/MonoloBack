@@ -1,37 +1,97 @@
-import { PrismaBaseService, ItemType } from '@noloback/prisma-client-base'
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
-import { ItemTypeManipulationModel } from './models/itemTypesManipulation.model'
+import { Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common'
+import { ItemTypeManipulationModel } from '@noloback/api.request.bodies'
+import {
+  ItemTypeAdminReturn,
+  ItemTypeCommonReturn,
+  ItemTypeDetailledReturn
+} from '@noloback/api.returns'
+import {
+  ItemTypeAdminSelect,
+  ItemTypeCommonSelect,
+  ItemTypeDetailledSelect
+} from '@noloback/db.calls'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ItemTypesService {
   constructor (
-    private prismaBase: PrismaBaseService
-    //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
-  async findAll (): Promise<ItemType[]> {
-    return await this.prismaBase.itemType.findMany()
-  }
+  async findAll (
+    role: Role
+  ): Promise<ItemTypeCommonReturn[] | ItemTypeAdminReturn[]> {
+    let selectOptions: Prisma.ItemTypeSelect
 
-  async findOne (id: number): Promise<ItemType | null> {
-    return await this.prismaBase.itemType.findUnique({
-      where: { id: id }
+    switch (role) {
+      case Role.ADMIN:
+        selectOptions = new ItemTypeAdminSelect()
+        break
+      default:
+        selectOptions = new ItemTypeCommonSelect()
+    }
+    const types = await this.prismaBase.itemType.findMany({
+      select: selectOptions,
+      where: role === Role.ADMIN ? undefined : { deletedAt: null }
     })
+
+    switch (role) {
+      case Role.ADMIN:
+        return types as ItemTypeAdminReturn[]
+      default:
+        return types as ItemTypeCommonReturn[]
+    }
   }
 
-  async create (itemType: ItemTypeManipulationModel) {
+  async findOne (
+    id: number,
+    role: Role
+  ): Promise<ItemTypeDetailledReturn | ItemTypeAdminReturn> {
+    let selectOptions: Prisma.ItemTypeSelect
+
+    switch (role) {
+      case Role.ADMIN:
+        selectOptions = new ItemTypeAdminSelect()
+        break
+      default:
+        selectOptions = new ItemTypeDetailledSelect()
+    }
+    const type = await this.prismaBase.itemType
+      .findUnique({
+        where: { id: id, deletedAt: role === Role.ADMIN ? undefined : null },
+        select: selectOptions
+      })
+      .catch((e: Error) => {
+        // this.loggingService.log(LogCritiitemCategory.Critical, this.constructor.name, e)
+        throw new NotFoundException('Item type not found')
+      })
+
+    switch (role) {
+      case Role.ADMIN:
+        return type as ItemTypeAdminReturn
+      default:
+        return type as ItemTypeDetailledReturn
+    }
+  }
+
+  async create (
+    itemType: ItemTypeManipulationModel
+  ): Promise<ItemTypeAdminReturn> {
     if (
       itemType.itemCategoryId === undefined ||
       itemType.itemCategoryId === null ||
       itemType.itemCategoryId <= 0
     ) {
-      throw new InternalServerErrorException(
-        "ItemTypeId can't be null or empty"
-      )
+      throw new BadRequestException("itemCategoryId can't be null or empty")
     }
-    const newItemType: ItemType = await this.prismaBase.itemType
+    return (await this.prismaBase.itemType
       .create({
         data: {
           name: itemType.name,
@@ -47,25 +107,21 @@ export class ItemTypesService {
         console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      })
-
-    return {
-      id: newItemType.id,
-      name: newItemType.name
-    }
+      })) as unknown as ItemTypeAdminReturn
   }
 
-  async update (id: number, updatedItemType: ItemTypeManipulationModel) {
+  async update (
+    id: number,
+    updatedItemType: ItemTypeManipulationModel
+  ): Promise<ItemTypeAdminReturn> {
     if (
       updatedItemType.itemCategoryId === undefined ||
       updatedItemType.itemCategoryId === null ||
       updatedItemType.itemCategoryId <= 0
     ) {
-      throw new InternalServerErrorException(
-        "ItemTypeId can't be null or empty"
-      )
+      throw new BadRequestException("itemCategoryId can't be null or empty")
     }
-    const updated: ItemType = await this.prismaBase.itemType
+    return (await this.prismaBase.itemType
       .update({
         where: { id: id },
         data: {
@@ -81,17 +137,13 @@ export class ItemTypesService {
       .catch((e: Error) => {
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      })
-
-    return {
-      id: updated.id,
-      name: updated.name
-    }
+      })) as unknown as ItemTypeAdminReturn
   }
 
-  async delete (id: number) {
-    await this.prismaBase.itemType.delete({
-      where: { id: id }
-    })
+  async delete (id: number): Promise<ItemTypeAdminReturn> {
+    return (await this.prismaBase.itemType.update({
+      where: { id: id },
+      data: { deletedAt: new Date() }
+    })) as unknown as ItemTypeAdminReturn
   }
 }

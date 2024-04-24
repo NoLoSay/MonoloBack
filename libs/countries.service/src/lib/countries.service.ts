@@ -22,7 +22,7 @@ export class CountriesService {
     let selectOptions: Prisma.CountrySelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new CountryAdminSelect()
         break
       default:
@@ -40,7 +40,7 @@ export class CountriesService {
       })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return countries as CountryAdminReturn[]
       default:
         return countries as CountryCommonReturn[]
@@ -54,7 +54,7 @@ export class CountriesService {
     let selectOptions: Prisma.CountrySelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new CountryAdminSelect()
         break
       default:
@@ -73,7 +73,7 @@ export class CountriesService {
       })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return country as CountryAdminReturn
       default:
         return country as CountryCommonReturn

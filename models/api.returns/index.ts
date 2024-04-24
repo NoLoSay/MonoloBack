@@ -3,6 +3,8 @@ export * from './cities.api.returns';
 export * from './countries.api.returns';
 export * from './departments.api.returns';
 export * from './exhibitions.api.returns';
+export * from './item.categories.api.returns';
+export * from './item.types.api.returns';
 export * from './items.api.returns';
 export * from './profiles.api.returns';
 export * from './site.managers.api.returns';
