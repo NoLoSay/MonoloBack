@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common'
+import { Controller, Get, Query, Request } from '@nestjs/common'
 import { SitesService } from '@noloback/sites.service'
 
 @Controller('search')
@@ -8,6 +8,7 @@ export class SearchController {
 
   @Get('sites')
   async search (
+    @Request() request: any,
     @Query('q') query?: string | undefined,
     @Query('lng') lng?: string | undefined,
     @Query('lat') lat?: string | undefined,
@@ -17,7 +18,8 @@ export class SearchController {
       lng ? parseFloat(lng) : null,
       lat ? parseFloat(lat) : null,
       radius ? parseFloat(radius) : null,
-      query
+      query,
+      request.user.activeProfile.role
     )
   }
 }

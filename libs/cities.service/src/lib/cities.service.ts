@@ -17,7 +17,7 @@ export class CitiesService {
   ) {}
 
   async findAll (
-    role: 'USER' | 'ADMIN' | 'MANAGER'
+    role: Role
   ): Promise<CityCommonReturn[] | CityAdminReturn[]> {
     let selectOptions: Prisma.CitySelect
 
@@ -49,7 +49,7 @@ export class CitiesService {
 
   async findOne (
     id: number,
-    role: 'USER' | 'ADMIN' | 'MANAGER'
+    role: Role
   ): Promise<CityCommonReturn | CityAdminReturn> {
     let selectOptions: Prisma.CitySelect
     switch (role) {

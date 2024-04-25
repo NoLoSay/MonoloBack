@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { PrismaBaseService } from '@noloback/prisma-client-base';
+import { PrismaBaseService, Role } from '@noloback/prisma-client-base';
 import { hash } from 'bcrypt';
 import { randomUUID } from 'crypto';
 import { Strategy, VerifyCallback } from 'passport-google-oauth2';
@@ -68,7 +68,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
                 picture: user.picture,
                 profiles: {
                   create: {
-                    role: 'USER',
+                    role: Role.USER,
                     isActive: true,
                   },
                 },

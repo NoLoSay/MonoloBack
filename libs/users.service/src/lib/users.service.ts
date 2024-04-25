@@ -65,7 +65,7 @@ export class UsersService {
           telNumber: createUserDto.telNumber,
           profiles: {
             create: {
-              role: 'USER',
+              role: Role.USER,
               isActive: true
             }
           }

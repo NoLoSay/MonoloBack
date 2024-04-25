@@ -30,8 +30,8 @@ export class SitesManagersService {
     siteId: number
   ): Promise<boolean> {
     return (
-      user.activeProfile.role === 'ADMIN' ||
-      (user.activeProfile.role === 'MANAGER' &&
+      user.activeProfile.role === Role.ADMIN ||
+      (user.activeProfile.role === Role.MANAGER &&
         (await this.isManagerOfSite(user.activeProfile.id, siteId)))
     )
   }
@@ -61,7 +61,7 @@ export class SitesManagersService {
   ): Promise<{ id: number; role: Role; deletedAt: Date | null }> {
     const profile = await this.prismaBase.profile.create({
       data: {
-        role: 'MANAGER',
+        role: Role.MANAGER,
         user: {
           connect: {
             id: userId
@@ -116,7 +116,7 @@ export class SitesManagersService {
     }
     await this.checkSiteValidity(siteId)
     let managerProfile = managerUser.profiles.find(
-      profile => profile.role === 'MANAGER'
+      profile => profile.role === Role.MANAGER
     )
     if (!managerProfile) {
       managerProfile = await this.createManagerProfile(managerUser.id)
@@ -199,7 +199,7 @@ export class SitesManagersService {
       throw new NotFoundException('User not found')
     }
     const managerProfile = managerUser.profiles.find(
-      profile => profile.role === 'MANAGER'
+      profile => profile.role === Role.MANAGER
     )
     if (!managerProfile) {
       throw new NotFoundException('Manager not found')

@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException
+} from '@nestjs/common'
 import {
   Site,
   SiteTag,
@@ -42,6 +46,10 @@ export class SitesService {
     }
 
     const sites = (await this.prismaBase.site.findMany({
+      where:
+        user.activeProfile.role !== Role.ADMIN
+          ? { deletedAt: null }
+          : undefined,
       select: selectOptions
     })) as unknown
     switch (user.activeProfile.role) {
@@ -57,12 +65,12 @@ export class SitesService {
     user: UserRequestModel
   ): Promise<SiteCommonReturn | SiteManagerReturn | SiteAdminReturn> {
     let selectOptions: Prisma.SiteSelect
-    console.log(user.activeProfile.role)
+
     switch (user.activeProfile.role) {
       case Role.ADMIN:
         selectOptions = new SiteAdminSelect()
         break
-      case 'MANAGER':
+      case Role.MANAGER:
         selectOptions = new SiteManagerSelect()
         break
       default:
@@ -70,7 +78,10 @@ export class SitesService {
     }
 
     const site = (await this.prismaBase.site.findUnique({
-      where: { id: id },
+      where: {
+        id: id,
+        deletedAt: user.activeProfile.role !== Role.ADMIN ? null : undefined
+      },
       select: selectOptions
     })) as unknown
 
@@ -78,7 +89,7 @@ export class SitesService {
     switch (user.activeProfile.role) {
       case Role.ADMIN:
         return site as SiteAdminReturn
-      case 'MANAGER':
+      case Role.MANAGER:
         if (
           await this.sitesManagerService.isMainManagerOfSite(
             user.activeProfile.id,
@@ -92,8 +103,8 @@ export class SitesService {
     }
   }
 
-  async create (site: SiteManipulationRequestBody) {
-    const newSite: Site = await this.prismaBase.site
+  async create (site: SiteManipulationRequestBody): Promise<SiteAdminReturn> {
+    const newSite: unknown = await this.prismaBase.site
       .create({
         data: {
           name: site.name,
@@ -121,7 +132,8 @@ export class SitesService {
               }
             }
           }
-        }
+        },
+        select: new SiteAdminSelect()
       })
       .catch((e: Error) => {
         console.log(e)
@@ -129,15 +141,28 @@ export class SitesService {
         throw new InternalServerErrorException(e)
       })
 
-    return {
-      id: newSite.id,
-      name: newSite.name,
-      addressId: newSite.addressId
-    }
+    return newSite as SiteAdminReturn
   }
 
-  async update (id: number, site: SiteManipulationRequestBody) {
-    const updatedSite: Site = await this.prismaBase.site
+  async update (
+    id: number,
+    site: SiteManipulationRequestBody,
+    role: Role
+  ): Promise<SiteManagerReturn | SiteAdminReturn> {
+    let selectOptions: Prisma.SiteSelect
+
+    switch (role) {
+      case Role.ADMIN:
+        selectOptions = new SiteAdminSelect()
+        break
+      case Role.MANAGER:
+        selectOptions = new SiteManagerSelect()
+        break
+      default:
+        throw new ForbiddenException('You are not allowed to update this site')
+    }
+
+    const updatedSite: unknown = await this.prismaBase.site
       .update({
         where: { id: id },
         data: {
@@ -166,7 +191,8 @@ export class SitesService {
               }
             }
           }
-        }
+        },
+        select: selectOptions
       })
       .catch((e: Error) => {
         console.log(e)
@@ -174,37 +200,35 @@ export class SitesService {
         throw new InternalServerErrorException(e)
       })
 
-    return {
-      id: updatedSite.id,
-      name: updatedSite.name,
-      addressId: updatedSite.addressId
+    switch (role) {
+      case Role.ADMIN:
+        return updatedSite as SiteAdminReturn
+      default:
+        return updatedSite as SiteManagerReturn
     }
   }
 
   async delete (id: number) {
-    const deletedSite: Site = await this.prismaBase.site
-      .delete({
-        where: { id: id }
+    return (await this.prismaBase.site
+      .update({
+        where: { id: id },
+        data: { deletedAt: new Date() },
+        select: new SiteAdminSelect()
       })
       .catch((e: Error) => {
         console.log(e)
         // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      })
-
-    return {
-      id: deletedSite.id,
-      name: deletedSite.name,
-      address: deletedSite.addressId
-    }
+      })) as unknown as SiteAdminReturn
   }
 
   async searchSiteInSquare (
     centerLng: number | null = null,
     centerLat: number | null = null,
     radius: number | null = null,
-    name: string | null = null
-  ) {
+    name: string | null = null,
+    role: Role
+  ): Promise<SiteCommonReturn[]> {
     const andArray: object[] = []
 
     if (centerLng && centerLat) {
@@ -241,40 +265,18 @@ export class SitesService {
       })
     }
 
-    const sites = await this.prismaBase.site
+    if (role !== Role.ADMIN) {
+      andArray.push({
+        deletedAt: null
+      })
+    }
+
+    const sites: unknown[] = await this.prismaBase.site
       .findMany({
         where: {
           AND: andArray
         },
-        select: {
-          id: true,
-          name: true,
-          address: {
-            select: {
-              houseNumber: true,
-              street: true,
-              zip: true,
-              otherDetails: true,
-              latitude: true,
-              longitude: true,
-              city: {
-                select: {
-                  name: true,
-                  department: {
-                    select: {
-                      name: true,
-                      country: {
-                        select: {
-                          name: true
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+        select: new SiteCommonSelect()
       })
       .catch((e: Error) => {
         console.log(e)
@@ -282,6 +284,6 @@ export class SitesService {
         throw new InternalServerErrorException(e)
       })
 
-    return sites
+    return sites as SiteCommonReturn[]
   }
 }
