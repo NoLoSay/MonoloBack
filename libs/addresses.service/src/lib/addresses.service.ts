@@ -124,9 +124,11 @@ export class AddressesService {
     }
   }
 
-  async delete (id: number) {
-    await this.prismaBase.address.delete({
-      where: { id: id }
-    })
+  async delete (id: number): Promise<AddressAdminReturn> {
+    return (await this.prismaBase.address.update({
+      where: { id: id },
+      data: { deletedAt: new Date() },
+      select: new AddressAdminSelect()
+    })) as unknown as AddressAdminReturn
   }
 }

@@ -39,7 +39,10 @@ export class ItemTypesService {
     }
     const types = await this.prismaBase.itemType.findMany({
       select: selectOptions,
-      where: role === Role.ADMIN ? undefined : { deletedAt: null }
+      where:
+        role === Role.ADMIN
+          ? undefined
+          : { deletedAt: null, itemCategory: { deletedAt: null } }
     })
 
     switch (role) {
@@ -65,7 +68,10 @@ export class ItemTypesService {
     }
     const type = await this.prismaBase.itemType
       .findUnique({
-        where: { id: id, deletedAt: role === Role.ADMIN ? undefined : null },
+        where:
+          role === Role.ADMIN
+            ? { id: id }
+            : { id: id, deletedAt: null, itemCategory: { deletedAt: null } },
         select: selectOptions
       })
       .catch((e: Error) => {

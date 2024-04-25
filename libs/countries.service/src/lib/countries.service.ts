@@ -31,7 +31,8 @@ export class CountriesService {
 
     const countries = await this.prismaBase.country
       .findMany({
-        select: selectOptions
+        select: selectOptions,
+        where: role === Role.ADMIN ? undefined : { deletedAt: null }
       })
       .catch((e: Error) => {
         console.log(e)
@@ -63,13 +64,13 @@ export class CountriesService {
 
     const country = await this.prismaBase.country
       .findUnique({
-        where: { id },
+        where: { id: id, deletedAt: role === Role.ADMIN ? undefined : null },
         select: selectOptions
       })
       .catch((e: Error) => {
         console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new BadRequestException("Country not found")
+        throw new BadRequestException('Country not found')
       })
 
     switch (role) {
@@ -125,8 +126,9 @@ export class CountriesService {
 
   async delete (id: number): Promise<CountryAdminReturn> {
     const deleted: CountryAdminReturn = await this.prismaBase.country
-      .delete({
+      .update({
         where: { id: id },
+        data: { deletedAt: new Date() },
         select: new CountryAdminSelect()
       })
       .catch((e: Error) => {

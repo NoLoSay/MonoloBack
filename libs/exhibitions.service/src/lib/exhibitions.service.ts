@@ -131,15 +131,17 @@ export class ExhibitionsService {
     }
   }
 
-  async create (exhibition: ExhibitionManipulationModel) {
+  async create (
+    exhibition: ExhibitionManipulationModel
+  ): Promise<ExhibitionManagerReturn> {
     if (
       exhibition.siteId === undefined ||
       exhibition.siteId === null ||
       exhibition.siteId <= 0
     ) {
-      throw new InternalServerErrorException("siteId can't be null or empty")
+      throw new BadRequestException("siteId can't be null or empty")
     }
-    const newExhibition = await this.prismaBase.exhibition
+    const newExhibition: unknown = await this.prismaBase.exhibition
       .create({
         data: {
           name: exhibition.name,
@@ -152,7 +154,8 @@ export class ExhibitionsService {
               id: exhibition.siteId
             }
           }
-        }
+        },
+        select: new ExhibitionManagerSelect()
       })
       .catch((e: Error) => {
         console.log(e)
@@ -160,13 +163,13 @@ export class ExhibitionsService {
         throw new InternalServerErrorException(e)
       })
 
-    return {
-      id: newExhibition.id,
-      name: newExhibition.name
-    }
+    return newExhibition as ExhibitionManagerReturn
   }
 
-  async update (id: number, updatedExhibition: ExhibitionManipulationModel) {
+  async update (
+    id: number,
+    updatedExhibition: ExhibitionManipulationModel
+  ): Promise<ExhibitionManagerReturn> {
     if (
       updatedExhibition.siteId === undefined ||
       updatedExhibition.siteId === null ||
@@ -175,13 +178,12 @@ export class ExhibitionsService {
       throw new BadRequestException("siteId can't be null or empty")
     }
     const exhibition = await this.prismaBase.exhibition.findUnique({
-      where: { id: id },
+      where: { id: id, deletedAt: null },
       select: {
-        deletedAt: true
+        id: true
       }
     })
-    if (!exhibition || exhibition.deletedAt)
-      throw new NotFoundException('Exhibition not found')
+    if (!exhibition) throw new NotFoundException('Exhibition not found')
 
     const updated: unknown = await this.prismaBase.exhibition
       .update({

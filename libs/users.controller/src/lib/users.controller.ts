@@ -14,11 +14,8 @@ import {
 } from '@nestjs/common'
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ADMIN, Roles } from '@noloback/roles'
-import {
-  UserCreateModel,
-  UserUpdateModel,
-  UsersService
-} from '@noloback/users.service'
+import { UsersService } from '@noloback/users.service'
+import { UserCreateModel, UserUpdateModel } from '@noloback/api.request.bodies'
 import { UserAdminReturn, UserCommonReturn } from '@noloback/api.returns'
 import { VideoService } from '@noloback/video.service'
 import { PaginatedDto } from 'models/swagger/paginated-dto'
@@ -85,7 +82,10 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUser: UserUpdateModel
   ) {
-    if (id !== request.user.id && request.user.activeProfile.role !== Role.ADMIN) {
+    if (
+      id !== request.user.id &&
+      request.user.activeProfile.role !== Role.ADMIN
+    ) {
       throw new UnauthorizedException()
     }
     return this.usersService.update(id, updateUser)
@@ -93,7 +93,10 @@ export class UsersController {
 
   @Delete(':id')
   async remove (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
-    if (id !== request.user.id && request.user.activeProfile.role !== Role.ADMIN) {
+    if (
+      id !== request.user.id &&
+      request.user.activeProfile.role !== Role.ADMIN
+    ) {
       throw new UnauthorizedException()
     }
     return this.usersService.remove(id)

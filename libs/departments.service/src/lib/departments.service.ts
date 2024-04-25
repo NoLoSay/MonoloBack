@@ -36,7 +36,11 @@ export class DepartmentsService {
     }
     const departments: unknown[] = await this.prismaBase.department
       .findMany({
-        select: selectOptions
+        select: selectOptions,
+        where:
+          role === Role.ADMIN
+            ? undefined
+            : { deletedAt: null, country: { deletedAt: null } }
       })
       .catch((e: Error) => {
         console.log(e)
@@ -66,7 +70,14 @@ export class DepartmentsService {
     }
     const department: unknown = await this.prismaBase.department
       .findUnique({
-        where: { id: id },
+        where:
+          role === Role.ADMIN
+            ? { id: id }
+            : {
+                id: id,
+                deletedAt: null,
+                country: { deletedAt: null }
+              },
         select: selectOptions
       })
       .catch((e: Error) => {
@@ -90,9 +101,7 @@ export class DepartmentsService {
       department.countryId === null ||
       department.countryId <= 0
     ) {
-      throw new InternalServerErrorException(
-        "DepartmentId can't qsdqsdqsd be null or empty"
-      )
+      throw new BadRequestException("DepartmentId can't be null or empty")
     }
     const newDepartment: DepartmentAdminReturn =
       await this.prismaBase.department
@@ -128,9 +137,7 @@ export class DepartmentsService {
       updatedDepartment.countryId === null ||
       updatedDepartment.countryId <= 0
     ) {
-      throw new InternalServerErrorException(
-        "DepartmentI dqsdqdqsd can't be null or empty"
-      )
+      throw new BadRequestException("DepartmentId can't be null or empty")
     }
     const updated: DepartmentAdminReturn = await this.prismaBase.department
       .update({
@@ -158,9 +165,10 @@ export class DepartmentsService {
 
   async delete (id: number): Promise<DepartmentAdminReturn> {
     return (await this.prismaBase.department
-      .delete({
+      .update({
         where: { id: id },
-        select: new DepartmentAdminSelect()
+        select: new DepartmentAdminSelect(),
+        data: { deletedAt: new Date() }
       })
       .catch((e: Error) => {
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)

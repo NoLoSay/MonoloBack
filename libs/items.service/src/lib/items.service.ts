@@ -123,7 +123,7 @@ export class ItemsService {
   async create (item: ItemManipulationModel): Promise<ItemCommonReturn> {
     const newItemData: {
       name: string
-      description: string
+      description?: string
       relatedPerson?: {
         connect: {
           id: number
@@ -176,7 +176,7 @@ export class ItemsService {
     this.checkExistingItem(id)
     const updatedItemData: {
       name: string
-      description: string
+      description?: string
       relatedPerson?: {
         connect: {
           id: number

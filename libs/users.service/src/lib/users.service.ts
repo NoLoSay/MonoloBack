@@ -22,10 +22,7 @@ import {
   UserCommonSelect,
   UserMeSelect
 } from '@noloback/db.calls'
-import {
-  UserCreateModel,
-  UserUpdateModel
-} from './models/user.manipulation.models'
+import { UserCreateModel, UserUpdateModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
 
 @Injectable()
@@ -138,17 +135,9 @@ export class UsersService {
       default:
         selectOptions = new UserCommonSelect()
     }
-    const where: {
-      id: number
-      deletedAt?: Date | null
-    } = { id: id }
-
-    if (role !== Role.ADMIN) {
-      where.deletedAt = null
-    }
 
     const user = await this.prismaBase.user.findUnique({
-      where: where,
+      where: { id: id, deletedAt: role === Role.ADMIN ? null : undefined },
       select: selectOptions
     })
 
@@ -202,7 +191,7 @@ export class UsersService {
   async findOneByEmail (username: string): Promise<UserRequestModel | null> {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
-        where: { email: username, deletedAt: null  },
+        where: { email: username, deletedAt: null },
         include: {
           profiles: {
             select: {
@@ -302,10 +291,10 @@ export class UsersService {
   }
 
   async remove (id: number) {
-    return await this.prismaBase.user.update({
+    return (await this.prismaBase.user.update({
       where: { id: id },
       data: { deletedAt: new Date() },
       select: new UserMeSelect()
-    }) as unknown as UserMeReturn
+    })) as unknown as UserMeReturn
   }
 }
