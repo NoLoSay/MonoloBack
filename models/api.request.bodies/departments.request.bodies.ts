@@ -5,37 +5,32 @@ import {
   IsOptional,
   IsNotEmpty,
   IsPositive,
-  IsDate
+  IsInt
 } from 'class-validator'
 
-export class ExhibitionManipulationModel {
+export class DepartmentManipulationModel {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   name: string = ''
 
   @ApiProperty()
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  shortDescription?: string
-
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  longDescription?: string
-
-  @ApiProperty()
-  @IsOptional()
-  @IsDate()
-  startDate?: Date
-
-  @ApiProperty()
-  @IsOptional()
-  @IsDate()
-  endDate?: Date
+  code: string = ''
 
   @ApiProperty()
   @IsNumber()
+  @IsOptional()
+  longitude?: number
+
+  @ApiProperty()
+  @IsNumber()
+  @IsOptional()
+  latitude?: number
+
+  @ApiProperty()
+  @IsInt()
   @IsPositive()
-  siteId: number = 0
+  countryId: number = 0
 }

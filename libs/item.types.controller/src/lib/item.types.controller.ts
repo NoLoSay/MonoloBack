@@ -6,32 +6,31 @@ import {
   Put,
   Param,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  Request
 } from '@nestjs/common'
 import { ADMIN, Roles } from '@noloback/roles'
-import {
-  ItemTypeManipulationModel,
-  ItemTypesService
-} from '@noloback/item.types.service'
+import { ItemTypesService } from '@noloback/item.types.service'
+import { ItemTypeManipulationModel } from '@noloback/api.request.bodies'
+import { ItemTypeAdminReturn, ItemTypeCommonReturn, ItemTypeDetailledReturn } from '@noloback/api.returns'
 
 @Controller('item-types')
 export class ItemTypesController {
   constructor (private readonly itemTypesService: ItemTypesService) {}
 
   @Get()
-  async findAll () {
-    return this.itemTypesService.findAll()
+  async findAll (@Request() request: any): Promise<ItemTypeCommonReturn[] | ItemTypeAdminReturn[]> {
+    return this.itemTypesService.findAll(request.user.activeProfile.role)
   }
 
-  @Roles([ADMIN])
   @Get(':id')
-  async findOne (@Param('id', ParseIntPipe) id: number) {
-    return this.itemTypesService.findOne(id)
+  async findOne (@Request() request: any, @Param('id', ParseIntPipe) id: number): Promise<ItemTypeDetailledReturn | ItemTypeAdminReturn> {
+    return this.itemTypesService.findOne(id, request.user.activeProfile.role)
   }
 
   @Roles([ADMIN])
   @Post()
-  async create (@Body() itemTypes: ItemTypeManipulationModel) {
+  async create (@Body() itemTypes: ItemTypeManipulationModel): Promise<ItemTypeAdminReturn> {
     return this.itemTypesService.create(itemTypes)
   }
 
@@ -40,13 +39,13 @@ export class ItemTypesController {
   async update (
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedItemType: ItemTypeManipulationModel
-  ) {
+  ): Promise<ItemTypeAdminReturn> {
     return this.itemTypesService.update(id, updatedItemType)
   }
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number) {
+  async delete (@Param('id', ParseIntPipe) id: number): Promise<ItemTypeAdminReturn> {
     return this.itemTypesService.delete(id)
   }
 }

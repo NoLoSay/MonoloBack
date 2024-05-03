@@ -1,35 +1,41 @@
 import { ApiProperty } from '@nestjs/swagger/dist'
 import {
   IsString,
-  IsNumber,
+  IsInt,
   IsOptional,
   IsNotEmpty,
-  IsPositive
+  IsPositive,
+  IsDateString
 } from 'class-validator'
 
-export class DepartmentManipulationModel {
+export class ExhibitionManipulationModel {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   name: string = ''
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  code: string = ''
+  shortDescription?: string
 
   @ApiProperty()
-  @IsNumber()
   @IsOptional()
-  longitude?: number
+  @IsString()
+  longDescription?: string
 
   @ApiProperty()
-  @IsNumber()
   @IsOptional()
-  latitude?: number
+  @IsDateString()
+  startDate?: Date
 
   @ApiProperty()
-  @IsNumber()
+  @IsOptional()
+  @IsDateString()
+  endDate?: Date
+
+  @ApiProperty()
+  @IsInt()
   @IsPositive()
-  countryId: number = 0
+  siteId: number = 0
 }

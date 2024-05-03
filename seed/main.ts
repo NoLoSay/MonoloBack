@@ -8,6 +8,7 @@ import { seedItemTypes } from './item-types';
 import { seedItems } from './items';
 import { seedVideos } from './videos';
 import { seedExhibitions } from './exhibitions';
+import { seedPersons } from './persons';
 
 const prisma = new PrismaBaseClient();
 async function main() {
@@ -37,6 +38,9 @@ async function main() {
 
   const videos = await seedVideos();
   console.log(videos);
+
+  const persons = await seedPersons();
+  console.log(persons);
 
   console.log('Seeding completed');
 }

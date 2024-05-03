@@ -66,7 +66,7 @@ export class SitesController {
     if (await this.sitesManagersService.isAllowedToModify(request.user, id))
       return res
         .status(200)
-        .json(await this.sitesService.update(id, updatedSite))
+        .json(await this.sitesService.update(id, updatedSite, request.user.activeProfile.role))
     throw new UnauthorizedException()
   }
 

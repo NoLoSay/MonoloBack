@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger/dist'
 import {
   IsString,
-  IsNumber,
+  IsInt,
   IsOptional,
   IsNotEmpty,
   IsPositive
@@ -16,22 +16,23 @@ export class ItemManipulationModel {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  description: string = ''
+  description?: string
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  picture: string = ''
+  picture?: string 
 
   @ApiProperty()
-  @IsNumber()
   @IsOptional()
+  @IsInt()
   @IsPositive()
-  relatedPersonId?: number = 0
+  relatedPersonId?: number
+
 
   @ApiProperty()
-  @IsNumber()
   @IsOptional()
+  @IsInt()
   @IsPositive()
-  itemTypeId?: number = 0
+  itemTypeId?: number
 }

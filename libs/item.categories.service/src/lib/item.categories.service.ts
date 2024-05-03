@@ -1,72 +1,126 @@
-import { PrismaBaseService, ItemCategory } from '@noloback/prisma-client-base'
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
-import { ItemCategoryManipulationModel } from './models/itemCategoriesManipulation.model'
+import { Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException
+} from '@nestjs/common'
+import { ItemCategoryManipulationModel } from '@noloback/api.request.bodies'
+import {
+  ItemCategoryAdminReturn,
+  ItemCategoryCommonReturn,
+  ItemCategoryDetailledReturn
+} from '@noloback/api.returns'
+import {
+  ItemCategoryAdminSelect,
+  ItemCategoryCommonSelect,
+  ItemCategoryDetailledSelect
+} from '@noloback/db.calls'
 //import { LogCritiitemCategory } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ItemCategoriesService {
   constructor (
-    private prismaBase: PrismaBaseService
-    //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
-  async findAll (): Promise<ItemCategory[]> {
-    return await this.prismaBase.itemCategory.findMany()
-  }
+  async findAll (
+    role: Role
+  ): Promise<ItemCategoryCommonReturn[] | ItemCategoryAdminReturn[]> {
+    let selectOptions: Prisma.ItemCategorySelect
 
-  async findOne (id: number): Promise<ItemCategory | null> {
-    return await this.prismaBase.itemCategory.findUnique({
-      where: { id: id }
-    }).catch((e: Error) => {
-      // this.loggingService.log(LogCritiitemCategory.Critical, this.constructor.name, e)
-      throw new NotFoundException('Item category not found')
+    switch (role) {
+      case Role.ADMIN:
+        selectOptions = new ItemCategoryAdminSelect()
+        break
+      default:
+        selectOptions = new ItemCategoryCommonSelect()
+    }
+    const categories: unknown[] = await this.prismaBase.itemCategory.findMany({
+      select: selectOptions,
+      where: role === Role.ADMIN ? undefined : { deletedAt: null }
     })
+
+    switch (role) {
+      case Role.ADMIN:
+        return categories as ItemCategoryAdminReturn[]
+      default:
+        return categories as ItemCategoryCommonReturn[]
+    }
   }
 
-  async create (itemCategory: ItemCategoryManipulationModel) {
-    const newItemCategory: ItemCategory = await this.prismaBase.itemCategory
+  async findOne (
+    id: number,
+    role: Role
+  ): Promise<ItemCategoryDetailledReturn | ItemCategoryAdminReturn> {
+    let selectOptions: Prisma.ItemCategorySelect
+
+    switch (role) {
+      case Role.ADMIN:
+        selectOptions = new ItemCategoryAdminSelect()
+        break
+      default:
+        selectOptions = new ItemCategoryDetailledSelect()
+    }
+    const category: unknown = await this.prismaBase.itemCategory
+      .findUnique({
+        where: { id: id, deletedAt: role === Role.ADMIN ? undefined : null },
+        select: selectOptions
+      })
+      .catch((e: Error) => {
+        // this.loggingService.log(LogCritiitemCategory.Critical, this.constructor.name, e)
+        throw new NotFoundException('Item category not found')
+      })
+
+    switch (role) {
+      case Role.ADMIN:
+        return category as ItemCategoryAdminReturn
+      default:
+        return category as ItemCategoryDetailledReturn
+    }
+  }
+
+  async create (
+    itemCategory: ItemCategoryManipulationModel
+  ): Promise<ItemCategoryAdminReturn> {
+    return (await this.prismaBase.itemCategory
       .create({
         data: {
           name: itemCategory.name,
           description: itemCategory.description
-        }
+        },
+        select: new ItemCategoryAdminSelect()
       })
       .catch((e: Error) => {
         console.log(e)
         // this.loggingService.log(LogCritiitemCategory.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      })
-
-    return {
-      id: newItemCategory.id,
-      name: newItemCategory.name
-    }
+      })) as unknown as ItemCategoryAdminReturn
   }
 
-  async update (id: number, updatedItemCategory: ItemCategoryManipulationModel) {
-    const updated: ItemCategory = await this.prismaBase.itemCategory
+  async update (
+    id: number,
+    updatedItemCategory: ItemCategoryManipulationModel
+  ): Promise<ItemCategoryAdminReturn> {
+    return (await this.prismaBase.itemCategory
       .update({
         where: { id: id },
         data: {
           name: updatedItemCategory.name,
           description: updatedItemCategory.description
-        }
+        },
+        select: new ItemCategoryAdminSelect()
       })
       .catch((e: Error) => {
         // this.loggingService.log(LogCritiitemCategory.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
-      })
-
-    return {
-      id: updated.id,
-      name: updated.name
-    }
+      })) as unknown as ItemCategoryAdminReturn
   }
 
-  async delete (id: number) {
-    await this.prismaBase.itemCategory.delete({
-      where: { id: id }
-    })
+  async delete (id: number): Promise<ItemCategoryAdminReturn> {
+    return (await this.prismaBase.itemCategory.update({
+      where: { id: id },
+      data: { deletedAt: new Date() }
+    })) as unknown as ItemCategoryAdminReturn
   }
 }

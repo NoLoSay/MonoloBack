@@ -4,10 +4,9 @@ import {
   InternalServerErrorException,
   NotFoundException
 } from '@nestjs/common'
-import { PrismaBaseService, ExhibitedItem } from '@noloback/prisma-client-base'
-import { ExhibitedItemAdditionModel } from './models/exhibitedItemManipulation.model'
+import { PrismaBaseService } from '@noloback/prisma-client-base'
+import { ExhibitedItemAdditionModel } from '@noloback/api.request.bodies'
 import { ExhibitionCommonSelect, ItemCommonSelect } from '@noloback/db.calls'
-import { UserRequestModel } from '@noloback/requests.constructor'
 import { ExhibitionCommonReturn, ItemCommonReturn } from '@noloback/api.returns'
 // import { LoggerService } from '@noloback/logger-lib'
 

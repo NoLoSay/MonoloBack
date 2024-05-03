@@ -1,16 +1,12 @@
-import { PrismaBaseService, City, Prisma } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
   InternalServerErrorException
 } from '@nestjs/common'
-import { CityManipulationModel } from './models/city.manipulation.models'
-import {
-  CityAdminReturn,
-  CityAdminSelect,
-  CityCommonReturn,
-  CityCommonSelect
-} from './models/city.api.models'
+import { CityManipulationModel } from '@noloback/api.request.bodies'
+import { CityCommonReturn, CityAdminReturn } from '@noloback/api.returns'
+import { CityAdminSelect, CityCommonSelect } from '@noloback/db.calls'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -20,13 +16,11 @@ export class CitiesService {
     private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
-  async findAll (
-    role: 'USER' | 'ADMIN' | 'MANAGER'
-  ): Promise<CityCommonReturn[] | CityAdminReturn[]> {
+  async findAll (role: Role): Promise<CityCommonReturn[] | CityAdminReturn[]> {
     let selectOptions: Prisma.CitySelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new CityAdminSelect()
         break
       default:
@@ -35,7 +29,14 @@ export class CitiesService {
 
     const cities: unknown = await this.prismaBase.city
       .findMany({
-        select: selectOptions
+        select: selectOptions,
+        where:
+          role === Role.ADMIN
+            ? undefined
+            : {
+                deletedAt: null,
+                department: { deletedAt: null, country: { deletedAt: null } }
+              }
       })
       .catch((e: Error) => {
         console.log(e)
@@ -44,7 +45,7 @@ export class CitiesService {
       })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return cities as CityAdminReturn[]
       default:
         return cities as CityCommonReturn[]
@@ -53,11 +54,11 @@ export class CitiesService {
 
   async findOne (
     id: number,
-    role: 'USER' | 'ADMIN' | 'MANAGER'
+    role: Role
   ): Promise<CityCommonReturn | CityAdminReturn> {
     let selectOptions: Prisma.CitySelect
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new CityAdminSelect()
         break
       default:
@@ -66,7 +67,14 @@ export class CitiesService {
 
     const cities: unknown = await this.prismaBase.city
       .findUnique({
-        where: { id: id },
+        where:
+          role === Role.ADMIN
+            ? { id: id }
+            : {
+                id: id,
+                deletedAt: null,
+                department: { deletedAt: null, country: { deletedAt: null } }
+              },
         select: selectOptions
       })
       .catch((e: Error) => {
@@ -76,7 +84,7 @@ export class CitiesService {
       })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return cities as CityAdminReturn
       default:
         return cities as CityCommonReturn
@@ -89,7 +97,7 @@ export class CitiesService {
       city.departmentId === null ||
       city.departmentId <= 0
     ) {
-      throw new InternalServerErrorException("CityId can't be null or empty")
+      throw new BadRequestException("CityId can't be null or empty")
     }
     const newCity: unknown = await this.prismaBase.city
       .create({
@@ -98,7 +106,7 @@ export class CitiesService {
           zip: city.zip,
           latitude: city.latitude,
           longitude: city.longitude,
-          Department: {
+          department: {
             connect: {
               id: city.departmentId
             }
@@ -124,7 +132,7 @@ export class CitiesService {
       updatedCity.departmentId === null ||
       updatedCity.departmentId <= 0
     ) {
-      throw new InternalServerErrorException("CityId can't be null or empty")
+      throw new BadRequestException("CityId can't be null or empty")
     }
     const updated: unknown = await this.prismaBase.city
       .update({
@@ -134,7 +142,7 @@ export class CitiesService {
           zip: updatedCity.zip,
           latitude: updatedCity.latitude,
           longitude: updatedCity.longitude,
-          Department: {
+          department: {
             connect: {
               id: updatedCity.departmentId
             }
@@ -151,8 +159,9 @@ export class CitiesService {
   }
 
   async delete (id: number): Promise<CityAdminReturn> {
-    const deleted: unknown = await this.prismaBase.city.delete({
+    const deleted: unknown = await this.prismaBase.city.update({
       where: { id: id },
+      data: { deletedAt: new Date() },
       select: new CityAdminSelect()
     })
     return deleted as CityAdminReturn

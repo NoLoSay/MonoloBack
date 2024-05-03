@@ -9,25 +9,16 @@ class Department {
     country: Country = new Country()
 }
 
-class City {
+export class CityCommonReturn {
     id: number = 0
     name: string = ''
     zip: string = ''
     department: Department = new Department()
+    longitude: number = 0
+    latitude: number = 0
 }
 
-export class AddressCommonReturn {
-    id: number = 0
-    houseNumber: string | null = null
-    street: string = ''
-    zip: string = ''
-    city: City = new City()
-    otherDetails: string | null = null
-    longitude: number | null = null
-    latitude: number | null = null
-}
-
-export class AddressAdminReturn extends AddressCommonReturn {
+export class CityAdminReturn extends CityCommonReturn {
     createdAt: Date = new Date()
     updatedAt: Date = new Date()
     deletedAt: Date | null = null

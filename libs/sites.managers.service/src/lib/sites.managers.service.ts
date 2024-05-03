@@ -30,8 +30,8 @@ export class SitesManagersService {
     siteId: number
   ): Promise<boolean> {
     return (
-      user.activeProfile.role === 'ADMIN' ||
-      (user.activeProfile.role === 'MANAGER' &&
+      user.activeProfile.role === Role.ADMIN ||
+      (user.activeProfile.role === Role.MANAGER &&
         (await this.isManagerOfSite(user.activeProfile.id, siteId)))
     )
   }
@@ -59,24 +59,25 @@ export class SitesManagersService {
   private async createManagerProfile (
     userId: number
   ): Promise<{ id: number; role: Role; deletedAt: Date | null }> {
-    const profile = await this.prismaBase.profile.create({
-      data: {
-        role: 'MANAGER',
-        user: {
-          connect: {
-            id: userId
+    const profile = await this.prismaBase.profile
+      .create({
+        data: {
+          role: Role.MANAGER,
+          user: {
+            connect: {
+              id: userId
+            }
           }
+        },
+        select: {
+          id: true,
+          role: true,
+          deletedAt: true
         }
-      },
-      select: {
-        id: true,
-        role: true,
-        deletedAt: true
-      }
-    })
-    if (profile === null) {
-      throw new InternalServerErrorException('Failed to create profile')
-    }
+      })
+      .catch((e: Error) => {
+        throw new InternalServerErrorException('Failed to create profile')
+      })
     return profile
   }
 
@@ -116,16 +117,14 @@ export class SitesManagersService {
     }
     await this.checkSiteValidity(siteId)
     let managerProfile = managerUser.profiles.find(
-      profile => profile.role === 'MANAGER'
+      profile => profile.role === Role.MANAGER
     )
     if (!managerProfile) {
       managerProfile = await this.createManagerProfile(managerUser.id)
     } else if (managerProfile.deletedAt !== null) {
       managerProfile = await this.reactivateProfile(managerProfile.id)
     } else if (await this.isManagerOfSite(managerProfile.id, siteId)) {
-      throw new ConflictException(
-        'Manager is already a manager of this site'
-      )
+      throw new ConflictException('Manager is already a manager of this site')
     }
     const alreadyManager = await this.prismaBase.siteHasManager.findUnique({
       where: {
@@ -199,7 +198,7 @@ export class SitesManagersService {
       throw new NotFoundException('User not found')
     }
     const managerProfile = managerUser.profiles.find(
-      profile => profile.role === 'MANAGER'
+      profile => profile.role === Role.MANAGER
     )
     if (!managerProfile) {
       throw new NotFoundException('Manager not found')

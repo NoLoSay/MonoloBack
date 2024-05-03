@@ -8,11 +8,11 @@ export async function seedUsers(): Promise<User[]> {
 
   users.push(
     await prisma.user.upsert({
-      where: { email: 'alice@nolosay.com' },
+      where: { email: 'admin@nolosay.com' },
       update: {},
       create: {
-        email: 'alice@nolosay.com',
-        username: 'Alice',
+        email: 'admin@nolosay.com',
+        username: 'Admin',
         password: await hash('password', 12),
         telNumber: '+33600000001',
         profiles: {
@@ -34,11 +34,11 @@ export async function seedUsers(): Promise<User[]> {
   );
   users.push(
     await prisma.user.upsert({
-      where: { email: 'bob@nolosay.com' },
+      where: { email: 'creator@nolosay.com' },
       update: {},
       create: {
-        email: 'bob@nolosay.com',
-        username: 'Bob',
+        email: 'creator@nolosay.com',
+        username: 'Creator',
         password: await hash('password', 12),
         telNumber: '+33600000002',
         profiles: {
@@ -60,11 +60,11 @@ export async function seedUsers(): Promise<User[]> {
   );
   users.push(
     await prisma.user.upsert({
-      where: { email: 'john@nolosay.com' },
+      where: { email: 'user@nolosay.com' },
       update: {},
       create: {
-        email: 'john@nolosay.com',
-        username: 'John',
+        email: 'user@nolosay.com',
+        username: 'User',
         password: await hash('password', 12),
         telNumber: '+33600000003',
         profiles: {
@@ -82,11 +82,11 @@ export async function seedUsers(): Promise<User[]> {
   );
   users.push(
     await prisma.user.upsert({
-      where: { email: 'jane@nolosay.com' },
+      where: { email: 'moderator@nolosay.com' },
       update: {},
       create: {
-        email: 'jane@nolosay.com',
-        username: 'Jane',
+        email: 'moderator@nolosay.com',
+        username: 'Moderator',
         password: await hash('password', 12),
         telNumber: '+33600000004',
         profiles: {
@@ -108,13 +108,39 @@ export async function seedUsers(): Promise<User[]> {
   );
   users.push(
     await prisma.user.upsert({
-      where: { email: 'richard@nolosay.com' },
+      where: { email: 'manager@nolosay.com' },
       update: {},
       create: {
-        email: 'richard@nolosay.com',
-        username: 'Richard',
+        email: 'manager@nolosay.com',
+        username: 'Manager',
         password: await hash('password', 12),
         telNumber: '+33600000005',
+        profiles: {
+          createMany: {
+            data: [
+              {
+                role: 'MANAGER',
+                isActive: true,
+              },
+              {
+                role: 'USER',
+                isActive: false,
+              },
+            ],
+          },
+        },
+      },
+    })
+  );
+  users.push(
+    await prisma.user.upsert({
+      where: { email: 'manager2@nolosay.com' },
+      update: {},
+      create: {
+        email: 'manager2@nolosay.com',
+        username: 'Manager2',
+        password: await hash('password', 12),
+        telNumber: '+33600000006',
         profiles: {
           createMany: {
             data: [

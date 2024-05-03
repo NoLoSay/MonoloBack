@@ -11,29 +11,18 @@ class DepartmentSelect {
     }
 }
 
-class CitySelect {
+export class CityCommonSelect {
     id: boolean = true
     name: boolean = true
     zip: boolean = true
     department: object = {
         select: new DepartmentSelect()
     }
-}
-
-export class AddressCommonSelect {
-    id: boolean = true
-    houseNumber: boolean = true
-    street: boolean = true
-    zip: boolean = true
-    city: object = {
-        select: new CitySelect()
-    }
-    otherDetails: boolean = true
     longitude: boolean = true
     latitude: boolean = true
 }
 
-export class AddressAdminSelect extends AddressCommonSelect {
+export class CityAdminSelect extends CityCommonSelect {
     createdAt: boolean = true
     updatedAt: boolean = true
     deletedAt: boolean = true
