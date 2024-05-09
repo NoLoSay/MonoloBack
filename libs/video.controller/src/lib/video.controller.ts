@@ -111,6 +111,7 @@ export class VideoController {
     return await this.videoservice.getYoutubeByUUID(uuid)
   }
 
+  @Roles([ADMIN, MODERATOR])
   @Patch(':id')
   @HttpCode(200)
   async patchYoutube (
