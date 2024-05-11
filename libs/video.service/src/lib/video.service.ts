@@ -93,35 +93,39 @@ export class VideoService {
   }
 
   async watchVideo(videoUUID: string): Promise<ReadStream> {
-    const video: Video = await this.prismaBase.video
-      .findUniqueOrThrow({
+    try {
+      const video: Video = await this.prismaBase.video
+        .findUniqueOrThrow({
+          where: {
+            uuid: videoUUID,
+          },
+        })
+        .catch(() => {
+          throw new NotFoundException();
+        });
+
+      const provider = await this.prismaBase.hostingProvider.findUnique({
         where: {
-          uuid: videoUUID,
+          id: video.hostingProviderId,
         },
-      })
-      .catch(() => {
-        throw new NotFoundException();
       });
 
-    const provider = await this.prismaBase.hostingProvider.findUnique({
-      where: {
-        id: video.hostingProviderId,
-      },
-    });
+      if (!provider) {
+        throw new NotFoundException('Provider not found');
+      }
 
-    if (!provider) {
-      throw new NotFoundException('Provider not found');
+      if (provider?.name !== 'NoLoSay')
+        throw new BadRequestException('Provider not supported');
+      // Redirect(
+      //   provider.url
+      //     .replace('${videoUUID}', video.uuid)
+      //     .replace('$(providerVideoId)', video.hostingProviderVideoId)
+      // );
+
+      return createReadStream(`/nolovideos/${video.hostingProviderVideoId}`);
+    } catch (e) {
+      throw new InternalServerErrorException();
     }
-
-    if (provider?.name !== 'NoLoSay')
-      throw new BadRequestException('Provider not supported');
-    // Redirect(
-    //   provider.url
-    //     .replace('${videoUUID}', video.uuid)
-    //     .replace('$(providerVideoId)', video.hostingProviderVideoId)
-    // );
-
-    return createReadStream(`uploads/${video.hostingProviderVideoId}`);
   }
 
   async getYoutube(video: VideoCommonReturn) {
@@ -494,14 +498,10 @@ export class VideoService {
 
     switch (user.activeProfile.role) {
       case Role.ADMIN:
-        selectOptions = new VideoAdminSelect(
-          new VideoCommonSelect()
-        );
+        selectOptions = new VideoAdminSelect(new VideoCommonSelect());
         break;
       case Role.MODERATOR:
-        selectOptions = new VideoModeratorSelect(
-          new VideoCommonSelect()
-        );
+        selectOptions = new VideoModeratorSelect(new VideoCommonSelect());
         break;
       default:
         selectOptions = new VideoCommonSelect();
