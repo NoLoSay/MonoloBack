@@ -92,6 +92,15 @@ export class VideoService {
     });
   }
 
+  async patchVideo(videoId: number, body: any) {
+    return await this.prismaBase.video.update({
+      data: body,
+      where: {
+        id: videoId,
+      },
+    });
+  }
+
   async watchVideo(videoUUID: string): Promise<ReadStream> {
     try {
       const video: Video = await this.prismaBase.video
