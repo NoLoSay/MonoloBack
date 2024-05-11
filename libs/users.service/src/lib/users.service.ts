@@ -86,12 +86,21 @@ export class UsersService {
     }
   }
 
+  async patch(id: number, body: any) {
+    return await this.prismaBase.user.update({
+      where: { id: id },
+      data: body
+    })
+  }
+
   async findAll (
     role: Role,
     firstElem: number,
     lastElem: number
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
     let selectOptions: Prisma.UserSelect
+
+    console.log(role)
 
     switch (role) {
       case Role.ADMIN:
@@ -107,6 +116,8 @@ export class UsersService {
       where: role === Role.ADMIN ? undefined : { deletedAt: null },
       select: selectOptions
     })
+
+    console.log(users)
 
     switch (role) {
       case Role.ADMIN:

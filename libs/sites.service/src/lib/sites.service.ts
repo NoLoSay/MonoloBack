@@ -60,6 +60,13 @@ export class SitesService {
     }
   }
 
+  async patch(id: number, body: any) {
+    return await this.prismaBase.site.update({
+      where: { id: id },
+      data: body,
+    })
+  }
+
   async findOne (
     id: number,
     user: UserRequestModel

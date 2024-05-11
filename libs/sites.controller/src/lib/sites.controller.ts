@@ -9,7 +9,8 @@ import {
   ParseIntPipe,
   Request,
   Response,
-  UnauthorizedException
+  UnauthorizedException,
+  Patch
 } from '@nestjs/common'
 import { ADMIN, MANAGER, Roles } from '@noloback/roles'
 import { SitesService } from '@noloback/sites.service'
@@ -68,6 +69,15 @@ export class SitesController {
         .status(200)
         .json(await this.sitesService.update(id, updatedSite, request.user.activeProfile.role))
     throw new UnauthorizedException()
+  }
+
+  @Roles([ADMIN])
+  @Patch(':id')
+  async patch (
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: any,
+  ) {
+    return await this.sitesService.patch(id, request.body);
   }
 
   @Roles([ADMIN])

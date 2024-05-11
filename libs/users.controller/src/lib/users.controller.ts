@@ -10,7 +10,8 @@ import {
   Request,
   UnauthorizedException,
   Query,
-  Response
+  Response,
+  Patch
 } from '@nestjs/common'
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ADMIN, Roles } from '@noloback/roles'
@@ -89,6 +90,13 @@ export class UsersController {
       throw new UnauthorizedException()
     }
     return this.usersService.update(id, updateUser)
+  }
+
+  @Roles([ADMIN])
+  @Patch(':id')
+  async patch (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+    const body = request.body;
+    return this.usersService.patch(id, body)
   }
 
   @Delete(':id')

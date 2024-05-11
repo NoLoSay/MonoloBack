@@ -17,6 +17,7 @@ import {
 } from '@noloback/db.calls'
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
+import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -27,8 +28,19 @@ export class ItemsService {
     private videoService: VideoService //private loggingService: LoggerService
   ) {}
 
-  async count (): Promise<number> {
-    return this.prismaBase.item.count({ where: { deletedAt: null } })
+  async count (nameLike: string | undefined, typeId: number | undefined, categoryId: number | undefined): Promise<number> {
+    return this.prismaBase.item.count({
+      where: {
+        itemType: {
+          id : typeId ? typeId : undefined,
+          itemCategoryId: categoryId ? categoryId : undefined
+        },
+        name: nameLike ? {
+          contains: nameLike
+        } : undefined,
+        deletedAt: null,
+      }
+    })
   }
 
   private async checkExistingItem (id: number) {
@@ -40,11 +52,19 @@ export class ItemsService {
       throw new NotFoundException('Item not found')
   }
 
+  async patch(id: number, body: any) {
+    return this.prismaBase.item.update({
+      where: { id },
+      data: body
+    })
+  }
+
   async findAll (
     role: Role,
-    firstElem: number,
-    lastElem: number,
-    nameLike: string | undefined
+    filters: FiltersGetMany,
+    nameLike?: string,
+    typeId?: number,
+    categoryId?: number,
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
     let selectOptions: Prisma.ItemSelect
 
@@ -58,15 +78,20 @@ export class ItemsService {
 
     const items: unknown = await this.prismaBase.item
       .findMany({
-        skip: firstElem,
-        take: lastElem - firstElem,
+        skip: filters.start,
+        take: filters.end - filters.start,
         select: selectOptions,
         where: {
+          itemType: {
+            id : typeId ? typeId : undefined,
+            itemCategoryId: categoryId ? categoryId : undefined
+          },
           name: nameLike
             ? {
                 contains: nameLike
               }
             : undefined,
+          relatedPerson: categoryId ? { id: categoryId } : undefined,
           deletedAt: role === Role.ADMIN ? undefined : null
         }
       })
