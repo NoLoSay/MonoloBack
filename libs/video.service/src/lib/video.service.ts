@@ -495,16 +495,16 @@ export class VideoService {
     switch (user.activeProfile.role) {
       case Role.ADMIN:
         selectOptions = new VideoAdminSelect(
-          new VideoListedFromItemCommonSelect()
+          new VideoCommonSelect()
         );
         break;
       case Role.MODERATOR:
         selectOptions = new VideoModeratorSelect(
-          new VideoListedFromItemCommonSelect()
+          new VideoCommonSelect()
         );
         break;
       default:
-        selectOptions = new VideoListedFromItemCommonSelect();
+        selectOptions = new VideoCommonSelect();
     }
 
     const videoEntities: unknown[] = await this.prismaBase.video.findMany({
