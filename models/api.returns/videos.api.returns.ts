@@ -26,6 +26,7 @@ abstract class VideoDefaultReturn {
   duration: number = 0
   hostingProviderId: number = 0
   hostingProviderVideoId: string = ''
+  validationStatus: string = ''
   createdAt: Date = new Date()
   likedBy: User[] = []
   item: Item | undefined = undefined
@@ -37,6 +38,7 @@ abstract class VideoDefaultReturn {
     this.duration = dbReturn.duration
     this.hostingProviderId = dbReturn.hostingProviderId
     this.hostingProviderVideoId = dbReturn.hostingProviderVideoId
+    this.validationStatus = dbReturn.validationStatus
     this.createdAt = dbReturn.createdAt
     this.likedBy = dbReturn.likedBy.map(like => like.User)
     this.item = dbReturn.item ?? undefined
