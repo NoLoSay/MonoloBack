@@ -77,7 +77,7 @@ export class SitesController {
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any,
   ) {
-    return await this.sitesService.patch(id, request.body);
+    return await this.sitesService.patch(+id, request.body);
   }
 
   @Roles([ADMIN])

@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request
+  Request,
+  Patch
 } from '@nestjs/common'
 import { CountriesService } from '@noloback/countries.service'
 import { CountryManipulationModel } from '@noloback/api.request.bodies'
@@ -44,6 +45,15 @@ export class CountriesController {
   @Roles([ADMIN])
   @Put(':id')
   async update (
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatedCountry: CountryManipulationModel
+  ): Promise<CountryAdminReturn> {
+    return this.countriesService.update(id, updatedCountry)
+  }
+
+  @Roles([ADMIN])
+  @Patch(':id')
+  async patch (
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedCountry: CountryManipulationModel
   ): Promise<CountryAdminReturn> {
