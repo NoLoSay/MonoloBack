@@ -17,6 +17,7 @@ import {
   PersonCommonReturn,
   PersonDetailledReturn
 } from '@noloback/api.returns'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('persons')
 export class PersonsController {
@@ -48,17 +49,35 @@ export class PersonsController {
   @Roles([ADMIN])
   @Put(':id')
   async update (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedPerson: PersonManipulationModel
   ): Promise<PersonAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Person',
+      +id,
+      JSON.stringify(request.body)
+    );
+
     return this.personsService.update(id, updatedPerson)
   }
 
   @Roles([ADMIN])
   @Delete(':id')
   async delete (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<PersonAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'Person',
+      +id,
+      JSON.stringify(request.body)
+    );
+
     return this.personsService.delete(id)
   }
 }

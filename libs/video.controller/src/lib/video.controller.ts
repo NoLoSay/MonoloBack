@@ -172,7 +172,7 @@ export class VideoController {
       +request.user.activeProfile.id,
       'UPDATE',
       'Video',
-      id,
+      +id,
       'New validation status: ' + validationStatus
     );
 

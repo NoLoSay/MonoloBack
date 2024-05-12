@@ -105,6 +105,14 @@ export class ItemsController {
   @Roles([ADMIN])
   @Patch(':id')
   async patch (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Item',
+      +id,
+      JSON.stringify(request.body)
+    );
+
     return this.itemsService.patch(id, request.body)
   }
 

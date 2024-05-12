@@ -49,7 +49,7 @@ export class CitiesController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedCity: CityManipulationModel
   ): Promise<CityAdminReturn> {
-    LoggerService.sensitiveLog(request.user.id, 'UPDATE', 'City', id, JSON.stringify(updatedCity))
+    LoggerService.sensitiveLog(+request.user.activeProfile.id, 'UPDATE', 'City', +id, JSON.stringify(updatedCity))
 
     return this.citiesService.update(id, updatedCity)
   }
@@ -60,7 +60,7 @@ export class CitiesController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<CityAdminReturn> {
-    LoggerService.sensitiveLog(request.user.id, 'DELETE', 'City', id)
+    LoggerService.sensitiveLog(+request.user.activeProfile.id, 'DELETE', 'City', +id)
 
     return this.citiesService.delete(id)
   }

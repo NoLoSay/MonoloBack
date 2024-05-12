@@ -21,6 +21,7 @@ import {
   ExhibitionManagerDetailedReturn,
   ExhibitionCommonDetailedReturn
 } from '@noloback/api.returns'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('exhibitions')
 export class ExhibitionsController {
@@ -80,10 +81,19 @@ export class ExhibitionsController {
         request.user,
         updatedExhibition.siteId
       )
-    )
+    ) {
+      LoggerService.sensitiveLog(
+        +request.user.activeProfile.id,
+        'UPDATE',
+        'Exhibition',
+        +id,
+        JSON.stringify(request.body)
+      );
+
       return res
         .status(200)
         .json(await this.exhibitionsService.update(id, updatedExhibition))
+    }
     throw new UnauthorizedException()
   }
 
@@ -107,8 +117,17 @@ export class ExhibitionsController {
         request.user,
         exhibition.site.id
       )
-    )
+    ) {
+      LoggerService.sensitiveLog(
+        +request.user.activeProfile.id,
+        'DELETE',
+        'Exhibition',
+        +id,
+        JSON.stringify(request.body)
+      );
+
       return res.status(200).json(await this.exhibitionsService.delete(id))
+    }
     throw new UnauthorizedException()
   }
 
