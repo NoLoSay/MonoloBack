@@ -111,14 +111,14 @@ export class ItemsController {
   @Roles([ADMIN])
   @Delete(':id')
   async delete (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
-    return this.itemsService.delete(id).then(() => {
-      LoggerService.sensitiveLog(
-        +request.user.activeProfile.id,
-        'DELETE',
-        'Item',
-        +id
-      );
-    })
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'Item',
+      +id
+    );
+
+    return this.itemsService.delete(id)
   }
 
   @Get(':id/videos')

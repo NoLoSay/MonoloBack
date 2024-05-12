@@ -109,17 +109,15 @@ export class VideoController {
     @Param('id') id: number,
     @Response() res: any
   ) {
-    return res.json(
-      await this.videoservice.patchVideo(+id, request.body).then(() => {
-        LoggerService.sensitiveLog(
-          +request.user.activeProfile.id,
-          'UPDATE',
-          'Video',
-          +id,
-          JSON.stringify(request.body)
-        );
-      })
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Video',
+      +id,
+      JSON.stringify(request.body)
     );
+
+    return res.json(await this.videoservice.patchVideo(+id, request.body));
   }
 
   @Get(':uuid')
@@ -170,17 +168,18 @@ export class VideoController {
     @Param('id') id: number,
     @Body('validationStatus') validationStatus: ValidationStatus
   ) {
-    return await this.videoservice
-      .updateYoutubeValidation(+id, validationStatus)
-      .then(() => {
-        LoggerService.sensitiveLog(
-          +request.user.activeProfile.id,
-          'UPDATE',
-          'Video',
-          id,
-          'New validation status: ' + validationStatus
-        );
-      });
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Video',
+      id,
+      'New validation status: ' + validationStatus
+    );
+
+    return await this.videoservice.updateYoutubeValidation(
+      +id,
+      validationStatus
+    );
   }
 
   @Roles([ADMIN, MODERATOR])
@@ -191,13 +190,13 @@ export class VideoController {
     @Param('id') id: number,
     @Query('deletedReason') deletedReason: string
   ) {
-    return await this.videoservice.deleteVideo(+id, deletedReason).then(() => {
-      LoggerService.sensitiveLog(
-        +request.user.activeProfile.id,
-        'DELETE',
-        'Video',
-        +id
-      );
-    });
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'Video',
+      +id
+    );
+
+    return await this.videoservice.deleteVideo(+id, deletedReason);
   }
 }

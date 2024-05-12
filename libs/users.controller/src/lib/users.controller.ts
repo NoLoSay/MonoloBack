@@ -117,14 +117,14 @@ export class UsersController {
     ) {
       throw new UnauthorizedException();
     }
-    return this.usersService.remove(id).then(() => {
-      LoggerService.sensitiveLog(
-        +request.user.activeProfile.id,
-        'DELETE',
-        'User',
-        +id
-      );
-    });
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'User',
+      +id
+    );
+
+    return this.usersService.remove(id);
   }
 
   @Get(':id/videos')
