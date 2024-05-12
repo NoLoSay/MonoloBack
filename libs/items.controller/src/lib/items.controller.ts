@@ -23,6 +23,7 @@ import {
 } from '@noloback/api.returns'
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
 import { FiltersGetMany } from 'models/filters-get-many'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('items')
 export class ItemsController {
@@ -109,8 +110,15 @@ export class ItemsController {
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number) {
-    return this.itemsService.delete(id)
+  async delete (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+    return this.itemsService.delete(id).then(() => {
+      LoggerService.sensitiveLog(
+        +request.user.activeProfile.id,
+        'DELETE',
+        'Item',
+        +id
+      );
+    })
   }
 
   @Get(':id/videos')

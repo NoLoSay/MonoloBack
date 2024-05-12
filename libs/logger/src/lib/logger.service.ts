@@ -1,10 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { LogCriticity, PrismaClient } from '@prisma/client/logs';
+import {
+  LogCriticity,
+  PrismaClient as PrismaLogsClient,
+} from '@prisma/client/logs';
+import { PrismaClient as PrismaBaseClient } from '@prisma/client/base';
 import { PrismaLogsService } from '@noloback/prisma-client-logs';
+import { PrismaBaseService } from '@noloback/prisma-client-base';
 
 @Injectable()
 export class LoggerService {
-  constructor(private prisma: PrismaLogsService) {}
+  constructor(
+    private prismaLogs: PrismaLogsService,
+    private prismaBase: PrismaBaseService
+  ) {}
 
   async log(
     criticity: LogCriticity,
@@ -12,7 +20,7 @@ export class LoggerService {
     exception: Error | undefined,
     message: string = ''
   ) {
-    await this.prisma.logs
+    await this.prismaLogs.logs
       .create({
         data: {
           criticity: criticity,
@@ -37,7 +45,7 @@ export class LoggerService {
     exception: Error | undefined,
     message: string = ''
   ) {
-    const prisma: PrismaClient = new PrismaClient();
+    const prisma: PrismaLogsClient = new PrismaLogsClient();
 
     await prisma.logs
       .create({
@@ -56,5 +64,57 @@ export class LoggerService {
       .catch((e) => {
         console.log(e);
       });
+  }
+
+  async userLog(profileId: number, action: string, object: string, objectId: number, details?: string) {
+    await this.prismaBase.userActionLog.create({
+      data: {
+        profileId: profileId,
+        action: action,
+        object: object,
+        objectId: objectId,
+        details: details,
+      },
+    });
+  }
+
+  static async userLog(profileId: number, action: string, object: string, objectId: number, details?: string) {
+    const prisma: PrismaBaseClient = new PrismaBaseClient();
+
+    await prisma.userActionLog.create({
+      data: {
+        profileId: profileId,
+        action: action,
+        object: object,
+        objectId: objectId,
+        details: details,
+      },
+    });
+  }
+
+  async sensitiveLog(profileId: number, action: string, object: string, objectId: number, details?: string) {
+    await this.prismaBase.sensitiveActionLog.create({
+      data: {
+        profileId: profileId,
+        action: action,
+        object: object,
+        objectId: objectId,
+        details: details,
+      },
+    });
+  }
+
+  static async sensitiveLog(profileId: number, action: string, object: string, objectId: number, details?: string) {
+    const prisma: PrismaBaseClient = new PrismaBaseClient();
+
+    await prisma.sensitiveActionLog.create({
+      data: {
+        profileId: profileId,
+        action: action,
+        object: object,
+        objectId: objectId,
+        details: details,
+      },
+    });
   }
 }

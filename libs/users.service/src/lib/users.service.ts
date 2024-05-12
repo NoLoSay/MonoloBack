@@ -100,8 +100,6 @@ export class UsersService {
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
     let selectOptions: Prisma.UserSelect
 
-    console.log(role)
-
     switch (role) {
       case Role.ADMIN:
         selectOptions = new UserAdminSelect()
@@ -116,8 +114,6 @@ export class UsersService {
       where: role === Role.ADMIN ? undefined : { deletedAt: null },
       select: selectOptions
     })
-
-    console.log(users)
 
     switch (role) {
       case Role.ADMIN:

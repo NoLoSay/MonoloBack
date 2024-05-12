@@ -19,6 +19,7 @@ import multer = require('multer');
 import { Role, ValidationStatus } from '@prisma/client/base';
 import { FiltersGetMany } from 'models/filters-get-many';
 import { ADMIN, MODERATOR, Roles } from '@noloback/roles';
+import { LoggerService } from '@noloback/logger-lib';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -103,9 +104,21 @@ export class VideoController {
   @Roles([ADMIN, MODERATOR])
   @Patch(':id')
   @HttpCode(200)
-  async patchVideo(@Request() request: any, @Response() res: any) {
+  async patchVideo(
+    @Request() request: any,
+    @Param('id') id: number,
+    @Response() res: any
+  ) {
     return res.json(
-      await this.videoservice.patchVideo(+request.params.id, request.body)
+      await this.videoservice.patchVideo(+id, request.body).then(() => {
+        LoggerService.sensitiveLog(
+          +request.user.activeProfile.id,
+          'UPDATE',
+          'Video',
+          +id,
+          JSON.stringify(request.body)
+        );
+      })
     );
   }
 
@@ -153,24 +166,38 @@ export class VideoController {
   })
   @HttpCode(200)
   async updateYoutube(
-    @Request() req: any,
+    @Request() request: any,
     @Param('id') id: number,
     @Body('validationStatus') validationStatus: ValidationStatus
   ) {
-    return await this.videoservice.updateYoutubeValidation(
-      +id,
-      validationStatus
-    );
+    return await this.videoservice
+      .updateYoutubeValidation(+id, validationStatus)
+      .then(() => {
+        LoggerService.sensitiveLog(
+          +request.user.activeProfile.id,
+          'UPDATE',
+          'Video',
+          id,
+          'New validation status: ' + validationStatus
+        );
+      });
   }
 
   @Roles([ADMIN, MODERATOR])
   @Delete(':id')
   @HttpCode(200)
   async deleteYoutube(
-    @Request() req: any,
+    @Request() request: any,
     @Param('id') id: number,
     @Query('deletedReason') deletedReason: string
   ) {
-    return await this.videoservice.deleteVideo(+id, deletedReason);
+    return await this.videoservice.deleteVideo(+id, deletedReason).then(() => {
+      LoggerService.sensitiveLog(
+        +request.user.activeProfile.id,
+        'DELETE',
+        'Video',
+        +id
+      );
+    });
   }
 }
