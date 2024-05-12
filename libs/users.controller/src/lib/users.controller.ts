@@ -122,8 +122,7 @@ export class UsersController {
         +request.user.activeProfile.id,
         'DELETE',
         'User',
-        +id,
-        'User deleted'
+        +id
       );
     });
   }
