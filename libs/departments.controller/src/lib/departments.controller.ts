@@ -34,6 +34,8 @@ export class DepartmentsController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<DepartmentCommonReturn | DepartmentAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Department', +id)
+
     return this.departmentsService.findOne(id, request.user.activeProfile.role)
   }
 

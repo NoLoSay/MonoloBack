@@ -43,6 +43,8 @@ export class SitesController {
     @Request() request: any,
     @Response() res: any
   ) {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Site', +id)
+
     return res
       .status(200)
       .json(await this.sitesService.findOne(id, request.user))

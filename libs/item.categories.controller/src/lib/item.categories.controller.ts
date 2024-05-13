@@ -34,6 +34,8 @@ export class ItemCategoriesController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<ItemCategoryCommonReturn | ItemCategoryAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Category', +id)
+
     return this.itemCategoriesService.findOne(id, request.user.activeProfile.role)
   }
 

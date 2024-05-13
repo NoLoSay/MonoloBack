@@ -44,6 +44,8 @@ export class ExhibitionsController {
     @Param('id', ParseIntPipe) id: number,
     @Response() res: any
   ) {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Exhibition', +id)
+
     return res
       .status(200)
       .json(await this.exhibitionsService.findOne(id, request.user))

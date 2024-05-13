@@ -32,6 +32,8 @@ export class CountriesController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<CountryCommonReturn | CountryAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Country', +id)
+
     return this.countriesService.findOne(id, request.user.activeProfile.role)
   }
 

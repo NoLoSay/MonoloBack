@@ -35,6 +35,8 @@ export class PersonsController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<PersonDetailledReturn | PersonAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Person', +id)
+
     return this.personsService.findOne(id, request.user.activeProfile.role)
   }
 

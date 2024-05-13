@@ -31,6 +31,8 @@ export class CitiesController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'City', +id)
+
     return this.citiesService.findOne(id, request.user.activeProfile.role)
   }
 

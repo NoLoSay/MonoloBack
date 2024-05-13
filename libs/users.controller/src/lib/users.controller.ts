@@ -55,6 +55,8 @@ export class UsersController {
 
   @Get('me')
   async findMe(@Request() request: any) {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'User', +request.user.activeProfile.id)
+
     return this.usersService.findMe(request.user);
   }
 
@@ -68,6 +70,8 @@ export class UsersController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'User', +id)
+
     return this.usersService.findOne(id, request.user.activeProfile.role);
   }
 

@@ -122,7 +122,15 @@ export class VideoController {
 
   @Get(':uuid')
   @HttpCode(200)
-  async getYoutubeByUUID(@Param('uuid') uuid: string) {
+  async getYoutubeByUUID(@Request() request: any, @Param('uuid') uuid: string) {
+    LoggerService.userLog(
+      +request.user.activeProfile.id,
+      'GET',
+      'City',
+      +0,
+      JSON.stringify({ uuid })
+    );
+
     const isnum = /^\d+$/.test(uuid);
 
     if (isnum) {

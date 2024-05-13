@@ -83,6 +83,8 @@ export class ItemsController {
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any
   ): Promise<ItemDetailedReturn | ItemAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Item', +id)
+
     return this.itemsService.findOneDetailled(id, request.user)
   }
 
