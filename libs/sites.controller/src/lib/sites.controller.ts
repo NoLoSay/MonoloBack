@@ -22,6 +22,7 @@ import {
 } from '@noloback/api.request.bodies'
 import { SitesManagersService } from '@noloback/sites.managers.service'
 import { Role } from '@prisma/client/base'
+import { LoggerService } from '@noloback/logger-lib'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('sites')
@@ -42,6 +43,8 @@ export class SitesController {
     @Request() request: any,
     @Response() res: any
   ) {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Site', +id)
+
     return res
       .status(200)
       .json(await this.sitesService.findOne(id, request.user))
@@ -64,10 +67,19 @@ export class SitesController {
     @Response() res: any,
     @Body() updatedSite: SiteManipulationRequestBody
   ) {
-    if (await this.sitesManagersService.isAllowedToModify(request.user, id))
+    if (await this.sitesManagersService.isAllowedToModify(request.user, id)) {
+      LoggerService.sensitiveLog(
+        +request.user.activeProfile.id,
+        'UPDATE',
+        'Site',
+        +id,
+        JSON.stringify(request.body)
+      );
+
       return res
         .status(200)
         .json(await this.sitesService.update(id, updatedSite, request.user.activeProfile.role))
+    }
     throw new UnauthorizedException()
   }
 
@@ -77,12 +89,30 @@ export class SitesController {
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any,
   ) {
-    return await this.sitesService.patch(id, request.body);
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Site',
+      +id,
+      JSON.stringify(request.body)
+    );
+
+    return await this.sitesService.patch(+id, request.body);
   }
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number, @Response() res: any) {
+  async delete (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number, @Response() res: any) {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'Site',
+      +id,
+      JSON.stringify(request.body)
+    );
+
     return res.status(200).json(await this.sitesService.delete(id))
   }
 

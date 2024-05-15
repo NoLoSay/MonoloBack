@@ -13,6 +13,7 @@ import { ADMIN, Roles } from '@noloback/roles'
 import { ItemTypesService } from '@noloback/item.types.service'
 import { ItemTypeManipulationModel } from '@noloback/api.request.bodies'
 import { ItemTypeAdminReturn, ItemTypeCommonReturn, ItemTypeDetailledReturn } from '@noloback/api.returns'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('item-types')
 export class ItemTypesController {
@@ -37,15 +38,31 @@ export class ItemTypesController {
   @Roles([ADMIN])
   @Put(':id')
   async update (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedItemType: ItemTypeManipulationModel
   ): Promise<ItemTypeAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'ItemType',
+      +id,
+      JSON.stringify(request.body)
+    );
+
     return this.itemTypesService.update(id, updatedItemType)
   }
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number): Promise<ItemTypeAdminReturn> {
+  async delete (@Request() request: any, @Param('id', ParseIntPipe) id: number): Promise<ItemTypeAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'ItemType',
+      +id,
+    );
+
     return this.itemTypesService.delete(id)
   }
 }

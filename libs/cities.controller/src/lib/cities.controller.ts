@@ -13,6 +13,7 @@ import { CitiesService } from '@noloback/cities.service'
 import { CityManipulationModel } from '@noloback/api.request.bodies'
 import { CityCommonReturn, CityAdminReturn } from '@noloback/api.returns'
 import { ADMIN, Roles } from '@noloback/roles'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('cities')
 export class CitiesController {
@@ -30,6 +31,8 @@ export class CitiesController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'City', +id)
+
     return this.citiesService.findOne(id, request.user.activeProfile.role)
   }
 
@@ -44,17 +47,23 @@ export class CitiesController {
   @Roles([ADMIN])
   @Put(':id')
   async update (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedCity: CityManipulationModel
   ): Promise<CityAdminReturn> {
+    LoggerService.sensitiveLog(+request.user.activeProfile.id, 'UPDATE', 'City', +id, JSON.stringify(updatedCity))
+
     return this.citiesService.update(id, updatedCity)
   }
 
   @Roles([ADMIN])
   @Delete(':id')
   async delete (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<CityAdminReturn> {
+    LoggerService.sensitiveLog(+request.user.activeProfile.id, 'DELETE', 'City', +id)
+
     return this.citiesService.delete(id)
   }
 }

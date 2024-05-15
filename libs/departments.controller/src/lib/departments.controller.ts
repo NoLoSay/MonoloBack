@@ -16,6 +16,7 @@ import {
   DepartmentCommonReturn
 } from '@noloback/api.returns'
 import { ADMIN, Roles } from '@noloback/roles'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('departments')
 export class DepartmentsController {
@@ -33,6 +34,8 @@ export class DepartmentsController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<DepartmentCommonReturn | DepartmentAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Department', +id)
+
     return this.departmentsService.findOne(id, request.user.activeProfile.role)
   }
 
@@ -47,17 +50,34 @@ export class DepartmentsController {
   @Roles([ADMIN])
   @Put(':id')
   async update (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedDepartment: DepartmentManipulationModel
   ): Promise<DepartmentAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Department',
+      +id,
+      JSON.stringify(request.body)
+    );
+
     return this.departmentsService.update(id, updatedDepartment)
   }
 
   @Roles([ADMIN])
   @Delete(':id')
   async delete (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<DepartmentAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'Department',
+      +id,
+    );
+
     return this.departmentsService.delete(id)
   }
 }

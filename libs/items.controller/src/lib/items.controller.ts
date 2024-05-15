@@ -23,6 +23,7 @@ import {
 } from '@noloback/api.returns'
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
 import { FiltersGetMany } from 'models/filters-get-many'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('items')
 export class ItemsController {
@@ -82,6 +83,8 @@ export class ItemsController {
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any
   ): Promise<ItemDetailedReturn | ItemAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Item', +id)
+
     return this.itemsService.findOneDetailled(id, request.user)
   }
 
@@ -104,12 +107,27 @@ export class ItemsController {
   @Roles([ADMIN])
   @Patch(':id')
   async patch (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Item',
+      +id,
+      JSON.stringify(request.body)
+    );
+
     return this.itemsService.patch(id, request.body)
   }
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number) {
+  async delete (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'Item',
+      +id
+    );
+
     return this.itemsService.delete(id)
   }
 

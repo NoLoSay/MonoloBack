@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request
+  Request,
+  Patch
 } from '@nestjs/common'
 import { CountriesService } from '@noloback/countries.service'
 import { CountryManipulationModel } from '@noloback/api.request.bodies'
 import { CountryAdminReturn, CountryCommonReturn } from '@noloback/api.returns'
 import { ADMIN, Roles } from '@noloback/roles'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('countries')
 export class CountriesController {
@@ -30,6 +32,8 @@ export class CountriesController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<CountryCommonReturn | CountryAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Country', +id)
+
     return this.countriesService.findOne(id, request.user.activeProfile.role)
   }
 
@@ -44,17 +48,52 @@ export class CountriesController {
   @Roles([ADMIN])
   @Put(':id')
   async update (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedCountry: CountryManipulationModel
   ): Promise<CountryAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Country',
+      +id,
+      JSON.stringify(request.body)
+    );
+
+    return this.countriesService.update(id, updatedCountry)
+  }
+
+  @Roles([ADMIN])
+  @Patch(':id')
+  async patch (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatedCountry: CountryManipulationModel
+  ): Promise<CountryAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Country',
+      +id,
+      JSON.stringify(request.body)
+    );
+
     return this.countriesService.update(id, updatedCountry)
   }
 
   @Roles([ADMIN])
   @Delete(':id')
   async delete (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<CountryAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'Country',
+      +id,
+    );
+
     return this.countriesService.delete(id)
   }
 }
