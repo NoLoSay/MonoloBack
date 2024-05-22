@@ -19,6 +19,11 @@ https://nolosay.com/Documentation/index.html
 To start the development servers run `nx serve api` and `nx serve video`. Open your browser and navigate to http://localhost:3001/swagger/ and http://localhost:3002/swagger/. Happy coding!
 
 ## Useful commands
+
+`nx serve api` Starts the main API in dev mode (http://localhost:3001/)
+
+`nx serve video` Starts the video API in dev mode (http://localhost:3002/)
+
 `npm run seed` RESETS and seeds the database with default values
 
 `npm run studio` Opens the database explorer (prisma studio)
