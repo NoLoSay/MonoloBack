@@ -32,13 +32,13 @@ export class WatchController {
     @Res({ passthrough: true }) res: Response,
     @Param('videoUUID') videoUUID: string
   ): Promise<StreamableFile> {
-    LoggerService.userLog(
-      +request.user.activeProfile.id,
-      'GET',
-      'City',
-      +0,
-      JSON.stringify({ videoUUID })
-    );
+    // LoggerService.userLog(
+    //   +request.user.activeProfile.id,
+    //   'GET',
+    //   'Watch',
+    //   +0,
+    //   JSON.stringify({ videoUUID })
+    // );
 
     const videoFile = await this.videoService.watchVideo(videoUUID);
     res.set({
