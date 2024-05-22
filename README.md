@@ -16,6 +16,8 @@ https://nolosay.com/Documentation/index.html
 
 ## Start the app
 
+First, if not done already, start the postgres instance using docker `(sudo) docker compose up postgres (--build) (-d)`
+
 To start the development servers run `nx serve api` and `nx serve video`. Open your browser and navigate to http://localhost:3001/swagger/ and http://localhost:3002/swagger/. Happy coding!
 
 ## Useful commands
