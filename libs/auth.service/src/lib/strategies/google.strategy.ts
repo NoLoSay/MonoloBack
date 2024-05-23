@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { PrismaBaseService } from '@noloback/prisma-client-base';
+import { PrismaBaseService, Role } from '@noloback/prisma-client-base';
 import { hash } from 'bcrypt';
 import { randomUUID } from 'crypto';
 import { Strategy, VerifyCallback } from 'passport-google-oauth2';
@@ -32,16 +32,15 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       picture: photos[0].value,
     };
 
-    const oAuthProvider =
-      await this.prismaBaseService.oAuthProviders.upsert({
-        where: {
-          provider: user.provider,
-        },
-        create: {
-          provider: user.provider,
-        },
-        update: {},
-      });
+    const oAuthProvider = await this.prismaBaseService.oAuthProviders.upsert({
+      where: {
+        provider: user.provider,
+      },
+      create: {
+        provider: user.provider,
+      },
+      update: {},
+    });
 
     let dbUser = await this.prismaBaseService.oAuthProviderUser.findFirst({
       where: {
@@ -67,6 +66,12 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
                 email: user.email,
                 password: await hash(randomUUID(), 12),
                 picture: user.picture,
+                profiles: {
+                  create: {
+                    role: Role.USER,
+                    isActive: true,
+                  },
+                },
               },
             })
           ).id,

@@ -6,7 +6,7 @@ class CountrySelect {
 class DepartmentSelect {
     id: boolean = true
     name: boolean = true
-    Country: object = {
+    country: object = {
         select: new CountrySelect()
     }
 }
@@ -15,7 +15,7 @@ class CitySelect {
     id: boolean = true
     name: boolean = true
     zip: boolean = true
-    Department: object = {
+    department: object = {
         select: new DepartmentSelect()
     }
 }
@@ -25,7 +25,7 @@ export class AddressCommonSelect {
     houseNumber: boolean = true
     street: boolean = true
     zip: boolean = true
-    City: object = {
+    city: object = {
         select: new CitySelect()
     }
     otherDetails: boolean = true

@@ -3,6 +3,7 @@
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/prisma/schema/translator/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "prisma": {
       "command": "prisma",
@@ -23,12 +24,8 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/prisma/schema/translator/**/*.ts"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     }
-  },
-  "tags": []
+  }
 }

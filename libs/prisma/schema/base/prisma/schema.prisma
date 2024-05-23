@@ -28,26 +28,31 @@ datasource db {
 
 model Country {
   id          Int          @id @default(autoincrement())
-  name        String
+  name        String       @unique
+  code        String       @unique
   longitude   Float?
   latitude    Float?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   deletedAt   DateTime?
-  Departments Department[]
+  departments Department[]
 }
 
 model Department {
   id        Int       @id @default(autoincrement())
   name      String
+  code      String
   longitude Float?
   latitude  Float?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
   countryId Int
-  Country   Country   @relation(fields: [countryId], references: [id])
-  Cities    City[]
+  country   Country   @relation(fields: [countryId], references: [id])
+  cities    City[]
+
+  @@unique([name, countryId])
+  @@unique([code, countryId])
 }
 
 model City {
@@ -60,8 +65,11 @@ model City {
   updatedAt    DateTime   @updatedAt
   deletedAt    DateTime?
   departmentId Int
-  Department   Department @relation(fields: [departmentId], references: [id])
-  Addresses    Address[]
+  department   Department @relation(fields: [departmentId], references: [id])
+  addresses    Address[]
+
+  @@unique([name, departmentId])
+  @@unique([zip, departmentId])
 }
 
 model Address {
@@ -76,8 +84,10 @@ model Address {
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
   cityId       Int
-  City         City      @relation(fields: [cityId], references: [id])
-  Sites        Site[]
+  city         City      @relation(fields: [cityId], references: [id])
+  sites        Site[]
+
+  @@unique([houseNumber, street, zip, cityId])
 }
 
 // ---------------------------
@@ -145,7 +155,6 @@ model Profile {
   userId    Int
   user      User             @relation(fields: [userId], references: [id])
   videos    Video[]
-  // LikedVideos UserlikesVideos[]
   managerOf SiteHasManager[]
 
   @@unique([userId, role])
@@ -162,20 +171,34 @@ enum ValidationStatus {
 }
 
 model Video {
-  id                 Int               @id @default(autoincrement())
-  uuid               String            @unique @default(uuid())
-  externalProviderId String            @unique
-  validationStatus   ValidationStatus  @default(PENDING)
-  duration           Int               @default(0)
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
-  deletedAt          DateTime?
-  deletedReason      String?
-  itemId             Int
-  profileId          Int
-  likedBy            UserlikesVideos[]
-  item               Item              @relation(fields: [itemId], references: [id])
-  postedBy           Profile           @relation(fields: [profileId], references: [id])
+  id                     Int               @id @default(autoincrement())
+  uuid                   String            @unique @default(uuid())
+  hostingProviderId      Int
+  hostingProviderVideoId String
+  validationStatus       ValidationStatus  @default(PENDING)
+  duration               Int               @default(0)
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
+  deletedAt              DateTime?
+  deletedReason          String?
+  itemId                 Int
+  profileId              Int
+  likedBy                UserlikesVideos[]
+  item                   Item              @relation(fields: [itemId], references: [id])
+  postedBy               Profile           @relation(fields: [profileId], references: [id])
+  hostingProvider        HostingProvider   @relation(fields: [hostingProviderId], references: [id])
+
+  @@unique([hostingProviderId, hostingProviderVideoId])
+}
+
+model HostingProvider {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  url       String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  videos    Video[]
 }
 
 model UserlikesVideos {
@@ -211,7 +234,7 @@ model Person {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   deletedAt DateTime?
-  Items     Item[]
+  items     Item[]
 }
 
 // -----------------------------
@@ -220,7 +243,7 @@ model Person {
 
 model ItemCategory {
   id          Int        @id @default(autoincrement())
-  name        String
+  name        String     @unique
   description String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
@@ -238,6 +261,8 @@ model ItemType {
   itemCategoryId Int
   itemCategory   ItemCategory @relation(fields: [itemCategoryId], references: [id])
   items          Item[]
+
+  @@unique([name, itemCategoryId])
 }
 
 model Item {
@@ -274,6 +299,8 @@ model Exhibition {
   siteId           Int
   site             Site            @relation(fields: [siteId], references: [id])
   exhibitedItems   ExhibitedItem[]
+
+  @@unique([name, siteId])
 }
 
 model ExhibitedItem {

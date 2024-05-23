@@ -7,15 +7,11 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request,
-  UseGuards
+  Request
 } from '@nestjs/common'
-import {
-  CountryManipulationModel,
-  CountriesService,
-  CountryAdminReturn,
-  CountryCommonReturn
-} from '@noloback/countries.service'
+import { CountriesService } from '@noloback/countries.service'
+import { CountryManipulationModel } from '@noloback/api.request.bodies'
+import { CountryAdminReturn, CountryCommonReturn } from '@noloback/api.returns'
 import { ADMIN, Roles } from '@noloback/roles'
 
 @Controller('countries')

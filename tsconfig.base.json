@@ -19,8 +19,8 @@
         "libs/addresses.controller/src/index.ts"
       ],
       "@noloback/addresses.service": ["libs/addresses.service/src/index.ts"],
-      "@noloback/api.returns": ["models/api.returns"],
       "@noloback/api.request.bodies": ["models/api.request.bodies"],
+      "@noloback/api.returns": ["models/api.returns"],
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
       "@noloback/mail-confirmation": ["libs/mail-confirmation/src/index.ts"],
@@ -89,9 +89,7 @@
       "@noloback/requests.constructor": ["models/requests.constructor"],
       "@noloback/roles": ["models/roles"],
       "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
-      "@noloback/sites.controller": [
-        "libs/sites.controller/src/index.ts"
-      ],
+      "@noloback/sites.controller": ["libs/sites.controller/src/index.ts"],
       "@noloback/sites.managers.service": [
         "libs/sites.managers.service/src/index.ts"
       ],
@@ -101,7 +99,8 @@
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],
       "@noloback/video.controller": ["libs/video.controller/src/index.ts"],
-      "@noloback/video.service": ["libs/video.service/src/index.ts"]
+      "@noloback/video.service": ["libs/video.service/src/index.ts"],
+      "@noloback/watch.controller": ["libs/watch.controller/src/index.ts"]
     },
     "types": ["Multer"]
   },

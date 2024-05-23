@@ -22,10 +22,7 @@ import {
   UserCommonSelect,
   UserMeSelect
 } from '@noloback/db.calls'
-import {
-  UserCreateModel,
-  UserUpdateModel
-} from './models/user.manipulation.models'
+import { UserCreateModel, UserUpdateModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
 
 @Injectable()
@@ -66,7 +63,7 @@ export class UsersService {
           telNumber: createUserDto.telNumber,
           profiles: {
             create: {
-              role: 'USER',
+              role: Role.USER,
               isActive: true
             }
           }
@@ -108,14 +105,14 @@ export class UsersService {
   }
 
   async findAll (
-    role: 'USER' | 'ADMIN' | 'MANAGER',
+    role: Role,
     firstElem: number,
     lastElem: number
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
     let selectOptions: Prisma.UserSelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new UserAdminSelect()
         break
       default:
@@ -130,7 +127,7 @@ export class UsersService {
     })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return users as UserAdminReturn[]
       default:
         return users as UserCommonReturn[]
@@ -146,32 +143,24 @@ export class UsersService {
     return userMe as UserMeReturn
   }
 
-  async findOne (id: number, role: 'USER' | 'ADMIN' | 'MANAGER') {
+  async findOne (id: number, role: Role) {
     let selectOptions: Prisma.UserSelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new UserAdminSelect()
         break
       default:
         selectOptions = new UserCommonSelect()
     }
-    const where: {
-      id: number
-      deletedAt?: Date | null
-    } = { id: id }
-
-    if (role !== 'ADMIN') {
-      where.deletedAt = null
-    }
 
     const user = await this.prismaBase.user.findUnique({
-      where: where,
+      where: { id: id, deletedAt: role === Role.ADMIN ? null : undefined },
       select: selectOptions
     })
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return user as unknown as UserAdminReturn
       default:
         return user as unknown as UserCommonReturn
@@ -221,7 +210,7 @@ export class UsersService {
   async findOneByEmail (username: string): Promise<UserRequestModel | null> {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
-        where: { email: username, deletedAt: null  },
+        where: { email: username, deletedAt: null },
         include: {
           profiles: {
             select: {
@@ -321,10 +310,10 @@ export class UsersService {
   }
 
   async remove (id: number) {
-    return await this.prismaBase.user.update({
+    return (await this.prismaBase.user.update({
       where: { id: id },
       data: { deletedAt: new Date() },
       select: new UserMeSelect()
-    }) as unknown as UserMeReturn
+    })) as unknown as UserMeReturn
   }
 }

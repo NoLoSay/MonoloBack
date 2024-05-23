@@ -1,8 +1,8 @@
 import {
-  VideoCommonListSelect,
   getValidationStatusFromRole
 } from '@noloback/video.service'
 import { Role } from '@prisma/client/base'
+import { VideoListedFromItemCommonSelect } from './videos.db.calls'
 
 class PersonSelect {
   id: boolean = true
@@ -41,7 +41,7 @@ export class ItemDetailedSelect extends ItemCommonSelect {
   constructor (role: Role = Role.USER) {
     super()
     this.videos = {
-      select: new VideoCommonListSelect(),
+      select: new VideoListedFromItemCommonSelect(),
       where: {
         validationStatus: { in: getValidationStatusFromRole(role) }
       }

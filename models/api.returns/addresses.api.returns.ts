@@ -6,14 +6,14 @@ class Country {
 class Department {
     id: number = 0
     name: string = ''
-    Country: Country = new Country()
+    country: Country = new Country()
 }
 
 class City {
     id: number = 0
     name: string = ''
     zip: string = ''
-    Department: Department = new Department()
+    department: Department = new Department()
 }
 
 export class AddressCommonReturn {
@@ -21,7 +21,7 @@ export class AddressCommonReturn {
     houseNumber: string | null = null
     street: string = ''
     zip: string = ''
-    City: City = new City()
+    city: City = new City()
     otherDetails: string | null = null
     longitude: number | null = null
     latitude: number | null = null

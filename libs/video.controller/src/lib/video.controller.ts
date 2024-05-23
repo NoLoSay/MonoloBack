@@ -16,7 +16,7 @@ import {
 import { ApiBody } from '@nestjs/swagger/dist'
 import { VideoService } from '@noloback/video.service'
 import multer = require('multer')
-import { ValidationStatus } from '@prisma/client/base'
+import { Role, ValidationStatus } from '@prisma/client/base'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { ADMIN, MODERATOR, Roles } from '@noloback/roles'
 
@@ -72,6 +72,7 @@ export class VideoController {
       })
       .json(
         await this.videoservice.getAllVideos(
+          request.user,
           new FiltersGetMany(
             firstElem,
             lastElem,
@@ -110,6 +111,7 @@ export class VideoController {
     return await this.videoservice.getYoutubeByUUID(uuid)
   }
 
+  @Roles([ADMIN, MODERATOR])
   @Patch(':id')
   @HttpCode(200)
   async patchYoutube (
@@ -117,7 +119,7 @@ export class VideoController {
     @Param('id') id: number,
     @Body('validationStatus') validationStatus: ValidationStatus
   ) {
-    if (req.user.role !== 'ADMIN')
+    if (req.user.role !== Role.ADMIN)
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
 
     return await this.videoservice.patchYoutubeValidation(+id, validationStatus)

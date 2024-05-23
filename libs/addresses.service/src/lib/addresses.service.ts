@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
 import {
   BadGatewayException,
   BadRequestException,
@@ -55,7 +55,7 @@ export class AddressesService {
           otherDetails: address.otherDetails,
           latitude: address.latitude,
           longitude: address.longitude,
-          City: {
+          city: {
             connect: {
               id: address.cityId
             }
@@ -74,7 +74,7 @@ export class AddressesService {
   async update (
     id: number,
     updatedAddress: AddressManipulationModel,
-    role: 'USER' | 'ADMIN' | 'MANAGER'
+    role: Role
   ): Promise<AddressCommonReturn | AddressAdminReturn> {
     if (
       updatedAddress.cityId === undefined ||
@@ -87,7 +87,7 @@ export class AddressesService {
     let selectOptions: Prisma.AddressSelect
 
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         selectOptions = new AddressAdminSelect()
         break
       default:
@@ -104,7 +104,7 @@ export class AddressesService {
           otherDetails: updatedAddress.otherDetails,
           latitude: updatedAddress.latitude,
           longitude: updatedAddress.longitude,
-          City: {
+          city: {
             connect: {
               id: updatedAddress.cityId
             }
@@ -117,16 +117,18 @@ export class AddressesService {
         throw new InternalServerErrorException(e)
       })
     switch (role) {
-      case 'ADMIN':
+      case Role.ADMIN:
         return updated as AddressAdminReturn
       default:
         return updated as AddressCommonReturn
     }
   }
 
-  async delete (id: number) {
-    await this.prismaBase.address.delete({
-      where: { id: id }
-    })
+  async delete (id: number): Promise<AddressAdminReturn> {
+    return (await this.prismaBase.address.update({
+      where: { id: id },
+      data: { deletedAt: new Date() },
+      select: new AddressAdminSelect()
+    })) as unknown as AddressAdminReturn
   }
 }
