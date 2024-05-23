@@ -30,7 +30,7 @@ export class MailConfirmationService {
       expiresIn: `${process.env['JWT_VERIFICATION_TOKEN_EXPIRATION_TIME']}s`
     });
  
-    const url = `${process.env['EMAIL_CONFIRMATION_URL_TMP']}?token=${token}`;
+    const url = `${process.env['EMAIL_CONFIRMATION_URL']}?token=${token}`;
  
     const text = `To confirm your email address, click this link: ${url}`;
  

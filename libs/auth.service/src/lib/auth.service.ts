@@ -60,7 +60,7 @@ export class AuthService {
       expiresIn: '1h'
     });
 
-    const url = `${process.env['RESET_PASSWORD_URL_TMP']}?token=${token}`;
+    const url = `${process.env['RESET_PASSWORD_URL']}?token=${token}`;
 
     const text = `Click this link to reset your password: ${url}`; 
 
