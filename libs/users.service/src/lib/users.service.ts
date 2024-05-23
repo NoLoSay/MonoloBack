@@ -104,6 +104,13 @@ export class UsersService {
     });
   }
 
+  async patch(id: number, body: any) {
+    return await this.prismaBase.user.update({
+      where: { id: id },
+      data: body
+    })
+  }
+
   async findAll (
     role: Role,
     firstElem: number,

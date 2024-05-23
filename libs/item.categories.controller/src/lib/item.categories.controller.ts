@@ -16,6 +16,7 @@ import {
   ItemCategoryAdminReturn,
   ItemCategoryCommonReturn
 } from '@noloback/api.returns'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('item-categories')
 export class ItemCategoriesController {
@@ -33,6 +34,8 @@ export class ItemCategoriesController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<ItemCategoryCommonReturn | ItemCategoryAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Category', +id)
+
     return this.itemCategoriesService.findOne(id, request.user.activeProfile.role)
   }
 
@@ -47,17 +50,34 @@ export class ItemCategoriesController {
   @Roles([ADMIN])
   @Put(':id')
   async update (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedItemCategory: ItemCategoryManipulationModel
   ): Promise<ItemCategoryAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'ItemCategory',
+      +id,
+      JSON.stringify(request.body)
+    );
+
     return this.itemCategoriesService.update(id, updatedItemCategory)
   }
 
   @Roles([ADMIN])
   @Delete(':id')
   async delete (
+    @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ): Promise<ItemCategoryAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'ItemCategory',
+      +id,
+    );
+
     return this.itemCategoriesService.delete(id)
   }
 }

@@ -87,8 +87,8 @@ export class CountriesService {
         data: {
           name: country.name,
           code: country.code,
-          latitude: country.latitude,
-          longitude: country.longitude
+          latitude: +(country?.latitude ?? 0),
+          longitude: +(country?.longitude ?? 0)
         },
         select: new CountryAdminSelect()
       })
@@ -111,8 +111,8 @@ export class CountriesService {
         data: {
           name: updatedCountry.name,
           code: updatedCountry.code,
-          latitude: updatedCountry.latitude,
-          longitude: updatedCountry.longitude
+          latitude: +(updatedCountry.latitude ?? 0),
+          longitude: +(updatedCountry.longitude ?? 0)
         },
         select: new CountryAdminSelect()
       })

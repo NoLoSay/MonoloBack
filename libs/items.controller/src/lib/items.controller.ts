@@ -9,7 +9,8 @@ import {
   ParseIntPipe,
   Request,
   Response,
-  Query
+  Query,
+  Patch
 } from '@nestjs/common'
 import { ADMIN, CREATOR, MANAGER, Roles } from '@noloback/roles'
 import { ItemsService } from '@noloback/items.service'
@@ -21,6 +22,8 @@ import {
   ItemDetailedReturn
 } from '@noloback/api.returns'
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
+import { FiltersGetMany } from 'models/filters-get-many'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('items')
 export class ItemsController {
@@ -36,21 +39,35 @@ export class ItemsController {
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
     @Query('_end') lastElem: number = 10,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
+    @Query('type_id') typeId?: number | undefined,
+    @Query('category_id') categoryId?: number | undefined,
     @Query('name_like') nameLike?: string | undefined
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
+    const filters: FiltersGetMany = new FiltersGetMany(
+      firstElem,
+      lastElem,
+      sort,
+      order,
+      ['id', 'name', 'description', 'type', 'category'],
+      'id'
+    );
+
     // return this.itemsService.findAll(request.user.role)
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': await this.itemsService.count()
+        'X-Total-Count': await this.itemsService.count(nameLike, typeId, categoryId)
       })
       .status(200)
       .json(
         await this.itemsService.findAll(
           request.user.activeProfile.role,
-          +firstElem,
-          +lastElem,
-          nameLike
+          filters,
+          nameLike,
+          typeId,
+          categoryId
         )
       )
   }
@@ -66,6 +83,8 @@ export class ItemsController {
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any
   ): Promise<ItemDetailedReturn | ItemAdminReturn> {
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Item', +id)
+
     return this.itemsService.findOneDetailled(id, request.user)
   }
 
@@ -86,8 +105,29 @@ export class ItemsController {
   }
 
   @Roles([ADMIN])
+  @Patch(':id')
+  async patch (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Item',
+      +id,
+      JSON.stringify(request.body)
+    );
+
+    return this.itemsService.patch(id, request.body)
+  }
+
+  @Roles([ADMIN])
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number) {
+  async delete (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'Item',
+      +id
+    );
+
     return this.itemsService.delete(id)
   }
 

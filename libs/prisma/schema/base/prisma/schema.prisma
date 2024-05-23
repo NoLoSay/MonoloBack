@@ -146,16 +146,18 @@ model User {
 }
 
 model Profile {
-  id        Int              @id @default(autoincrement())
-  role      Role             @default(USER)
-  isActive  Boolean          @default(false)
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  deletedAt DateTime?
-  userId    Int
-  user      User             @relation(fields: [userId], references: [id])
-  videos    Video[]
-  managerOf SiteHasManager[]
+  id                 Int                  @id @default(autoincrement())
+  role               Role                 @default(USER)
+  isActive           Boolean              @default(false)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  deletedAt          DateTime?
+  userId             Int
+  user               User                 @relation(fields: [userId], references: [id])
+  videos             Video[]
+  managerOf          SiteHasManager[]
+  UserActionLog      UserActionLog[]
+  SensitiveActionLog SensitiveActionLog[]
 
   @@unique([userId, role])
 }
@@ -337,6 +339,7 @@ enum SiteTag {
 
 model Site {
   id               Int              @id @default(autoincrement())
+  uuid             String           @unique @default(uuid())
   name             String
   shortDescription String?
   longDescription  String?
@@ -382,4 +385,26 @@ model UserLoginLog {
   User        User?           @relation(fields: [userId], references: [id])
   userId      Int
   providerId  Int?
+}
+
+model UserActionLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  object    String
+  objectId  Int
+  details   String?
+  createdAt DateTime @default(now())
+  profileId Int
+  profile   Profile  @relation(fields: [profileId], references: [id])
+}
+
+model SensitiveActionLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  object    String
+  objectId  Int
+  details   String?
+  createdAt DateTime @default(now())
+  profileId Int
+  profile   Profile  @relation(fields: [profileId], references: [id])
 }

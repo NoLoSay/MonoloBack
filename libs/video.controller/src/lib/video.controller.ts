@@ -11,32 +11,33 @@ import {
   Patch,
   HttpException,
   HttpStatus,
-  Delete
-} from '@nestjs/common'
-import { ApiBody } from '@nestjs/swagger/dist'
-import { VideoService } from '@noloback/video.service'
-import multer = require('multer')
-import { Role, ValidationStatus } from '@prisma/client/base'
-import { FiltersGetMany } from 'models/filters-get-many'
-import { ADMIN, MODERATOR, Roles } from '@noloback/roles'
+  Delete,
+} from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger/dist';
+import { VideoService } from '@noloback/video.service';
+import multer = require('multer');
+import { Role, ValidationStatus } from '@prisma/client/base';
+import { FiltersGetMany } from 'models/filters-get-many';
+import { ADMIN, MODERATOR, Roles } from '@noloback/roles';
+import { LoggerService } from '@noloback/logger-lib';
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/')
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
-})
-const upload = multer({ storage })
+    cb(null, file.fieldname + '-' + Date.now());
+  },
+});
+const upload = multer({ storage });
 
 @Controller('videos')
 export class VideoController {
-  constructor (private readonly videoservice: VideoService) {}
+  constructor(private readonly videoservice: VideoService) {}
 
   @Get()
   @HttpCode(200)
-  async getAllVideos (
+  async getAllVideos(
     @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
@@ -49,14 +50,14 @@ export class VideoController {
     @Query('createdAt_gte') createdAtGte?: string | undefined,
     @Query('createdAt_lte') createdAtLte?: string | undefined
   ): Promise<string> {
-    let validationStatusEnum: ValidationStatus | undefined
+    let validationStatusEnum: ValidationStatus | undefined;
     if (
       validationStatus &&
       Object.values(ValidationStatus).includes(
         validationStatus as ValidationStatus
       )
     ) {
-      validationStatusEnum = validationStatus as unknown as ValidationStatus
+      validationStatusEnum = validationStatus as unknown as ValidationStatus;
     }
 
     return res
@@ -68,7 +69,7 @@ export class VideoController {
           userId ? +userId : undefined,
           createdAtGte,
           createdAtLte
-        )
+        ),
       })
       .json(
         await this.videoservice.getAllVideos(
@@ -87,7 +88,7 @@ export class VideoController {
           createdAtGte,
           createdAtLte
         )
-      )
+      );
     // return JSON.parse(
     //   JSON.stringify(
     //     await this.videoservice.getAllVideos(
@@ -100,29 +101,59 @@ export class VideoController {
     // );
   }
 
+  @Roles([ADMIN, MODERATOR])
+  @Patch(':id')
+  @HttpCode(200)
+  async patchVideo(
+    @Request() request: any,
+    @Param('id') id: number,
+    @Response() res: any
+  ) {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Video',
+      +id,
+      JSON.stringify(request.body)
+    );
+
+    return res.json(await this.videoservice.patchVideo(+id, request.body));
+  }
+
   @Get(':uuid')
   @HttpCode(200)
-  async getYoutubeByUUID (@Param('uuid') uuid: string) {
-    const isnum = /^\d+$/.test(uuid)
+  async getYoutubeByUUID(@Request() request: any, @Param('uuid') uuid: string) {
+    LoggerService.userLog(
+      +request.user.activeProfile.id,
+      'GET',
+      'City',
+      +0,
+      JSON.stringify({ uuid })
+    );
+
+    const isnum = /^\d+$/.test(uuid);
 
     if (isnum) {
-      return await this.videoservice.getYoutubeById(parseInt(uuid, 10))
+      return await this.videoservice.getYoutubeById(parseInt(uuid, 10));
     }
-    return await this.videoservice.getYoutubeByUUID(uuid)
+    return await this.videoservice.getYoutubeByUUID(uuid);
   }
 
   @Roles([ADMIN, MODERATOR])
   @Patch(':id')
   @HttpCode(200)
-  async patchYoutube (
+  async patchYoutube(
     @Request() req: any,
     @Param('id') id: number,
     @Body('validationStatus') validationStatus: ValidationStatus
   ) {
     if (req.user.role !== Role.ADMIN)
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
 
-    return await this.videoservice.patchYoutubeValidation(+id, validationStatus)
+    return await this.videoservice.patchYoutubeValidation(
+      +id,
+      validationStatus
+    );
   }
 
   @Roles([ADMIN, MODERATOR])
@@ -132,33 +163,48 @@ export class VideoController {
       type: 'object',
       properties: {
         validationStatus: {
-          enum: ['VALIDATED', 'PENDING', 'REFUSED']
-        }
+          enum: ['VALIDATED', 'PENDING', 'REFUSED'],
+        },
       },
       required: ['validationStatus'],
-      example: { validationStatus: 'VALIDATED' }
-    }
+      example: { validationStatus: 'VALIDATED' },
+    },
   })
   @HttpCode(200)
-  async updateYoutube (
-    @Request() req: any,
+  async updateYoutube(
+    @Request() request: any,
     @Param('id') id: number,
     @Body('validationStatus') validationStatus: ValidationStatus
   ) {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Video',
+      +id,
+      'New validation status: ' + validationStatus
+    );
+
     return await this.videoservice.updateYoutubeValidation(
       +id,
       validationStatus
-    )
+    );
   }
 
   @Roles([ADMIN, MODERATOR])
   @Delete(':id')
   @HttpCode(200)
-  async deleteYoutube (
-    @Request() req: any,
+  async deleteYoutube(
+    @Request() request: any,
     @Param('id') id: number,
     @Query('deletedReason') deletedReason: string
   ) {
-    return await this.videoservice.deleteVideo(+id, deletedReason)
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'Video',
+      +id
+    );
+
+    return await this.videoservice.deleteVideo(+id, deletedReason);
   }
 }

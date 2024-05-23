@@ -2,6 +2,7 @@ import { AddressCommonSelect } from "./addresses.db.calls"
 
 export class SiteCommonSelect {
   id: boolean = true
+  uuid: boolean = true
   name: boolean = true
   shortDescription: boolean = true
   longDescription: boolean = true
@@ -15,9 +16,11 @@ export class SiteCommonSelect {
   address: object = {
     select: new AddressCommonSelect()
   }
+  exhibition: boolean = true
 }
 
 export class SiteManagerSelect extends SiteCommonSelect {
+  siteHasManagers: boolean = true
   createdAt: boolean = true
 }
 
