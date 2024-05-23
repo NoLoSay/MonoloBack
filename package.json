@@ -4,7 +4,13 @@
   "license": "MIT",
   "scripts": {
     "prisma:generate": "npx prisma generate --schema libs/prisma/schema/base/prisma/schema.prisma && npx prisma generate --schema libs/prisma/schema/logs/prisma/schema.prisma && npx prisma generate --schema libs/prisma/schema/translator/prisma/schema.prisma",
-    "prisma:reset-seed": "npx prisma migrate reset --schema libs/prisma/schema/base/prisma/schema.prisma"
+    "prisma:reset-seed": "npx prisma migrate reset --schema libs/prisma/schema/base/prisma/schema.prisma",
+    "prisma:studio": "npx prisma studio --schema libs/prisma/schema/base/prisma/schema.prisma",
+    "prisma:migrate": "npx prisma migrate dev --schema libs/prisma/schema/base/prisma/schema.prisma",
+    "seed": "npm run prisma:reset-seed",
+    "generate": "npm run prisma:generate",
+    "studio": "npm run prisma:studio",
+    "migrate": "npm run prisma:migrate"
   },
   "prisma": {
     "seed": "ts-node seed/main.ts"
