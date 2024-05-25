@@ -186,6 +186,21 @@ export class VideoService {
     return this.getYoutube(new VideoCommonReturn(video as VideoCommonDbReturn));
   }
 
+  // async getVideoByDiskId(diskId: string) {
+  //   const video: unknown = await this.prismaBase.video.findFirst({
+  //     select: new VideoCommonSelect(),
+  //     where: {
+  //       hostingProviderVideoId: diskId,
+  //     },
+  //   });
+
+  //   if (!video) {
+  //     throw new NotFoundException();
+  //   }
+
+  //   return this.getYoutube(new VideoCommonReturn(video as VideoCommonDbReturn));
+  // }
+
   async getYoutubeById(youtubeId: number) {
     const video: unknown = await this.prismaBase.video.findUnique({
       select: new VideoCommonSelect(),

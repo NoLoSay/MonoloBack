@@ -6,10 +6,23 @@ import { AppService } from './app.service';
 import { AuthServiceModule } from '@noloback/auth.service';
 import { UploadControllerModule } from '@noloback/upload.controller';
 import { WatchControllerModule } from '@noloback/watch.controller';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from '@noloback/guards';
+import { RolesGuard } from '@noloback/roles';
 
 @Module({
   imports: [AuthServiceModule, UploadControllerModule, WatchControllerModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
