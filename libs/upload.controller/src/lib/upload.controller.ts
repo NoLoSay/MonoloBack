@@ -42,8 +42,7 @@ export class UploadController {
   constructor(private readonly videoService: VideoService) {}
 
   @Get(':videoId')
-  // @Roles([ADMIN])
-  @Public()
+  @Roles([ADMIN])
   async downloadLocal(
     @Request() request: any,
     @Res({ passthrough: true }) res: Response,
