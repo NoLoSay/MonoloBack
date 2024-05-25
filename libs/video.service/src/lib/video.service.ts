@@ -92,6 +92,28 @@ export class VideoService {
     });
   }
 
+  async setHostingProvider(
+    videoId: number,
+    newProviderId: number,
+    newProviderVideoId: string
+  ) {
+    const video = await this.prismaBase.video.update({
+      data: {
+        hostingProvider: {
+          connect: {
+            id: +newProviderId,
+          },
+        },
+        hostingProviderVideoId: newProviderVideoId,
+      },
+      where: {
+        id: +videoId,
+      },
+    });
+
+    return video;
+  }
+
   async patchVideo(videoId: number, body: any) {
     return await this.prismaBase.video.update({
       data: body,
@@ -205,7 +227,7 @@ export class VideoService {
     const video: unknown = await this.prismaBase.video.findUnique({
       select: new VideoCommonSelect(),
       where: {
-        id: youtubeId,
+        id: +youtubeId,
       },
     });
 
