@@ -16,8 +16,23 @@ https://nolosay.com/Documentation/index.html
 
 ## Start the app
 
-To start the development server run `nx serve NoLoAPI`. Open your browser and navigate to http://localhost:4200/. Happy coding!
+First, if not done already, start the postgres instance using docker `(sudo) docker compose up postgres (--build) (-d)`
 
+To start the development servers run `nx serve api` and `nx serve video`. Open your browser and navigate to http://localhost:3001/swagger/ and http://localhost:3002/swagger/. Happy coding!
+
+## Useful commands
+
+`nx serve api` Starts the main API in dev mode (http://localhost:3001/)
+
+`nx serve video` Starts the video API in dev mode (http://localhost:3002/)
+
+`npm run seed` RESETS and seeds the database with default values
+
+`npm run studio` Opens the database explorer (prisma studio)
+
+`npm run migrate` Applies the latest modifications to the database
+
+`npm run generate` Regenerates the TS bindings according to the latest database schema
 
 ## Generate code
 
