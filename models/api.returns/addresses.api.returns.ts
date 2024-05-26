@@ -20,6 +20,7 @@ export class AddressCommonReturn {
     id: number = 0
     houseNumber: string | null = null
     street: string = ''
+    fullAddress: string = ``
     zip: string = ''
     city: City = new City()
     otherDetails: string | null = null

@@ -9,12 +9,14 @@ import {
 import {
   ProfileCommonReturn,
   ProfileListReturn,
-  ProfileAdminReturn
+  ProfileAdminReturn,
+  ProfileUserAdminReturn
 } from '@noloback/api.returns'
 import {
   ProfileCommonSelect,
   ProfileListSelect,
-  ProfileAdminSelect
+  ProfileAdminSelect,
+  ProfileUserAdminSelect
 } from '@noloback/db.calls'
 import { UserRequestModel } from '@noloback/requests.constructor'
 
@@ -22,23 +24,27 @@ import { UserRequestModel } from '@noloback/requests.constructor'
 export class ProfileService {
   constructor (private readonly prismaBase: PrismaBaseService) {}
 
-  async getUserProfiles (user: UserRequestModel): Promise<ProfileListReturn[]> {
+  async getUserProfiles (user: UserRequestModel, role?: string | undefined): Promise<ProfileListReturn[] | ProfileUserAdminReturn[]> {
     let selectOptions: Prisma.ProfileSelect
 
     switch (user.activeProfile.role) {
       case Role.ADMIN:
-        selectOptions = new ProfileAdminSelect()
+        selectOptions = new ProfileUserAdminSelect()
         break
       default:
         selectOptions = new ProfileListSelect()
     }
     const profiles = await this.prismaBase.profile.findMany({
-      where: { userId: user.id, deletedAt: null },
+      where: {
+        userId: user.id,
+        role: role ? role as Role : undefined,
+        deletedAt: null
+      },
       select: selectOptions
     })
     switch (user.activeProfile.role) {
       case Role.ADMIN:
-        return profiles as ProfileAdminReturn[]
+        return profiles as ProfileUserAdminReturn[]
       default:
         return profiles as ProfileListReturn[]
     }

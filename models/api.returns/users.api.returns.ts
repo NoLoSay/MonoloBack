@@ -6,8 +6,11 @@ export class UserCommonReturn {
   picture: string = ''
 }
 
-export class UserMeReturn extends UserCommonReturn {
+export class UserEmailReturn extends UserCommonReturn {
   email: string = ''
+}
+
+export class UserMeReturn extends UserEmailReturn {
   createdAt: Date = new Date()
   telNumber: string = ''
   profiles: ProfileListReturn[] = []

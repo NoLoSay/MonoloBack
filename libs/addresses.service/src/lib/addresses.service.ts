@@ -19,9 +19,13 @@ export class AddressesService {
   ) {}
 
   async findAll (): Promise<AddressAdminReturn[]> {
-    return (await this.prismaBase.address.findMany({
+    const addresses = (await this.prismaBase.address.findMany({
       select: new AddressAdminSelect()
     })) as unknown as AddressAdminReturn[]
+    addresses.forEach((address) => {
+      address.fullAddress = `${address.houseNumber} ${address.street}, ${address.city.zip} ${address.city.name}, ${address.city.department.name}, ${address.city.department.country.name}`
+    });
+    return addresses;
   }
 
   async findOne (id: number): Promise<AddressAdminReturn> {

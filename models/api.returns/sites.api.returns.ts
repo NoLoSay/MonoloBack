@@ -1,5 +1,6 @@
 import { Exhibition, SiteHasManager, SiteTag, SiteType } from '@prisma/client/base'
 import { AddressCommonReturn } from './addresses.api.returns'
+import { ProfileUserAdminReturn } from './profiles.api.returns'
 
 export class SiteCommonReturn {
   id: number = 0
@@ -18,12 +19,24 @@ export class SiteCommonReturn {
   exhibition: Exhibition[] = []
 }
 
+export class SiteHasManagerAdminReturn {
+  id: number = 0;
+  isMain: boolean = false;
+  createdAt: Date = new Date();
+  updatedAt: Date = new Date();
+  deletedAt: Date | null = null;
+  siteId: number = 0;
+  profileId: number = 0;
+  profile: ProfileUserAdminReturn = new ProfileUserAdminReturn();
+}
+
 export class SiteManagerReturn extends SiteCommonReturn {
   siteHasManagers: SiteHasManager[] = []
   createdAt: Date = new Date()
 }
 
 export class SiteAdminReturn extends SiteManagerReturn {
+  override siteHasManagers: SiteHasManagerAdminReturn[] = []
   updatedAt: Date = new Date()
   deletedAt: Date | null = null
 }

@@ -11,6 +11,11 @@ export class SiteManipulationRequestBody {
 
   @ApiProperty()
   @IsString()
+  @IsNotEmpty()
+  managerId: number = 0;
+
+  @ApiProperty()
+  @IsString()
   @IsOptional()
   shortDescription?: string;
 
@@ -52,7 +57,12 @@ export class SiteManipulationRequestBody {
   @IsEnum(SiteTag, { each: true })
   tags: SiteTag[] = [];
 
+  // @ApiProperty()
+  // @IsNotEmpty()
+  // address: AddressManipulationModel = new AddressManipulationModel();
+
   @ApiProperty()
-  @IsNotEmpty()
-  address: AddressManipulationModel = new AddressManipulationModel();
+  @IsNumber()
+  @IsPositive()
+  addressId: number = 0;
 }
