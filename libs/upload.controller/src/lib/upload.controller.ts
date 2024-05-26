@@ -17,6 +17,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@noloback/guards';
+import { Public } from '@noloback/jwt';
 import { ADMIN, Roles } from '@noloback/roles';
 import { VideoService } from '@noloback/video.service';
 import { Video } from '@prisma/client/base';
@@ -68,7 +69,8 @@ export class UploadController {
   }
 
   @Get(':videoId')
-  @Roles([ADMIN])
+  // @Roles([ADMIN])
+  @Public()
   async downloadLocal(
     @Request() request: any,
     @Res({ passthrough: true }) res: Response,
