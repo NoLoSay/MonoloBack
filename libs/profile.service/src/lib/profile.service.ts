@@ -36,7 +36,7 @@ export class ProfileService {
     }
     const profiles = await this.prismaBase.profile.findMany({
       where: {
-        userId: user.id,
+        userId: user.activeProfile.role !== Role.ADMIN ? user.id : undefined,
         role: role ? role as Role : undefined,
         deletedAt: null
       },
