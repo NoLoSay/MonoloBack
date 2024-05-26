@@ -83,7 +83,7 @@ export class UploadController {
         return new NotFoundException("Video doesn't exist");
       }
       console.log(file);
-      return res.status(200).send(file);
+      res.status(200).send(file);
     } catch (error: any) {
       console.log(error);
       if (error.code === 'ENOENT') {
