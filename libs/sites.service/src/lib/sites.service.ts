@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   InternalServerErrorException
@@ -111,6 +112,56 @@ export class SitesService {
   }
 
   async create (site: SiteManipulationRequestBody): Promise<SiteAdminReturn> {
+    if (site.addressId) {
+     
+    const newSite: any = await this.prismaBase.site
+    .create({
+      data: {
+        name: site.name,
+        shortDescription: site.shortDescription,
+        longDescription: site.longDescription,
+        telNumber: site.telNumber,
+        email: site.email,
+        website: site.website,
+        price: +site.price,
+        picture: site.picture,
+        type: site.type as unknown as SiteType,
+        tags: site.tags as unknown[] as SiteTag[],
+        // addressId: site.addressId,
+        address: {
+          connect: {
+            id: +site.addressId
+          },
+        }
+      },
+      select: new SiteAdminSelect()
+    })
+    .catch((e: Error) => {
+      console.log(e)
+      // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+      throw new InternalServerErrorException(e)
+    })
+
+    const managers = await this.prismaBase.siteHasManager.create({
+      data: {
+        isMain: true,
+        profile: {
+          connect: {
+            id: +site.managerId
+          }
+        },
+        site: {
+          connect: {
+            id: +newSite.id
+          }
+        }
+      }
+    })
+    
+  
+  return newSite as SiteAdminReturn 
+    }
+    else if (site.address) {
     const newSite: any = await this.prismaBase.site
       .create({
         data: {
@@ -126,41 +177,30 @@ export class SitesService {
           tags: site.tags as unknown[] as SiteTag[],
           // addressId: site.addressId,
           address: {
-            connect: {
-              id: site.addressId
-            } 
-          },
-          // {
-          //   connect: {
-              
-              // houseNumber: site.address.houseNumber,
-              // street: site.address.street,
-              // zip: site.address.zip,
-              // otherDetails: site.address.otherDetails,
-              // latitude: site.address.latitude,
-              // longitude: site.address.longitude,
-              // city: {
-              //   connect: {
-              //     id: site.address.cityId
-              //   }
-              // }
-            // }
-          // },
-          // siteHasManagers: {
-          //   connectOrCreate: {
-          //     create: {
-          //       isMain: true,
-          //       profileId: +site.managerId
-          //     },
-          //     where: {
-          //       id: site.managerId ? +site.managerId : undefined,
-          //       profileId_siteId: {
-          //         profileId: site.managerId ? +site.managerId : undefined,
-          //         siteId: site.managerId ? +site.managerId : undefined
-          //       }
-          //     }
-          //   }
-          // }
+            connectOrCreate: {
+              where: {
+                houseNumber_street_zip_cityId: {
+                  houseNumber: site.address.houseNumber,
+                  street: site.address.street,
+                  zip: site.address.zip,
+                  cityId: site.address.cityId
+                }
+              },
+              create: {
+                houseNumber: site.address.houseNumber,
+                street: site.address.street,
+                zip: site.address.zip,
+                otherDetails: site.address.otherDetails,
+                latitude: site.address.latitude,
+                longitude: site.address.longitude,
+                city: {
+                  connect: {
+                    id: site.address.cityId
+                  }
+                }
+              }
+            },
+          }
         },
         select: new SiteAdminSelect()
       })
@@ -185,8 +225,12 @@ export class SitesService {
           }
         }
       })
+      
     
     return newSite as SiteAdminReturn
+    } else {
+      throw new BadRequestException('No address provided')
+    }
   }
 
   async update (

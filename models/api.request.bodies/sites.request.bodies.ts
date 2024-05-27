@@ -57,12 +57,12 @@ export class SiteManipulationRequestBody {
   @IsEnum(SiteTag, { each: true })
   tags: SiteTag[] = [];
 
-  // @ApiProperty()
-  // @IsNotEmpty()
-  // address: AddressManipulationModel = new AddressManipulationModel();
+  @ApiProperty()
+  @IsNotEmpty()
+  address?: AddressManipulationModel = new AddressManipulationModel();
 
   @ApiProperty()
   @IsNumber()
   @IsPositive()
-  addressId: number = 0;
+  addressId?: number;
 }
