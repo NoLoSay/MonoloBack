@@ -44,7 +44,7 @@ export class WatchController {
 
     const videoFile = await this.videoService.watchVideo(videoUUID);
     res.set({
-      'Content-Type': 'video',
+      'Content-Type': 'video/mp4',
     });
     return new StreamableFile(videoFile);
   }
