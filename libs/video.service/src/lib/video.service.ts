@@ -118,7 +118,7 @@ export class VideoService {
     if (body.hostingProviderId !== 1) {
       const video = await this.getYoutubeById(+videoId);
       if (video?.video?.hostingProviderId === 1) {
-        unlink('/nolovideos/' + video.video.hostingProviderVideoId, (err) => {
+        unlink('/opt/nolovideos/' + video.video.hostingProviderVideoId, (err) => {
           if (err) {
             console.error(err);
           }
