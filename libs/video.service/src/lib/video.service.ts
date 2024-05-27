@@ -131,7 +131,7 @@ export class VideoService {
       //     .replace('$(providerVideoId)', video.hostingProviderVideoId)
       // );
 
-      return createReadStream(`/nolovideos/${video.hostingProviderVideoId}`);
+      return createReadStream(`/opt/nolovideos/${video.hostingProviderVideoId}`);
     } catch (e) {
       throw new InternalServerErrorException();
     }
