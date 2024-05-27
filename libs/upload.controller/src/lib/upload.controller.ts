@@ -17,6 +17,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@noloback/guards';
+import { Public } from '@noloback/jwt';
 import { ADMIN, Roles } from '@noloback/roles';
 import { VideoService } from '@noloback/video.service';
 import { Video } from '@prisma/client/base';
@@ -68,7 +69,8 @@ export class UploadController {
   }
 
   @Get(':videoId')
-  @Roles([ADMIN])
+  // @Roles([ADMIN])
+  @Public()
   async downloadLocal(
     @Request() request: any,
     @Res({ passthrough: true }) res: Response,
@@ -81,7 +83,7 @@ export class UploadController {
         return new NotFoundException("Video doesn't exist");
       }
       console.log(file);
-      return res.status(200).send(file);
+      res.status(200).send(file);
     } catch (error: any) {
       console.log(error);
       if (error.code === 'ENOENT') {

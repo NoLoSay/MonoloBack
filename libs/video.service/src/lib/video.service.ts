@@ -8,7 +8,7 @@ import {
   NotFoundException,
   Redirect,
 } from '@nestjs/common';
-import { ReadStream, createReadStream, readFileSync } from 'fs';
+import { ReadStream, createReadStream, readFileSync, unlink } from 'fs';
 import {
   HostingProvider,
   Prisma,
@@ -115,6 +115,17 @@ export class VideoService {
   }
 
   async patchVideo(videoId: number, body: any) {
+    if (body.hostingProviderId !== 1) {
+      const video = await this.getYoutubeById(+videoId);
+      if (video?.video?.hostingProviderId === 1) {
+        unlink('/nolovideos/' + video.video.hostingProviderVideoId, (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      }
+    }
+
     return await this.prismaBase.video.update({
       data: body,
       where: {

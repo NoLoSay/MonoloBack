@@ -24,6 +24,7 @@ import {
 } from '@noloback/db.calls'
 import { UserCreateModel, UserUpdateModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
+import * as _ from 'lodash';
 
 @Injectable()
 export class UsersService {
@@ -87,6 +88,58 @@ export class UsersService {
   }
 
   async patch(id: number, body: any) {
+    const user = await this.prismaBase.user.findUnique({
+      where: { id: id },
+      include: {
+        profiles: {
+          select: {
+            role: true,
+            isActive: true,
+            deletedAt: true
+          }
+        }
+      }
+    });
+
+    const profiles: string[] = body.profiles;
+    if (profiles) {
+      _.forIn(Role, async (value: Role) =>{
+        if (profiles.includes(value)) {
+          // if (!user?.profiles.find((profile: any) => profile.role == value && profile.deletedAt == null)) {
+          // }
+          await this.prismaBase.profile.upsert({
+            where: { userId_role: {userId: id, role: value} },
+            create: {
+              userId: id,
+              role: value,
+            },
+            update: {
+              deletedAt: null,
+            }
+          });
+        }
+        else if (value != Role.USER && user?.profiles.find((profile: any) => profile.role == value)) {
+          if (user.profiles.find(profile => profile.role === value)?.isActive) {
+            await this.prismaBase.profile.update({
+              where: { userId_role: {userId: id, role: Role.USER} },
+              data: {
+                isActive: true
+              }
+            });
+          }
+
+          await this.prismaBase.profile.update({
+            where: { userId_role: {userId: id, role: value} },
+            data: {
+              isActive: false,
+              deletedAt: new Date()
+            }
+          });
+        }
+      });
+
+      body.profiles = undefined;
+    }
     return await this.prismaBase.user.update({
       where: { id: id },
       data: body

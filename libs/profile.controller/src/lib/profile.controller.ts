@@ -7,11 +7,12 @@ import {
   Response,
   Delete,
   Param,
-  ParseIntPipe
+  ParseIntPipe,
+  Query
 } from '@nestjs/common'
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ProfileService } from '@noloback/profile.service'
-import { ProfileListReturn, ProfileCommonReturn } from '@noloback/api.returns'
+import { ProfileListReturn, ProfileCommonReturn, ProfileUserAdminReturn } from '@noloback/api.returns'
 import { ADMIN, MODERATOR, MANAGER, Roles } from '@noloback/roles'
 import { SitesManagersService } from '@noloback/sites.managers.service'
 import { ChangeProfileRequestBody, CreateAdminProfileRequestBody, CreateManagerProfileRequestBody, CreateModeratorProfileRequestBody, DeleteAdminProfileRequestBody, DeleteManagerProfileRequestBody, DeleteModeratorProfileRequestBody } from '@noloback/api.request.bodies'
@@ -27,11 +28,12 @@ export class ProfileController {
   @Get()
   async getProfiles (
     @Request() request: any,
-    @Response() res: any
-  ): Promise<ProfileListReturn[]> {
+    @Response() res: any,
+    @Query('role') role?: string | undefined,
+  ): Promise<ProfileListReturn[] | ProfileUserAdminReturn[]> {
     return res
       .status(200)
-      .json(await this.profileService.getUserProfiles(request.user))
+      .json(await this.profileService.getUserProfiles(request.user, role))
   }
 
   @Get('active')
