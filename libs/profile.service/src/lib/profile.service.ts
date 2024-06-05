@@ -50,6 +50,16 @@ export class ProfileService {
     }
   }
 
+  async getMyProfiles (user: UserRequestModel): Promise<ProfileListReturn[]> {
+    return await this.prismaBase.profile.findMany({
+      where: {
+        userId: user.id,
+        deletedAt: null
+      },
+      select: new ProfileListSelect()
+    }) as ProfileListReturn[]
+  }
+
   async getActiveProfile (user: UserRequestModel): Promise<ProfileCommonReturn> {
     const activeProfiles = await this.prismaBase.profile.findMany({
       where: {

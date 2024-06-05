@@ -36,6 +36,16 @@ export class ProfileController {
       .json(await this.profileService.getUserProfiles(request.user, role))
   }
 
+  @Get('me')
+  async getMyProfiles (
+    @Request() request: any,
+    @Response() res: any
+  ): Promise<ProfileListReturn[]> {
+    return res
+      .status(200)
+      .json(await this.profileService.getMyProfiles(request.user))
+  }
+
   @Get('active')
   async getActiveProfile (
     @Request() request: any,
