@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
   Request
 } from '@nestjs/common'
-import { ADMIN, Roles } from '@noloback/roles'
+import { ADMIN, MANAGER, MODERATOR, Roles } from '@noloback/roles'
 import { PersonsService } from '@noloback/persons.service'
 import { PersonManipulationModel } from '@noloback/api.request.bodies'
 import {
@@ -40,7 +40,7 @@ export class PersonsController {
     return this.personsService.findOne(id, request.user.activeProfile.role)
   }
 
-  @Roles([ADMIN])
+  @Roles([ADMIN, MODERATOR, MANAGER])
   @Post()
   async create (
     @Body() person: PersonManipulationModel
@@ -48,7 +48,7 @@ export class PersonsController {
     return this.personsService.create(person)
   }
 
-  @Roles([ADMIN])
+  @Roles([ADMIN, MODERATOR, MANAGER])
   @Put(':id')
   async update (
     @Request() request: any,
