@@ -232,6 +232,7 @@ model Person {
   type      PersonType
   birthDate DateTime?
   deathDate DateTime?
+  picture   String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   deletedAt DateTime?

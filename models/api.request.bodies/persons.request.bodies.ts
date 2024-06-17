@@ -39,4 +39,9 @@ export class PersonManipulationModel {
   @ApiProperty({ enum: PersonType })
   @IsEnum(PersonType)
   type: PersonType = PersonType.OTHER
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  picture?: string
 }

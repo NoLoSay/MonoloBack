@@ -100,7 +100,8 @@ export class PersonsService {
           bio: person.bio,
           birthDate: person.birthDate ? new Date(person.birthDate) : undefined,
           deathDate: person.deathDate ? new Date(person.deathDate) : undefined,
-          type: person.type as unknown as PersonType
+          type: person.type as unknown as PersonType,
+          picture: person.picture
         },
         select: new PersonAdminSelect()
       })
@@ -123,7 +124,8 @@ export class PersonsService {
           bio: updatedPerson.bio,
           birthDate: updatedPerson.birthDate,
           deathDate: updatedPerson.deathDate,
-          type: updatedPerson.type as unknown as PersonType
+          type: updatedPerson.type as unknown as PersonType,
+          picture: updatedPerson.picture
         },
         select: new PersonAdminSelect()
       })

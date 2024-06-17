@@ -12,6 +12,7 @@ export class PersonCommonSelect {
   birthDate: boolean = true
   deathDate: boolean = true
   type: boolean = true
+  picture: boolean = true
 }
 
 export class PersonDetailledSelect extends PersonCommonSelect {
