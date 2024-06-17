@@ -132,7 +132,7 @@ model User {
   uuid          String              @unique @default(uuid())
   username      String              @unique @default(uuid())
   email         String              @unique
-  emailVerified Boolean?
+  emailVerified Boolean
   password      String
   picture       String?
   telNumber     String?
