@@ -21,6 +21,7 @@ import { ExhibitionsControllerModule } from '@noloback/exhibitions.controller'
 import { VideoControllerModule } from '@noloback/video.controller'
 import { SearchControllerModule } from '@noloback/search.controller'
 import { ProfileControllerModule } from '@noloback/profile.controller'
+import { EnumsControllerModule } from '@noloback/enums.controller'
 import { JwtAuthGuard } from '@noloback/guards'
 import { RolesGuard } from '@noloback/roles'
 import { APP_GUARD } from '@nestjs/core'
@@ -44,7 +45,8 @@ import { APP_GUARD } from '@nestjs/core'
     ExhibitionsControllerModule,
     VideoControllerModule,
     SearchControllerModule,
-    ProfileControllerModule
+    ProfileControllerModule,
+    EnumsControllerModule
   ],
   controllers: [AppController],
   providers: [

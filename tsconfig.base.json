@@ -37,6 +37,8 @@
       "@noloback/departments.service": [
         "libs/departments.service/src/index.ts"
       ],
+      "@noloback/enums.controller": ["libs/enums.controller/src/index.ts"],
+      "@noloback/enums.service": ["libs/enums.service/src/index.ts"],
       "@noloback/exhibited.items.service": [
         "libs/exhibited.items.service/src/index.ts"
       ],

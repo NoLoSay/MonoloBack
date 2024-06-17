@@ -9,6 +9,7 @@ import { seedItems } from './items';
 import { seedVideos } from './videos';
 import { seedExhibitions } from './exhibitions';
 import { seedPersons } from './persons';
+import { seedEnumsColors } from './enums-colors';
 
 const prisma = new PrismaBaseClient();
 async function main() {
@@ -41,6 +42,9 @@ async function main() {
 
   const persons = await seedPersons();
   console.log(persons);
+
+  const enumsColors = await seedEnumsColors();
+  console.log(enumsColors);
 
   console.log('Seeding completed');
 }
