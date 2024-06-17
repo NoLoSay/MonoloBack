@@ -1,13 +1,13 @@
 import {
   PrismaClient as PrismaBaseClient,
   Person,
-  PersonType
-} from '@prisma/client/base'
+  PersonType,
+} from '@prisma/client/base';
 
-const prisma = new PrismaBaseClient()
+const prisma = new PrismaBaseClient();
 
-export async function seedPersons () {
-  let persons: Person[] = []
+export async function seedPersons() {
+  let persons: Person[] = [];
 
   persons.push(
     await prisma.person.create({
@@ -21,23 +21,44 @@ export async function seedPersons () {
             {
               name: "La tete d'un Epoutanflus",
               description:
-                "Une relique datant de l'age epoustanflesque decouverte par Verstappen en attendant que ses concurents finissent la course..."
-            }
-          ]
-        }
-      }
+                "Une relique datant de l'age epoustanflesque decouverte par Verstappen en attendant que ses concurents finissent la course...",
+            },
+          ],
+        },
+      },
     })
-  )
+  );
+
   persons.push(
     await prisma.person.create({
       data: {
         name: 'Teuse',
         birthDate: new Date('2002-01-17T00:00:00.000Z'),
         bio: "En chantier ! Je m'appelle TEUSE",
-        type: PersonType.OTHER
-      }
+        type: PersonType.OTHER,
+      },
     })
-  )
+  );
 
-  return persons
+  persons.push(
+    await prisma.person.create({
+      data: {
+        name: 'Tom',
+        type: 'CELEBRITY',
+        bio: 'Tom is tom',
+      },
+    })
+  );
+
+  persons.push(
+    await prisma.person.create({
+      data: {
+        name: 'Alex',
+        type: 'ARTIST',
+        bio: 'Alex is not tom but alex',
+      },
+    })
+  );
+
+  return persons;
 }

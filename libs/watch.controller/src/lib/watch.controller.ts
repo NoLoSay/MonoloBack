@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { Public } from '@noloback/jwt';
 import { LoggerService } from '@noloback/logger-lib';
 import { VideoService } from '@noloback/video.service';
 import { Video } from '@prisma/client/base';
@@ -27,6 +28,7 @@ export class WatchController {
   constructor(private readonly videoService: VideoService) {}
 
   @Get(':videoUUID')
+  @Public()
   async watchVideo(
     @Request() request: any,
     @Res({ passthrough: true }) res: Response,
@@ -42,7 +44,7 @@ export class WatchController {
 
     const videoFile = await this.videoService.watchVideo(videoUUID);
     res.set({
-      'Content-Type': 'video',
+      'Content-Type': 'video/mp4',
     });
     return new StreamableFile(videoFile);
   }

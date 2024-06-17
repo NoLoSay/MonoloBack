@@ -8,7 +8,7 @@ import {
   NotFoundException,
   Redirect,
 } from '@nestjs/common';
-import { ReadStream, createReadStream, readFileSync } from 'fs';
+import { ReadStream, createReadStream, readFileSync, unlink } from 'fs';
 import {
   HostingProvider,
   Prisma,
@@ -92,7 +92,40 @@ export class VideoService {
     });
   }
 
+  async setHostingProvider(
+    videoId: number,
+    newProviderId: number,
+    newProviderVideoId: string
+  ) {
+    const video = await this.prismaBase.video.update({
+      data: {
+        hostingProvider: {
+          connect: {
+            id: +newProviderId,
+          },
+        },
+        hostingProviderVideoId: newProviderVideoId,
+      },
+      where: {
+        id: +videoId,
+      },
+    });
+
+    return video;
+  }
+
   async patchVideo(videoId: number, body: any) {
+    if (body.hostingProviderId !== 1) {
+      const video = await this.getYoutubeById(+videoId);
+      if (video?.video?.hostingProviderId === 1) {
+        unlink('/opt/nolovideos/' + video.video.hostingProviderVideoId, (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      }
+    }
+
     return await this.prismaBase.video.update({
       data: body,
       where: {
@@ -131,7 +164,7 @@ export class VideoService {
       //     .replace('$(providerVideoId)', video.hostingProviderVideoId)
       // );
 
-      return createReadStream(`/nolovideos/${video.hostingProviderVideoId}`);
+      return createReadStream(`/opt/nolovideos/${video.hostingProviderVideoId}`);
     } catch (e) {
       throw new InternalServerErrorException();
     }
@@ -190,7 +223,7 @@ export class VideoService {
     const video: unknown = await this.prismaBase.video.findUnique({
       select: new VideoCommonSelect(),
       where: {
-        id: youtubeId,
+        id: +youtubeId,
       },
     });
 

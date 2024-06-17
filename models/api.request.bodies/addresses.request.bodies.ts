@@ -10,8 +10,8 @@ import {
 export class AddressManipulationModel {
   @ApiProperty()
   @IsString()
-  @IsOptional()
-  houseNumber?: string
+  @IsNotEmpty()
+  houseNumber: string = ''
 
   @ApiProperty()
   @IsNotEmpty()

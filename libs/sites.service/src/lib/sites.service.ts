@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   InternalServerErrorException
@@ -111,7 +112,57 @@ export class SitesService {
   }
 
   async create (site: SiteManipulationRequestBody): Promise<SiteAdminReturn> {
-    const newSite: unknown = await this.prismaBase.site
+    if (site.addressId) {
+     
+    const newSite: any = await this.prismaBase.site
+    .create({
+      data: {
+        name: site.name,
+        shortDescription: site.shortDescription,
+        longDescription: site.longDescription,
+        telNumber: site.telNumber,
+        email: site.email,
+        website: site.website,
+        price: +site.price,
+        picture: site.picture,
+        type: site.type as unknown as SiteType,
+        tags: site.tags as unknown[] as SiteTag[],
+        // addressId: site.addressId,
+        address: {
+          connect: {
+            id: +site.addressId
+          },
+        }
+      },
+      select: new SiteAdminSelect()
+    })
+    .catch((e: Error) => {
+      console.log(e)
+      // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+      throw new InternalServerErrorException(e)
+    })
+
+    const managers = await this.prismaBase.siteHasManager.create({
+      data: {
+        isMain: true,
+        profile: {
+          connect: {
+            id: +site.managerId
+          }
+        },
+        site: {
+          connect: {
+            id: +newSite.id
+          }
+        }
+      }
+    })
+    
+  
+  return newSite as SiteAdminReturn 
+    }
+    else if (site.address) {
+    const newSite: any = await this.prismaBase.site
       .create({
         data: {
           name: site.name,
@@ -120,24 +171,35 @@ export class SitesService {
           telNumber: site.telNumber,
           email: site.email,
           website: site.website,
-          price: site.price,
+          price: +site.price,
           picture: site.picture,
           type: site.type as unknown as SiteType,
           tags: site.tags as unknown[] as SiteTag[],
+          // addressId: site.addressId,
           address: {
-            create: {
-              houseNumber: site.address.houseNumber,
-              street: site.address.street,
-              zip: site.address.zip,
-              otherDetails: site.address.otherDetails,
-              latitude: site.address.latitude,
-              longitude: site.address.longitude,
-              city: {
-                connect: {
-                  id: site.address.cityId
+            connectOrCreate: {
+              where: {
+                houseNumber_street_zip_cityId: {
+                  houseNumber: site.address.houseNumber,
+                  street: site.address.street,
+                  zip: site.address.zip,
+                  cityId: site.address.cityId
+                }
+              },
+              create: {
+                houseNumber: site.address.houseNumber,
+                street: site.address.street,
+                zip: site.address.zip,
+                otherDetails: site.address.otherDetails,
+                latitude: site.address.latitude,
+                longitude: site.address.longitude,
+                city: {
+                  connect: {
+                    id: site.address.cityId
+                  }
                 }
               }
-            }
+            },
           }
         },
         select: new SiteAdminSelect()
@@ -148,7 +210,27 @@ export class SitesService {
         throw new InternalServerErrorException(e)
       })
 
+      const managers = await this.prismaBase.siteHasManager.create({
+        data: {
+          isMain: true,
+          profile: {
+            connect: {
+              id: +site.managerId
+            }
+          },
+          site: {
+            connect: {
+              id: +newSite.id
+            }
+          }
+        }
+      })
+      
+    
     return newSite as SiteAdminReturn
+    } else {
+      throw new BadRequestException('No address provided')
+    }
   }
 
   async update (
@@ -183,21 +265,27 @@ export class SitesService {
           picture: site.picture,
           type: site.type as unknown as SiteType,
           tags: site.tags as unknown[] as SiteTag[],
+          // addressId: site.addressId,
           address: {
-            update: {
-              houseNumber: site.address.houseNumber,
-              street: site.address.street,
-              zip: site.address.zip,
-              otherDetails: site.address.otherDetails,
-              latitude: site.address.latitude,
-              longitude: site.address.longitude,
-              city: {
-                connect: {
-                  id: site.address.cityId
-                }
-              }
-            }
-          }
+            connect: {
+              id: +site.addressId
+            } 
+          },
+          // address: {
+          //   update: {
+          //     houseNumber: site.address.houseNumber,
+          //     street: site.address.street,
+          //     zip: site.address.zip,
+          //     otherDetails: site.address.otherDetails,
+          //     latitude: site.address.latitude,
+          //     longitude: site.address.longitude,
+          //     city: {
+          //       connect: {
+          //         id: site.address.cityId
+          //       }
+          //     }
+          //   }
+          // }
         },
         select: selectOptions
       })
