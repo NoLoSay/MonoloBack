@@ -98,8 +98,8 @@ export class PersonsService {
         data: {
           name: person.name,
           bio: person.bio,
-          birthDate: person.birthDate,
-          deathDate: person.deathDate,
+          birthDate: person.birthDate ? new Date(person.birthDate) : undefined,
+          deathDate: person.deathDate ? new Date(person.deathDate) : undefined,
           type: person.type as unknown as PersonType
         },
         select: new PersonAdminSelect()
