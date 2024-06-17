@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { JwtService, TokenExpiredError  } from '@nestjs/jwt';
 import VerificationTokenPayload from './verificationTokenPayload.interface';
 import { MailerService } from '@noloback/mailer';
@@ -12,13 +12,32 @@ export class MailConfirmationService {
     private readonly usersService: UsersService,
   ) {}
  
-  public async confirmEmail(email: string) {
-    // TODO: create simple table in a user to see if his email is confirmed
-    const user = await this.usersService.findOneByEmail(email);
-    if (user?.emailVerified) {
-      throw new BadRequestException('Email already confirmed');
+  public async confirmEmail(email: string): Promise<{ statusCode: number; message: string; }> {
+    try {
+      const user = await this.usersService.findOneByEmail(email);
+      if (!user) {
+        throw new BadRequestException('User not found');
+      }
+      if (user.emailVerified) {
+        throw new BadRequestException('Email already confirmed');
+      }
+
+      await this.usersService.markEmailAsConfirmed(email);
+
+      return {
+        statusCode: 200,
+        message: 'Email confirmed successfully',
+      };
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        return {
+          statusCode: 400,
+          message: error.message,
+        };
+      } else {
+        throw new InternalServerErrorException('An error occurred while confirming the email');
+      }
     }
-    await this.usersService.markEmailAsConfirmed(email);
   }
 
   public sendVerificationLink(email: string) {

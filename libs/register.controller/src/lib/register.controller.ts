@@ -21,6 +21,6 @@ export class RegisterController {
   @Public()
   async confirm(@Query('token') token: string) {
     const email = await this.mailConfirmationService.decodeConfirmationToken(token);
-    await this.mailConfirmationService.confirmEmail(email);
+    return this.mailConfirmationService.confirmEmail(email);
   }
 }

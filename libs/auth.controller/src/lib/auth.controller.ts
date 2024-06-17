@@ -28,13 +28,13 @@ export class AuthController {
     return this.authService.login(user);
   }
 
-  @Post('changePassword')
+  @Post('change-password')
   @Public()
-  async confirm(@Body() req: changePasswordDto) {
-    await this.authService.changePassword(req.token, req.password);
+  async changePassword(@Body() req: changePasswordDto) {
+    return this.authService.changePassword(req.token, req.password);
   }
 
-  @Post('forgotPassword')
+  @Post('forgot-password')
   @Public()
   async forgotPassword(@Body() body: any) {
     return this.authService.forgotPassword(body.email);
