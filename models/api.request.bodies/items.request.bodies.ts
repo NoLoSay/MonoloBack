@@ -21,6 +21,11 @@ export class ItemManipulationModel {
   @ApiProperty()
   @IsString()
   @IsOptional()
+  textToTranslate: string
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
   picture?: string 
 
   @ApiProperty()

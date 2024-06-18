@@ -272,6 +272,7 @@ model Item {
   uuid            String          @unique @default(uuid())
   name            String
   description     String?
+  textToTranslate String
   picture         String?
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt

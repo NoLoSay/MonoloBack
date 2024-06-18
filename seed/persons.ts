@@ -22,6 +22,7 @@ export async function seedPersons() {
               name: "La tete d'un Epoutanflus",
               description:
                 "Une relique datant de l'age epoustanflesque decouverte par Verstappen en attendant que ses concurents finissent la course...",
+              textToTranslate: "text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate",
             },
           ],
         },
