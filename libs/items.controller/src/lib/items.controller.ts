@@ -112,17 +112,38 @@ export class ItemsController {
 
   @Roles([ADMIN, MANAGER])
   @Put(':id')
+  @UseInterceptors(FileInterceptor('picture', {
+    storage: multer.diskStorage({
+      destination: '/opt/nolovideos',
+      filename: (req, file, cb) => {
+        const uuid = randomUUID
+        ();
+        cb(null, `${uuid}${extname(file.originalname)}`);
+      },
+    }),
+  }))
   async update (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatedItem: ItemManipulationModel
+    @Body() updatedItem: ItemManipulationModel,
+    @UploadedFile() picture: Express.Multer.File
   ) {
-    return this.itemsService.update(id, updatedItem)
+    return this.itemsService.update(id, updatedItem, picture)
   }
 
   @Roles([ADMIN])
   @Patch(':id')
-  async patch (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+  @UseInterceptors(FileInterceptor('picture', {
+    storage: multer.diskStorage({
+      destination: '/opt/nolovideos',
+      filename: (req, file, cb) => {
+        const uuid = randomUUID
+        ();
+        cb(null, `${uuid}${extname(file.originalname)}`);
+      },
+    }),
+  }))
+  async patch (@Request() request: any, @Param('id', ParseIntPipe) id: number, @UploadedFile() picture: Express.Multer.File) {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
@@ -131,7 +152,7 @@ export class ItemsController {
       JSON.stringify(request.body)
     );
 
-    return this.itemsService.patch(id, request.body)
+    return this.itemsService.patch(id, request.body, picture)
   }
 
   @Roles([ADMIN])

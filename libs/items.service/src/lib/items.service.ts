@@ -54,7 +54,15 @@ export class ItemsService {
       throw new NotFoundException('Item not found')
   }
 
-  async patch(id: number, body: any) {
+  async patch(id: number, body: any, picture: Express.Multer.File) {
+    let uploadedPicture: string | undefined = undefined;
+
+    if (picture) {
+      uploadedPicture = await this.uploadthingService.uploadFile(picture);
+
+      body.picture = uploadedPicture;
+    }
+
     return this.prismaBase.item.update({
       where: { id },
       data: body
@@ -208,12 +216,20 @@ export class ItemsService {
 
   async update (
     id: number,
-    updatedItem: ItemManipulationModel
+    updatedItem: ItemManipulationModel,
+    picture: Express.Multer.File
   ): Promise<ItemCommonReturn> {
+    let uploadedPicture: string | undefined = undefined;
+
+    if (picture) {
+      uploadedPicture = await this.uploadthingService.uploadFile(picture);
+    }
+
     this.checkExistingItem(id)
     const updatedItemData: {
       name: string
       description?: string
+      picture?: string
       relatedPerson?: {
         connect: {
           id: number
@@ -226,13 +242,14 @@ export class ItemsService {
       }
     } = {
       name: updatedItem.name,
-      description: updatedItem.description
+      description: updatedItem.description,
+      picture: uploadedPicture
     }
 
     if (updatedItem.relatedPersonId != null) {
       updatedItemData.relatedPerson = {
         connect: {
-          id: updatedItem.relatedPersonId
+          id: +updatedItem.relatedPersonId
         }
       }
     }
@@ -240,16 +257,17 @@ export class ItemsService {
     if (updatedItem.itemTypeId != null) {
       updatedItemData.itemType = {
         connect: {
-          id: updatedItem.itemTypeId
+          id: +updatedItem.itemTypeId
         }
       }
     }
     const updated: unknown = await this.prismaBase.item
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: updatedItemData
       })
       .catch((e: Error) => {
+        console.log(e)
         // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
