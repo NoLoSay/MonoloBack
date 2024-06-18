@@ -19,6 +19,7 @@
         "libs/addresses.controller/src/index.ts"
       ],
       "@noloback/addresses.service": ["libs/addresses.service/src/index.ts"],
+      "@noloback/api.querry.parameters": ["models/api.querry.parameters"],
       "@noloback/api.request.bodies": ["models/api.request.bodies"],
       "@noloback/api.returns": ["models/api.returns"],
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],

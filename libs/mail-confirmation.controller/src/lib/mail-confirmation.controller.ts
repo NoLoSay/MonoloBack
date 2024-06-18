@@ -3,8 +3,8 @@ import {
     Get,
     Query,
   } from '@nestjs/common';
-  import ConfirmEmailDto from './dto/mail-confirmation.dto';
   import { MailConfirmationService } from '@noloback/mail-confirmation.service';
+  import { ConfirmEmailModel } from '@noloback/api.querry.parameters';
    
   @Controller('email-confirmation')
   export class MailConfirmationController {
@@ -13,7 +13,7 @@ import {
     ) {}
    
     @Get('confirm')
-    async confirm(@Query('token') confirmationData: ConfirmEmailDto) {
+    async confirm(@Query('token') confirmationData: ConfirmEmailModel) {
       const email = await this.mailConfirmationService.decodeConfirmationToken(confirmationData.token);
       await this.mailConfirmationService.confirmEmail(email);
     }
