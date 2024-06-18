@@ -10,7 +10,9 @@ import {
   Request,
   Response,
   Query,
-  Patch
+  Patch,
+  UseInterceptors,
+  UploadedFile
 } from '@nestjs/common'
 import { ADMIN, CREATOR, MANAGER, Roles } from '@noloback/roles'
 import { ItemsService } from '@noloback/items.service'
@@ -24,6 +26,10 @@ import {
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { LoggerService } from '@noloback/logger-lib'
+import { FileInterceptor } from '@nestjs/platform-express'
+import multer = require('multer')
+import { randomUUID } from 'crypto'
+import { extname } from 'path'
 
 @Controller('items')
 export class ItemsController {
@@ -90,8 +96,18 @@ export class ItemsController {
 
   @Roles([ADMIN, MANAGER])
   @Post()
-  async create (@Request() request: any, @Body() items: ItemManipulationModel) {
-    return this.itemsService.create(items)
+  @UseInterceptors(FileInterceptor('picture', {
+    storage: multer.diskStorage({
+      destination: '/opt/nolovideos',
+      filename: (req, file, cb) => {
+        const uuid = randomUUID
+        ();
+        cb(null, `${uuid}${extname(file.originalname)}`);
+      },
+    }),
+  }))
+  async create (@Request() request: any, @Body() items: ItemManipulationModel, @UploadedFile() picture: Express.Multer.File) {
+    return this.itemsService.create(items, picture)
   }
 
   @Roles([ADMIN, MANAGER])

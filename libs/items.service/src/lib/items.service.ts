@@ -20,12 +20,14 @@ import { UserRequestModel } from '@noloback/requests.constructor'
 import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
+import { UploadthingService } from '@noloback/uploadthing.service';
 
 @Injectable()
 export class ItemsService {
   constructor (
     private prismaBase: PrismaBaseService,
-    private videoService: VideoService //private loggingService: LoggerService
+    private videoService: VideoService, //private loggingService: LoggerService
+    private uploadthingService: UploadthingService
   ) {}
 
   async count (nameLike: string | undefined, typeId: number | undefined, categoryId: number | undefined): Promise<number> {
@@ -145,11 +147,18 @@ export class ItemsService {
     }
   }
 
-  async create (item: ItemManipulationModel): Promise<ItemCommonReturn> {
+  async create (item: ItemManipulationModel, picture?: Express.Multer.File): Promise<ItemCommonReturn> {
+    let uploadedPicture: string | undefined = undefined;
+
+    if (picture) {
+      uploadedPicture = await this.uploadthingService.uploadFile(picture);
+    }
+
     const newItemData: {
       name: string
       description?: string
       textToTranslate: string
+      picture?: string
       relatedPerson?: {
         connect: {
           id: number
@@ -163,13 +172,14 @@ export class ItemsService {
     } = {
       name: item.name,
       description: item.description,
+      picture: uploadedPicture,
       textToTranslate: item.textToTranslate
     }
 
     if (item.relatedPersonId != null) {
       newItemData.relatedPerson = {
         connect: {
-          id: item.relatedPersonId
+          id: +item.relatedPersonId
         }
       }
     }
@@ -177,7 +187,7 @@ export class ItemsService {
     if (item.itemTypeId != null) {
       newItemData.itemType = {
         connect: {
-          id: item.itemTypeId
+          id: +item.itemTypeId
         }
       }
     }
