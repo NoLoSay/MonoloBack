@@ -22,6 +22,7 @@ import { VideoControllerModule } from '@noloback/video.controller'
 import { SearchControllerModule } from '@noloback/search.controller'
 import { ProfileControllerModule } from '@noloback/profile.controller'
 import { EnumsControllerModule } from '@noloback/enums.controller'
+import { SignLanguagesControllerModule } from '@noloback/sign.languages.controller'
 import { JwtAuthGuard } from '@noloback/guards'
 import { RolesGuard } from '@noloback/roles'
 import { APP_GUARD } from '@nestjs/core'
@@ -46,7 +47,8 @@ import { APP_GUARD } from '@nestjs/core'
     VideoControllerModule,
     SearchControllerModule,
     ProfileControllerModule,
-    EnumsControllerModule
+    EnumsControllerModule,
+    SignLanguagesControllerModule
   ],
   controllers: [AppController],
   providers: [

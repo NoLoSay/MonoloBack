@@ -1,6 +1,5 @@
 import {
   PrismaBaseService,
-  Prisma,
   Role,
   ValidationStatus,
   PersonType,
@@ -15,9 +14,7 @@ import {
 
 @Injectable()
 export class EnumsService {
-  constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
-  ) {}
+  constructor (private prismaBase: PrismaBaseService) {}
 
   isColor (color: string): boolean {
     return /^#[0-9A-F]{6}$/i.test(color)
