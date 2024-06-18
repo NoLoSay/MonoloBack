@@ -88,7 +88,7 @@ export class UsersService {
     }
   }
   async markEmailAsConfirmed(email: string) {
-    return this.prismaBase.user.update({
+    await this.prismaBase.user.update({
       where: { email: email },
       data: {
         emailVerified: true,
@@ -97,7 +97,7 @@ export class UsersService {
   }
 
   async changePassword(userId: number, newPassword: string) {
-    return this.prismaBase.user.update({
+    await this.prismaBase.user.update({
       where: { id: userId },
       data: {
         password: await hash(newPassword, 12),
