@@ -178,9 +178,9 @@ enum ValidationStatus {
 }
 
 model ValidationStatusColor {
-  id    Int    @id @default(autoincrement())
-  validationStatus  ValidationStatus   @unique
-  color String @default("#ffffff")
+  id               Int              @id @default(autoincrement())
+  validationStatus ValidationStatus @unique
+  color            String           @default("#ffffff")
 }
 
 model Video {
@@ -238,9 +238,9 @@ enum PersonType {
 }
 
 model PersonTypeColor {
-  id    Int    @id @default(autoincrement())
-  personType  PersonType   @unique
-  color String @default("#ffffff")
+  id         Int        @id @default(autoincrement())
+  personType PersonType @unique
+  color      String     @default("#ffffff")
 }
 
 model Person {
@@ -347,9 +347,9 @@ enum SiteType {
 }
 
 model SiteTypeColor {
-  id    Int    @id @default(autoincrement())
-  siteType  SiteType   @unique
-  color String @default("#ffffff")
+  id       Int      @id @default(autoincrement())
+  siteType SiteType @unique
+  color    String   @default("#ffffff")
 }
 
 enum SiteTag {
@@ -361,9 +361,9 @@ enum SiteTag {
 }
 
 model SiteTagColor {
-  id    Int    @id @default(autoincrement())
-  siteTag  SiteTag   @unique
-  color String @default("#ffffff")
+  id      Int     @id @default(autoincrement())
+  siteTag SiteTag @unique
+  color   String  @default("#ffffff")
 }
 
 model Site {
