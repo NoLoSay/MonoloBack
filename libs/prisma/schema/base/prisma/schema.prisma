@@ -183,6 +183,18 @@ model ValidationStatusColor {
   color            String           @default("#ffffff")
 }
 
+model SignLanguage {
+  id        Int       @id @default(autoincrement())
+  uuid      String    @unique @default(uuid())
+  name      String    @unique
+  code      String    @unique
+  color     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  Video     Video[]
+}
+
 model Video {
   id                     Int               @id @default(autoincrement())
   uuid                   String            @unique @default(uuid())
@@ -196,6 +208,8 @@ model Video {
   deletedReason          String?
   itemId                 Int
   profileId              Int
+  signLanguageId         Int?
+  signLanguage           SignLanguage?     @relation(fields: [signLanguageId], references: [id])
   likedBy                UserlikesVideos[]
   item                   Item              @relation(fields: [itemId], references: [id])
   postedBy               Profile           @relation(fields: [profileId], references: [id])
