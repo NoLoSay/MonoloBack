@@ -1,14 +1,18 @@
-import { Controller, Get, Request, Post, UseGuards, Req, Body } from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards, Req, Body, Query } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
 import { LocalAuthGuard } from '@noloback/guards';
 import { Public } from '@noloback/jwt';
 import { GoogleOAuthGuard, EmailConfirmationGuard } from '@noloback/guards';
 import { PasswordModel } from '@noloback/api.request.bodies';
+import { MailConfirmationService } from '@noloback/mail-confirmation.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private readonly mailConfirmationService: MailConfirmationService,
+  ) {}
 
   @Public()
   @ApiBody({ type: UsernamePasswordCombo })
@@ -45,6 +49,14 @@ export class AuthController {
   @Get('test-email-guards')
   async testEmailGuard() {
     return 'email Verified !';
+  }
+
+  
+  @Get('confirm')
+  @Public()
+  async confirm(@Query('token') token: string) {
+    const email = await this.mailConfirmationService.decodeConfirmationToken(token);
+    return this.mailConfirmationService.confirmEmail(email);
   }
 
   // // @Public()

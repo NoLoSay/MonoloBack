@@ -8,19 +8,13 @@ import {MailConfirmationService } from '@noloback/mail-confirmation.service'
 export class RegisterController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly mailConfirmationService: MailConfirmationService,) {}
+    private readonly mailConfirmationService: MailConfirmationService
+    ,) {}
 
   @Post()
   @Public()
    async register(@Body() userRegister: UserCreateModel) {
     await this.mailConfirmationService.sendVerificationLink(userRegister.email);
     return this.usersService.create(userRegister);
-  }
-
-  @Get('confirm')
-  @Public()
-  async confirm(@Query('token') token: string) {
-    const email = await this.mailConfirmationService.decodeConfirmationToken(token);
-    return this.mailConfirmationService.confirmEmail(email);
   }
 }
