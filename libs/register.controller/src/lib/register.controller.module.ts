@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RegisterController } from './register.controller';
 import { UsersServiceModule } from '@noloback/users.service';
-import { MailConfirmationModule } from '@noloback/mail-confirmation';
+import { MailConfirmationModule } from '@noloback/mail-confirmation.service';
 
 
 

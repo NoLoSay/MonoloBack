@@ -2,7 +2,7 @@ import { Body, Controller, Post, Get, Query } from '@nestjs/common';
 import { Public } from '@noloback/jwt';
 import { UserCreateModel } from '@noloback/api.request.bodies'
 import { UsersService } from '@noloback/users.service';
-import {MailConfirmationService } from '@noloback/mail-confirmation'
+import {MailConfirmationService } from '@noloback/mail-confirmation.service'
 
 @Controller('register')
 export class RegisterController {

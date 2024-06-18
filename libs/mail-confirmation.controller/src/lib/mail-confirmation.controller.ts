@@ -4,7 +4,7 @@ import {
     Query,
   } from '@nestjs/common';
   import ConfirmEmailDto from './dto/mail-confirmation.dto';
-  import { MailConfirmationService } from '@noloback/mail-confirmation';
+  import { MailConfirmationService } from '@noloback/mail-confirmation.service';
    
   @Controller('email-confirmation')
   export class MailConfirmationController {

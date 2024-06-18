@@ -23,7 +23,7 @@
       "@noloback/api.returns": ["models/api.returns"],
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
-      "@noloback/mail-confirmation": ["libs/mail-confirmation/src/index.ts"],
+      "@noloback/mail-confirmation.service": ["libs/mail-confirmation.service/src/index.ts"],
       "@noloback/mail-confirmation.controller": [
         "libs/mail-confirmation.controller/src/index.ts"
       ],
