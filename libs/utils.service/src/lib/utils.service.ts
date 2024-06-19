@@ -33,7 +33,7 @@ export class UtilsService {
                 if (!month) {
                     month = "01";
                 } else if (isNaN(Number(month))) {
-                    month = this.monthMap[month.slice(0, 3)];
+                    month = this.monthMap[month];
                 }
 
                 return `${year}:${month.padStart(2, '0')}:${day.padStart(2, '0')}`;
