@@ -83,6 +83,7 @@
       ],
       "@noloback/requests.constructor": ["models/requests.constructor"],
       "@noloback/roles": ["models/roles"],
+      "@noloback/root.test": ["libs/root.test/src/index.ts"],
       "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
       "@noloback/sites.controller": ["libs/sites.controller/src/index.ts"],
       "@noloback/sites.managers.service": [
