@@ -20,13 +20,15 @@ import {
   PersonCommonSelect,
   PersonDetailledSelect
 } from '@noloback/db.calls'
+import { UtilsService } from '@noloback/utils.service'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class PersonsService {
   constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService,
+    private utilsService: UtilsService //private loggingService: LoggerService
   ) {}
 
   async findAll (
@@ -98,8 +100,8 @@ export class PersonsService {
         data: {
           name: person.name,
           bio: person.bio,
-          birthDate: person.birthDate ? new Date(person.birthDate) : undefined,
-          deathDate: person.deathDate ? new Date(person.deathDate) : undefined,
+          birthDate: person.birthDate ? this.utilsService.parseCustomDate(person.birthDate) : undefined,
+          deathDate: person.deathDate ? this.utilsService.parseCustomDate(person.deathDate) : undefined,
           type: person.type as unknown as PersonType,
           picture: person.picture
         },
@@ -122,8 +124,8 @@ export class PersonsService {
         data: {
           name: updatedPerson.name,
           bio: updatedPerson.bio,
-          birthDate: updatedPerson.birthDate,
-          deathDate: updatedPerson.deathDate,
+          birthDate: updatedPerson.birthDate ? this.utilsService.parseCustomDate(updatedPerson.birthDate) : undefined,
+          deathDate: updatedPerson.deathDate ? this.utilsService.parseCustomDate(updatedPerson.deathDate) : undefined,
           type: updatedPerson.type as unknown as PersonType,
           picture: updatedPerson.picture
         },
