@@ -54,10 +54,7 @@ export class AuthService {
       };
     } catch (error) {
       if (error instanceof BadRequestException) {
-        return {
-          statusCode: 400,
-          message: error.message,
-        };
+        throw new BadRequestException(error.message);
       } else {
         throw new InternalServerErrorException('An error occurred while changing the password');
       }
@@ -92,10 +89,7 @@ export class AuthService {
       };
     } catch (error) {
       if (error instanceof BadRequestException) {
-        return {
-          statusCode: 400,
-          message: error.message,
-        };
+        throw new BadRequestException(error.message);
       } else {
         throw new InternalServerErrorException('An error occurred while sending the password reset email');
       }

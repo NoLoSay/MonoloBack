@@ -43,14 +43,6 @@ export class AuthController {
   async forgotPassword(@Body() body: any) {
     return this.authService.forgotPassword(body.email);
   }
-
-  @Public()
-  @UseGuards(EmailConfirmationGuard)
-  @Get('test-email-guards')
-  async testEmailGuard() {
-    return 'email Verified !';
-  }
-
   
   @Get('confirm')
   @Public()
