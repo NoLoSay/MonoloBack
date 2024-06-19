@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
-import { MailConfirmationControllerModule } from '@noloback/mail-confirmation.controller';
 import { LoggerLibModule } from '@noloback/logger-lib'
 import { TranslatorLibModule } from '@noloback/translator-lib'
 import { UsersControllerModule } from '@noloback/users.controller'
@@ -33,7 +32,6 @@ import { APP_GUARD } from '@nestjs/core'
     TranslatorLibModule,
     UsersControllerModule,
     RegisterModule,
-    MailConfirmationControllerModule,
     CountriesControllerModule,
     DepartmentsControllerModule,
     CitiesControllerModule,
