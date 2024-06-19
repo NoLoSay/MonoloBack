@@ -8,21 +8,31 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request
+  Request,
+  Query
 } from '@nestjs/common'
 import { SignLanguagesService } from '@noloback/sign.languages.service'
 import { ADMIN, Roles } from '@noloback/roles'
 import { LoggerService } from '@noloback/logger-lib'
-import { SignLanguage } from '@noloback/prisma-client-base'
+import { Role, SignLanguage } from '@noloback/prisma-client-base'
 
 @Controller('sign-languages')
 export class SignLanguagesController {
   constructor (private readonly enumsService: SignLanguagesService) {}
 
   @Get()
-  async getSignLanguages (): Promise<
-    { id: number; name: string; code: string; color: string }[]
+  async getSignLanguages (
+    @Request() request: any,
+    @Query('displayAs') displayAs?: Role | undefined
+  ): Promise<
+    { id: number; name: string; code: string; color: string }[] | SignLanguage[]
   > {
+    if (
+      displayAs === Role.ADMIN &&
+      request.user.activeProfile.role === Role.ADMIN
+    ) {
+      return await this.enumsService.getAdminSignLanguages()
+    }
     return await this.enumsService.getSignLanguages()
   }
 

@@ -8,7 +8,8 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request
+  Request,
+  Query
 } from '@nestjs/common'
 import {
   PersonType,
@@ -26,14 +27,20 @@ export class EnumsController {
   constructor (private readonly enumsService: EnumsService) {}
 
   @Get('roles')
-  async getRoles (): Promise<{ role: Role; color: string }[]> {
+  async getRoles (
+    @Request() request: any,
+    @Query('displayAs') displayAs?: Role | undefined
+  ): Promise<
+    | { role: Role; color: string }[]
+    | { id: number; role: Role; color: string }[]
+  > {
+    if (
+      displayAs === Role.ADMIN &&
+      request.user.activeProfile.role === Role.ADMIN
+    ) {
+      return await this.enumsService.getAdminRolesColors()
+    }
     return await this.enumsService.getRolesColors()
-  }
-
-  @Roles([ADMIN])
-  @Get('roles/admin')
-  async getAdminRoles (): Promise<{ id: number; role: Role; color: string }[]> {
-    return await this.enumsService.getAdminRolesColors()
   }
 
   @Roles([ADMIN])
@@ -53,18 +60,20 @@ export class EnumsController {
   }
 
   @Get('validation-statuses')
-  async getValidationStatuses (): Promise<
-    { validationStatus: ValidationStatus; color: string }[]
+  async getValidationStatuses (
+    @Request() request: any,
+    @Query('displayAs') displayAs?: Role | undefined
+  ): Promise<
+    | { validationStatus: ValidationStatus; color: string }[]
+    | { id: number; validationStatus: ValidationStatus; color: string }[]
   > {
+    if (
+      displayAs === Role.ADMIN &&
+      request.user.activeProfile.role === Role.ADMIN
+    ) {
+      return await this.enumsService.getAdminValidationStatusesColors()
+    }
     return await this.enumsService.getValidationStatusesColors()
-  }
-
-  @Roles([ADMIN])
-  @Get('validation-statuses/admin')
-  async getAdminValidationStatuses (): Promise<
-    { id: number; validationStatus: ValidationStatus; color: string }[]
-  > {
-    return await this.enumsService.getAdminValidationStatusesColors()
   }
 
   @Roles([ADMIN])
@@ -88,16 +97,20 @@ export class EnumsController {
   }
 
   @Get('person-types')
-  async getPersonTypes (): Promise<{ personType: PersonType; color: string }[]> {
-    return await this.enumsService.getPersonTypesColors()
-  }
-
-  @Roles([ADMIN])
-  @Get('person-types/admin')
-  async getAdminPersonTypes (): Promise<
-    { id: number; personType: PersonType; color: string }[]
+  async getPersonTypes (
+    @Request() request: any,
+    @Query('displayAs') displayAs?: Role | undefined
+  ): Promise<
+    | { personType: PersonType; color: string }[]
+    | { id: number; personType: PersonType; color: string }[]
   > {
-    return await this.enumsService.getAdminPersonTypesColors()
+    if (
+      displayAs === Role.ADMIN &&
+      request.user.activeProfile.role === Role.ADMIN
+    ) {
+      return await this.enumsService.getAdminPersonTypesColors()
+    }
+    return await this.enumsService.getPersonTypesColors()
   }
 
   @Roles([ADMIN])
@@ -117,16 +130,20 @@ export class EnumsController {
   }
 
   @Get('site-types')
-  async getSiteTypes (): Promise<{ siteType: SiteType; color: string }[]> {
-    return await this.enumsService.getSiteTypesColors()
-  }
-
-  @Roles([ADMIN])
-  @Get('site-types/admin')
-  async getAdminSiteTypes (): Promise<
-    { id: number; siteType: SiteType; color: string }[]
+  async getSiteTypes (
+    @Request() request: any,
+    @Query('displayAs') displayAs?: Role | undefined
+  ): Promise<
+    | { siteType: SiteType; color: string }[]
+    | { id: number; siteType: SiteType; color: string }[]
   > {
-    return await this.enumsService.getAdminSiteTypesColors()
+    if (
+      displayAs === Role.ADMIN &&
+      request.user.activeProfile.role === Role.ADMIN
+    ) {
+      return await this.enumsService.getAdminSiteTypesColors()
+    }
+    return await this.enumsService.getSiteTypesColors()
   }
 
   @Roles([ADMIN])
@@ -146,16 +163,20 @@ export class EnumsController {
   }
 
   @Get('site-tags')
-  async getSiteTags (): Promise<{ siteTag: SiteTag; color: string }[]> {
-    return await this.enumsService.getSiteTagsColors()
-  }
-
-  @Roles([ADMIN])
-  @Get('site-tags/admin')
-  async getAdminSiteTags (): Promise<
-    { id: number; siteTag: SiteTag; color: string }[]
+  async getSiteTags (
+    @Request() request: any,
+    @Query('displayAs') displayAs?: Role | undefined
+  ): Promise<
+    | { siteTag: SiteTag; color: string }[]
+    | { id: number; siteTag: SiteTag; color: string }[]
   > {
-    return await this.enumsService.getAdminSiteTagsColors()
+    if (
+      displayAs === Role.ADMIN &&
+      request.user.activeProfile.role === Role.ADMIN
+    ) {
+      return await this.enumsService.getAdminSiteTagsColors()
+    }
+    return await this.enumsService.getSiteTagsColors()
   }
 
   @Roles([ADMIN])
