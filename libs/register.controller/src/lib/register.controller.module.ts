@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { RegisterController } from './register.controller';
 import { UsersServiceModule } from '@noloback/users.service';
-import { MailConfirmationModule } from '@noloback/mail-confirmation.service';
+import { MailConfirmationServiceModule } from '@noloback/mail-confirmation.service';
 
 
 
@@ -11,7 +11,7 @@ import { MailConfirmationModule } from '@noloback/mail-confirmation.service';
   exports: [],
   imports: [
     UsersServiceModule,
-    MailConfirmationModule,
+    MailConfirmationServiceModule,
   ],
 })
 export class RegisterModule {}

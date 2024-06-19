@@ -10,4 +10,4 @@ import { UsersServiceModule } from '@noloback/users.service';
   exports: [MailConfirmationService],
   imports: [MailerServiceModule, UsersServiceModule]
 })
-export class MailConfirmationModule {}
+export class MailConfirmationServiceModule {}
