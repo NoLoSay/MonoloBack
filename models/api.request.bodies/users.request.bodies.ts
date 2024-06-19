@@ -4,7 +4,8 @@ import {
   IsString,
   MinLength,
   IsEmail,
-  IsStrongPassword
+  IsStrongPassword,
+  IsNotEmpty
 } from 'class-validator'
 
 export class UserCreateModel {
@@ -65,8 +66,12 @@ export class UserUpdateModel {
   telNumber?: string
 }
 
-export class PasswordModel {
+export class UserChangePasswordModel {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
   token: string = '';
+
   @ApiProperty()
   @IsStrongPassword({
     minLength: 12,

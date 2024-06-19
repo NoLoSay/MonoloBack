@@ -4,7 +4,7 @@ import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
 import { LocalAuthGuard } from '@noloback/guards';
 import { Public } from '@noloback/jwt';
 import { GoogleOAuthGuard, EmailConfirmationGuard } from '@noloback/guards';
-import { PasswordModel } from '@noloback/api.request.bodies';
+import { UserChangePasswordModel } from '@noloback/api.request.bodies';
 import { MailConfirmationService } from '@noloback/mail-confirmation.service';
 
 @Controller('auth')
@@ -34,7 +34,7 @@ export class AuthController {
 
   @Post('change-password')
   @Public()
-  async changePassword(@Body() req: PasswordModel) {
+  async changePassword(@Body() req: UserChangePasswordModel) {
     return this.authService.changePassword(req.token, req.password);
   }
 
