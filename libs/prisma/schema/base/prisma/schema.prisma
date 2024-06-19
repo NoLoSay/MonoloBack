@@ -230,8 +230,8 @@ model Person {
   name      String
   bio       String?
   type      PersonType
-  birthDate DateTime?
-  deathDate DateTime?
+  birthDate String?
+  deathDate String?
   picture   String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
