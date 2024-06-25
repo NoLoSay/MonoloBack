@@ -5,9 +5,11 @@ import {
   User
 } from '@noloback/prisma-client-base'
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
-  InternalServerErrorException
+  InternalServerErrorException,
+  NotFoundException
 } from '@nestjs/common'
 import { hash } from 'bcrypt'
 import { LoggerService } from '@noloback/logger-lib'
@@ -60,6 +62,7 @@ export class UsersService {
           username: createUserDto.username,
           email: createUserDto.email,
           password: await hash(createUserDto.password, 12),
+          emailVerified: false,
           telNumber: createUserDto.telNumber,
           profiles: {
             create: {
@@ -84,6 +87,48 @@ export class UsersService {
       id: newUser.id,
       username: newUser.username,
       email: newUser.email
+    }
+  }
+  async markEmailAsConfirmed(email: string) {
+    try {
+      const result = await this.prismaBase.user.update({
+        where: { email: email },
+        data: {
+          emailVerified: true,
+        },
+      });
+  
+      if (!result) {
+        throw new NotFoundException(`User with email ${email} not found`);
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`User with email ${email} not found`);
+      } else {
+        throw new InternalServerErrorException('Failed to mark email as confirmed');
+      }
+    }
+  }
+
+  async changePassword(userId: number, newPassword: string) {
+    try {
+      const hashedPassword = await hash(newPassword, 12);
+      const result = await this.prismaBase.user.update({
+        where: { id: userId },
+        data: {
+          password: hashedPassword,
+        },
+      });
+  
+      if (!result) {
+        throw new NotFoundException(`User with ID ${userId} not found`);
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`User with ID ${userId} not found`);
+      } else {
+        throw new InternalServerErrorException('Failed to update the user password');
+      }
     }
   }
 
@@ -216,6 +261,7 @@ export class UsersService {
           username: user.username,
           password: user.password,
           email: user.email,
+          emailVerified: user.emailVerified,
           picture: user.picture,
           telNumber: user.telNumber,
           createdAt: user.createdAt,

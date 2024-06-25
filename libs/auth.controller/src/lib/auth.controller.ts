@@ -1,13 +1,18 @@
-import { Controller, Get, Request, Post, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards, Req, Body, Query } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
 import { LocalAuthGuard } from '@noloback/guards';
 import { Public } from '@noloback/jwt';
-import { GoogleOAuthGuard } from '@noloback/guards';
+import { GoogleOAuthGuard, EmailConfirmationGuard } from '@noloback/guards';
+import { UserChangePasswordModel } from '@noloback/api.request.bodies';
+import { MailConfirmationService } from '@noloback/mail-confirmation.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private readonly mailConfirmationService: MailConfirmationService,
+  ) {}
 
   @Public()
   @ApiBody({ type: UsernamePasswordCombo })
@@ -25,6 +30,25 @@ export class AuthController {
     const user = req.user;
 
     return this.authService.login(user);
+  }
+
+  @Post('change-password')
+  @Public()
+  async changePassword(@Body() req: UserChangePasswordModel) {
+    return this.authService.changePassword(req.token, req.password);
+  }
+
+  @Post('forgot-password')
+  @Public()
+  async forgotPassword(@Body() body: any) {
+    return this.authService.forgotPassword(body.email);
+  }
+  
+  @Get('confirm')
+  @Public()
+  async confirm(@Query('token') token: string) {
+    const email = await this.mailConfirmationService.decodeConfirmationToken(token);
+    return this.mailConfirmationService.confirmEmail(email);
   }
 
   // // @Public()

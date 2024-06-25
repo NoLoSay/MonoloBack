@@ -19,10 +19,16 @@
         "libs/addresses.controller/src/index.ts"
       ],
       "@noloback/addresses.service": ["libs/addresses.service/src/index.ts"],
+      "@noloback/api.querry.parameters": ["models/api.querry.parameters"],
       "@noloback/api.request.bodies": ["models/api.request.bodies"],
       "@noloback/api.returns": ["models/api.returns"],
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
+      "@noloback/mail-confirmation.service": ["libs/mail-confirmation.service/src/index.ts"],
+      "@noloback/mail-confirmation.controller": [
+        "libs/mail-confirmation.controller/src/index.ts"
+      ],
+      "@noloback/mailer": ["libs/mailer/src/index.ts"],
       "@noloback/cities.controller": ["libs/cities.controller/src/index.ts"],
       "@noloback/cities.service": ["libs/cities.service/src/index.ts"],
       "@noloback/countries.controller": [
