@@ -22,6 +22,9 @@ export class UtilsService {
 
     parseCustomDate(dateString: string): string {
         try {
+            if (!isNaN(+dateString)) {
+                return `${dateString}:01:01`;
+            }
             return dateString.toLowerCase().replace('é', 'e').replace('û', 'u').replace(this.dateRegex, (match: string, day: string, sep1: string, month: string, sep2: string, year: string) => {
                 if (!month) {
                     month = day;
