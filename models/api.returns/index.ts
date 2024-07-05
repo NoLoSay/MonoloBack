@@ -9,6 +9,7 @@ export * from './items.api.returns';
 export * from './persons.api.returns';
 export * from './profiles.api.returns';
 export * from './site.managers.api.returns';
+export * from './sign.languages.api.returns';
 export * from './sites.api.returns';
 export * from './users.api.returns';
 export * from './videos.api.returns';
