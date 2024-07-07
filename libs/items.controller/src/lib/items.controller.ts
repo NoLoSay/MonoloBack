@@ -128,7 +128,7 @@ export class ItemsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedItem: ItemManipulationModel
   ) {
-    return this.itemsService.update(id, updatedItem)
+    return this.itemsService.update(id, updatedItem, request.user)
   }
 
   @Roles([ADMIN])

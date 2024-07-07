@@ -1,5 +1,11 @@
-import { Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
 import {
+  Item,
+  Prisma,
+  PrismaBaseService,
+  Role
+} from '@noloback/prisma-client-base'
+import {
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException
@@ -19,6 +25,7 @@ import {
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import { FiltersGetMany } from 'models/filters-get-many'
+import { SitesManagersService } from '@noloback/sites.managers.service'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -26,31 +33,37 @@ import { FiltersGetMany } from 'models/filters-get-many'
 export class ItemsService {
   constructor (
     private prismaBase: PrismaBaseService,
+    private readonly sitesManagersService: SitesManagersService,
     private videoService: VideoService //private loggingService: LoggerService
   ) {}
 
-  async count (nameLike: string | undefined, typeId: number | undefined, categoryId: number | undefined): Promise<number> {
+  async count (
+    nameLike: string | undefined,
+    typeId: number | undefined,
+    categoryId: number | undefined
+  ): Promise<number> {
     return this.prismaBase.item.count({
       where: {
         itemType: {
-          id : typeId ? typeId : undefined,
+          id: typeId ? typeId : undefined,
           itemCategoryId: categoryId ? categoryId : undefined
         },
-        name: nameLike ? {
-          contains: nameLike
-        } : undefined,
-        deletedAt: null,
+        name: nameLike
+          ? {
+              contains: nameLike
+            }
+          : undefined,
+        deletedAt: null
       }
     })
   }
 
-  private async checkExistingItem (id: number) {
-    if (
-      (await this.prismaBase.item.count({
-        where: { id: id, deletedAt: null }
-      })) === 0
-    )
-      throw new NotFoundException('Item not found')
+  private async checkExistingItem (id: number): Promise<Item> {
+    const item = await this.prismaBase.item.findUnique({
+      where: { id: id, deletedAt: null }
+    })
+    if (!item) throw new NotFoundException('Item not found')
+    return item
   }
 
   private async checkExistingSite (id: number) {
@@ -62,7 +75,7 @@ export class ItemsService {
       throw new NotFoundException('Site not found')
   }
 
-  async patch(id: number, body: ItemManipulationModel) {
+  async patch (id: number, body: ItemManipulationModel) {
     if (body.siteId) await this.checkExistingSite(body.siteId)
     return this.prismaBase.item.update({
       where: { id },
@@ -75,7 +88,7 @@ export class ItemsService {
     filters: FiltersGetMany,
     nameLike?: string,
     typeId?: number,
-    categoryId?: number,
+    categoryId?: number
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
     let selectOptions: Prisma.ItemSelect
 
@@ -94,7 +107,7 @@ export class ItemsService {
         select: selectOptions,
         where: {
           itemType: {
-            id : typeId ? typeId : undefined,
+            id: typeId ? typeId : undefined,
             itemCategoryId: categoryId ? categoryId : undefined
           },
           name: nameLike
@@ -220,9 +233,23 @@ export class ItemsService {
 
   async update (
     id: number,
-    updatedItem: ItemManipulationModel
+    updatedItem: ItemManipulationModel,
+    user: UserRequestModel
   ): Promise<ItemCommonReturn> {
-    this.checkExistingItem(id)
+    const item: Item = await this.checkExistingItem(id)
+
+    if (item.siteId) {
+      if (
+        !(await this.sitesManagersService.isAllowedToModify(user, item.siteId))
+      ) {
+        throw new ForbiddenException('You are not allowed to modify this item.')
+      }
+    } else {
+      if (user.activeProfile.role !== Role.ADMIN) {
+        throw new ForbiddenException('You are not allowed to modify this item.')
+      }
+    }
+
     const updatedItemData: {
       name: string
       description?: string
