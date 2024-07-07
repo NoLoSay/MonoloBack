@@ -102,8 +102,8 @@ export async function seedSites(
                     email: '',
                     telNumber: '+33811464644',
                     website: 'https://www.lesmachines-nantes.fr',
-                    picture:
-                      'https://www.sozohotel.fr/cache/picture/m_sozo-hotel-nantes-106286_1155x773_center_center.jpg',
+                    // picture:
+                    //   'https://www.sozohotel.fr/cache/picture/m_sozo-hotel-nantes-106286_1155x773_center_center.jpg',
                     shortDescription: 'Lieu historique de la ville de Nantes',
                     longDescription:
                       "Les Machines de l'Île de Nantes est une attraction unique où des machines extraordinaires sont créées et exposées. Inspirées par les univers de Jules Verne et de Léonard de Vinci, ces créations mécaniques, comme le célèbre Grand Éléphant, enchantent les visiteurs par leur ingéniosité et leur grandeur.",
