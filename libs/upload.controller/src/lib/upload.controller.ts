@@ -53,7 +53,7 @@ export class UploadController {
     const video = await this.videoService.getYoutubeById(+videoId);
     if (video) {
       if (video.video.hostingProviderId === 1) {
-        unlink('/opt/nolovideos/' + video.video.hostingProviderVideoId, (err) => {
+        unlink(`${process.env["LOCAL_VIDEO_PATH"]}` + video.video.hostingProviderVideoId, (err) => {
           if (err) {
             console.error(err);
           }
@@ -78,7 +78,7 @@ export class UploadController {
     @Param('videoId') videoId: string
   ) {
     try {
-      const file = readFileSync('/opt/nolovideos/' + videoId);
+      const file = readFileSync(`${process.env["LOCAL_VIDEO_PATH"]}` + videoId);
       if (!file) {
         return new NotFoundException("Video doesn't exist");
       }
