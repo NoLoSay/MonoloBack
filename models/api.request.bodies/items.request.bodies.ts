@@ -41,3 +41,11 @@ export class ItemManipulationModel {
   @IsPositive()
   siteId?: number
 }
+
+export class ItemGiveModel {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsInt()
+  @IsPositive()
+  siteId: number = 0
+}

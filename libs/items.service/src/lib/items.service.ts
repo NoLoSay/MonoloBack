@@ -14,7 +14,8 @@ import { VideoService } from '@noloback/video.service'
 import {
   ItemAdminReturn,
   ItemCommonReturn,
-  ItemDetailedReturn
+  ItemDetailedReturn,
+  ItemManagerReturn
 } from '@noloback/api.returns'
 import {
   ItemAdminSelect,
@@ -75,12 +76,16 @@ export class ItemsService {
       throw new NotFoundException('Site not found')
   }
 
-  async patch (id: number, body: ItemManipulationModel) {
+  async patch (
+    id: number,
+    body: ItemManipulationModel
+  ): Promise<ItemManagerReturn> {
     if (body.siteId) await this.checkExistingSite(body.siteId)
     return this.prismaBase.item.update({
       where: { id },
-      data: body
-    })
+      data: body,
+      select: new ItemManagerSelect()
+    }) as unknown as ItemManagerReturn
   }
 
   async findAll (
@@ -324,5 +329,42 @@ export class ItemsService {
       }
     })
     return items as ItemCommonReturn
+  }
+
+  async giveItemToSite (
+    itemId: number,
+    siteId: number,
+    who: UserRequestModel
+  ): Promise<ItemCommonReturn> {
+    const item: Item = await this.checkExistingItem(itemId)
+    await this.checkExistingSite(siteId)
+
+    if (who.activeProfile.role !== Role.ADMIN) {
+      if (
+        !item.siteId ||
+        !(await this.sitesManagersService.isMainManagerOfSite(who.activeProfile.id, item.siteId))
+      ) {
+        throw new ForbiddenException('You are not allowed to give this item.')
+      }
+    }
+
+    const updatedItem: unknown = await this.prismaBase.item
+      .update({
+        where: { id: itemId },
+        data: {
+          site: {
+            connect: {
+              id: siteId
+            }
+          }
+        }
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      })
+
+    return updatedItem as ItemCommonReturn
   }
 }

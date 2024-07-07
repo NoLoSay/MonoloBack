@@ -21,9 +21,13 @@ import { VideoService } from '@noloback/video.service'
 import {
   ItemAdminReturn,
   ItemCommonReturn,
-  ItemDetailedReturn
+  ItemDetailedReturn,
+  ItemManagerReturn
 } from '@noloback/api.returns'
-import { ItemManipulationModel } from '@noloback/api.request.bodies'
+import {
+  ItemGiveModel,
+  ItemManipulationModel
+} from '@noloback/api.request.bodies'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { LoggerService } from '@noloback/logger-lib'
 import { Role } from '@noloback/prisma-client-base'
@@ -97,7 +101,10 @@ export class ItemsController {
 
   @Roles([ADMIN, MANAGER])
   @Post()
-  async create (@Request() request: any, @Body() item: ItemManipulationModel) {
+  async create (
+    @Request() request: any,
+    @Body() item: ItemManipulationModel
+  ): Promise<ItemCommonReturn> {
     if (request.user.activeProfile.role === Role.MANAGER && !item.siteId) {
       throw new BadRequestException('You must provide a siteId.')
     }
@@ -127,7 +134,7 @@ export class ItemsController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatedItem: ItemManipulationModel
-  ) {
+  ): Promise<ItemCommonReturn> {
     return this.itemsService.update(id, updatedItem, request.user)
   }
 
@@ -137,7 +144,7 @@ export class ItemsController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
     @Body() item: ItemManipulationModel
-  ) {
+  ): Promise<ItemManagerReturn> {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
@@ -151,7 +158,10 @@ export class ItemsController {
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+  async delete (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number
+  ): Promise<ItemCommonReturn> {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'DELETE',
@@ -168,5 +178,15 @@ export class ItemsController {
     @Request() request: any
   ) {
     return this.videoService.getVideosFromItem(id, request.user)
+  }
+
+  @Post(':id/give')
+  @Roles([ADMIN, MANAGER])
+  async giveItem (
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: any,
+    @Body() body: ItemGiveModel
+  ): Promise<ItemCommonReturn> {
+    return this.itemsService.giveItemToSite(id, body.siteId, request.user)
   }
 }
