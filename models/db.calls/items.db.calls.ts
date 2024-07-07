@@ -22,6 +22,11 @@ class ItemTypeSelect {
   }
 }
 
+class SiteSelect {
+  id: boolean = true
+  name: boolean = true
+}
+
 export class ItemCommonSelect {
   id: boolean = true
   name: boolean = true
@@ -32,6 +37,9 @@ export class ItemCommonSelect {
   }
   itemType: object = {
     select: new ItemTypeSelect()
+  }
+  site: object = {
+    select: new SiteSelect()
   }
 }
 
