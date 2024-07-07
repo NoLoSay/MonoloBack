@@ -30,12 +30,15 @@ import { FileInterceptor } from '@nestjs/platform-express'
 import multer = require('multer')
 import { randomUUID } from 'crypto'
 import { extname } from 'path'
+import { Public } from '@noloback/jwt'
+import { UploadthingService } from '@noloback/uploadthing.service'
 
 @Controller('items')
 export class ItemsController {
   constructor (
     private readonly itemsService: ItemsService,
     private readonly sitesManagersService: SitesManagersService,
+    private readonly uploadthingService: UploadthingService,
     private readonly videoService: VideoService // private loggingService: LoggerService
   ) {}
 
@@ -76,6 +79,14 @@ export class ItemsController {
           categoryId
         )
       )
+  }
+
+  @Public()
+  @Post('file')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const fileUrl = await this.uploadthingService.uploadFile(file);
+    return { url: fileUrl };
   }
 
   @Roles([ADMIN, CREATOR, MANAGER])
