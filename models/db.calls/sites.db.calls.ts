@@ -1,5 +1,10 @@
 import { AddressCommonSelect } from "./addresses.db.calls"
 
+class Picture {
+  id: boolean = true
+  hostingUrl: boolean = true
+}
+
 export class SiteCommonSelect {
   id: boolean = true
   uuid: boolean = true
@@ -10,7 +15,9 @@ export class SiteCommonSelect {
   email: boolean = true
   website: boolean = true
   price: boolean = true
-  picture: boolean = true
+  pictures: object = {
+    select: new Picture()
+  }
   type: boolean = true
   tags: boolean = true
   address: object = {

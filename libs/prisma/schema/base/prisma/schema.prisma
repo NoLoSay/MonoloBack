@@ -294,6 +294,8 @@ model Picture {
   deletedAt  DateTime?
   itemId     Int?
   item       Item?     @relation(fields: [itemId], references: [id])
+  site       Site?     @relation(fields: [siteId], references: [id])
+  siteId     Int?
 }
 
 // -------------------------------
@@ -359,7 +361,7 @@ model Site {
   email            String?
   website          String?
   price            Float
-  picture          String?
+  pictures         Picture[]
   type             SiteType
   tags             SiteTag[]
   createdAt        DateTime         @default(now())
