@@ -64,6 +64,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
               update: {},
               create: {
                 email: user.email,
+                emailVerified: true,
                 password: await hash(randomUUID(), 12),
                 picture: user.picture,
                 profiles: {
