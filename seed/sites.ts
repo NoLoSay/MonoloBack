@@ -48,6 +48,7 @@ export async function seedSites(
                     name: 'Chateau des Ducs de Bretagne',
                     price: 9,
                     type: 'MUSEUM',
+                    tags: ['NOLOSAY', 'BLIND_FRIENDLY', 'DEAF_FRIENDLY'],
                     email: '',
                     telNumber: '+33811464644',
                     website: 'https://www.chateaunantes.fr/',
@@ -67,7 +68,53 @@ export async function seedSites(
             },
           },
         });
+        const machinesDeLile = await prisma.address.upsert({
+          where: {
+            houseNumber_street_zip_cityId: {
+              houseNumber: '1',
+              street: 'Parc des Chantiers',
+              zip: '44000',
+              cityId: nantes.id,
+            },
+          },
+          update: {},
+          create: {
+            id: 2,
+            houseNumber: '1',
+            street: 'Parc des Chantiers',
+            zip: '44000',
+            cityId: nantes.id,
+            longitude: -1.56505,
+            latitude: 47.20669,
+            sites: {
+              createMany: {
+                data: [
+                  {
+                    name: "Machines de l'île",
+                    price: 9.5,
+                    type: 'PUBLIC_PLACE',
+                    tags: [
+                      'NOLOSAY',
+                      'BLIND_FRIENDLY',
+                      'DEAF_FRIENDLY',
+                      'DISABILITY_FRIENDLY',
+                    ],
+                    email: '',
+                    telNumber: '+33811464644',
+                    website: 'https://www.lesmachines-nantes.fr',
+                    picture:
+                      'https://www.sozohotel.fr/cache/picture/m_sozo-hotel-nantes-106286_1155x773_center_center.jpg',
+                    shortDescription: 'Lieu historique de la ville de Nantes',
+                    longDescription:
+                      "Les Machines de l'Île de Nantes est une attraction unique où des machines extraordinaires sont créées et exposées. Inspirées par les univers de Jules Verne et de Léonard de Vinci, ces créations mécaniques, comme le célèbre Grand Éléphant, enchantent les visiteurs par leur ingéniosité et leur grandeur.",
+                  },
+                ],
+              },
+            },
+          },
+        });
         addresses.push(chateauDucBretagne);
+        addresses.push(machinesDeLile);
 
         const manager = await prisma.profile.findFirst({
           where: {
