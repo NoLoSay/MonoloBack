@@ -149,6 +149,7 @@ export class ItemsService {
     const newItemData: {
       name: string
       description?: string
+      textToTranslate: string
       relatedPerson?: {
         connect: {
           id: number
@@ -161,7 +162,8 @@ export class ItemsService {
       }
     } = {
       name: item.name,
-      description: item.description
+      description: item.description,
+      textToTranslate: item.textToTranslate
     }
 
     if (item.relatedPersonId != null) {

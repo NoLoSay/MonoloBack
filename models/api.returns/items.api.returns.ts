@@ -21,6 +21,7 @@ export class ItemCommonReturn {
   uuid: string = ''
   name: string = ''
   description: string = ''
+  textToTranslate: string = ""
   picture: string = ''
   relatedPerson: Person = new Person()
   itemType: ItemType = new ItemType()
