@@ -9,7 +9,7 @@ class ItemVideoSelect {
   uuid: boolean = true
   name: boolean = true
   description: boolean = true
-  picture: boolean = true
+  pictures: boolean = true
 }
 
 class ProfileVideoSelect {
