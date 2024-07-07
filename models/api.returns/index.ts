@@ -2,6 +2,7 @@ export * from './addresses.api.returns';
 export * from './cities.api.returns';
 export * from './countries.api.returns';
 export * from './departments.api.returns';
+export * from './enum.colors.api.returns';
 export * from './exhibitions.api.returns';
 export * from './item.categories.api.returns';
 export * from './item.types.api.returns';

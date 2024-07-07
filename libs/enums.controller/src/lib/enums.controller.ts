@@ -2,25 +2,29 @@ import {
   Controller,
   Get,
   Patch,
-  Post,
   Body,
-  Put,
   Param,
-  Delete,
   ParseIntPipe,
   Request,
   Query
 } from '@nestjs/common'
-import {
-  PersonType,
-  Role,
-  SiteTag,
-  SiteType,
-  ValidationStatus
-} from '@prisma/client/base'
+import { Role } from '@prisma/client/base'
 import { EnumsService } from '@noloback/enums.service'
 import { ADMIN, Roles } from '@noloback/roles'
 import { LoggerService } from '@noloback/logger-lib'
+import { EnumColorManipulationModel } from '@noloback/api.request.bodies'
+import {
+  PersonTypeColorAdminReturn,
+  PersonTypeColorCommonReturn,
+  RoleColorAdminReturn,
+  RoleColorCommonReturn,
+  SiteTagColorAdminReturn,
+  SiteTagColorCommonReturn,
+  SiteTypeColorAdminReturn,
+  SiteTypeColorCommonReturn,
+  ValidationStatusColorAdminReturn,
+  ValidationStatusColorCommonReturn
+} from '@noloback/api.returns'
 
 @Controller('enums')
 export class EnumsController {
@@ -30,10 +34,7 @@ export class EnumsController {
   async getRoles (
     @Request() request: any,
     @Query('displayAs') displayAs?: Role | undefined
-  ): Promise<
-    | { role: Role; color: string }[]
-    | { id: number; role: Role; color: string }[]
-  > {
+  ): Promise<RoleColorCommonReturn[] | RoleColorAdminReturn[]> {
     if (
       displayAs === Role.ADMIN &&
       request.user.activeProfile.role === Role.ADMIN
@@ -47,16 +48,19 @@ export class EnumsController {
   @Patch('roles/:id')
   async updateRoles (
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
-  ): Promise<{ id: number; role: Role; color: string }> {
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: EnumColorManipulationModel
+  ): Promise<RoleColorAdminReturn> {
+    const updated: RoleColorAdminReturn =
+      await this.enumsService.roleColorsPatch(id, body)
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Role Colors',
-      +id,
-      JSON.stringify(request.body)
+      +updated.id,
+      JSON.stringify(body)
     )
-    return await this.enumsService.roleColorsPatch(id, request.body)
+    return updated
   }
 
   @Get('validation-statuses')
@@ -64,8 +68,7 @@ export class EnumsController {
     @Request() request: any,
     @Query('displayAs') displayAs?: Role | undefined
   ): Promise<
-    | { validationStatus: ValidationStatus; color: string }[]
-    | { id: number; validationStatus: ValidationStatus; color: string }[]
+    ValidationStatusColorCommonReturn[] | ValidationStatusColorAdminReturn[]
   > {
     if (
       displayAs === Role.ADMIN &&
@@ -80,30 +83,26 @@ export class EnumsController {
   @Patch('validation-statuses/:id')
   async updateValidationStatuses (
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
-  ): Promise<{
-    id: number
-    validationStatus: ValidationStatus
-    color: string
-  }> {
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: EnumColorManipulationModel
+  ): Promise<ValidationStatusColorAdminReturn> {
+    const updated: ValidationStatusColorAdminReturn =
+      await this.enumsService.validationStatusColorsPatch(id, body)
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Validation Status Colors',
-      +id,
-      JSON.stringify(request.body)
+      +updated.id,
+      JSON.stringify(body)
     )
-    return await this.enumsService.validationStatusColorsPatch(id, request.body)
+    return updated
   }
 
   @Get('person-types')
   async getPersonTypes (
     @Request() request: any,
     @Query('displayAs') displayAs?: Role | undefined
-  ): Promise<
-    | { personType: PersonType; color: string }[]
-    | { id: number; personType: PersonType; color: string }[]
-  > {
+  ): Promise<PersonTypeColorCommonReturn[] | PersonTypeColorAdminReturn[]> {
     if (
       displayAs === Role.ADMIN &&
       request.user.activeProfile.role === Role.ADMIN
@@ -117,26 +116,26 @@ export class EnumsController {
   @Patch('person-types/:id')
   async updatePersonTypes (
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
-  ): Promise<{ id: number; personType: PersonType; color: string }> {
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: EnumColorManipulationModel
+  ): Promise<PersonTypeColorAdminReturn> {
+    const updated: PersonTypeColorAdminReturn =
+      await this.enumsService.personTypeColorsPatch(id, body)
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Person Type Colors',
-      +id,
-      JSON.stringify(request.body)
+      +updated.id,
+      JSON.stringify(body)
     )
-    return await this.enumsService.personTypeColorsPatch(id, request.body)
+    return updated
   }
 
   @Get('site-types')
   async getSiteTypes (
     @Request() request: any,
     @Query('displayAs') displayAs?: Role | undefined
-  ): Promise<
-    | { siteType: SiteType; color: string }[]
-    | { id: number; siteType: SiteType; color: string }[]
-  > {
+  ): Promise<SiteTypeColorCommonReturn[] | SiteTypeColorAdminReturn[]> {
     if (
       displayAs === Role.ADMIN &&
       request.user.activeProfile.role === Role.ADMIN
@@ -150,26 +149,26 @@ export class EnumsController {
   @Patch('site-types/:id')
   async updateSiteTypes (
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
-  ): Promise<{ id: number; siteType: SiteType; color: string }> {
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: EnumColorManipulationModel
+  ): Promise<SiteTypeColorAdminReturn> {
+    const updated: SiteTypeColorAdminReturn =
+      await this.enumsService.siteTypeColorsPatch(id, body)
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Site Type Colors',
-      +id,
-      JSON.stringify(request.body)
+      +updated.id,
+      JSON.stringify(body)
     )
-    return await this.enumsService.siteTypeColorsPatch(id, request.body)
+    return updated
   }
 
   @Get('site-tags')
   async getSiteTags (
     @Request() request: any,
     @Query('displayAs') displayAs?: Role | undefined
-  ): Promise<
-    | { siteTag: SiteTag; color: string }[]
-    | { id: number; siteTag: SiteTag; color: string }[]
-  > {
+  ): Promise<SiteTagColorCommonReturn[] | SiteTagColorAdminReturn[]> {
     if (
       displayAs === Role.ADMIN &&
       request.user.activeProfile.role === Role.ADMIN
@@ -183,15 +182,18 @@ export class EnumsController {
   @Patch('site-tags/:id')
   async updateSiteTags (
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
-  ): Promise<{ id: number; siteTag: SiteTag; color: string }> {
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: EnumColorManipulationModel
+  ): Promise<SiteTagColorAdminReturn> {
+    const updated: SiteTagColorAdminReturn =
+      await this.enumsService.siteTagColorsPatch(id, body)
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Site Tag Colors',
-      +id,
-      JSON.stringify(request.body)
+      +updated.id,
+      JSON.stringify(body)
     )
-    return await this.enumsService.siteTagColorsPatch(id, request.body)
+    return updated
   }
 }
