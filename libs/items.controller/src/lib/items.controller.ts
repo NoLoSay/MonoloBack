@@ -101,7 +101,7 @@ export class ItemsController {
   @Post()
   @UseInterceptors(FileInterceptor('picture', {
     storage: multer.diskStorage({
-      destination: '/opt/nolopictures',
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
       filename: (req, file, cb) => {
         const uuid = randomUUID
         ();
@@ -117,7 +117,7 @@ export class ItemsController {
   @Put(':id')
   @UseInterceptors(FileInterceptor('picture', {
     storage: multer.diskStorage({
-      destination: '/opt/nolopictures',
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
       filename: (req, file, cb) => {
         const uuid = randomUUID
         ();
@@ -138,7 +138,7 @@ export class ItemsController {
   @Patch(':id')
   @UseInterceptors(FileInterceptor('picture', {
     storage: multer.diskStorage({
-      destination: '/opt/nolopictures',
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
       filename: (req, file, cb) => {
         const uuid = randomUUID
         ();

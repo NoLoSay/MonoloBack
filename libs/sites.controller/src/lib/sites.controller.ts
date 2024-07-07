@@ -60,7 +60,7 @@ export class SitesController {
   @Post()
   @UseInterceptors(FileInterceptor('picture', {
     storage: multer.diskStorage({
-      destination: '/opt/nolopictures',
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
       filename: (req, file, cb) => {
         const uuid = randomUUID
         ();
@@ -80,7 +80,7 @@ export class SitesController {
   @Put(':id')
   @UseInterceptors(FileInterceptor('picture', {
     storage: multer.diskStorage({
-      destination: '/opt/nolopictures',
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
       filename: (req, file, cb) => {
         const uuid = randomUUID
         ();
@@ -115,7 +115,7 @@ export class SitesController {
   @Patch(':id')
   @UseInterceptors(FileInterceptor('picture', {
     storage: multer.diskStorage({
-      destination: '/opt/nolopictures',
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
       filename: (req, file, cb) => {
         const uuid = randomUUID
         ();
