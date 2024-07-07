@@ -288,6 +288,7 @@ model Item {
 model Picture {
   id         Int       @id @default(autoincrement())
   uuid       String    @unique @default(uuid())
+  localPath  String?
   hostingUrl String    @unique
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt

@@ -21,11 +21,13 @@ import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 import { UploadthingService } from '@noloback/uploadthing.service';
+import { PicturesService } from '@noloback/pictures.service'
 
 @Injectable()
 export class ItemsService {
   constructor (
     private prismaBase: PrismaBaseService,
+    private readonly picturesService: PicturesService,
     private videoService: VideoService, //private loggingService: LoggerService
     private uploadthingService: UploadthingService
   ) {}
@@ -159,11 +161,7 @@ export class ItemsService {
     let newPicture: Picture | undefined = undefined;
 
     if (picture) {
-      newPicture = await this.prismaBase.picture.create({
-        data: {
-          hostingUrl: picture?.path
-        }
-      });
+      newPicture = await this.picturesService.createPicture(picture.path);
     }
 
     const newItem = this.prismaBase.item.create({
@@ -201,11 +199,7 @@ export class ItemsService {
     let newPicture: Picture | undefined = undefined;
 
     if (picture) {
-      newPicture = await this.prismaBase.picture.create({
-        data: {
-          hostingUrl: picture?.path
-        }
-      });
+      newPicture = await this.picturesService.createPicture(picture.path);
     }
 
     const newItem = this.prismaBase.item.update({

@@ -27,11 +27,13 @@ import {
 import { UserRequestModel } from '@noloback/requests.constructor'
 import { SitesManagersService } from '@noloback/sites.managers.service'
 // import { LoggerService } from '@noloback/logger-lib';
+import { PicturesService } from '@noloback/pictures.service'
 
 @Injectable()
 export class SitesService {
   constructor (
     private readonly prismaBase: PrismaBaseService,
+    private readonly picturesService: PicturesService,
     private readonly sitesManagerService: SitesManagersService // private loggingService: LoggerService
   ) {}
 
@@ -113,6 +115,12 @@ export class SitesService {
   }
 
   async create (site: SiteManipulationRequestBody, picture: Express.Multer.File): Promise<SiteAdminReturn> {
+    let newPicture: Picture | undefined = undefined;
+
+    if (picture) {
+      newPicture = await this.picturesService.createPicture(picture.path);
+    }
+
     if (site.addressId) {
      
     const newSite: any = await this.prismaBase.site
@@ -125,9 +133,9 @@ export class SitesService {
         email: site.email,
         website: site.website,
         price: +site.price,
-        pictures: picture ? {
-          create: {
-            hostingUrl: picture.path
+        pictures: newPicture ? {
+          connect: {
+            id: newPicture.id
           }
         } : {},
         type: site.type as unknown as SiteType,
@@ -177,9 +185,9 @@ export class SitesService {
           email: site.email,
           website: site.website,
           price: +site.price,
-          pictures: picture ? {
-            create: {
-              hostingUrl: picture.path
+          pictures: newPicture ? {
+            connect: {
+              id: newPicture.id
             }
           } : {},
           type: site.type as unknown as SiteType,
@@ -263,11 +271,7 @@ export class SitesService {
     }
 
     if (picture) {
-      newPicture = await this.prismaBase.picture.create({
-        data: {
-          hostingUrl: picture.path
-        }
-      });
+      newPicture = await this.picturesService.createPicture(picture.path);
     }
 
     const updatedSite: unknown = await this.prismaBase.site

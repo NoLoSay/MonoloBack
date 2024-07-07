@@ -51,8 +51,13 @@ export async function seedSites(
                     email: '',
                     telNumber: '+33811464644',
                     website: 'https://www.chateaunantes.fr/',
-                    picture:
-                      'https://www.chateaunantes.fr/wp-content/themes/chateaunantes2020/assets/illustration/home_chateau.jpg',
+                    // pictures: {
+                    //   createMany: {
+                    //     data: [{
+                    //       hostingUrl: 'https://www.chateaunantes.fr/wp-content/themes/chateaunantes2020/assets/illustration/home_chateau.jpg',
+                    //     }]
+                    //   }
+                    // },
                     shortDescription: 'Le château de Nantes',
                     longDescription:
                       'Au cœur du quartier médiéval de Nantes, découvrez le Château des ducs de Bretagne, site emblématique de la ville, construit à la fin du 15e siècle par François II et sa fille Anne de Bretagne.',

@@ -64,7 +64,7 @@ export async function seedItems(): Promise<Item[]> {
                     id: castle.id,
                   },
                 },
-                picture: chateauDucBretagne.picture,
+                // pictures: chateauDucBretagne.pictures,
                 description: chateauDucBretagne.longDescription,
                 textToTranslate: "text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate",
                 exhibitedBy: {
