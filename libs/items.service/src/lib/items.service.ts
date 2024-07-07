@@ -53,7 +53,17 @@ export class ItemsService {
       throw new NotFoundException('Item not found')
   }
 
-  async patch(id: number, body: any) {
+  private async checkExistingSite (id: number) {
+    if (
+      (await this.prismaBase.site.count({
+        where: { id: id, deletedAt: null }
+      })) === 0
+    )
+      throw new NotFoundException('Site not found')
+  }
+
+  async patch(id: number, body: ItemManipulationModel) {
+    if (body.siteId) await this.checkExistingSite(body.siteId)
     return this.prismaBase.item.update({
       where: { id },
       data: body

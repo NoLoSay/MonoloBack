@@ -55,13 +55,17 @@ export class ItemsController {
       order,
       ['id', 'name', 'description', 'type', 'category'],
       'id'
-    );
+    )
 
     // return this.itemsService.findAll(request.user.role)
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': await this.itemsService.count(nameLike, typeId, categoryId)
+        'X-Total-Count': await this.itemsService.count(
+          nameLike,
+          typeId,
+          categoryId
+        )
       })
       .status(200)
       .json(
@@ -97,7 +101,13 @@ export class ItemsController {
     if (request.user.activeProfile.role === Role.MANAGER && !item.siteId) {
       throw new BadRequestException('You must provide a siteId.')
     }
-    if (item.siteId && !await this.sitesManagersService.isAllowedToModify(request.user, item.siteId) ) {
+    if (
+      item.siteId &&
+      !(await this.sitesManagersService.isAllowedToModify(
+        request.user,
+        item.siteId
+      ))
+    ) {
       throw new ForbiddenException('You are not allowed to modify this site.')
     }
     const createdItem = await this.itemsService.create(item)
@@ -107,7 +117,7 @@ export class ItemsController {
       'Item',
       createdItem.id,
       JSON.stringify(createdItem)
-    );
+    )
     return createdItem
   }
 
@@ -123,16 +133,20 @@ export class ItemsController {
 
   @Roles([ADMIN])
   @Patch(':id')
-  async patch (@Request() request: any, @Param('id', ParseIntPipe) id: number) {
+  async patch (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() item: ItemManipulationModel
+  ) {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Item',
       +id,
       JSON.stringify(request.body)
-    );
+    )
 
-    return this.itemsService.patch(id, request.body)
+    return this.itemsService.patch(id, item)
   }
 
   @Roles([ADMIN])
@@ -143,7 +157,7 @@ export class ItemsController {
       'DELETE',
       'Item',
       +id
-    );
+    )
 
     return this.itemsService.delete(id)
   }
