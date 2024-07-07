@@ -81,14 +81,6 @@ export class ItemsController {
       )
   }
 
-  @Public()
-  @Post('file')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    const fileUrl = await this.uploadthingService.uploadFile(file);
-    return { url: fileUrl };
-  }
-
   @Roles([ADMIN, CREATOR, MANAGER])
   @Get('video-pending')
   async findAllVideoPendingItems () {
@@ -109,7 +101,7 @@ export class ItemsController {
   @Post()
   @UseInterceptors(FileInterceptor('picture', {
     storage: multer.diskStorage({
-      destination: '/opt/nolovideos',
+      destination: '/opt/nolopictures',
       filename: (req, file, cb) => {
         const uuid = randomUUID
         ();
@@ -125,7 +117,7 @@ export class ItemsController {
   @Put(':id')
   @UseInterceptors(FileInterceptor('picture', {
     storage: multer.diskStorage({
-      destination: '/opt/nolovideos',
+      destination: '/opt/nolopictures',
       filename: (req, file, cb) => {
         const uuid = randomUUID
         ();
@@ -146,7 +138,7 @@ export class ItemsController {
   @Patch(':id')
   @UseInterceptors(FileInterceptor('picture', {
     storage: multer.diskStorage({
-      destination: '/opt/nolovideos',
+      destination: '/opt/nolopictures',
       filename: (req, file, cb) => {
         const uuid = randomUUID
         ();

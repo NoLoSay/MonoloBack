@@ -16,13 +16,18 @@ class ItemType {
   itemCategory: ItemCategory = new ItemCategory()
 }
 
+class Picture {
+  id: number = 0
+  hostingUrl: string = ''
+}
+
 export class ItemCommonReturn {
   id: number = 0
   uuid: string = ''
   name: string = ''
   description: string = ''
   textToTranslate: string = ""
-  picture: string = ''
+  pictures: Picture[] = [new Picture()]
   relatedPerson: Person = new Person()
   itemType: ItemType = new ItemType()
 }
