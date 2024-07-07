@@ -13,7 +13,8 @@ import {
 import {
   ItemAdminSelect,
   ItemCommonSelect,
-  ItemDetailedSelect
+  ItemDetailedSelect,
+  ItemManagerSelect
 } from '@noloback/db.calls'
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
@@ -159,6 +160,11 @@ export class ItemsService {
           id: number
         }
       }
+      site?: {
+        connect: {
+          id: number
+        }
+      }
     } = {
       name: item.name,
       description: item.description
@@ -180,10 +186,18 @@ export class ItemsService {
       }
     }
 
+    if (item.siteId != null) {
+      newItemData.site = {
+        connect: {
+          id: item.siteId
+        }
+      }
+    }
+
     const newItem: unknown = await this.prismaBase.item
       .create({
         data: newItemData,
-        select: new ItemAdminSelect()
+        select: new ItemCommonSelect()
       })
       .catch((e: Error) => {
         console.log(e)

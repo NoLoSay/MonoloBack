@@ -278,6 +278,8 @@ model Item {
   deletedAt       DateTime?
   itemTypeId      Int?
   relatedPersonId Int?
+  siteId          Int?
+  site            Site?           @relation(fields: [siteId], references: [id])
   itemType        ItemType?       @relation(fields: [itemTypeId], references: [id])
   relatedPerson   Person?         @relation(fields: [relatedPersonId], references: [id])
   exhibitedBy     ExhibitedItem[]
@@ -357,6 +359,7 @@ model Site {
   address          Address          @relation(fields: [addressId], references: [id])
   exhibition       Exhibition[]
   siteHasManagers  SiteHasManager[]
+  items            Item[]
 }
 
 model SiteHasManager {

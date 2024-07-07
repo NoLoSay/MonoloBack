@@ -10,7 +10,9 @@ import {
   Request,
   Response,
   Query,
-  Patch
+  Patch,
+  ForbiddenException,
+  BadRequestException
 } from '@nestjs/common'
 import { ADMIN, CREATOR, MANAGER, Roles } from '@noloback/roles'
 import { ItemsService } from '@noloback/items.service'
@@ -24,6 +26,7 @@ import {
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { LoggerService } from '@noloback/logger-lib'
+import { Role } from '@noloback/prisma-client-base'
 
 @Controller('items')
 export class ItemsController {
@@ -90,8 +93,22 @@ export class ItemsController {
 
   @Roles([ADMIN, MANAGER])
   @Post()
-  async create (@Request() request: any, @Body() items: ItemManipulationModel) {
-    return this.itemsService.create(items)
+  async create (@Request() request: any, @Body() item: ItemManipulationModel) {
+    if (request.user.activeProfile.role === Role.MANAGER && !item.siteId) {
+      throw new BadRequestException('You must provide a siteId.')
+    }
+    if (item.siteId && !await this.sitesManagersService.isAllowedToModify(request.user, item.siteId) ) {
+      throw new ForbiddenException('You are not allowed to modify this site.')
+    }
+    const createdItem = await this.itemsService.create(item)
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'CREATE',
+      'Item',
+      createdItem.id,
+      JSON.stringify(createdItem)
+    );
+    return createdItem
   }
 
   @Roles([ADMIN, MANAGER])
