@@ -66,6 +66,7 @@ export async function seedItems(): Promise<Item[]> {
                 },
                 picture: chateauDucBretagne.picture,
                 description: chateauDucBretagne.longDescription,
+                textToTranslate: "text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate",
                 exhibitedBy: {
                   createMany: {
                     data: [

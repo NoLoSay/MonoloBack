@@ -26,6 +26,7 @@ export class ItemCommonSelect {
   id: boolean = true
   name: boolean = true
   description: boolean = true
+  textToTranslate: boolean = true
   picture: boolean = true
   relatedPerson: object = {
     select: new PersonSelect()

@@ -99,6 +99,7 @@
       "@noloback/upload.controller": ["libs/upload.controller/src/index.ts"],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],
+      "@noloback/utils.service": ["libs/utils.service/src/index.ts"],
       "@noloback/video.controller": ["libs/video.controller/src/index.ts"],
       "@noloback/video.service": ["libs/video.service/src/index.ts"],
       "@noloback/watch.controller": ["libs/watch.controller/src/index.ts"]
