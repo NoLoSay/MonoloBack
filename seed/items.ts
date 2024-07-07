@@ -16,6 +16,9 @@ export async function seedItems(): Promise<Item[]> {
     where: {
       name: 'Chateau des Ducs de Bretagne',
     },
+    include: {
+      pictures: true,
+    },
   });
 
   const architecture = await prisma.itemCategory.findUnique({
@@ -23,6 +26,7 @@ export async function seedItems(): Promise<Item[]> {
       name: 'Architecture',
     },
   });
+
   if (architecture) {
     const castle = await prisma.itemType.findUnique({
       where: {
@@ -32,6 +36,7 @@ export async function seedItems(): Promise<Item[]> {
         },
       },
     });
+
     if (castle && chateauDucBretagne) {
       const manager = await prisma.profile.findFirst({
         where: {
@@ -51,34 +56,38 @@ export async function seedItems(): Promise<Item[]> {
         });
 
         if (exhibition) {
-          items.push(
-            await prisma.item.upsert({
-              where: {
-                id: chateauDucBretagne.id,
-              },
-              update: {},
-              create: {
-                name: 'Chateau des Ducs de Bretagne',
-                itemType: {
-                  connect: {
-                    id: castle.id,
-                  },
-                },
-                // pictures: chateauDucBretagne.pictures,
-                description: chateauDucBretagne.longDescription,
-                textToTranslate: "text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate",
-                exhibitedBy: {
-                  createMany: {
-                    data: [
-                      {
-                        exhibitionId: exhibition.id,
-                      },
-                    ],
-                  },
+          const createdItem = await prisma.item.upsert({
+            where: {
+              id: chateauDucBretagne.id,
+            },
+            update: {},
+            create: {
+              name: 'Chateau des Ducs de Bretagne',
+              itemType: {
+                connect: {
+                  id: castle.id,
                 },
               },
-            })
-          );
+              description: chateauDucBretagne.longDescription,
+              textToTranslate: "text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate",
+              exhibitedBy: {
+                createMany: {
+                  data: [
+                    {
+                      exhibitionId: exhibition.id,
+                    },
+                  ],
+                },
+              },
+              pictures: {
+                create: chateauDucBretagne.pictures.map(picture => ({
+                  hostingUrl: picture.hostingUrl,
+                })),
+              },
+            },
+          });
+
+          items.push(createdItem);
         }
       }
     }
