@@ -7,6 +7,8 @@ import {
 import { CityManipulationModel } from '@noloback/api.request.bodies'
 import { CityCommonReturn, CityAdminReturn } from '@noloback/api.returns'
 import { CityAdminSelect, CityCommonSelect } from '@noloback/db.calls'
+import { FiltersGetMany } from 'models/filters-get-many'
+import { ADMIN } from '@noloback/roles'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -16,7 +18,34 @@ export class CitiesService {
     private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
-  async findAll (role: Role): Promise<CityCommonReturn[] | CityAdminReturn[]> {
+  async count(
+    departmentId?: number | undefined,
+    zipStart?: string | undefined,
+    nameStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<number> {
+    return await this.prismaBase.city.count({
+      where: {
+        departmentId: departmentId ? departmentId : undefined,
+        zip: zipStart ? { startsWith: zipStart } : undefined,
+        name: nameStart ? { startsWith: nameStart } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+      },
+    });
+  }
+
+  async findAll (role: Role, 
+    filters: FiltersGetMany,
+    departmentId?: number | undefined,
+    zipStart?: string | undefined,
+    nameStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<CityCommonReturn[] | CityAdminReturn[]> {
     let selectOptions: Prisma.CitySelect
 
     switch (role) {
@@ -30,13 +59,24 @@ export class CitiesService {
     const cities: unknown = await this.prismaBase.city
       .findMany({
         select: selectOptions,
+        skip: filters.start,
+        take: filters.end - filters.start,
         where:
-          role === Role.ADMIN
-            ? undefined
-            : {
-                deletedAt: null,
-                department: { deletedAt: null, country: { deletedAt: null } }
-              }
+        {
+          departmentId: departmentId ? departmentId : undefined,
+          zip: zipStart ? { startsWith: zipStart } : undefined,
+          name: nameStart ? { startsWith: nameStart } : undefined,
+          createdAt: {
+            gte: createdAtGte ? new Date(createdAtGte) : undefined,
+            lte: createdAtLte ? new Date(createdAtLte) : undefined,
+          },
+
+          deletedAt: role === ADMIN ? undefined : null,
+          department: role === ADMIN ? undefined : { deletedAt: null, country: { deletedAt: null } }
+        },
+        orderBy: {
+          [filters.sort]: filters.order,
+        }
       })
       .catch((e: Error) => {
         console.log(e)
