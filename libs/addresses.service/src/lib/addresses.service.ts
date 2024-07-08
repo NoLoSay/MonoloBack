@@ -9,6 +9,7 @@ import {
 import { AddressManipulationModel } from '@noloback/api.request.bodies'
 import { AddressAdminReturn, AddressCommonReturn } from '@noloback/api.returns'
 import { AddressAdminSelect, AddressCommonSelect } from '@noloback/db.calls'
+import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCritiaddress } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -18,8 +19,44 @@ export class AddressesService {
     private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
-  async findAll (): Promise<AddressAdminReturn[]> {
+  async count(
+    cityId?: number | undefined,
+    zipStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<number> {
+    return await this.prismaBase.address.count({
+      where: {
+        cityId: cityId ? cityId : undefined,
+        zip: zipStart ? { startsWith: zipStart } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+      },
+    });
+  }
+
+  async findAll (
+    filters: FiltersGetMany,
+    cityId?: number | undefined,
+    zipStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined): Promise<AddressAdminReturn[]> {
     const addresses = (await this.prismaBase.address.findMany({
+      skip: filters.start,
+      take: filters.end - filters.start,
+      where: {
+        cityId: cityId ? cityId : undefined,
+        zip: zipStart ? { startsWith: zipStart } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+      },
+      orderBy: {
+        [filters.sort]: filters.order,
+      },
       select: new AddressAdminSelect()
     })) as unknown as AddressAdminReturn[]
     addresses.forEach((address) => {
