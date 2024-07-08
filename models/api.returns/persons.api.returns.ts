@@ -6,11 +6,17 @@ enum PersonType {
   OTHER
 }
 
+class Picture {
+  id: number = 0
+  uuid: string = ''
+  hostingUrl: string = ''
+}
+
 class Item {
   id: number = 0
   name: string = ''
   description: string | null = null
-  picture: string | null = null
+  pictures: Picture[] | null = null
 }
 
 export class PersonCommonReturn {

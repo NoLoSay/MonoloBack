@@ -13,11 +13,17 @@ class User {
   picture: string | null = null
 }
 
+class Picture {
+  id: number = 0
+  uuid: string = ''
+  hostingUrl: string = ''
+}
+
 class Item {
   id: number = 0
   uuid: string = ''
   name: string = ''
-  picture: string = ''
+  pictures: Picture[] = []
 }
 
 abstract class VideoDefaultReturn {
