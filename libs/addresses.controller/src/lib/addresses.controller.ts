@@ -47,7 +47,7 @@ export class AddressesController {
         ),
       })
       .json(
-        await this.addressesService.findAll(new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'zip', 'street', 'houseNumber', 'longitude', 'latitude', 'createdAt']), cityId, zipStart, createdAtGte, createdAtLte)
+        await this.addressesService.findAll(new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'zip', 'cityId', 'street', 'houseNumber', 'longitude', 'latitude', 'createdAt']), cityId, zipStart, createdAtGte, createdAtLte)
       );
   }
 
