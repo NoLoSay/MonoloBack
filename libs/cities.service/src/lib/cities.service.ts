@@ -27,7 +27,7 @@ export class CitiesService {
   ): Promise<number> {
     return await this.prismaBase.city.count({
       where: {
-        departmentId: departmentId ? departmentId : undefined,
+        departmentId: departmentId ? +departmentId : undefined,
         zip: zipStart ? { startsWith: zipStart, mode: 'insensitive' } : undefined,
         name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
         createdAt: {
@@ -63,7 +63,7 @@ export class CitiesService {
         take: filters.end - filters.start,
         where:
         {
-          departmentId: departmentId ? departmentId : undefined,
+          departmentId: departmentId ? +departmentId : undefined,
           zip: zipStart ? { startsWith: zipStart, mode: 'insensitive' } : undefined,
           name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
           createdAt: {
