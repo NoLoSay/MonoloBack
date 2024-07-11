@@ -64,8 +64,8 @@ export class CitiesService {
         where:
         {
           departmentId: departmentId ? departmentId : undefined,
-          zip: zipStart ? { startsWith: zipStart } : undefined,
-          name: nameStart ? { startsWith: nameStart } : undefined,
+          zip: zipStart ? { startsWith: zipStart, mode: 'insensitive' } : undefined,
+          name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
           createdAt: {
             gte: createdAtGte ? new Date(createdAtGte) : undefined,
             lte: createdAtLte ? new Date(createdAtLte) : undefined,
