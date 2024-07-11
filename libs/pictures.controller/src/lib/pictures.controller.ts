@@ -21,6 +21,7 @@ export class PicturesController {
     @Res() res: Response,
   ) {
     try {
+      uuid = uuid.replace(/\.[^/.]+$/, "");
       const pictureBuffer = await this.picturesService.getPicture(uuid);
       
       const picture = await this.picturesService.getPictureDetails(uuid);

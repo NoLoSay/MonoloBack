@@ -7,6 +7,12 @@ import { FileEsque } from "uploadthing/types";
 export class UploadthingService {
   private utapi: UTApi = new UTApi()
 
+  async uploadFromUrl(url: string, extname: string): Promise<string | undefined> {
+    const uploadedFile = await this.utapi.uploadFilesFromUrl(url + extname);
+
+    return uploadedFile.data?.url
+  }
+
   async uploadFile(file: Express.Multer.File): Promise<string> {
     try {
       const { buffer, originalname } = file;

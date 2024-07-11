@@ -3,12 +3,15 @@ import {
   Picture,
   PrismaBaseService,
 } from '@noloback/prisma-client-base'
+import { UploadthingService } from "@noloback/uploadthing.service";
 import { readFileSync } from 'fs';
+import path = require("path");
 
 @Injectable()
 export class PicturesService {
   constructor(
-    private readonly prismaBase: PrismaBaseService
+    private readonly prismaBase: PrismaBaseService,
+    private readonly uploadthingService: UploadthingService
   ) {}
 
   async createPicture(picturePath: string): Promise<Picture> {
@@ -20,7 +23,7 @@ export class PicturesService {
         }
       }))
 
-      const updatedPicture = await this.prismaBase.picture.update({
+      let updatedPicture = await this.prismaBase.picture.update({
         where: {
           uuid: picture.uuid
         },
@@ -28,6 +31,18 @@ export class PicturesService {
           hostingUrl: `${process.env["API_URL"]}:${process.env["VIDEO_API_PORT"]}/pictures/${picture.uuid}`
         }
       });
+
+      const uploadThingPictureUrl = await this.uploadthingService.uploadFromUrl(updatedPicture.hostingUrl, path.extname(updatedPicture.localPath ? updatedPicture.localPath : 'default.png'));
+      if (uploadThingPictureUrl) {
+        updatedPicture = await this.prismaBase.picture.update({
+          where: {
+            uuid: picture.uuid
+          },
+          data: {
+            hostingUrl: uploadThingPictureUrl
+          }
+        });
+      }
 
       return updatedPicture;
     } catch (error: any) {
