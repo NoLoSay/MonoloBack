@@ -4,7 +4,7 @@ import {
   PrismaBaseService,
 } from '@noloback/prisma-client-base'
 import { UploadthingService } from "@noloback/uploadthing.service";
-import { readFileSync } from 'fs';
+import { readFileSync, unlink } from 'fs';
 import path = require("path");
 
 @Injectable()
@@ -34,11 +34,18 @@ export class PicturesService {
 
       const uploadThingPictureUrl = await this.uploadthingService.uploadFromUrl(updatedPicture.hostingUrl, path.extname(updatedPicture.localPath ? updatedPicture.localPath : 'default.png'));
       if (uploadThingPictureUrl) {
+        if (updatedPicture.localPath) {
+          unlink(updatedPicture.localPath, (err) => {
+            console.log(err);
+          });
+        }
+
         updatedPicture = await this.prismaBase.picture.update({
           where: {
             uuid: picture.uuid
           },
           data: {
+            localPath: null,
             hostingUrl: uploadThingPictureUrl
           }
         });
