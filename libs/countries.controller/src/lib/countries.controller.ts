@@ -8,13 +8,16 @@ import {
   Delete,
   ParseIntPipe,
   Request,
-  Patch
+  Patch,
+  Query,
+  Response
 } from '@nestjs/common'
 import { CountriesService } from '@noloback/countries.service'
 import { CountryManipulationModel } from '@noloback/api.request.bodies'
 import { CountryAdminReturn, CountryCommonReturn } from '@noloback/api.returns'
 import { ADMIN, Roles } from '@noloback/roles'
 import { LoggerService } from '@noloback/logger-lib'
+import { FiltersGetMany } from 'models/filters-get-many'
 
 @Controller('countries')
 export class CountriesController {
@@ -22,9 +25,30 @@ export class CountriesController {
 
   @Get()
   async findAll (
-    @Request() request: any
+    @Request() request: any,
+    @Response() res: any,
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 10,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
+    @Query('name_start') nameStart?: string | undefined,
+    @Query('code_start') codeStart?: string | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined
   ): Promise<CountryCommonReturn[] | CountryAdminReturn[]> {
-    return this.countriesService.findAll(request.user.activeProfile.role)
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.countriesService.count(
+          nameStart ? nameStart : undefined,
+          codeStart ? codeStart : undefined,
+          createdAtGte,
+          createdAtLte
+        ),
+      })
+      .json(
+        await this.countriesService.findAll(request.user.activeProfile.role, new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'name', 'code', 'longitude', 'latitude', 'createdAt']), nameStart, codeStart, createdAtGte, createdAtLte)
+      );
   }
 
   @Get(':id')
