@@ -29,6 +29,7 @@ import {
   ExhibitionCommonDetailedDbReturn,
   ExhibitionManagerDetailedDbReturn
 } from '@noloback/db.returns'
+import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -39,8 +40,31 @@ export class ExhibitionsService {
     private readonly siteManagersService: SitesManagersService // private loggingService: LoggerService
   ) {}
 
+  async count(
+    siteId?: number | undefined,
+    nameStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<number> {
+    return await this.prismaBase.exhibition.count({
+      where: {
+        siteId: siteId ? +siteId : undefined,
+        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+      },
+    });
+  }
+
   async findAll (
-    user: UserRequestModel
+    user: UserRequestModel,
+    filters: FiltersGetMany,
+    siteId?: number | undefined,
+    nameStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
   ): Promise<ExhibitionCommonReturn[] | ExhibitionAdminReturn[]> {
     let selectOptions: Prisma.ExhibitionSelect
     switch (user.activeProfile.role) {
@@ -52,9 +76,21 @@ export class ExhibitionsService {
     }
 
     const exhibitions: unknown[] = await this.prismaBase.exhibition.findMany({
+      skip: filters.start,
+      take: filters.end - filters.start,
       select: selectOptions,
       where: {
+        siteId: siteId ? +siteId : undefined,
+        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+
         deletedAt: null
+      },
+      orderBy: {
+        [filters.sort]: filters.order,
       }
     })
 
