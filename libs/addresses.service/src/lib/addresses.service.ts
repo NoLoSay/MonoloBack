@@ -28,7 +28,7 @@ export class AddressesService {
     return await this.prismaBase.address.count({
       where: {
         cityId: cityId ? cityId : undefined,
-        zip: zipStart ? { startsWith: zipStart } : undefined,
+        zip: zipStart ? { startsWith: zipStart, mode: 'insensitive' } : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,

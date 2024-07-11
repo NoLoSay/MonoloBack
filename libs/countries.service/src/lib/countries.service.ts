@@ -25,8 +25,8 @@ export class CountriesService {
   ): Promise<number> {
     return await this.prismaBase.country.count({
       where: {
-        name: nameStart ? { startsWith: nameStart } : undefined,
-        code: codeStart ? { startsWith: codeStart } : undefined,
+        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        code: codeStart ? { startsWith: codeStart, mode: 'insensitive' } : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
