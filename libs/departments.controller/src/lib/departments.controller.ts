@@ -7,7 +7,9 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request
+  Request,
+  Query,
+  Response
 } from '@nestjs/common'
 import { DepartmentsService } from '@noloback/departments.service'
 import { DepartmentManipulationModel } from '@noloback/api.request.bodies'
@@ -17,6 +19,7 @@ import {
 } from '@noloback/api.returns'
 import { ADMIN, Roles } from '@noloback/roles'
 import { LoggerService } from '@noloback/logger-lib'
+import { FiltersGetMany } from 'models/filters-get-many'
 
 @Controller('departments')
 export class DepartmentsController {
@@ -24,9 +27,32 @@ export class DepartmentsController {
 
   @Get()
   async findAll (
-    @Request() request: any
+    @Request() request: any,
+    @Response() res: any,
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 10,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
+    @Query('country_id') countryId?: number | undefined,
+    @Query('name_start') nameStart?: string | undefined,
+    @Query('code_start') codeStart?: string | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined
   ): Promise<DepartmentCommonReturn[] | DepartmentAdminReturn[]> {
-    return this.departmentsService.findAll(request.user.activeProfile.role)
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.departmentsService.count(
+          countryId ? countryId : undefined,
+          nameStart ? nameStart : undefined,
+          codeStart ? codeStart : undefined,
+          createdAtGte,
+          createdAtLte
+        ),
+      })
+      .json(
+        await this.departmentsService.findAll(request.user.activeProfile.role, new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'name', 'code', 'countryId', 'longitude', 'latitude', 'createdAt']), countryId, nameStart, codeStart, createdAtGte, createdAtLte)
+      );
   }
 
   @Get(':id')
