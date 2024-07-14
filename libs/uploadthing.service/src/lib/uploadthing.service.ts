@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { LoggerService } from "@noloback/logger-lib";
 import path = require("path");
 import { UTApi } from "uploadthing/server";
 import { FileEsque } from "uploadthing/types";
@@ -17,13 +18,11 @@ export class UploadthingService {
     try {
       const { buffer, originalname } = file;
 
-      // Create a FileEsque object
       const uploadFile: FileEsque = {
         ...new Blob([buffer], { type: file.mimetype }),
         name: originalname,
       };
 
-      // Upload the file using the utapi.uploadFiles method
       const response = await this.utapi.uploadFiles([uploadFile]);
 
       if (response && response[0] && response[0].data) {
@@ -31,27 +30,10 @@ export class UploadthingService {
       } else {
         throw new Error("Failed to upload file.");
       }
-    } catch (error) {
-      console.error("Error uploading file:", error);
+    } catch (error: any) {
+      console.error(error)
+      // LoggerService.log('Critical', 'PicturesService.createPicture', error, `Error uploading file: ${error.message}`)
       throw error;
     }
   }
-
-  // async uploadFile(file: any) {
-  //   try {
-  //     const { buffer, originalname } = file;
-  //     const blob = new Blob([buffer]);
-  //     const uploadFile: FileEsque = {
-  //       ...blob,
-  //       name: originalname,
-  //     };
-  //     console.log('Uploading file:', uploadFile);
-  //     const response = await this.utapi.uploadFiles(uploadFile);
-  //     console.log('Upload response:', response);
-  //     return response.data?.url;
-  //   } catch (error) {
-  //     console.error('Error uploading file:', error);
-  //     throw error;
-  //   }
-  // }
 }
