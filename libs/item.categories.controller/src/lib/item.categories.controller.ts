@@ -32,8 +32,6 @@ export class ItemCategoriesController {
     @Query('_end') lastElem: number = 10,
     @Query('_sort') sort?: string | undefined,
     @Query('_order') order?: 'asc' | 'desc' | undefined,
-    @Query('item_type_id') itemTypeId?: number | undefined,
-    @Query('related_person_id') relatedPersonId?: number | undefined,
     @Query('name_start') nameStart?: string | undefined,
     @Query('createdAt_gte') createdAtGte?: string | undefined,
     @Query('createdAt_lte') createdAtLte?: string | undefined
