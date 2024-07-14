@@ -56,6 +56,42 @@ export class ItemsService {
     })
   }
 
+  async count (
+    role: Role,
+    filters: FiltersGetMany,
+    nameContains?: string,
+    typeId?: number,
+    categoryId?: number,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<number> {
+    return await this.prismaBase.item
+      .count({
+        where: {
+          itemType: {
+            id : typeId ? +typeId : undefined,
+            itemCategoryId: categoryId ? +categoryId : undefined
+          },
+          name: nameContains
+            ? {
+                contains: nameContains
+              }
+            : undefined,
+          createdAt: {
+            gte: createdAtGte ? new Date(createdAtGte) : undefined,
+            lte: createdAtLte ? new Date(createdAtLte) : undefined,
+          },
+
+          deletedAt: role === Role.ADMIN ? undefined : null
+        },
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      })
+    }
+
   async findAll (
     role: Role,
     filters: FiltersGetMany,

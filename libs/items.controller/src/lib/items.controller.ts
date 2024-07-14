@@ -83,7 +83,14 @@ export class ItemsController {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': data.length
+        'X-Total-Count': await this.itemsService.count(
+          request.user.activeProfile.role,
+          filters,
+          nameContains,
+          typeId,
+          categoryId,
+          createdAtGte,
+          createdAtLte)
       })
       .status(200)
       .json(data)
