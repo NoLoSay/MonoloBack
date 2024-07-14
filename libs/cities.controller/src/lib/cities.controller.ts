@@ -40,6 +40,7 @@ export class CitiesController {
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
         'X-Total-Count': await this.citiesService.count(
+          request.user.activeProfile.role,
           departmentId ? +departmentId : undefined,
           zipStart ? zipStart : undefined,
           nameStart ? nameStart : undefined,

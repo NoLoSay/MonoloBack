@@ -24,6 +24,7 @@ export class DepartmentsService {
   ) {}
 
   async count(
+    role: Role,
     countryId?: number | undefined,
     nameStart?: string | undefined,
     codeStart?: string | undefined,
@@ -39,6 +40,8 @@ export class DepartmentsService {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
         },
+
+        deletedAt: role === Role.ADMIN ? undefined : null,
       },
     });
   }

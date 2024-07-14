@@ -18,6 +18,7 @@ export class CountriesService {
   ) {}
 
   async count(
+    role: Role,
     nameStart?: string | undefined,
     codeStart?: string | undefined,
     createdAtGte?: string | undefined,
@@ -31,6 +32,8 @@ export class CountriesService {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
         },
+
+        deletedAt: role === Role.ADMIN ? undefined : null,
       },
     });
   }

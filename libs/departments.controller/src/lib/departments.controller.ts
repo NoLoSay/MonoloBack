@@ -43,6 +43,7 @@ export class DepartmentsController {
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
         'X-Total-Count': await this.departmentsService.count(
+          request.user.activeProfile.role,
           countryId ? countryId : undefined,
           nameStart ? nameStart : undefined,
           codeStart ? codeStart : undefined,

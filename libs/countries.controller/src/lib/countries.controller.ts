@@ -40,6 +40,7 @@ export class CountriesController {
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
         'X-Total-Count': await this.countriesService.count(
+          request.user.activeProfile.role,
           nameStart ? nameStart : undefined,
           codeStart ? codeStart : undefined,
           createdAtGte,

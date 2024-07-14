@@ -19,6 +19,7 @@ export class CitiesService {
   ) {}
 
   async count(
+    role: Role, 
     departmentId?: number | undefined,
     zipStart?: string | undefined,
     nameStart?: string | undefined,
@@ -34,6 +35,9 @@ export class CitiesService {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
         },
+
+        deletedAt: role === ADMIN ? undefined : null,
+        department: role === ADMIN ? undefined : { deletedAt: null, country: { deletedAt: null } }
       },
     });
   }
