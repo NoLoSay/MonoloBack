@@ -54,6 +54,8 @@ export class ExhibitionsService {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
         },
+
+        deletedAt: null
       },
     });
   }
