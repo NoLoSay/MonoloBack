@@ -52,33 +52,41 @@ export class ItemsController {
     @Query('_order') order?: 'asc' | 'desc' | undefined,
     @Query('type_id') typeId?: number | undefined,
     @Query('category_id') categoryId?: number | undefined,
-    @Query('name_like') nameLike?: string | undefined
+    @Query('name_contains') nameContains?: string | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined,
+    @Query('name_like') nameLike?: string | undefined // Legacy support
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
+    if (!nameContains && nameLike) {
+      nameContains = nameLike // Legacy support
+    }
     const filters: FiltersGetMany = new FiltersGetMany(
       firstElem,
       lastElem,
       sort,
       order,
-      ['id', 'name', 'description', 'type', 'category'],
+      ['id', 'name', 'description', 'itemType', 'createdAt'],
       'id'
+    );
+    
+    const data = await this.itemsService.findAll(
+      request.user.activeProfile.role,
+      filters,
+      nameContains,
+      typeId,
+      categoryId,
+      createdAtGte,
+      createdAtLte
     );
 
     // return this.itemsService.findAll(request.user.role)
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': await this.itemsService.count(nameLike, typeId, categoryId)
+        'X-Total-Count': data.length
       })
       .status(200)
-      .json(
-        await this.itemsService.findAll(
-          request.user.activeProfile.role,
-          filters,
-          nameLike,
-          typeId,
-          categoryId
-        )
-      )
+      .json(data)
   }
 
   @Roles([ADMIN, CREATOR, MANAGER])
