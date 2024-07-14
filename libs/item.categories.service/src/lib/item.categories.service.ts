@@ -60,8 +60,8 @@ export class ItemCategoriesService {
         selectOptions = new ItemCategoryCommonSelect()
     }
     const categories: unknown[] = await this.prismaBase.itemCategory.findMany({
-      skip: filters.start,
-      take: filters.end - filters.start,
+      skip: +filters.start,
+      take: +filters.end - filters.start,
       select: selectOptions,
       where: {
         name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
@@ -72,6 +72,9 @@ export class ItemCategoriesService {
 
         deletedAt: role === Role.ADMIN ? undefined : null
       },
+      orderBy: {
+        [filters.sort]: filters.order,
+      }
     })
 
     switch (role) {

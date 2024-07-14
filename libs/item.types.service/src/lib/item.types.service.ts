@@ -44,8 +44,8 @@ export class ItemTypesService {
         selectOptions = new ItemTypeCommonSelect()
     }
     const types = await this.prismaBase.itemType.findMany({
-      skip: filters.start,
-      take: filters.end - filters.start,
+      skip: +filters.start,
+      take: +filters.end - filters.start,
       select: selectOptions,
       where: {
         itemCategoryId: itemCategoryId ? +itemCategoryId : undefined,
@@ -57,6 +57,9 @@ export class ItemTypesService {
 
         deletedAt: role === Role.ADMIN ? undefined : null,
         itemCategory: role === Role.ADMIN ? undefined : { deletedAt: null }
+      },
+      orderBy: {
+        [filters.sort]: filters.order,
       }
     })
 
