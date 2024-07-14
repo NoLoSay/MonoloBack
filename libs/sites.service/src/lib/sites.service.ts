@@ -38,6 +38,44 @@ export class SitesService {
     private readonly sitesManagerService: SitesManagersService // private loggingService: LoggerService
   ) {}
 
+  async count (
+    user: UserRequestModel,
+    filters: FiltersGetMany,
+    nameStart?: string | undefined,
+    telStart?: string | undefined,
+    emailStart?: string | undefined,
+    websiteContains?: string | undefined,
+    price?: number | undefined,
+    type?: SiteType | undefined,
+    addressId?: number | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<SiteCommonReturn[] | SiteAdminReturn[]> {
+    const sites = (await this.prismaBase.site.findMany({
+      where: {
+        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        telNumber: telStart ? { startsWith: telStart, mode: 'insensitive' } : undefined,
+        email: emailStart ? { startsWith: emailStart, mode: 'insensitive' } : undefined,
+        website: websiteContains ? { contains: websiteContains, mode: 'insensitive' } : undefined,
+        price: price ? +price : undefined,
+        type: type ? type : undefined,
+        addressId: addressId ? +addressId : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+
+        deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null,
+      },
+    })) as unknown
+    switch (user.activeProfile.role) {
+      case Role.ADMIN:
+        return sites as SiteAdminReturn[]
+      default:
+        return sites as SiteCommonReturn[]
+    }
+  }
+
   async findAll (
     user: UserRequestModel,
     filters: FiltersGetMany,

@@ -31,6 +31,7 @@ import multer = require('multer')
 import { randomUUID } from 'crypto'
 import { extname } from 'path'
 import { FiltersGetMany } from 'models/filters-get-many'
+import { count } from 'console'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('sites')
@@ -62,7 +63,9 @@ export class SitesController {
     return res
     .set({
       'Access-Control-Expose-Headers': 'X-Total-Count',
-      'X-Total-Count': data.length,
+      'X-Total-Count': await this.sitesService.count(request.user, new FiltersGetMany(firstElem, lastElem, sort, order,
+        ['id', 'type', 'name', 'telNumber', 'email', 'website', 'price', 'type', 'addressId', 'createdAt']),
+        nameStart, telStart, emailStart, websiteContains, price, type, addressId, createdAtGte, createdAtLte),
     })
     .json(
       data
