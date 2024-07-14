@@ -15,6 +15,7 @@ import {
   ItemCategoryCommonSelect,
   ItemCategoryDetailledSelect
 } from '@noloback/db.calls'
+import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCritiitemCategory } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -24,8 +25,30 @@ export class ItemCategoriesService {
     private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
+  async count(
+    role: Role,
+    nameStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<number> {
+    return await this.prismaBase.itemCategory.count({
+      where: {
+        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+        deletedAt: role === Role.ADMIN ? undefined : null
+      },
+    });
+  }
+
   async findAll (
-    role: Role
+    role: Role,
+    filters: FiltersGetMany,
+    nameStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
   ): Promise<ItemCategoryCommonReturn[] | ItemCategoryAdminReturn[]> {
     let selectOptions: Prisma.ItemCategorySelect
 
@@ -37,8 +60,18 @@ export class ItemCategoriesService {
         selectOptions = new ItemCategoryCommonSelect()
     }
     const categories: unknown[] = await this.prismaBase.itemCategory.findMany({
+      skip: filters.start,
+      take: filters.end - filters.start,
       select: selectOptions,
-      where: role === Role.ADMIN ? undefined : { deletedAt: null }
+      where: {
+        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+
+        deletedAt: role === Role.ADMIN ? undefined : null
+      },
     })
 
     switch (role) {
