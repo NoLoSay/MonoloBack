@@ -66,8 +66,8 @@ export class DepartmentsService {
     }
     const departments: unknown[] = await this.prismaBase.department
       .findMany({
-        skip: filters.start,
-        take: filters.end - filters.start,
+        skip: +filters.start,
+        take: +filters.end - filters.start,
         select: selectOptions,
         where: {
           countryId: countryId ? +countryId : undefined,

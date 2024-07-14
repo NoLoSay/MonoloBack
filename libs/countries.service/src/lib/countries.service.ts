@@ -58,8 +58,8 @@ export class CountriesService {
 
     const countries = await this.prismaBase.country
       .findMany({
-        skip: filters.start,
-        take: filters.end - filters.start,
+        skip: +filters.start,
+        take: +filters.end - filters.start,
         select: selectOptions,
         where: {
           name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,

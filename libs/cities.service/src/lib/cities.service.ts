@@ -63,8 +63,8 @@ export class CitiesService {
     const cities: unknown = await this.prismaBase.city
       .findMany({
         select: selectOptions,
-        skip: filters.start,
-        take: filters.end - filters.start,
+        skip: +filters.start,
+        take: +filters.end - filters.start,
         where:
         {
           departmentId: departmentId ? +departmentId : undefined,

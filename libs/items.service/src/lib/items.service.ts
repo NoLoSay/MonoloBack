@@ -90,8 +90,8 @@ export class ItemsService {
 
     const items: unknown = await this.prismaBase.item
       .findMany({
-        skip: filters.start,
-        take: filters.end - filters.start,
+        skip: +filters.start,
+        take: +filters.end - filters.start,
         select: selectOptions,
         where: {
           itemType: {

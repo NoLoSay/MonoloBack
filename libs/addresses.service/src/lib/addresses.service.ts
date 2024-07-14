@@ -44,8 +44,8 @@ export class AddressesService {
     createdAtGte?: string | undefined,
     createdAtLte?: string | undefined): Promise<AddressAdminReturn[]> {
     const addresses = (await this.prismaBase.address.findMany({
-      skip: filters.start,
-      take: filters.end - filters.start,
+      skip: +filters.start,
+      take: +filters.end - filters.start,
       where: {
         cityId: cityId ? +cityId : undefined,
         zip: zipStart ? { startsWith: zipStart, mode: 'insensitive' } : undefined,

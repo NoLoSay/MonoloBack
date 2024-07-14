@@ -550,8 +550,8 @@ export class VideoService {
     }
 
     const videoEntities: unknown[] = await this.prismaBase.video.findMany({
-      skip: filters.start,
-      take: filters.end - filters.start,
+      skip: +filters.start,
+      take: +filters.end - filters.start,
       select: selectOptions,
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,

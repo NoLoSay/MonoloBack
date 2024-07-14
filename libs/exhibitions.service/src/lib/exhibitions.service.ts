@@ -78,8 +78,8 @@ export class ExhibitionsService {
     }
 
     const exhibitions: unknown[] = await this.prismaBase.exhibition.findMany({
-      skip: filters.start,
-      take: filters.end - filters.start,
+      skip: +filters.start,
+      take: +filters.end - filters.start,
       select: selectOptions,
       where: {
         siteId: siteId ? +siteId : undefined,
