@@ -27,7 +27,7 @@ export class ItemCommonReturn {
   name: string = ''
   description: string = ''
   textToTranslate: string = ""
-  pictures: Picture[] = [new Picture()]
+  pictures: Picture[] = []
   relatedPerson: Person = new Person()
   itemType: ItemType = new ItemType()
 }

@@ -229,61 +229,7 @@ export class ItemsService {
       select: new ItemAdminSelect()
     })
 
-    return newItem as unknown as ItemCommonReturn
-    // let uploadedPicture: string | undefined = undefined;
-
-    // if (picture) {
-    //   uploadedPicture = await this.uploadthingService.uploadFile(picture);
-    // }
-
-    // this.checkExistingItem(id)
-    // const updatedItemData: {
-    //   name: string
-    //   description?: string
-    //   picture?: string
-    //   relatedPerson?: {
-    //     connect: {
-    //       id: number
-    //     }
-    //   }
-    //   itemType?: {
-    //     connect: {
-    //       id: number
-    //     }
-    //   }
-    // } = {
-    //   name: updatedItem.name,
-    //   description: updatedItem.description,
-    //   picture: uploadedPicture
-    // }
-
-    // if (updatedItem.relatedPersonId != null) {
-    //   updatedItemData.relatedPerson = {
-    //     connect: {
-    //       id: +updatedItem.relatedPersonId
-    //     }
-    //   }
-    // }
-
-    // if (updatedItem.itemTypeId != null) {
-    //   updatedItemData.itemType = {
-    //     connect: {
-    //       id: +updatedItem.itemTypeId
-    //     }
-    //   }
-    // }
-    // const updated: unknown = await this.prismaBase.item
-    //   .update({
-    //     where: { id: +id },
-    //     data: updatedItemData
-    //   })
-    //   .catch((e: Error) => {
-    //     console.log(e)
-    //     // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-    //     throw new InternalServerErrorException(e)
-    //   })
-
-    // return updated as ItemCommonReturn
+    return newItem as unknown as ItemCommonReturn;
   }
 
   async delete (id: number): Promise<ItemCommonReturn> {

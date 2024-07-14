@@ -1,4 +1,5 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { ConsoleLogger, Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
+import { LoggerService } from "@noloback/logger-lib";
 import {
   Picture,
   PrismaBaseService,
@@ -37,7 +38,8 @@ export class PicturesService {
         if (updatedPicture.localPath) {
           unlink(updatedPicture.localPath, (err) => {
             if (err) {
-              console.log(err);
+              console.log(err)
+              // LoggerService.log('High', 'PicturesService.createPicture', undefined, JSON.stringify(err))
             }
           });
         }
@@ -55,7 +57,8 @@ export class PicturesService {
 
       return updatedPicture;
     } catch (error: any) {
-      console.error(`Error creating picture: ${error.message}`);
+      console.error(error)
+      // LoggerService.log('Critical', 'PicturesService.createPicture', error, `Error creating picture: ${error.message}`)
       throw new InternalServerErrorException(`Error creating picture`);
     }
   }
