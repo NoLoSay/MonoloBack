@@ -12,7 +12,9 @@ import {
   Query,
   Patch,
   ForbiddenException,
-  BadRequestException
+  BadRequestException,
+  UseInterceptors,
+  UploadedFile
 } from '@nestjs/common'
 import { ADMIN, CREATOR, MANAGER, Roles } from '@noloback/roles'
 import { ItemsService } from '@noloback/items.service'
@@ -31,12 +33,18 @@ import {
 import { FiltersGetMany } from 'models/filters-get-many'
 import { LoggerService } from '@noloback/logger-lib'
 import { Role } from '@noloback/prisma-client-base'
+import { FileInterceptor } from '@nestjs/platform-express'
+import multer = require('multer')
+import { randomUUID } from 'crypto'
+import { extname } from 'path'
+import { UploadthingService } from '@noloback/uploadthing.service'
 
 @Controller('items')
 export class ItemsController {
   constructor (
     private readonly itemsService: ItemsService,
     private readonly sitesManagersService: SitesManagersService,
+    private readonly uploadthingService: UploadthingService,
     private readonly videoService: VideoService // private loggingService: LoggerService
   ) {}
 
@@ -101,9 +109,21 @@ export class ItemsController {
 
   @Roles([ADMIN, MANAGER])
   @Post()
+  @UseInterceptors(
+    FileInterceptor('picture', {
+      storage: multer.diskStorage({
+        destination: `${process.env['LOCAL_PICTURE_PATH']}`,
+        filename: (req, file, cb) => {
+          const uuid = randomUUID()
+          cb(null, `${uuid}${extname(file.originalname)}`)
+        }
+      })
+    })
+  )
   async create (
     @Request() request: any,
-    @Body() item: ItemManipulationModel
+    @Body() item: ItemManipulationModel,
+    @UploadedFile() picture: Express.Multer.File
   ): Promise<ItemCommonReturn> {
     if (request.user.activeProfile.role === Role.MANAGER && !item.siteId) {
       throw new BadRequestException('You must provide a siteId.')
@@ -117,7 +137,7 @@ export class ItemsController {
     ) {
       throw new ForbiddenException('You are not allowed to modify this site.')
     }
-    const createdItem = await this.itemsService.create(item)
+    const createdItem = await this.itemsService.create(item, picture)
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'CREATE',
@@ -130,20 +150,44 @@ export class ItemsController {
 
   @Roles([ADMIN, MANAGER])
   @Put(':id')
+  @UseInterceptors(
+    FileInterceptor('picture', {
+      storage: multer.diskStorage({
+        destination: `${process.env['LOCAL_PICTURE_PATH']}`,
+        filename: (req, file, cb) => {
+          const uuid = randomUUID()
+          cb(null, `${uuid}${extname(file.originalname)}`)
+        }
+      })
+    })
+  )
   async update (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatedItem: ItemManipulationModel
+    @Body() updatedItem: ItemManipulationModel,
+    @UploadedFile() picture: Express.Multer.File
   ): Promise<ItemCommonReturn> {
-    return this.itemsService.update(id, updatedItem, request.user)
+    return this.itemsService.update(id, updatedItem, request.user, picture)
   }
 
   @Roles([ADMIN])
   @Patch(':id')
+  @UseInterceptors(
+    FileInterceptor('picture', {
+      storage: multer.diskStorage({
+        destination: `${process.env['LOCAL_PICTURE_PATH']}`,
+        filename: (req, file, cb) => {
+          const uuid = randomUUID()
+          cb(null, `${uuid}${extname(file.originalname)}`)
+        }
+      })
+    })
+  )
   async patch (
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() item: ItemManipulationModel
+    @Body() item: ItemManipulationModel,
+    @UploadedFile() picture: Express.Multer.File
   ): Promise<ItemManagerReturn> {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
@@ -152,8 +196,7 @@ export class ItemsController {
       +id,
       JSON.stringify(request.body)
     )
-
-    return this.itemsService.patch(id, item)
+    return this.itemsService.patch(id, item, picture)
   }
 
   @Roles([ADMIN])
@@ -168,7 +211,6 @@ export class ItemsController {
       'Item',
       +id
     )
-
     return this.itemsService.delete(id)
   }
 

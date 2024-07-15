@@ -10,7 +10,9 @@ import {
   Request,
   Response,
   UnauthorizedException,
-  Patch
+  Patch,
+  UseInterceptors,
+  UploadedFile
 } from '@nestjs/common'
 import { ADMIN, MANAGER, Roles } from '@noloback/roles'
 import { SitesService } from '@noloback/sites.service'
@@ -23,6 +25,10 @@ import {
 import { SitesManagersService } from '@noloback/sites.managers.service'
 import { Role } from '@prisma/client/base'
 import { LoggerService } from '@noloback/logger-lib'
+import { FileInterceptor } from '@nestjs/platform-express'
+import multer = require('multer')
+import { randomUUID } from 'crypto'
+import { extname } from 'path'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('sites')
@@ -52,20 +58,42 @@ export class SitesController {
 
   @Roles([ADMIN])
   @Post()
+  @UseInterceptors(FileInterceptor('picture', {
+    storage: multer.diskStorage({
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
+      filename: (req, file, cb) => {
+        const uuid = randomUUID
+        ();
+        cb(null, `${uuid}${extname(file.originalname)}`);
+      },
+    }),
+  }))
   async create (
     @Response() res: any,
-    @Body() sites: SiteManipulationRequestBody
+    @Body() sites: SiteManipulationRequestBody,
+    @UploadedFile() picture: Express.Multer.File
   ) {
-    return res.status(200).json(await this.sitesService.create(sites))
+    return res.status(200).json(await this.sitesService.create(sites, picture))
   }
 
   @Roles([ADMIN, MANAGER])
   @Put(':id')
+  @UseInterceptors(FileInterceptor('picture', {
+    storage: multer.diskStorage({
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
+      filename: (req, file, cb) => {
+        const uuid = randomUUID
+        ();
+        cb(null, `${uuid}${extname(file.originalname)}`);
+      },
+    }),
+  }))
   async update (
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any,
     @Response() res: any,
-    @Body() updatedSite: SiteManipulationRequestBody
+    @Body() updatedSite: SiteManipulationRequestBody,
+    @UploadedFile() picture: Express.Multer.File
   ) {
     if (await this.sitesManagersService.isAllowedToModify(request.user, id)) {
       LoggerService.sensitiveLog(
@@ -78,13 +106,23 @@ export class SitesController {
 
       return res
         .status(200)
-        .json(await this.sitesService.update(id, updatedSite, request.user.activeProfile.role))
+        .json(await this.sitesService.update(id, updatedSite, request.user.activeProfile.role, picture))
     }
     throw new UnauthorizedException()
   }
 
   @Roles([ADMIN])
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('picture', {
+    storage: multer.diskStorage({
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
+      filename: (req, file, cb) => {
+        const uuid = randomUUID
+        ();
+        cb(null, `${uuid}${extname(file.originalname)}`);
+      },
+    }),
+  }))
   async patch (
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any,

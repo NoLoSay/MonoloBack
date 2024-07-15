@@ -43,6 +43,8 @@
       "@noloback/departments.service": [
         "libs/departments.service/src/index.ts"
       ],
+      "@noloback/enums.controller": ["libs/enums.controller/src/index.ts"],
+      "@noloback/enums.service": ["libs/enums.service/src/index.ts"],
       "@noloback/exhibited.items.service": [
         "libs/exhibited.items.service/src/index.ts"
       ],
@@ -71,6 +73,10 @@
       "@noloback/models/swagger": ["models/swagger/index.ts"],
       "@noloback/persons.controller": ["libs/persons.controller/src/index.ts"],
       "@noloback/persons.service": ["libs/persons.service/src/index.ts"],
+      "@noloback/pictures.controller": [
+        "libs/pictures.controller/src/index.ts"
+      ],
+      "@noloback/pictures.service": ["libs/pictures.service/src/index.ts"],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],
       "@noloback/prisma-client-logs": ["libs/prisma/client/logs/src/index.ts"],
       "@noloback/prisma-client-translator": [
@@ -90,6 +96,12 @@
       "@noloback/requests.constructor": ["models/requests.constructor"],
       "@noloback/roles": ["models/roles"],
       "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
+      "@noloback/sign.languages.controller": [
+        "libs/sign.languages.controller/src/index.ts"
+      ],
+      "@noloback/sign.languages.service": [
+        "libs/sign.languages.service/src/index.ts"
+      ],
       "@noloback/sites.controller": ["libs/sites.controller/src/index.ts"],
       "@noloback/sites.managers.service": [
         "libs/sites.managers.service/src/index.ts"
@@ -97,8 +109,12 @@
       "@noloback/sites.service": ["libs/sites.service/src/index.ts"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
       "@noloback/upload.controller": ["libs/upload.controller/src/index.ts"],
+      "@noloback/uploadthing.service": [
+        "libs/uploadthing.service/src/index.ts"
+      ],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],
+      "@noloback/utils.service": ["libs/utils.service/src/index.ts"],
       "@noloback/video.controller": ["libs/video.controller/src/index.ts"],
       "@noloback/video.service": ["libs/video.service/src/index.ts"],
       "@noloback/watch.controller": ["libs/watch.controller/src/index.ts"]

@@ -127,6 +127,12 @@ enum Role {
   ADMIN
 }
 
+model RoleColor {
+  id    Int    @id @default(autoincrement())
+  role  Role   @unique
+  color String @default("#ffffff")
+}
+
 model User {
   id            Int                 @id @default(autoincrement())
   uuid          String              @unique @default(uuid())
@@ -172,6 +178,24 @@ enum ValidationStatus {
   PENDING
 }
 
+model ValidationStatusColor {
+  id               Int              @id @default(autoincrement())
+  validationStatus ValidationStatus @unique
+  color            String           @default("#ffffff")
+}
+
+model SignLanguage {
+  id        Int       @id @default(autoincrement())
+  uuid      String    @unique @default(uuid())
+  name      String    @unique
+  code      String    @unique
+  color     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  Video     Video[]
+}
+
 model Video {
   id                     Int               @id @default(autoincrement())
   uuid                   String            @unique @default(uuid())
@@ -185,6 +209,8 @@ model Video {
   deletedReason          String?
   itemId                 Int
   profileId              Int
+  signLanguageId         Int?
+  signLanguage           SignLanguage?     @relation(fields: [signLanguageId], references: [id])
   likedBy                UserlikesVideos[]
   item                   Item              @relation(fields: [itemId], references: [id])
   postedBy               Profile           @relation(fields: [profileId], references: [id])
@@ -226,13 +252,20 @@ enum PersonType {
   OTHER
 }
 
+model PersonTypeColor {
+  id         Int        @id @default(autoincrement())
+  personType PersonType @unique
+  color      String     @default("#ffffff")
+}
+
 model Person {
   id        Int        @id @default(autoincrement())
   name      String
   bio       String?
   type      PersonType
-  birthDate DateTime?
-  deathDate DateTime?
+  birthDate String?
+  deathDate String?
+  picture   String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   deletedAt DateTime?
@@ -272,7 +305,7 @@ model Item {
   uuid            String          @unique @default(uuid())
   name            String
   description     String?
-  picture         String?
+  textToTranslate String
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
   deletedAt       DateTime?
@@ -284,6 +317,21 @@ model Item {
   relatedPerson   Person?         @relation(fields: [relatedPersonId], references: [id])
   exhibitedBy     ExhibitedItem[]
   videos          Video[]
+  pictures        Picture[]       @relation("ItemPictures")
+}
+
+model Picture {
+  id         Int       @id @default(autoincrement())
+  uuid       String    @unique @default(uuid())
+  localPath  String?
+  hostingUrl String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+  itemId     Int?
+  item       Item?     @relation(fields: [itemId], references: [id], name: "ItemPictures")
+  siteId     Int?
+  site       Site?     @relation(fields: [siteId], references: [id], name: "SitePictures")
 }
 
 // -------------------------------
@@ -331,12 +379,24 @@ enum SiteType {
   OTHER
 }
 
+model SiteTypeColor {
+  id       Int      @id @default(autoincrement())
+  siteType SiteType @unique
+  color    String   @default("#ffffff")
+}
+
 enum SiteTag {
   NOLOSAY
   DISABILITY_FRIENDLY
   DEAF_FRIENDLY
   BLIND_FRIENDLY
   OTHER
+}
+
+model SiteTagColor {
+  id      Int     @id @default(autoincrement())
+  siteTag SiteTag @unique
+  color   String  @default("#ffffff")
 }
 
 model Site {
@@ -349,7 +409,6 @@ model Site {
   email            String?
   website          String?
   price            Float
-  picture          String?
   type             SiteType
   tags             SiteTag[]
   createdAt        DateTime         @default(now())
@@ -360,6 +419,7 @@ model Site {
   exhibition       Exhibition[]
   siteHasManagers  SiteHasManager[]
   items            Item[]
+  pictures         Picture[]        @relation("SitePictures")
 }
 
 model SiteHasManager {

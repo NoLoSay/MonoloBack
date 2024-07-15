@@ -13,7 +13,7 @@ export async function seedPersons() {
     await prisma.person.create({
       data: {
         name: 'Max Verstappen',
-        birthDate: new Date('1997-09-30T00:00:00Z'),
+        birthDate: '1997-09-30',
         bio: "Plus rapide que l'aclair ... Je suis Flash McQuee.. .. Max Verstappen!",
         type: PersonType.CELEBRITY,
         items: {
@@ -22,6 +22,7 @@ export async function seedPersons() {
               name: "La tete d'un Epoutanflus",
               description:
                 "Une relique datant de l'age epoustanflesque decouverte par Verstappen en attendant que ses concurents finissent la course...",
+              textToTranslate: "text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate text to translate",
             },
           ],
         },
@@ -33,7 +34,7 @@ export async function seedPersons() {
     await prisma.person.create({
       data: {
         name: 'Teuse',
-        birthDate: new Date('2002-01-17T00:00:00.000Z'),
+        birthDate: '2002-01-17',
         bio: "En chantier ! Je m'appelle TEUSE",
         type: PersonType.OTHER,
       },

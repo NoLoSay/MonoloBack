@@ -1,4 +1,5 @@
 import {
+  Picture,
   Item,
   Prisma,
   PrismaBaseService,
@@ -29,13 +30,17 @@ import { FiltersGetMany } from 'models/filters-get-many'
 import { SitesManagersService } from '@noloback/sites.managers.service'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
+import { UploadthingService } from '@noloback/uploadthing.service';
+import { PicturesService } from '@noloback/pictures.service'
 
 @Injectable()
 export class ItemsService {
   constructor (
     private prismaBase: PrismaBaseService,
     private readonly sitesManagersService: SitesManagersService,
-    private videoService: VideoService //private loggingService: LoggerService
+    private readonly picturesService: PicturesService,
+    private videoService: VideoService, //private loggingService: LoggerService
+    private uploadthingService: UploadthingService
   ) {}
 
   async count (
@@ -78,9 +83,16 @@ export class ItemsService {
 
   async patch (
     id: number,
-    body: ItemManipulationModel
+    body: ItemManipulationModel, picture: Express.Multer.File
   ): Promise<ItemManagerReturn> {
     if (body.siteId) await this.checkExistingSite(body.siteId)
+    let uploadedPicture: string | undefined = undefined;
+
+    if (picture) {
+      uploadedPicture = await this.uploadthingService.uploadFile(picture);
+
+      body.picture = uploadedPicture;
+    }
     return this.prismaBase.item.update({
       where: { id },
       data: body,
@@ -174,74 +186,58 @@ export class ItemsService {
     }
   }
 
-  async create (item: ItemManipulationModel): Promise<ItemCommonReturn> {
-    const newItemData: {
-      name: string
-      description?: string
-      relatedPerson?: {
-        connect: {
-          id: number
-        }
-      }
-      itemType?: {
-        connect: {
-          id: number
-        }
-      }
-      site?: {
-        connect: {
-          id: number
-        }
-      }
-    } = {
-      name: item.name,
-      description: item.description
+  async create (item: ItemManipulationModel, picture?: Express.Multer.File): Promise<ItemCommonReturn> {
+    let newPicture: Picture | undefined = undefined;
+
+    if (picture) {
+      newPicture = await this.picturesService.createPicture(picture.path);
     }
 
-    if (item.relatedPersonId != null) {
-      newItemData.relatedPerson = {
-        connect: {
-          id: item.relatedPersonId
-        }
-      }
-    }
+    const newItem = this.prismaBase.item.create({
+      data: {
+        name: item.name,
+        description: item.description,
+        pictures: newPicture ? {
+          connect: {
+            id: +newPicture?.id
+          }
+        } : {},
+        textToTranslate: item.textToTranslate,
+        relatedPerson: item.relatedPersonId ? {
+          connect: {
+            id: +item.relatedPersonId
+          }
+        } : {},
+        itemType: item.itemTypeId ? {
+          connect: {
+            id: +item.itemTypeId
+          }
+        } : {},
+        site: item.siteId ? {
+          connect: {
+            id: +item.siteId
+          }
+        } : {}
+      },
+      select: new ItemCommonSelect()
+    })
 
-    if (item.itemTypeId != null) {
-      newItemData.itemType = {
-        connect: {
-          id: item.itemTypeId
-        }
-      }
-    }
-
-    if (item.siteId != null) {
-      newItemData.site = {
-        connect: {
-          id: item.siteId
-        }
-      }
-    }
-
-    const newItem: unknown = await this.prismaBase.item
-      .create({
-        data: newItemData,
-        select: new ItemCommonSelect()
-      })
-      .catch((e: Error) => {
-        console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
-
-    return newItem as ItemCommonReturn
+    return newItem as unknown as ItemCommonReturn
   }
 
   async update (
     id: number,
     updatedItem: ItemManipulationModel,
-    user: UserRequestModel
+    user: UserRequestModel,
+    picture: Express.Multer.File
   ): Promise<ItemCommonReturn> {
     const item: Item = await this.checkExistingItem(id)
+
+    let newPicture: Picture | undefined = undefined;
+
+    if (picture) {
+      newPicture = await this.picturesService.createPicture(picture.path);
+    }
 
     if (item.siteId) {
       if (
@@ -255,50 +251,34 @@ export class ItemsService {
       }
     }
 
-    const updatedItemData: {
-      name: string
-      description?: string
-      relatedPerson?: {
-        connect: {
-          id: number
-        }
-      }
-      itemType?: {
-        connect: {
-          id: number
-        }
-      }
-    } = {
-      name: updatedItem.name,
-      description: updatedItem.description
-    }
+    const newItem = this.prismaBase.item.update({
+      where: {
+        id: +id
+      },
+      data: {
+        name: updatedItem.name,
+        description: updatedItem.description,
+        pictures: newPicture ? {
+          set: {
+            id: +newPicture?.id
+          }
+        } : {},
+        textToTranslate: updatedItem.textToTranslate,
+        relatedPerson: updatedItem.relatedPersonId ? {
+          connect: {
+            id: +updatedItem.relatedPersonId
+          }
+        } : {},
+        itemType: updatedItem.itemTypeId ? {
+          connect: {
+            id: +updatedItem.itemTypeId
+          }
+        } : {},
+      },
+      select: new ItemAdminSelect()
+    })
 
-    if (updatedItem.relatedPersonId != null) {
-      updatedItemData.relatedPerson = {
-        connect: {
-          id: updatedItem.relatedPersonId
-        }
-      }
-    }
-
-    if (updatedItem.itemTypeId != null) {
-      updatedItemData.itemType = {
-        connect: {
-          id: updatedItem.itemTypeId
-        }
-      }
-    }
-    const updated: unknown = await this.prismaBase.item
-      .update({
-        where: { id: id },
-        data: updatedItemData
-      })
-      .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
-
-    return updated as ItemCommonReturn
+    return newItem as unknown as ItemCommonReturn;
   }
 
   async delete (id: number): Promise<ItemCommonReturn> {

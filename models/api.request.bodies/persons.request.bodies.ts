@@ -29,14 +29,19 @@ export class PersonManipulationModel {
   @ApiProperty()
   @IsDateString()
   @IsOptional()
-  birthDate?: Date
+  birthDate?: string
 
   @ApiProperty()
   @IsDateString()
   @IsOptional()
-  deathDate?: Date
+  deathDate?: string
 
   @ApiProperty({ enum: PersonType })
   @IsEnum(PersonType)
   type: PersonType = PersonType.OTHER
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  picture?: string
 }

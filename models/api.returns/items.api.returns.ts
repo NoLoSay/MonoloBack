@@ -21,12 +21,18 @@ class Site {
   name: string = ''
 }
 
+class Picture {
+  id: number = 0
+  hostingUrl: string = ''
+}
+
 export class ItemCommonReturn {
   id: number = 0
   uuid: string = ''
   name: string = ''
   description: string = ''
-  picture: string = ''
+  textToTranslate: string = ""
+  pictures: Picture[] = []
   relatedPerson: Person = new Person()
   itemType: ItemType = new ItemType()
   site: Site = new Site()
