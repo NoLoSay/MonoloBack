@@ -56,7 +56,7 @@ export class EnumsController {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
-      'Role Colors',
+      'RoleColor',
       +updated.id,
       JSON.stringify(body)
     )
@@ -91,7 +91,7 @@ export class EnumsController {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
-      'Validation Status Colors',
+      'ValidationStatusColor',
       +updated.id,
       JSON.stringify(body)
     )
@@ -124,7 +124,7 @@ export class EnumsController {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
-      'Person Type Colors',
+      'PersonTypeColor',
       +updated.id,
       JSON.stringify(body)
     )
@@ -157,7 +157,7 @@ export class EnumsController {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
-      'Site Type Colors',
+      'SiteTypeColor',
       +updated.id,
       JSON.stringify(body)
     )
@@ -190,7 +190,7 @@ export class EnumsController {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
-      'Site Tag Colors',
+      'SiteTagColor',
       +updated.id,
       JSON.stringify(body)
     )

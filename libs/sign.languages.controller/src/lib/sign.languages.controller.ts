@@ -53,7 +53,7 @@ export class SignLanguagesController {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'CREATE',
-      'Sign Language',
+      'SignLanguage',
       0,
       JSON.stringify(body)
     )
@@ -74,7 +74,7 @@ export class SignLanguagesController {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
-      'Sign Language',
+      'SignLanguage',
       +signLanguage.id,
       JSON.stringify(body)
     )
@@ -92,7 +92,7 @@ export class SignLanguagesController {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'DELETE',
-      'Sign Language',
+      'SignLanguage',
       +signLanguage.id,
       ''
     )
