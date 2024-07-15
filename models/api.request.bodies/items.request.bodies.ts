@@ -21,7 +21,7 @@ export class ItemManipulationModel {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  textToTranslate: string = ""
+  textToTranslate: string = ''
 
   @ApiProperty()
   @IsString()

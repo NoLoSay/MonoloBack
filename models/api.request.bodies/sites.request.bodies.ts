@@ -44,10 +44,10 @@ export class SiteManipulationRequestBody {
   @IsPositive()
   price: number = 0;
 
-  @ApiProperty()
-  @IsString()
-  @IsOptional()
-  picture?: string;
+  // @ApiProperty()
+  // @IsString()
+  // @IsOptional()
+  // picture?: string;
 
   @ApiProperty({ enum: SiteType })
   @IsEnum(SiteType)

@@ -8,6 +8,7 @@ import {
   Site,
   SiteTag,
   SiteType,
+  Picture,
   PrismaBaseService,
   Prisma,
   Role
@@ -26,11 +27,13 @@ import {
 import { UserRequestModel } from '@noloback/requests.constructor'
 import { SitesManagersService } from '@noloback/sites.managers.service'
 // import { LoggerService } from '@noloback/logger-lib';
+import { PicturesService } from '@noloback/pictures.service'
 
 @Injectable()
 export class SitesService {
   constructor (
     private readonly prismaBase: PrismaBaseService,
+    private readonly picturesService: PicturesService,
     private readonly sitesManagerService: SitesManagersService // private loggingService: LoggerService
   ) {}
 
@@ -111,7 +114,13 @@ export class SitesService {
     }
   }
 
-  async create (site: SiteManipulationRequestBody): Promise<SiteAdminReturn> {
+  async create (site: SiteManipulationRequestBody, picture: Express.Multer.File): Promise<SiteAdminReturn> {
+    let newPicture: Picture | undefined = undefined;
+
+    if (picture) {
+      newPicture = await this.picturesService.createPicture(picture.path);
+    }
+
     if (site.addressId) {
      
     const newSite: any = await this.prismaBase.site
@@ -124,7 +133,11 @@ export class SitesService {
         email: site.email,
         website: site.website,
         price: +site.price,
-        picture: site.picture,
+        pictures: newPicture ? {
+          connect: {
+            id: newPicture.id
+          }
+        } : {},
         type: site.type as unknown as SiteType,
         tags: site.tags as unknown[] as SiteTag[],
         // addressId: site.addressId,
@@ -172,7 +185,11 @@ export class SitesService {
           email: site.email,
           website: site.website,
           price: +site.price,
-          picture: site.picture,
+          pictures: newPicture ? {
+            connect: {
+              id: newPicture.id
+            }
+          } : {},
           type: site.type as unknown as SiteType,
           tags: site.tags as unknown[] as SiteTag[],
           // addressId: site.addressId,
@@ -183,7 +200,7 @@ export class SitesService {
                   houseNumber: site.address.houseNumber,
                   street: site.address.street,
                   zip: site.address.zip,
-                  cityId: site.address.cityId
+                  cityId: +site.address.cityId
                 }
               },
               create: {
@@ -191,11 +208,11 @@ export class SitesService {
                 street: site.address.street,
                 zip: site.address.zip,
                 otherDetails: site.address.otherDetails,
-                latitude: site.address.latitude,
-                longitude: site.address.longitude,
+                latitude: +site.address.latitude,
+                longitude: +site.address.longitude,
                 city: {
                   connect: {
-                    id: site.address.cityId
+                    id: +site.address.cityId
                   }
                 }
               }
@@ -236,9 +253,11 @@ export class SitesService {
   async update (
     id: number,
     site: SiteManipulationRequestBody,
-    role: Role
+    role: Role,
+    picture?: Express.Multer.File
   ): Promise<SiteManagerReturn | SiteAdminReturn> {
     let selectOptions: Prisma.SiteSelect
+    let newPicture: Picture | undefined = undefined;
 
     switch (role) {
       case Role.ADMIN:
@@ -249,6 +268,10 @@ export class SitesService {
         break
       default:
         throw new ForbiddenException('You are not allowed to update this site')
+    }
+
+    if (picture) {
+      newPicture = await this.picturesService.createPicture(picture.path);
     }
 
     const updatedSite: unknown = await this.prismaBase.site
@@ -262,15 +285,19 @@ export class SitesService {
           email: site.email,
           website: site.website,
           price: site.price,
-          picture: site.picture,
+          pictures: newPicture ? {
+            set: {
+              id: newPicture.id
+            }
+          } : {},
           type: site.type as unknown as SiteType,
           tags: site.tags as unknown[] as SiteTag[],
           // addressId: site.addressId,
-          address: {
+          address: site.addressId ? {
             connect: {
               id: +site.addressId
             } 
-          },
+          } : {},
           // address: {
           //   update: {
           //     houseNumber: site.address.houseNumber,
