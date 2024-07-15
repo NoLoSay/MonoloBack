@@ -9,14 +9,35 @@ import {
 import { AddressManipulationModel } from '@noloback/api.request.bodies'
 import { AddressAdminReturn, AddressCommonReturn } from '@noloback/api.returns'
 import { AddressAdminSelect, AddressCommonSelect } from '@noloback/db.calls'
+import { HttpService } from '@nestjs/axios'
+import { firstValueFrom } from 'rxjs'
 //import { LogCritiaddress } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class AddressesService {
   constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService,
+    private readonly httpService: HttpService //private loggingService: LoggerService
   ) {}
+
+  async useFrenchAddressAPI (q: string | undefined) {
+    if (!q) {
+      throw new BadRequestException('q is required')
+    }
+
+    //convert q to string and remove spaces and special characters to avoid errors in the API call
+    q = q.trim().toString().replace(/[^a-zA-Z0-9]/g, '+')
+
+    console.log(q)
+    //return q
+    const rep = await firstValueFrom(this.httpService.get(`https://api-adresse.data.gouv.fr/search/?q=${q}&limit=5`))
+
+    //read the response
+
+    console.log(rep.data.features, rep.data.features.geometry, rep.data.features.properties)
+    return null
+  }
 
   async findAll (): Promise<AddressAdminReturn[]> {
     const addresses = (await this.prismaBase.address.findMany({

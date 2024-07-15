@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request
+  Request,
+  Query
 } from '@nestjs/common'
 import { ADMIN, Roles } from '@noloback/roles'
 import { AddressAdminReturn } from '@noloback/api.returns'
@@ -23,6 +24,15 @@ export class AddressesController {
   async findAll (): Promise<AddressAdminReturn[]> {
     return this.addressesService.findAll()
   }
+
+    @Roles([ADMIN])
+    @Get('use-french-address-api')
+    async useFrenchAddressAPI (
+      @Query('q') query?: string | undefined
+      ) {
+      console.log("query: ", query)
+      return this.addressesService.useFrenchAddressAPI(query)
+    }
 
   @Roles([ADMIN])
   @Get(':id')
