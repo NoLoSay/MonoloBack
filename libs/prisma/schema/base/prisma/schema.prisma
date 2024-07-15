@@ -127,6 +127,12 @@ enum Role {
   ADMIN
 }
 
+model RoleColor {
+  id    Int    @id @default(autoincrement())
+  role  Role   @unique
+  color String @default("#ffffff")
+}
+
 model User {
   id            Int                 @id @default(autoincrement())
   uuid          String              @unique @default(uuid())
@@ -172,6 +178,24 @@ enum ValidationStatus {
   PENDING
 }
 
+model ValidationStatusColor {
+  id               Int              @id @default(autoincrement())
+  validationStatus ValidationStatus @unique
+  color            String           @default("#ffffff")
+}
+
+model SignLanguage {
+  id        Int       @id @default(autoincrement())
+  uuid      String    @unique @default(uuid())
+  name      String    @unique
+  code      String    @unique
+  color     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  Video     Video[]
+}
+
 model Video {
   id                     Int               @id @default(autoincrement())
   uuid                   String            @unique @default(uuid())
@@ -185,6 +209,8 @@ model Video {
   deletedReason          String?
   itemId                 Int
   profileId              Int
+  signLanguageId         Int?
+  signLanguage           SignLanguage?     @relation(fields: [signLanguageId], references: [id])
   likedBy                UserlikesVideos[]
   item                   Item              @relation(fields: [itemId], references: [id])
   postedBy               Profile           @relation(fields: [profileId], references: [id])
@@ -224,6 +250,12 @@ enum PersonType {
   SCIENTIST
   CELEBRITY
   OTHER
+}
+
+model PersonTypeColor {
+  id         Int        @id @default(autoincrement())
+  personType PersonType @unique
+  color      String     @default("#ffffff")
 }
 
 model Person {
@@ -345,12 +377,24 @@ enum SiteType {
   OTHER
 }
 
+model SiteTypeColor {
+  id       Int      @id @default(autoincrement())
+  siteType SiteType @unique
+  color    String   @default("#ffffff")
+}
+
 enum SiteTag {
   NOLOSAY
   DISABILITY_FRIENDLY
   DEAF_FRIENDLY
   BLIND_FRIENDLY
   OTHER
+}
+
+model SiteTagColor {
+  id      Int     @id @default(autoincrement())
+  siteTag SiteTag @unique
+  color   String  @default("#ffffff")
 }
 
 model Site {

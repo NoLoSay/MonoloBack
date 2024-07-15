@@ -43,6 +43,8 @@
       "@noloback/departments.service": [
         "libs/departments.service/src/index.ts"
       ],
+      "@noloback/enums.controller": ["libs/enums.controller/src/index.ts"],
+      "@noloback/enums.service": ["libs/enums.service/src/index.ts"],
       "@noloback/exhibited.items.service": [
         "libs/exhibited.items.service/src/index.ts"
       ],
@@ -94,6 +96,12 @@
       "@noloback/requests.constructor": ["models/requests.constructor"],
       "@noloback/roles": ["models/roles"],
       "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
+      "@noloback/sign.languages.controller": [
+        "libs/sign.languages.controller/src/index.ts"
+      ],
+      "@noloback/sign.languages.service": [
+        "libs/sign.languages.service/src/index.ts"
+      ],
       "@noloback/sites.controller": ["libs/sites.controller/src/index.ts"],
       "@noloback/sites.managers.service": [
         "libs/sites.managers.service/src/index.ts"
