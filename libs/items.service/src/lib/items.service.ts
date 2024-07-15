@@ -1,4 +1,4 @@
-import { Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
+import { Picture, Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
 import {
   Injectable,
   InternalServerErrorException,
@@ -20,12 +20,16 @@ import { UserRequestModel } from '@noloback/requests.constructor'
 import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
+import { UploadthingService } from '@noloback/uploadthing.service';
+import { PicturesService } from '@noloback/pictures.service'
 
 @Injectable()
 export class ItemsService {
   constructor (
     private prismaBase: PrismaBaseService,
-    private videoService: VideoService //private loggingService: LoggerService
+    private readonly picturesService: PicturesService,
+    private videoService: VideoService, //private loggingService: LoggerService
+    private uploadthingService: UploadthingService
   ) {}
 
   async count (nameLike: string | undefined, typeId: number | undefined, categoryId: number | undefined): Promise<number> {
@@ -52,7 +56,15 @@ export class ItemsService {
       throw new NotFoundException('Item not found')
   }
 
-  async patch(id: number, body: any) {
+  async patch(id: number, body: any, picture: Express.Multer.File) {
+    let uploadedPicture: string | undefined = undefined;
+
+    if (picture) {
+      uploadedPicture = await this.uploadthingService.uploadFile(picture);
+
+      body.picture = uploadedPicture;
+    }
+
     return this.prismaBase.item.update({
       where: { id },
       data: body
@@ -145,106 +157,79 @@ export class ItemsService {
     }
   }
 
-  async create (item: ItemManipulationModel): Promise<ItemCommonReturn> {
-    const newItemData: {
-      name: string
-      description?: string
-      textToTranslate: string
-      relatedPerson?: {
-        connect: {
-          id: number
-        }
-      }
-      itemType?: {
-        connect: {
-          id: number
-        }
-      }
-    } = {
-      name: item.name,
-      description: item.description,
-      textToTranslate: item.textToTranslate
+  async create (item: ItemManipulationModel, picture?: Express.Multer.File): Promise<ItemCommonReturn> {
+    let newPicture: Picture | undefined = undefined;
+
+    if (picture) {
+      newPicture = await this.picturesService.createPicture(picture.path);
     }
 
-    if (item.relatedPersonId != null) {
-      newItemData.relatedPerson = {
-        connect: {
-          id: item.relatedPersonId
-        }
-      }
-    }
+    const newItem = this.prismaBase.item.create({
+      data: {
+        name: item.name,
+        description: item.description,
+        pictures: newPicture ? {
+          connect: {
+            id: +newPicture?.id
+          }
+        } : {},
+        textToTranslate: item.textToTranslate,
+        relatedPerson: item.relatedPersonId ? {
+          connect: {
+            id: +item.relatedPersonId
+          }
+        } : {},
+        itemType: item.itemTypeId ? {
+          connect: {
+            id: +item.itemTypeId
+          }
+        } : {},
+      },
+      select: new ItemAdminSelect()
+    })
 
-    if (item.itemTypeId != null) {
-      newItemData.itemType = {
-        connect: {
-          id: item.itemTypeId
-        }
-      }
-    }
-
-    const newItem: unknown = await this.prismaBase.item
-      .create({
-        data: newItemData,
-        select: new ItemAdminSelect()
-      })
-      .catch((e: Error) => {
-        console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
-
-    return newItem as ItemCommonReturn
+    return newItem as unknown as ItemCommonReturn
   }
 
   async update (
     id: number,
-    updatedItem: ItemManipulationModel
+    updatedItem: ItemManipulationModel,
+    picture: Express.Multer.File
   ): Promise<ItemCommonReturn> {
-    this.checkExistingItem(id)
-    const updatedItemData: {
-      name: string
-      description?: string
-      relatedPerson?: {
-        connect: {
-          id: number
-        }
-      }
-      itemType?: {
-        connect: {
-          id: number
-        }
-      }
-    } = {
-      name: updatedItem.name,
-      description: updatedItem.description
+    let newPicture: Picture | undefined = undefined;
+
+    if (picture) {
+      newPicture = await this.picturesService.createPicture(picture.path);
     }
 
-    if (updatedItem.relatedPersonId != null) {
-      updatedItemData.relatedPerson = {
-        connect: {
-          id: updatedItem.relatedPersonId
-        }
-      }
-    }
+    const newItem = this.prismaBase.item.update({
+      where: {
+        id: +id
+      },
+      data: {
+        name: updatedItem.name,
+        description: updatedItem.description,
+        pictures: newPicture ? {
+          set: {
+            id: +newPicture?.id
+          }
+        } : {},
+        textToTranslate: updatedItem.textToTranslate,
+        relatedPerson: updatedItem.relatedPersonId ? {
+          connect: {
+            id: +updatedItem.relatedPersonId
+          }
+        } : {},
+        itemType: updatedItem.itemTypeId ? {
+          connect: {
+            id: +updatedItem.itemTypeId
+          }
+        } : {},
+      },
+      select: new ItemAdminSelect()
+    })
 
-    if (updatedItem.itemTypeId != null) {
-      updatedItemData.itemType = {
-        connect: {
-          id: updatedItem.itemTypeId
-        }
-      }
-    }
-    const updated: unknown = await this.prismaBase.item
-      .update({
-        where: { id: id },
-        data: updatedItemData
-      })
-      .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
-
-    return updated as ItemCommonReturn
+    return newItem as unknown as ItemCommonReturn;
   }
 
   async delete (id: number): Promise<ItemCommonReturn> {

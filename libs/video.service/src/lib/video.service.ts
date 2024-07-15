@@ -118,7 +118,7 @@ export class VideoService {
     if (body.hostingProviderId !== 1) {
       const video = await this.getYoutubeById(+videoId);
       if (video?.video?.hostingProviderId === 1) {
-        unlink('/opt/nolovideos/' + video.video.hostingProviderVideoId, (err) => {
+        unlink(`${process.env["LOCAL_VIDEO_PATH"]}/` + video.video.hostingProviderVideoId, (err) => {
           if (err) {
             console.error(err);
           }

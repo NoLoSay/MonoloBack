@@ -4,6 +4,7 @@ import { SitesService } from './sites.service'
 import { PrismaClientBaseModule } from '@noloback/prisma-client-base'
 import { LoggerLibModule } from '@noloback/logger-lib'
 import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
+import { PicturesServiceModule } from '@noloback/pictures.service'
 
 @Module({
   controllers: [],
@@ -13,7 +14,8 @@ import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
     AddressesServiceModule,
     PrismaClientBaseModule,
     LoggerLibModule,
-    SitesManagersServiceModule
+    SitesManagersServiceModule,
+    PicturesServiceModule
   ]
 })
 export class SitesServiceModule {}

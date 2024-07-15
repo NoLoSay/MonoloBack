@@ -71,6 +71,10 @@
       "@noloback/models/swagger": ["models/swagger/index.ts"],
       "@noloback/persons.controller": ["libs/persons.controller/src/index.ts"],
       "@noloback/persons.service": ["libs/persons.service/src/index.ts"],
+      "@noloback/pictures.controller": [
+        "libs/pictures.controller/src/index.ts"
+      ],
+      "@noloback/pictures.service": ["libs/pictures.service/src/index.ts"],
       "@noloback/prisma-client-base": ["libs/prisma/client/base/src/index.ts"],
       "@noloback/prisma-client-logs": ["libs/prisma/client/logs/src/index.ts"],
       "@noloback/prisma-client-translator": [
@@ -97,6 +101,9 @@
       "@noloback/sites.service": ["libs/sites.service/src/index.ts"],
       "@noloback/translator-lib": ["libs/translator/src/index.ts"],
       "@noloback/upload.controller": ["libs/upload.controller/src/index.ts"],
+      "@noloback/uploadthing.service": [
+        "libs/uploadthing.service/src/index.ts"
+      ],
       "@noloback/users.controller": ["libs/users.controller/src/index.ts"],
       "@noloback/users.service": ["libs/users.service/src/index.ts"],
       "@noloback/utils.service": ["libs/utils.service/src/index.ts"],
