@@ -54,19 +54,8 @@ export class AddressesService {
 
     console.log(city)
 
-    const createdAddress = this.prismaBase.address.upsert({
-      where: {
-        houseNumber_street_postcode_cityId: {
-          houseNumber: rep.data.features[0].properties.housenumber
-            ? rep.data.features[0].properties.housenumber
-            : undefined,
-          street: rep.data.features[0].properties.street,
-          postcode: rep.data.features[0].properties.postcode,
-          cityId: city.id
-        }
-      },
-      update: {},
-      create: {
+    const createdAddress = this.prismaBase.address.create({
+      data: {
         houseNumber: rep.data.features[0].properties.housenumber
           ? rep.data.features[0].properties.housenumber
           : undefined,
