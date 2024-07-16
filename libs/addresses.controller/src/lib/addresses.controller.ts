@@ -25,14 +25,11 @@ export class AddressesController {
     return this.addressesService.findAll()
   }
 
-    @Roles([ADMIN])
-    @Get('use-french-address-api')
-    async useFrenchAddressAPI (
-      @Query('q') query?: string | undefined
-      ) {
-      console.log("query: ", query)
-      return this.addressesService.useFrenchAddressAPI(query)
-    }
+  @Roles([ADMIN])
+  @Get('use-french-address-api')
+  async useFrenchAddressAPI (@Query('q') query?: string | undefined) {
+    return this.addressesService.useFrenchAddressAPI(query)
+  }
 
   @Roles([ADMIN])
   @Get(':id')
@@ -48,6 +45,7 @@ export class AddressesController {
     return this.addressesService.create(addresses)
   }
 
+  @Roles([ADMIN])
   @Put(':id')
   async update (
     @Request() request: any,

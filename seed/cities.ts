@@ -31,7 +31,7 @@ export async function seedCities(
           create: {
             name: 'Nantes',
             departmentId: loireAtlantique.id,
-            zip: '44000',
+            postcode: '44000',
             latitude: 47.2186371,
             longitude: -1.5541362,
           },
@@ -55,7 +55,7 @@ export async function seedCities(
           create: {
             name: 'Paris',
             departmentId: parisDepartment.id,
-            zip: '75000',
+            postcode: '75000',
             latitude: 48.8588897,
             longitude: 2.320041,
           },
@@ -82,7 +82,7 @@ export async function seedCities(
           create: {
             name: 'Bruxelles',
             departmentId: bruxellesCapitale.id,
-            zip: '1000',
+            postcode: '1000',
             latitude: 50.8465573,
             longitude: 4.351697,
           },

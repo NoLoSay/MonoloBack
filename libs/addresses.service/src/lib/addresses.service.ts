@@ -27,26 +27,72 @@ export class AddressesService {
     }
 
     //convert q to string and remove spaces and special characters to avoid errors in the API call
-    q = q.trim().toString().replace(/[^a-zA-Z0-9]/g, '+')
+    q = q.trim().replace(/[^a-zA-Z0-9]/g, '+')
 
-    console.log(q)
-    //return q
-    const rep = await firstValueFrom(this.httpService.get(`https://api-adresse.data.gouv.fr/search/?q=${q}&limit=5`))
+    const rep = await firstValueFrom(
+      this.httpService.get(
+        `https://api-adresse.data.gouv.fr/search/?q=${q}&limit=5`
+      )
+    )
 
-    //read the response
+    console.log(rep.data.features)
 
-    console.log(rep.data.features, rep.data.features.geometry, rep.data.features.properties)
-    return null
+    const city = await this.prismaBase.city.findFirst({
+      where: {
+        name: rep.data.features[0].properties.city,
+        department: {
+          code: rep.data.features[0].properties.context.split(',')[0]
+        }
+      }
+    })
+
+    if (city === null) {
+      throw new NotFoundException(
+        `City ${rep.data.features[0].properties.city} not found`
+      )
+    }
+
+    console.log(city)
+
+    const createdAddress = this.prismaBase.address.upsert({
+      where: {
+        houseNumber_street_postcode_cityId: {
+          houseNumber: rep.data.features[0].properties.housenumber
+            ? rep.data.features[0].properties.housenumber
+            : undefined,
+          street: rep.data.features[0].properties.street,
+          postcode: rep.data.features[0].properties.postcode,
+          cityId: city.id
+        }
+      },
+      update: {},
+      create: {
+        houseNumber: rep.data.features[0].properties.housenumber
+          ? rep.data.features[0].properties.housenumber
+          : undefined,
+        street: rep.data.features[0].properties.street,
+        postcode: rep.data.features[0].properties.postcode,
+        latitude: rep.data.features[0].geometry.coordinates[1],
+        longitude: rep.data.features[0].geometry.coordinates[0],
+        city: {
+          connect: {
+            id: city.id
+          }
+        }
+      },
+      select: new AddressCommonSelect()
+    })
+    return createdAddress as unknown as AddressCommonReturn
   }
 
   async findAll (): Promise<AddressAdminReturn[]> {
     const addresses = (await this.prismaBase.address.findMany({
       select: new AddressAdminSelect()
     })) as unknown as AddressAdminReturn[]
-    addresses.forEach((address) => {
-      address.fullAddress = `${address.houseNumber} ${address.street}, ${address.city.zip} ${address.city.name}, ${address.city.department.name}, ${address.city.department.country.name}`
-    });
-    return addresses;
+    addresses.forEach(address => {
+      address.fullAddress = `${address.houseNumber} ${address.street}, ${address.city.postcode} ${address.city.name}, ${address.city.department.name}, ${address.city.department.country.name}`
+    })
+    return addresses
   }
 
   async findOne (id: number): Promise<AddressAdminReturn> {
@@ -76,7 +122,7 @@ export class AddressesService {
         data: {
           houseNumber: address.houseNumber,
           street: address.street,
-          zip: address.zip,
+          postcode: address.postcode,
           otherDetails: address.otherDetails,
           latitude: address.latitude,
           longitude: address.longitude,
@@ -125,7 +171,7 @@ export class AddressesService {
         data: {
           houseNumber: updatedAddress.houseNumber,
           street: updatedAddress.street,
-          zip: updatedAddress.zip,
+          postcode: updatedAddress.postcode,
           otherDetails: updatedAddress.otherDetails,
           latitude: updatedAddress.latitude,
           longitude: updatedAddress.longitude,

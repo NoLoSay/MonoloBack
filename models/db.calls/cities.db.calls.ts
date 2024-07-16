@@ -14,7 +14,7 @@ class DepartmentSelect {
 export class CityCommonSelect {
     id: boolean = true
     name: boolean = true
-    zip: boolean = true
+    postcode: boolean = true
     department: object = {
         select: new DepartmentSelect()
     }

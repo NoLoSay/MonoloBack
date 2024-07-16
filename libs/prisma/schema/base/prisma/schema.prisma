@@ -58,7 +58,7 @@ model Department {
 model City {
   id           Int        @id @default(autoincrement())
   name         String
-  zip          String
+  postcode     String
   longitude    Float?
   latitude     Float?
   createdAt    DateTime   @default(now())
@@ -69,14 +69,14 @@ model City {
   addresses    Address[]
 
   @@unique([name, departmentId])
-  @@unique([zip, departmentId])
+  @@unique([postcode, departmentId])
 }
 
 model Address {
   id           Int       @id @default(autoincrement())
   houseNumber  String?
   street       String
-  zip          String
+  postcode     String
   otherDetails String?
   longitude    Float?
   latitude     Float?
@@ -87,7 +87,7 @@ model Address {
   city         City      @relation(fields: [cityId], references: [id])
   sites        Site[]
 
-  @@unique([houseNumber, street, zip, cityId])
+  @@unique([houseNumber, street, postcode, cityId])
 }
 
 // ---------------------------

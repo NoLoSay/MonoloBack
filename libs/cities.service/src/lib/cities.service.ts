@@ -103,7 +103,7 @@ export class CitiesService {
       .create({
         data: {
           name: city.name,
-          zip: city.zip,
+          postcode: city.postcode,
           latitude: city.latitude,
           longitude: city.longitude,
           department: {
@@ -139,7 +139,7 @@ export class CitiesService {
         where: { id: id },
         data: {
           name: updatedCity.name,
-          zip: updatedCity.zip,
+          postcode: updatedCity.postcode,
           latitude: updatedCity.latitude,
           longitude: updatedCity.longitude,
           department: {

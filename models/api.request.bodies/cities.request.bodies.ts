@@ -16,7 +16,7 @@ export class CityManipulationModel {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  zip: string = ''
+  postcode: string = ''
 
   @ApiProperty()
   @IsNumber()

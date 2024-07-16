@@ -196,17 +196,17 @@ export class SitesService {
           address: {
             connectOrCreate: {
               where: {
-                houseNumber_street_zip_cityId: {
+                houseNumber_street_postcode_cityId: {
                   houseNumber: site.address.houseNumber,
                   street: site.address.street,
-                  zip: site.address.zip,
+                  postcode: site.address.postcode,
                   cityId: +site.address.cityId
                 }
               },
               create: {
                 houseNumber: site.address.houseNumber,
                 street: site.address.street,
-                zip: site.address.zip,
+                postcode: site.address.postcode,
                 otherDetails: site.address.otherDetails,
                 latitude: +site.address.latitude,
                 longitude: +site.address.longitude,
@@ -302,7 +302,7 @@ export class SitesService {
           //   update: {
           //     houseNumber: site.address.houseNumber,
           //     street: site.address.street,
-          //     zip: site.address.zip,
+          //     postcode: site.address.postcode,
           //     otherDetails: site.address.otherDetails,
           //     latitude: site.address.latitude,
           //     longitude: site.address.longitude,

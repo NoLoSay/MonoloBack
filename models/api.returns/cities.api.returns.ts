@@ -12,7 +12,7 @@ class Department {
 export class CityCommonReturn {
     id: number = 0
     name: string = ''
-    zip: string = ''
+    postcode: string = ''
     department: Department = new Department()
     longitude: number = 0
     latitude: number = 0

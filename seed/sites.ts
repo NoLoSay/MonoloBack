@@ -25,10 +25,10 @@ export async function seedSites(
       if (nantes) {
         const chateauDucBretagne = await prisma.address.upsert({
           where: {
-            houseNumber_street_zip_cityId: {
+            houseNumber_street_postcode_cityId: {
               houseNumber: '4',
               street: 'Pl. Marc Elder',
-              zip: '44000',
+              postcode: '44000',
               cityId: nantes.id,
             },
           },
@@ -37,7 +37,7 @@ export async function seedSites(
             id: 1,
             houseNumber: '4',
             street: 'Pl. Marc Elder',
-            zip: '44000',
+            postcode: '44000',
             cityId: nantes.id,
             longitude: -1.550475,
             latitude: 47.216379,
@@ -79,10 +79,10 @@ export async function seedSites(
 
         const machinesDeLile = await prisma.address.upsert({
           where: {
-            houseNumber_street_zip_cityId: {
+            houseNumber_street_postcode_cityId: {
               houseNumber: '1',
               street: 'Parc des Chantiers',
-              zip: '44000',
+              postcode: '44000',
               cityId: nantes.id,
             },
           },
@@ -91,7 +91,7 @@ export async function seedSites(
             id: 2,
             houseNumber: '1',
             street: 'Parc des Chantiers',
-            zip: '44000',
+            postcode: '44000',
             cityId: nantes.id,
             longitude: -1.56505,
             latitude: 47.20669,

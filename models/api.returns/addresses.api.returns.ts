@@ -12,7 +12,7 @@ class Department {
 class City {
     id: number = 0
     name: string = ''
-    zip: string = ''
+    postcode: string = ''
     department: Department = new Department()
 }
 
@@ -21,7 +21,7 @@ export class AddressCommonReturn {
     houseNumber: string | null = null
     street: string = ''
     fullAddress: string = ``
-    zip: string = ''
+    postcode: string = ''
     city: City = new City()
     otherDetails: string | null = null
     longitude: number | null = null
