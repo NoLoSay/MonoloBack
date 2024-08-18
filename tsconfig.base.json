@@ -97,6 +97,9 @@
       ],
       "@noloback/requests.constructor": ["models/requests.constructor"],
       "@noloback/roles": ["models/roles"],
+      "@noloback/sanctions.controller": [
+        "libs/sanctions.controller/src/index.ts"
+      ],
       "@noloback/sanctions.service": ["libs/sanctions.service/src/index.ts"],
       "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
       "@noloback/sign.languages.controller": [
