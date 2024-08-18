@@ -1,5 +1,12 @@
-import { Picture, Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
 import {
+  Picture,
+  Item,
+  Prisma,
+  PrismaBaseService,
+  Role
+} from '@noloback/prisma-client-base'
+import {
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException
@@ -8,16 +15,19 @@ import { VideoService } from '@noloback/video.service'
 import {
   ItemAdminReturn,
   ItemCommonReturn,
-  ItemDetailedReturn
+  ItemDetailedReturn,
+  ItemManagerReturn
 } from '@noloback/api.returns'
 import {
   ItemAdminSelect,
   ItemCommonSelect,
-  ItemDetailedSelect
+  ItemDetailedSelect,
+  ItemManagerSelect
 } from '@noloback/db.calls'
 import { ItemManipulationModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import { FiltersGetMany } from 'models/filters-get-many'
+import { SitesManagersService } from '@noloback/sites.managers.service'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 import { UploadthingService } from '@noloback/uploadthing.service';
@@ -27,36 +37,55 @@ import { PicturesService } from '@noloback/pictures.service'
 export class ItemsService {
   constructor (
     private prismaBase: PrismaBaseService,
+    private readonly sitesManagersService: SitesManagersService,
     private readonly picturesService: PicturesService,
     private videoService: VideoService, //private loggingService: LoggerService
     private uploadthingService: UploadthingService
   ) {}
 
-  async count (nameLike: string | undefined, typeId: number | undefined, categoryId: number | undefined): Promise<number> {
+  async count (
+    nameLike: string | undefined,
+    typeId: number | undefined,
+    categoryId: number | undefined
+  ): Promise<number> {
     return this.prismaBase.item.count({
       where: {
         itemType: {
-          id : typeId ? typeId : undefined,
+          id: typeId ? typeId : undefined,
           itemCategoryId: categoryId ? categoryId : undefined
         },
-        name: nameLike ? {
-          contains: nameLike
-        } : undefined,
-        deletedAt: null,
+        name: nameLike
+          ? {
+              contains: nameLike
+            }
+          : undefined,
+        deletedAt: null
       }
     })
   }
 
-  private async checkExistingItem (id: number) {
+  private async checkExistingItem (id: number): Promise<Item> {
+    const item = await this.prismaBase.item.findUnique({
+      where: { id: id, deletedAt: null }
+    })
+    if (!item) throw new NotFoundException('Item not found')
+    return item
+  }
+
+  private async checkExistingSite (id: number) {
     if (
-      (await this.prismaBase.item.count({
+      (await this.prismaBase.site.count({
         where: { id: id, deletedAt: null }
       })) === 0
     )
-      throw new NotFoundException('Item not found')
+      throw new NotFoundException('Site not found')
   }
 
-  async patch(id: number, body: any, picture: Express.Multer.File) {
+  async patch (
+    id: number,
+    body: ItemManipulationModel, picture: Express.Multer.File
+  ): Promise<ItemManagerReturn> {
+    if (body.siteId) await this.checkExistingSite(body.siteId)
     let uploadedPicture: string | undefined = undefined;
 
     if (picture) {
@@ -64,11 +93,11 @@ export class ItemsService {
 
       body.picture = uploadedPicture;
     }
-
     return this.prismaBase.item.update({
       where: { id },
-      data: body
-    })
+      data: body,
+      select: new ItemManagerSelect()
+    }) as unknown as ItemManagerReturn
   }
 
   async findAll (
@@ -76,7 +105,7 @@ export class ItemsService {
     filters: FiltersGetMany,
     nameLike?: string,
     typeId?: number,
-    categoryId?: number,
+    categoryId?: number
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
     let selectOptions: Prisma.ItemSelect
 
@@ -95,7 +124,7 @@ export class ItemsService {
         select: selectOptions,
         where: {
           itemType: {
-            id : typeId ? typeId : undefined,
+            id: typeId ? typeId : undefined,
             itemCategoryId: categoryId ? categoryId : undefined
           },
           name: nameLike
@@ -184,8 +213,13 @@ export class ItemsService {
             id: +item.itemTypeId
           }
         } : {},
+        site: item.siteId ? {
+          connect: {
+            id: +item.siteId
+          }
+        } : {}
       },
-      select: new ItemAdminSelect()
+      select: new ItemCommonSelect()
     })
 
     return newItem as unknown as ItemCommonReturn
@@ -194,12 +228,27 @@ export class ItemsService {
   async update (
     id: number,
     updatedItem: ItemManipulationModel,
+    user: UserRequestModel,
     picture: Express.Multer.File
   ): Promise<ItemCommonReturn> {
+    const item: Item = await this.checkExistingItem(id)
+
     let newPicture: Picture | undefined = undefined;
 
     if (picture) {
       newPicture = await this.picturesService.createPicture(picture.path);
+    }
+
+    if (item.siteId) {
+      if (
+        !(await this.sitesManagersService.isAllowedToModify(user, item.siteId))
+      ) {
+        throw new ForbiddenException('You are not allowed to modify this item.')
+      }
+    } else {
+      if (user.activeProfile.role !== Role.ADMIN) {
+        throw new ForbiddenException('You are not allowed to modify this item.')
+      }
     }
 
     const newItem = this.prismaBase.item.update({
@@ -260,5 +309,42 @@ export class ItemsService {
       }
     })
     return items as ItemCommonReturn
+  }
+
+  async giveItemToSite (
+    itemId: number,
+    siteId: number,
+    who: UserRequestModel
+  ): Promise<ItemCommonReturn> {
+    const item: Item = await this.checkExistingItem(itemId)
+    await this.checkExistingSite(siteId)
+
+    if (who.activeProfile.role !== Role.ADMIN) {
+      if (
+        !item.siteId ||
+        !(await this.sitesManagersService.isMainManagerOfSite(who.activeProfile.id, item.siteId))
+      ) {
+        throw new ForbiddenException('You are not allowed to give this item.')
+      }
+    }
+
+    const updatedItem: unknown = await this.prismaBase.item
+      .update({
+        where: { id: itemId },
+        data: {
+          site: {
+            connect: {
+              id: siteId
+            }
+          }
+        }
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      })
+
+    return updatedItem as ItemCommonReturn
   }
 }

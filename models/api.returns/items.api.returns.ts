@@ -16,6 +16,11 @@ class ItemType {
   itemCategory: ItemCategory = new ItemCategory()
 }
 
+class Site {
+  id: number = 0
+  name: string = ''
+}
+
 class Picture {
   id: number = 0
   hostingUrl: string = ''
@@ -30,6 +35,7 @@ export class ItemCommonReturn {
   pictures: Picture[] = []
   relatedPerson: Person = new Person()
   itemType: ItemType = new ItemType()
+  site: Site = new Site()
 }
 
 export class ItemDetailedReturn extends ItemCommonReturn {
