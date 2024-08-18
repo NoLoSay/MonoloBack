@@ -16,6 +16,28 @@ export class ExhibitedItemsService {
     private prismaBase: PrismaBaseService // private loggingService: LoggerService
   ) {}
 
+  async canItemBeUsedInExhibition (
+    itemId: number,
+    exhibitionId: number
+  ): Promise<boolean> {
+    const exhibitionSite = await this.prismaBase.exhibition.findUnique({
+      where: { id: exhibitionId },
+      select: {
+        siteId: true
+      }
+    })
+    if (!exhibitionSite) throw new NotFoundException('Exhibition not found.')
+
+    const itemSite = await this.prismaBase.item.findUnique({
+      where: { id: itemId },
+      select: {
+        siteId: true
+      }
+    })
+    if (!itemSite) throw new NotFoundException('Item not found.')
+    return exhibitionSite.siteId === itemSite.siteId
+  }
+
   async findExibitedItems (exhibitionId: number): Promise<ItemCommonReturn[]> {
     const exhibitedItems = await this.prismaBase.exhibitedItem
       .findMany({

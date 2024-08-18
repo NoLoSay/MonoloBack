@@ -10,10 +10,15 @@ import {
   Request,
   Response,
   UnauthorizedException,
-  Query
+  Query,
+  NotFoundException,
+  BadRequestException
 } from '@nestjs/common'
 import { ExhibitionsService } from '@noloback/exhibitions.service'
-import { ExhibitionManipulationModel, ExhibitedItemAdditionModel } from '@noloback/api.request.bodies'
+import {
+  ExhibitionManipulationModel,
+  ExhibitedItemAdditionModel
+} from '@noloback/api.request.bodies'
 import { ExhibitedItemsService } from '@noloback/exhibited.items.service'
 import { ADMIN, MANAGER, Roles } from '@noloback/roles'
 import { SitesManagersService } from '@noloback/sites.managers.service'
@@ -64,7 +69,12 @@ export class ExhibitionsController {
     @Param('id', ParseIntPipe) id: number,
     @Response() res: any
   ) {
-    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Exhibition', +id)
+    LoggerService.userLog(
+      +request.user.activeProfile.id,
+      'GET',
+      'Exhibition',
+      +id
+    )
 
     return res
       .status(200)
@@ -110,7 +120,7 @@ export class ExhibitionsController {
         'Exhibition',
         +id,
         JSON.stringify(request.body)
-      );
+      )
 
       return res
         .status(200)
@@ -146,7 +156,7 @@ export class ExhibitionsController {
         'Exhibition',
         +id,
         JSON.stringify(request.body)
-      );
+      )
 
       return res.status(200).json(await this.exhibitionsService.delete(id))
     }
@@ -172,17 +182,24 @@ export class ExhibitionsController {
     @Body() addedItem: ExhibitedItemAdditionModel
   ) {
     const exhibition = await this.exhibitionsService.findOne(id, request.user)
-    if (!exhibition) return null
+    if (!exhibition) throw new NotFoundException('Exhibition not found.')
     if (
-      await this.sitesManagersService.isAllowedToModify(
+      !(await this.sitesManagersService.isAllowedToModify(
         request.user,
         exhibition.site.id
-      )
+      ))
     )
-      return res
-        .status(200)
-        .json(await this.exhibitedItemsService.addExhibitedItem(id, addedItem))
-    throw new UnauthorizedException()
+      throw new UnauthorizedException("You can't modify this exhibition.")
+    if (
+      !(await this.exhibitedItemsService.canItemBeUsedInExhibition(
+        addedItem.itemId,
+        id
+      ))
+    )
+      throw new BadRequestException('Item not linked to the exhibition site.')
+    return res
+      .status(200)
+      .json(await this.exhibitedItemsService.addExhibitedItem(id, addedItem))
   }
 
   @Roles([ADMIN, MANAGER])
