@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
-import { PrismaBaseService, SanctionType } from '@noloback/prisma-client-base';
+import { PrismaBaseService, SanctionType, Sanctions } from '@noloback/prisma-client-base';
 import { UserRequestModel } from '@noloback/requests.constructor';
 import { FiltersGetMany } from 'models/filters-get-many';
 
@@ -188,7 +188,11 @@ export class SanctionsService {
     throw new NotImplementedException;
   }
 
-  async getUserSanctions(userId: number) {
+  async getUserSanctions(userId: number) : Promise<{
+    banned: boolean,
+    uploadBlocked: boolean,
+    sanctions: Sanctions[]
+  }> {
     const sanctions = await this.prismaBase.sanctions.findMany({
       where: {
         userId: userId
@@ -197,16 +201,18 @@ export class SanctionsService {
 
     const now = new Date(); // Get the current date and time
 
-    const banned = sanctions.find(sanction => 
-      sanction.sanctionType === SanctionType.BAN && 
-      now >= sanction.sanctionStart && 
-      (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd)
+    const banned = (sanctions.find(sanction => 
+        sanction.sanctionType === SanctionType.BAN && 
+        now >= sanction.sanctionStart && 
+        (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd)
+      ) != undefined
     );
 
-    const uploadBlocked = sanctions.find(sanction => 
-      sanction.sanctionType === SanctionType.BLOCK_UPLOAD && 
-      now >= sanction.sanctionStart && 
-      (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd)
+    const uploadBlocked = (sanctions.find(sanction => 
+        sanction.sanctionType === SanctionType.BLOCK_UPLOAD && 
+        now >= sanction.sanctionStart && 
+        (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd)
+      ) != undefined
     );
 
     return {

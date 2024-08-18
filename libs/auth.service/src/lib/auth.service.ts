@@ -1,7 +1,8 @@
-import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { UsersService } from '@noloback/users.service';
 import { MailerService } from '@noloback/mailer';
+import { SanctionsService } from '@noloback/sanctions.service';
 import { User } from '@prisma/client/base';
 import { compare } from 'bcrypt';
 import { Console, log } from 'console';
@@ -12,10 +13,14 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private mailerService: MailerService,
+    private sanctionsService: SanctionsService,
   ) {}
 
   async validateUser(login: string, pass: string): Promise<any> {
     const user = await this.usersService.connectUserByEmailOrUsername(login);
+    // if ((await this.sanctionsService.getUserSanctions(user.id))?.banned) {
+    //   throw new UnauthorizedException('User is banned');
+    // }
     if (user && user.password && (await compare(pass, user.password))) {
       const { password, ...result } = user;
       return result;

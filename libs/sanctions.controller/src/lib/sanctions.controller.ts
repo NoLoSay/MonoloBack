@@ -2,6 +2,7 @@ import { Controller, Get, HttpCode, Query, Request, Response } from "@nestjs/com
 import { SanctionType } from "@noloback/prisma-client-base";
 import { SanctionsService } from "@noloback/sanctions.service";
 import { FiltersGetMany } from "models/filters-get-many";
+import { ADMIN, MODERATOR, Roles } from '@noloback/roles';
 
 @Controller('sanctions')
 export class SanctionsController {
@@ -9,6 +10,7 @@ export class SanctionsController {
 
   @Get()
   @HttpCode(200)
+  @Roles([ADMIN, MODERATOR])
   async getAll(
     @Request() request: any,
     @Response() res: any,

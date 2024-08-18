@@ -7,6 +7,7 @@ import { LoggerLibModule } from '@noloback/logger-lib'
 import { TranslatorLibModule } from '@noloback/translator-lib'
 import { UsersControllerModule } from '@noloback/users.controller'
 import { AuthControllerModule } from '@noloback/auth.controller'
+import { SanctionsServiceModule } from '@noloback/sanctions.service';
 import { RegisterModule } from '@noloback/register.controller'
 import { CountriesControllerModule } from '@noloback/countries.controller'
 import { DepartmentsControllerModule } from '@noloback/departments.controller'
@@ -31,6 +32,7 @@ import { APP_GUARD } from '@nestjs/core'
 @Module({
   imports: [
     AuthControllerModule,
+    SanctionsServiceModule,
     LoggerLibModule,
     TranslatorLibModule,
     UsersControllerModule,
