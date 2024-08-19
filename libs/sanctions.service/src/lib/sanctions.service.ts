@@ -135,8 +135,8 @@ export class SanctionsService {
         },
         sanctionType: sanctionType,
         reason: reason,
-        sanctionStart: sanctionStart,
-        sanctionEnd: sanctionEnd
+        sanctionStart: sanctionStart ? new Date(sanctionStart) : undefined,
+        sanctionEnd: sanctionEnd ? new Date(sanctionEnd) : undefined
       }
     })
   }
@@ -185,7 +185,14 @@ export class SanctionsService {
     sanctionId: number,
     user: UserRequestModel,
   ) {
-    throw new NotImplementedException;
+    return await this.prismaBase.sanctions.update({
+      where: {
+        id: +sanctionId
+      },
+      data: {
+        deletedAt: new Date()
+      }
+    })
   }
 
   async getUserSanctions(userId: number) : Promise<{
@@ -202,6 +209,7 @@ export class SanctionsService {
     const now = new Date(); // Get the current date and time
 
     const banned = (sanctions.find(sanction => 
+        sanction.deletedAt == undefined &&
         sanction.sanctionType === SanctionType.BAN && 
         now >= sanction.sanctionStart && 
         (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd)
@@ -209,6 +217,7 @@ export class SanctionsService {
     );
 
     const uploadBlocked = (sanctions.find(sanction => 
+        sanction.deletedAt == undefined &&
         sanction.sanctionType === SanctionType.BLOCK_UPLOAD && 
         now >= sanction.sanctionStart && 
         (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd)
