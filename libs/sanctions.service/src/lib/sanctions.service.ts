@@ -142,8 +142,8 @@ export class SanctionsService {
   }
 
   async update(
-    sanctionId: number,
     user: UserRequestModel,
+    sanctionId: number,
     targetUser: number,
     sanctionType: SanctionType,
     reason: string,
@@ -174,16 +174,16 @@ export class SanctionsService {
   }
 
   async patch(
-    sanctionId: number,
     user: UserRequestModel,
+    sanctionId: number,
   ) {
     // throw new NotFoundException('Not implemented');
     throw new NotImplementedException;
   }
 
   async delete(
-    sanctionId: number,
     user: UserRequestModel,
+    sanctionId: number,
   ) {
     return await this.prismaBase.sanctions.update({
       where: {

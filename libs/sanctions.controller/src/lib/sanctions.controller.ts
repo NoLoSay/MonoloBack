@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, Post, Query, Request, Response } from "@nestjs/common";
+import { Controller, Delete, Get, HttpCode, Param, Post, Query, Request, Response } from "@nestjs/common";
 import { SanctionType } from "@noloback/prisma-client-base";
 import { SanctionsService } from "@noloback/sanctions.service";
 import { FiltersGetMany } from "models/filters-get-many";
@@ -72,6 +72,16 @@ export class SanctionsController {
     const data = await this.sanctionsService.create(request.user, request.body.target_user, request.body.sanction_type, request.body.reason, request.body.sanction_start, request.body.sanction_end);
     return res
       .status(201)
+      .json(data);
+  }
+
+  @Delete(':id')
+  @HttpCode(200)
+  @Roles([ADMIN])
+  async delete (@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
+    const data = await this.sanctionsService.delete(request.user, id);
+    return res
+      .status(200)
       .json(data);
   }
 }
