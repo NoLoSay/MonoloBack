@@ -16,6 +16,7 @@ import {
   ItemTypeCommonSelect,
   ItemTypeDetailledSelect
 } from '@noloback/db.calls'
+import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -26,7 +27,12 @@ export class ItemTypesService {
   ) {}
 
   async findAll (
-    role: Role
+    role: Role,
+    filters: FiltersGetMany,
+    itemCategoryId?: number | undefined,
+    nameStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
   ): Promise<ItemTypeCommonReturn[] | ItemTypeAdminReturn[]> {
     let selectOptions: Prisma.ItemTypeSelect
 
@@ -38,11 +44,23 @@ export class ItemTypesService {
         selectOptions = new ItemTypeCommonSelect()
     }
     const types = await this.prismaBase.itemType.findMany({
+      skip: +filters.start,
+      take: +filters.end - filters.start,
       select: selectOptions,
-      where:
-        role === Role.ADMIN
-          ? undefined
-          : { deletedAt: null, itemCategory: { deletedAt: null } }
+      where: {
+        itemCategoryId: itemCategoryId ? +itemCategoryId : undefined,
+        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+
+        deletedAt: role === Role.ADMIN ? undefined : null,
+        itemCategory: role === Role.ADMIN ? undefined : { deletedAt: null }
+      },
+      orderBy: {
+        [filters.sort]: filters.order,
+      }
     })
 
     switch (role) {

@@ -510,7 +510,7 @@ export class VideoService {
     return await this.prismaBase.video.count({
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
-        itemId: itemId ? itemId : undefined,
+        itemId: itemId ? +itemId : undefined,
         postedBy: userId
           ? {
               role: Role.CREATOR,
@@ -550,12 +550,12 @@ export class VideoService {
     }
 
     const videoEntities: unknown[] = await this.prismaBase.video.findMany({
-      skip: filters.start,
-      take: filters.end - filters.start,
+      skip: +filters.start,
+      take: +filters.end - filters.start,
       select: selectOptions,
       where: {
         validationStatus: validationStatus ? validationStatus : undefined,
-        itemId: itemId ? itemId : undefined,
+        itemId: itemId ? +itemId : undefined,
         postedBy: userId
           ? {
               role: Role.CREATOR,

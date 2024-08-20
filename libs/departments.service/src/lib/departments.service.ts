@@ -13,6 +13,7 @@ import {
   DepartmentAdminSelect,
   DepartmentCommonSelect
 } from '@noloback/db.calls'
+import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -22,8 +23,37 @@ export class DepartmentsService {
     private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
+  async count(
+    role: Role,
+    countryId?: number | undefined,
+    nameStart?: string | undefined,
+    codeStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<number> {
+    return await this.prismaBase.department.count({
+      where: {
+        countryId: countryId ? +countryId : undefined,
+        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        code: codeStart ? { startsWith: codeStart, mode: 'insensitive' } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+
+        deletedAt: role === Role.ADMIN ? undefined : null,
+      },
+    });
+  }
+
   async findAll (
-    role: Role
+    role: Role,
+    filters: FiltersGetMany,
+    countryId?: number | undefined,
+    nameStart?: string | undefined,
+    codeStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
   ): Promise<DepartmentCommonReturn[] | DepartmentAdminReturn[]> {
     let selectOptions: Prisma.DepartmentSelect
 
@@ -36,11 +66,23 @@ export class DepartmentsService {
     }
     const departments: unknown[] = await this.prismaBase.department
       .findMany({
+        skip: +filters.start,
+        take: +filters.end - filters.start,
         select: selectOptions,
-        where:
-          role === Role.ADMIN
-            ? undefined
-            : { deletedAt: null, country: { deletedAt: null } }
+        where: {
+          countryId: countryId ? +countryId : undefined,
+          name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+          code: codeStart ? { startsWith: codeStart, mode: 'insensitive' } : undefined,
+          createdAt: {
+            gte: createdAtGte ? new Date(createdAtGte) : undefined,
+            lte: createdAtLte ? new Date(createdAtLte) : undefined,
+          },
+
+          deletedAt: role === Role.ADMIN ? undefined : null,
+        },
+        orderBy: {
+          [filters.sort]: filters.order,
+        }
       })
       .catch((e: Error) => {
         console.log(e)

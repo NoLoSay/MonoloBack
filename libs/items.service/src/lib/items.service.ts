@@ -43,27 +43,6 @@ export class ItemsService {
     private uploadthingService: UploadthingService
   ) {}
 
-  async count (
-    nameLike: string | undefined,
-    typeId: number | undefined,
-    categoryId: number | undefined
-  ): Promise<number> {
-    return this.prismaBase.item.count({
-      where: {
-        itemType: {
-          id: typeId ? typeId : undefined,
-          itemCategoryId: categoryId ? categoryId : undefined
-        },
-        name: nameLike
-          ? {
-              contains: nameLike
-            }
-          : undefined,
-        deletedAt: null
-      }
-    })
-  }
-
   private async checkExistingItem (id: number): Promise<Item> {
     const item = await this.prismaBase.item.findUnique({
       where: { id: id, deletedAt: null }
@@ -100,12 +79,50 @@ export class ItemsService {
     }) as unknown as ItemManagerReturn
   }
 
+  async count (
+    role: Role,
+    filters: FiltersGetMany,
+    nameContains?: string,
+    typeId?: number,
+    categoryId?: number,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<number> {
+    return await this.prismaBase.item
+      .count({
+        where: {
+          itemType: {
+            id : typeId ? +typeId : undefined,
+            itemCategoryId: categoryId ? +categoryId : undefined
+          },
+          name: nameContains
+            ? {
+                contains: nameContains
+              }
+            : undefined,
+          createdAt: {
+            gte: createdAtGte ? new Date(createdAtGte) : undefined,
+            lte: createdAtLte ? new Date(createdAtLte) : undefined,
+          },
+
+          deletedAt: role === Role.ADMIN ? undefined : null
+        },
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        throw new InternalServerErrorException(e)
+      })
+    }
+
   async findAll (
     role: Role,
     filters: FiltersGetMany,
-    nameLike?: string,
+    nameContains?: string,
     typeId?: number,
-    categoryId?: number
+    categoryId?: number,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
   ): Promise<ItemCommonReturn[] | ItemAdminReturn[]> {
     let selectOptions: Prisma.ItemSelect
 
@@ -119,21 +136,28 @@ export class ItemsService {
 
     const items: unknown = await this.prismaBase.item
       .findMany({
-        skip: filters.start,
-        take: filters.end - filters.start,
+        skip: +filters.start,
+        take: +filters.end - filters.start,
         select: selectOptions,
         where: {
           itemType: {
-            id: typeId ? typeId : undefined,
-            itemCategoryId: categoryId ? categoryId : undefined
+            id : typeId ? +typeId : undefined,
+            itemCategoryId: categoryId ? +categoryId : undefined
           },
-          name: nameLike
+          name: nameContains
             ? {
-                contains: nameLike
+                contains: nameContains
               }
             : undefined,
-          relatedPerson: categoryId ? { id: categoryId } : undefined,
+          createdAt: {
+            gte: createdAtGte ? new Date(createdAtGte) : undefined,
+            lte: createdAtLte ? new Date(createdAtLte) : undefined,
+          },
+
           deletedAt: role === Role.ADMIN ? undefined : null
+        },
+        orderBy: {
+          [filters.sort]: filters.order,
         }
       })
       .catch((e: Error) => {

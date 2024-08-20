@@ -22,6 +22,7 @@ import { VideoService } from '@noloback/video.service';
 import { PaginatedDto } from 'models/swagger/paginated-dto';
 import { Role } from '@prisma/client/base';
 import { LoggerService } from '@noloback/logger-lib';
+import { FiltersGetMany } from 'models/filters-get-many';
 
 @Controller('users')
 @ApiExtraModels(PaginatedDto)
@@ -36,21 +37,29 @@ export class UsersController {
     @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
-    @Query('_end') lastElem: number = 10
+    @Query('_end') lastElem: number = 10,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
+    @Query('name_start') nameStart?: string | undefined,
+    @Query('tel_start') telStart?: string | undefined,
+    @Query('email_start') emailStart?: string | undefined,
+    @Query('email_verified') emailVerified?: boolean | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined,
+    @Query('deletedAt_gte') deletedAtGte?: string | undefined,
+    @Query('deletedAt_lte') deletedAtLte?: string | undefined
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
+    const data = await this.usersService.findAll(request.user.activeProfile.role, new FiltersGetMany(firstElem, lastElem, sort, order,
+    ['id', 'username', 'telNumber', 'email', 'emailVerified', 'type', 'addressId', 'createdAt', 'deletedAt']),
+    nameStart, telStart, emailStart, emailVerified, createdAtGte, createdAtLte, deletedAtGte, deletedAtLte)
+
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': await this.usersService.count(),
+        'X-Total-Count': data.length,
       })
       .status(200)
-      .json(
-        await this.usersService.findAll(
-          request.user.activeProfile.role,
-          +firstElem,
-          +lastElem
-        )
-      );
+      .json(data);
   }
 
   @Get('me')

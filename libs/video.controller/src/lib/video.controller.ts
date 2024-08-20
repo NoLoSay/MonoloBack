@@ -60,34 +60,30 @@ export class VideoController {
       validationStatusEnum = validationStatus as unknown as ValidationStatus;
     }
 
+    const data = await this.videoservice.getAllVideos(
+      request.user,
+      new FiltersGetMany(
+        firstElem,
+        lastElem,
+        sort,
+        order,
+        ['id', 'validationStatus', 'createdAt'],
+        'id'
+      ),
+      validationStatusEnum,
+      itemId ? +itemId : undefined,
+      userId ? +userId : undefined,
+      createdAtGte,
+      createdAtLte
+    )
+
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': await this.videoservice.countVideos(
-          validationStatusEnum,
-          itemId ? +itemId : undefined,
-          userId ? +userId : undefined,
-          createdAtGte,
-          createdAtLte
-        ),
+        'X-Total-Count': data.length,
       })
       .json(
-        await this.videoservice.getAllVideos(
-          request.user,
-          new FiltersGetMany(
-            firstElem,
-            lastElem,
-            sort,
-            order,
-            ['id', 'validationStatus', 'createdAt'],
-            'id'
-          ),
-          validationStatusEnum,
-          itemId ? +itemId : undefined,
-          userId ? +userId : undefined,
-          createdAtGte,
-          createdAtLte
-        )
+        data
       );
     // return JSON.parse(
     //   JSON.stringify(

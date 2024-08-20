@@ -10,6 +10,7 @@ import {
   Request,
   Response,
   UnauthorizedException,
+  Query,
   NotFoundException,
   BadRequestException
 } from '@nestjs/common'
@@ -27,6 +28,7 @@ import {
   ExhibitionCommonDetailedReturn
 } from '@noloback/api.returns'
 import { LoggerService } from '@noloback/logger-lib'
+import { FiltersGetMany } from 'models/filters-get-many'
 
 @Controller('exhibitions')
 export class ExhibitionsController {
@@ -37,10 +39,28 @@ export class ExhibitionsController {
   ) {}
 
   @Get()
-  async findAll (@Request() request: any, @Response() res: any) {
+  async findAll (@Request() request: any, @Response() res: any,
+  @Query('_start') firstElem: number = 0,
+  @Query('_end') lastElem: number = 10,
+  @Query('_sort') sort?: string | undefined,
+  @Query('_order') order?: 'asc' | 'desc' | undefined,
+  @Query('site_id') siteId?: number | undefined,
+  @Query('name_start') nameStart?: string | undefined,
+  @Query('createdAt_gte') createdAtGte?: string | undefined,
+  @Query('createdAt_lte') createdAtLte?: string | undefined) {
     return res
-      .status(200)
-      .json(await this.exhibitionsService.findAll(request.user))
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.exhibitionsService.count(
+          siteId ? siteId : undefined,
+          nameStart ? nameStart : undefined,
+          createdAtGte,
+          createdAtLte
+        ),
+      })
+      .json(
+        await this.exhibitionsService.findAll(request.user, new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'name', 'siteId', 'longitude', 'latitude', 'createdAt']), siteId, nameStart, createdAtGte, createdAtLte)
+      );
   }
 
   @Get(':id')

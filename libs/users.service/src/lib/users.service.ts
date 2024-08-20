@@ -27,6 +27,7 @@ import {
 import { UserCreateModel, UserUpdateModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import * as _ from 'lodash';
+import { FiltersGetMany } from 'models/filters-get-many'
 
 @Injectable()
 export class UsersService {
@@ -193,8 +194,15 @@ export class UsersService {
 
   async findAll (
     role: Role,
-    firstElem: number,
-    lastElem: number
+    filters: FiltersGetMany,
+    nameStart?: string | undefined,
+    telStart?: string | undefined,
+    emailStart?: string | undefined,
+    emailVerified?: boolean | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined,
+    deletedAtGte?: string | undefined,
+    deletedAtLte?: string | undefined
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
     let selectOptions: Prisma.UserSelect
 
@@ -207,10 +215,26 @@ export class UsersService {
     }
 
     const users = await this.prismaBase.user.findMany({
-      skip: firstElem,
-      take: lastElem - firstElem,
-      where: role === Role.ADMIN ? undefined : { deletedAt: null },
-      select: selectOptions
+      skip: +filters.start,
+      take: +filters.end - filters.start,
+      select: selectOptions,
+      where: {
+        username: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        telNumber: telStart ? { startsWith: telStart, mode: 'insensitive' } : undefined,
+        email: emailStart ? { startsWith: emailStart, mode: 'insensitive' } : undefined,
+        emailVerified: emailVerified ? emailVerified : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+        deletedAt: role === Role.ADMIN ? {
+          gte: deletedAtGte ? new Date(deletedAtGte) : undefined,
+          lte: deletedAtLte ? new Date(deletedAtLte) : undefined,
+        } : null,
+      },
+      orderBy: {
+        [filters.sort]: filters.order,
+      }
     })
 
     switch (role) {

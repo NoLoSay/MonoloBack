@@ -7,7 +7,9 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request
+  Request,
+  Response,
+  Query
 } from '@nestjs/common'
 import { ADMIN, MANAGER, MODERATOR, Roles } from '@noloback/roles'
 import { PersonsService } from '@noloback/persons.service'
@@ -18,6 +20,8 @@ import {
   PersonDetailledReturn
 } from '@noloback/api.returns'
 import { LoggerService } from '@noloback/logger-lib'
+import { FiltersGetMany } from 'models/filters-get-many'
+import { PersonType } from '@noloback/prisma-client-base'
 
 @Controller('persons')
 export class PersonsController {
@@ -25,9 +29,29 @@ export class PersonsController {
 
   @Get()
   async findAll (
-    @Request() request: any
+    @Request() request: any,
+    @Response() res: any,
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 10,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
+    @Query('person_type') personType?: PersonType | undefined,
+    @Query('name_start') nameStart?: string | undefined,
+    @Query('birth_start') birthStart?: string | undefined,
+    @Query('death_start') deathStart?: string | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined
   ): Promise<PersonCommonReturn[] | PersonAdminReturn[]> {
-    return this.personsService.findAll(request.user.activeProfile.role)
+    const data = await this.personsService.findAll(request.user.activeProfile.role, new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'type', 'name', 'birthDate', 'deathDate', 'createdAt']), personType, nameStart, birthStart, deathStart, createdAtGte, createdAtLte)
+
+    return res
+    .set({
+      'Access-Control-Expose-Headers': 'X-Total-Count',
+      'X-Total-Count': data.length,
+    })
+    .json(
+      data
+    );
   }
 
   @Get(':id')

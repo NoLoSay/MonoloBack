@@ -7,7 +7,9 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request
+  Request,
+  Response,
+  Query
 } from '@nestjs/common'
 import { ItemCategoriesService } from '@noloback/item.categories.service'
 import { ItemCategoryManipulationModel } from '@noloback/api.request.bodies'
@@ -17,6 +19,7 @@ import {
   ItemCategoryCommonReturn
 } from '@noloback/api.returns'
 import { LoggerService } from '@noloback/logger-lib'
+import { FiltersGetMany } from 'models/filters-get-many'
 
 @Controller('item-categories')
 export class ItemCategoriesController {
@@ -24,9 +27,28 @@ export class ItemCategoriesController {
 
   @Get()
   async findAll (
-    @Request() request: any
+    @Request() request: any, @Response() res: any,
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 10,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
+    @Query('name_start') nameStart?: string | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined
   ): Promise<ItemCategoryCommonReturn[] | ItemCategoryAdminReturn[]> {
-    return this.itemCategoriesService.findAll(request.user.activeProfile.role)
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.itemCategoriesService.count(
+          request.user.activeProfile.role,
+          nameStart ? nameStart : undefined,
+          createdAtGte,
+          createdAtLte
+        ),
+      })
+      .json(
+        await this.itemCategoriesService.findAll(request.user.activeProfile.role, new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'name', 'createdAt']), nameStart, createdAtGte, createdAtLte)
+      );
   }
 
   @Get(':id')
