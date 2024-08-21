@@ -24,7 +24,7 @@ export async function seedVideos (): Promise<Video[]> {
     update: {},
     create: {
       name: 'NoLoSay',
-      url: process.env['API_URL'] + '/watch/${videoUUID}',
+      url: process.env['VIDEO_API_URL'] + '/watch/${videoUUID}',
     },
   });
 

@@ -29,7 +29,7 @@ export class PicturesService {
           uuid: picture.uuid
         },
         data: {
-          hostingUrl: `${process.env["API_URL"]}:${process.env["VIDEO_API_PORT"]}/pictures/${picture.uuid}`
+          hostingUrl: `${process.env["VIDEO_API_URL"]}/pictures/${picture.uuid}`
         }
       });
 

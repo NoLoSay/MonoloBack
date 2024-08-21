@@ -100,7 +100,7 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: multer.diskStorage({
-        destination: '/opt/nolovideos',
+        destination: `${process.env["LOCAL_VIDEO_PATH"]}`,
         filename: (req, file, cb) => {
           const uuid = randomUUID();
           cb(null, `${uuid}${extname(file.originalname)}`);
