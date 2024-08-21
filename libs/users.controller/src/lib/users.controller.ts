@@ -14,7 +14,7 @@ import {
   Patch,
 } from '@nestjs/common';
 import { ApiExtraModels } from '@nestjs/swagger';
-import { ADMIN, Roles } from '@noloback/roles';
+import { ADMIN, MODERATOR, Roles } from '@noloback/roles';
 import { UsersService } from '@noloback/users.service';
 import { UserCreateModel, UserUpdateModel } from '@noloback/api.request.bodies';
 import { UserAdminReturn, UserCommonReturn } from '@noloback/api.returns';
@@ -23,12 +23,14 @@ import { PaginatedDto } from 'models/swagger/paginated-dto';
 import { Role } from '@prisma/client/base';
 import { LoggerService } from '@noloback/logger-lib';
 import { FiltersGetMany } from 'models/filters-get-many';
+import { SanctionsService } from '@noloback/sanctions.service';
 
 @Controller('users')
 @ApiExtraModels(PaginatedDto)
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
+    private readonly sanctionsService: SanctionsService,
     private readonly videoService: VideoService
   ) {}
 
@@ -60,6 +62,15 @@ export class UsersController {
       })
       .status(200)
       .json(data);
+  }
+
+  @Get(':id/sanctions')
+  @Roles([ADMIN, MODERATOR])
+  async findOneSanctions(
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.sanctionsService.getUserSanctions(id);
   }
 
   @Get('me')

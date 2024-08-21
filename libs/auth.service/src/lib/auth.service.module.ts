@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { InstagramStrategy } from './strategies/instagram.strategy';
 import { FacebookStrategy } from './strategies/facebook.strategy';
 import { MailerServiceModule } from '@noloback/mailer';
+import { SanctionsServiceModule } from '@noloback/sanctions.service';
 
 @Module({
   controllers: [],
@@ -32,6 +33,7 @@ import { MailerServiceModule } from '@noloback/mailer';
     }),
     PassportModule,
     MailerServiceModule,
+    SanctionsServiceModule,
   ],
 })
 export class AuthServiceModule {}

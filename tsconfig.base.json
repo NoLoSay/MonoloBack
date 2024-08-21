@@ -24,11 +24,6 @@
       "@noloback/api.returns": ["models/api.returns"],
       "@noloback/auth.controller": ["libs/auth.controller/src/index.ts"],
       "@noloback/auth.service": ["libs/auth.service/src/index.ts"],
-      "@noloback/mail-confirmation.service": ["libs/mail-confirmation.service/src/index.ts"],
-      "@noloback/mail-confirmation.controller": [
-        "libs/mail-confirmation.controller/src/index.ts"
-      ],
-      "@noloback/mailer": ["libs/mailer/src/index.ts"],
       "@noloback/cities.controller": ["libs/cities.controller/src/index.ts"],
       "@noloback/cities.service": ["libs/cities.service/src/index.ts"],
       "@noloback/countries.controller": [
@@ -69,6 +64,13 @@
       "@noloback/items.service": ["libs/items.service/src/index.ts"],
       "@noloback/jwt": ["models/jwt"],
       "@noloback/logger-lib": ["libs/logger/src/index.ts"],
+      "@noloback/mail-confirmation.controller": [
+        "libs/mail-confirmation.controller/src/index.ts"
+      ],
+      "@noloback/mail-confirmation.service": [
+        "libs/mail-confirmation.service/src/index.ts"
+      ],
+      "@noloback/mailer": ["libs/mailer/src/index.ts"],
       "@noloback/models": ["models/index.ts"],
       "@noloback/models/swagger": ["models/swagger/index.ts"],
       "@noloback/persons.controller": ["libs/persons.controller/src/index.ts"],
@@ -95,6 +97,10 @@
       ],
       "@noloback/requests.constructor": ["models/requests.constructor"],
       "@noloback/roles": ["models/roles"],
+      "@noloback/sanctions.controller": [
+        "libs/sanctions.controller/src/index.ts"
+      ],
+      "@noloback/sanctions.service": ["libs/sanctions.service/src/index.ts"],
       "@noloback/search.controller": ["libs/search.controller/src/index.ts"],
       "@noloback/sign.languages.controller": [
         "libs/sign.languages.controller/src/index.ts"

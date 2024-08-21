@@ -4,7 +4,8 @@ import {
   ValidationStatus,
   PersonType,
   SiteType,
-  SiteTag
+  SiteTag,
+  SanctionType
 } from '@prisma/client/base'
 
 const prisma = new PrismaClient()
@@ -24,6 +25,7 @@ export async function seedEnumsColors (): Promise<{
   personTypes: { personType: PersonType; color: string }[]
   siteTypes: { siteType: SiteType; color: string }[]
   siteTags: { siteTag: SiteTag; color: string }[]
+  sanctionTypes: { sanctionType: SanctionType; color: string }[]
 }> {
   let enumsColors: {
     roles: { role: Role; color: string }[]
@@ -31,12 +33,14 @@ export async function seedEnumsColors (): Promise<{
     personTypes: { personType: PersonType; color: string }[]
     siteTypes: { siteType: SiteType; color: string }[]
     siteTags: { siteTag: SiteTag; color: string }[]
+    sanctionTypes: { sanctionType: SanctionType; color: string }[]
   } = {
     roles: [],
     validationStatuses: [],
     personTypes: [],
     siteTypes: [],
-    siteTags: []
+    siteTags: [],
+    sanctionTypes: [],
   }
 
   for (const role of Object.values(Role)) {
@@ -98,6 +102,19 @@ export async function seedEnumsColors (): Promise<{
         update: {},
         create: {
           siteTag,
+          color: getRandomHexColor()
+        }
+      })
+    )
+  }
+
+  for (const sanctionType of Object.values(SanctionType)) {
+    enumsColors.sanctionTypes.push(
+      await prisma.sanctionTypeColor.upsert({
+        where: { sanctionType },
+        update: {},
+        create: {
+          sanctionType,
           color: getRandomHexColor()
         }
       })

@@ -149,6 +149,7 @@ model User {
   oAuthAccounts OAuthProviderUser[]
   loginHistory  UserLoginLog[]
   profiles      Profile[]
+  sanctions     Sanctions[]
 }
 
 model Profile {
@@ -164,8 +165,35 @@ model Profile {
   managerOf          SiteHasManager[]
   UserActionLog      UserActionLog[]
   SensitiveActionLog SensitiveActionLog[]
+  issuedSanctions    Sanctions[]
 
   @@unique([userId, role])
+}
+
+model Sanctions {
+  id            Int          @id @default(autoincrement())
+  user          User         @relation(fields: [userId], references: [id])
+  userId        Int
+  sanctionType  SanctionType
+  reason        String
+  issuer        Profile?     @relation(fields: [issuerId], references: [id])
+  issuerId      Int?
+  sanctionStart DateTime     @default(now())
+  sanctionEnd   DateTime?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?
+}
+
+enum SanctionType {
+  BAN
+  BLOCK_UPLOAD
+}
+
+model SanctionTypeColor {
+  id           Int          @id @default(autoincrement())
+  sanctionType SanctionType @unique
+  color        String       @default("#ffffff")
 }
 
 // ----------------------------
