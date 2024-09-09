@@ -367,18 +367,19 @@ model Picture {
 // -------------------------------
 
 model Exhibition {
-  id               Int             @id @default(autoincrement())
+  id               Int                 @id @default(autoincrement())
   name             String
   shortDescription String?
   longDescription  String?
   startDate        DateTime?
   endDate          DateTime?
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
   deletedAt        DateTime?
   siteId           Int
-  site             Site            @relation(fields: [siteId], references: [id])
+  site             Site                @relation(fields: [siteId], references: [id])
   exhibitedItems   ExhibitedItem[]
+  rooms            ExhibitionHasRoom[]
 
   @@unique([name, siteId])
 }
@@ -448,6 +449,7 @@ model Site {
   siteHasManagers  SiteHasManager[]
   items            Item[]
   pictures         Picture[]        @relation("SitePictures")
+  Room             Room[]
 }
 
 model SiteHasManager {
@@ -462,6 +464,34 @@ model SiteHasManager {
   profile   Profile   @relation(fields: [profileId], references: [id])
 
   @@unique([profileId, siteId])
+}
+
+model Room {
+  id          Int                 @id @default(autoincrement())
+  name        String              @unique
+  description String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  deletedAt   DateTime?
+  siteId      Int
+  site        Site                @relation(fields: [siteId], references: [id])
+  exhibitions ExhibitionHasRoom[]
+
+  @@unique([name, siteId])
+}
+
+model ExhibitionHasRoom {
+  id           Int        @id @default(autoincrement())
+  specName String?
+  specDesc String?
+  exhibitionId Int
+  roomId       Int
+  exhibition   Exhibition @relation(fields: [exhibitionId], references: [id])
+  room         Room       @relation(fields: [roomId], references: [id])
+
+  @@unique([exhibitionId, roomId])
+  @@index([roomId, exhibitionId])
+
 }
 
 // --------------------------
