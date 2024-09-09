@@ -273,7 +273,7 @@ export class SitesService {
                 street: site.address.street,
                 zip: site.address.zip,
                 otherDetails: site.address.otherDetails,
-                latitude: +site.address.latitude,
+                latitude: +(site.address.latitude),
                 longitude: +site.address.longitude,
                 city: {
                   connect: {

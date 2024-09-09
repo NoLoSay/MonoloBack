@@ -183,6 +183,10 @@ export class SitesController {
     return res.status(200).json(await this.sitesService.delete(id))
   }
 
+  // |--------------------|
+  // |  MANAGERS ROUTES   |
+  // |--------------------|
+
   @Roles([ADMIN, MANAGER])
   @Get(':id/managers')
   async findManagers (
@@ -264,3 +268,9 @@ export class SitesController {
     throw new UnauthorizedException()
   }
 }
+
+  // |--------------------|
+  // |    ROOMS ROUTES    |
+  // |--------------------|
+
+  
