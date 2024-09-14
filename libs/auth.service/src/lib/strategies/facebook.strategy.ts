@@ -66,6 +66,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
               create: {
                 username: user.username,
                 email: user.email,
+                emailVerified: true,
                 password: await hash(randomUUID(), 12),
                 picture: user.picture,
               },

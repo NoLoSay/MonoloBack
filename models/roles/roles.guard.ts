@@ -1,18 +1,28 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common'
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Roles } from './roles.decorator'
+import { SanctionsService } from '@noloback/sanctions.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor (private reflector: Reflector) {}
+  constructor (
+    private reflector: Reflector,
+    private sanctionsService: SanctionsService,
+  ) {}
 
-  canActivate (context: ExecutionContext): boolean {
+  async canActivate (context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest()
+    const user = request.user
+    const sanctions = await this.sanctionsService.getUserSanctions(user?.id)
+    const isBanned = sanctions?.banned
+    if (isBanned) {
+      throw new UnauthorizedException('User is banned');
+    }
+
     const roles = this.reflector.get(Roles, context.getHandler())
     if (!roles) {
       return true
     }
-    const request = context.switchToHttp().getRequest()
-    const user = request.user
     return roles.includes(user.activeProfile.role)
   }
 }

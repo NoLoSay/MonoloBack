@@ -7,13 +7,16 @@ import {
   Param,
   Delete,
   ParseIntPipe,
-  Request
+  Request,
+  Query,
+  Response
 } from '@nestjs/common'
 import { CitiesService } from '@noloback/cities.service'
 import { CityManipulationModel } from '@noloback/api.request.bodies'
 import { CityCommonReturn, CityAdminReturn } from '@noloback/api.returns'
 import { ADMIN, Roles } from '@noloback/roles'
 import { LoggerService } from '@noloback/logger-lib'
+import { FiltersGetMany } from 'models/filters-get-many'
 
 @Controller('cities')
 export class CitiesController {
@@ -21,9 +24,33 @@ export class CitiesController {
 
   @Get()
   async findAll (
-    @Request() request: any
+    @Request() request: any,
+    @Response() res: any,
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 10,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
+    @Query('department_id') departmentId?: number | undefined,
+    @Query('zip_start') zipStart?: string | undefined,
+    @Query('name_start') nameStart?: string | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined
   ): Promise<CityCommonReturn[] | CityAdminReturn[]> {
-    return this.citiesService.findAll(request.user.activeProfile.role)
+    return res
+      .set({
+        'Access-Control-Expose-Headers': 'X-Total-Count',
+        'X-Total-Count': await this.citiesService.count(
+          request.user.activeProfile.role,
+          departmentId ? +departmentId : undefined,
+          zipStart ? zipStart : undefined,
+          nameStart ? nameStart : undefined,
+          createdAtGte,
+          createdAtLte
+        ),
+      })
+      .json(
+        await this.citiesService.findAll(request.user.activeProfile.role, new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'zip', 'name', 'departmentId', 'longitude', 'latitude', 'createdAt']), departmentId, zipStart, nameStart, createdAtGte, createdAtLte)
+      );
   }
 
   @Get(':id')

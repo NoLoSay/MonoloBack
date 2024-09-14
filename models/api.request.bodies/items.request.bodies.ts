@@ -26,7 +26,7 @@ export class ItemManipulationModel {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  picture?: string 
+  picture?: string
 
   @ApiProperty()
   @IsOptional()
@@ -34,10 +34,23 @@ export class ItemManipulationModel {
   @IsPositive()
   relatedPersonId?: number
 
-
   @ApiProperty()
   @IsOptional()
   @IsInt()
   @IsPositive()
   itemTypeId?: number
+
+  @ApiProperty()
+  @IsOptional()
+  @IsInt()
+  @IsPositive()
+  siteId?: number
+}
+
+export class ItemGiveModel {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsInt()
+  @IsPositive()
+  siteId: number = 0
 }

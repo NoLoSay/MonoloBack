@@ -7,6 +7,7 @@ import {
 import { CountryManipulationModel } from '@noloback/api.request.bodies'
 import { CountryAdminReturn, CountryCommonReturn } from '@noloback/api.returns'
 import { CountryAdminSelect, CountryCommonSelect } from '@noloback/db.calls'
+import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -16,8 +17,34 @@ export class CountriesService {
     private prismaBase: PrismaBaseService //private loggingService: LoggerService
   ) {}
 
+  async count(
+    role: Role,
+    nameStart?: string | undefined,
+    codeStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
+  ): Promise<number> {
+    return await this.prismaBase.country.count({
+      where: {
+        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        code: codeStart ? { startsWith: codeStart, mode: 'insensitive' } : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+
+        deletedAt: role === Role.ADMIN ? undefined : null,
+      },
+    });
+  }
+
   async findAll (
-    role: Role
+    role: Role,
+    filters: FiltersGetMany,
+    nameStart?: string | undefined,
+    codeStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
   ): Promise<CountryCommonReturn[] | CountryAdminReturn[]> {
     let selectOptions: Prisma.CountrySelect
 
@@ -31,8 +58,22 @@ export class CountriesService {
 
     const countries = await this.prismaBase.country
       .findMany({
+        skip: +filters.start,
+        take: +filters.end - filters.start,
         select: selectOptions,
-        where: role === Role.ADMIN ? undefined : { deletedAt: null }
+        where: {
+          name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+          code: codeStart ? { startsWith: codeStart, mode: 'insensitive' } : undefined,
+          createdAt: {
+            gte: createdAtGte ? new Date(createdAtGte) : undefined,
+            lte: createdAtLte ? new Date(createdAtLte) : undefined,
+          },
+
+          deletedAt: role === Role.ADMIN ? undefined : null,
+        },
+        orderBy: {
+          [filters.sort]: filters.order,
+        }
       })
       .catch((e: Error) => {
         console.log(e)

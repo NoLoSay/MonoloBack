@@ -3,12 +3,21 @@ import { LoggerLibModule } from '@noloback/logger-lib'
 import { PrismaClientBaseModule } from '@noloback/prisma-client-base'
 import { ItemsService } from './items.service'
 import { VideoServiceModule } from '@noloback/video.service'
+import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
 import { UploadthingServiceModule } from '@noloback/uploadthing.service'
+import { PicturesServiceModule } from '@noloback/pictures.service'
 
 @Module({
   controllers: [],
   providers: [ItemsService],
   exports: [ItemsService],
-  imports: [PrismaClientBaseModule, LoggerLibModule, VideoServiceModule, UploadthingServiceModule]
+  imports: [
+    PrismaClientBaseModule,
+    LoggerLibModule,
+    VideoServiceModule,
+    UploadthingServiceModule,
+    PicturesServiceModule,
+    SitesManagersServiceModule
+  ]
 })
 export class ItemsServiceModule {}

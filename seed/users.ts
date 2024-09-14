@@ -13,6 +13,7 @@ export async function seedUsers(): Promise<User[]> {
       create: {
         email: 'admin@nolosay.com',
         username: 'Admin',
+        emailVerified: true,
         password: await hash('password', 12),
         telNumber: '+33600000001',
         profiles: {
@@ -38,6 +39,7 @@ export async function seedUsers(): Promise<User[]> {
       update: {},
       create: {
         email: 'creator@nolosay.com',
+        emailVerified: true,
         username: 'Creator',
         password: await hash('password', 12),
         telNumber: '+33600000002',
@@ -65,6 +67,7 @@ export async function seedUsers(): Promise<User[]> {
       create: {
         email: 'user@nolosay.com',
         username: 'User',
+        emailVerified: false,
         password: await hash('password', 12),
         telNumber: '+33600000003',
         profiles: {
@@ -86,6 +89,7 @@ export async function seedUsers(): Promise<User[]> {
       update: {},
       create: {
         email: 'moderator@nolosay.com',
+        emailVerified: true,
         username: 'Moderator',
         password: await hash('password', 12),
         telNumber: '+33600000004',
@@ -112,6 +116,7 @@ export async function seedUsers(): Promise<User[]> {
       update: {},
       create: {
         email: 'manager@nolosay.com',
+        emailVerified: true,
         username: 'Manager',
         password: await hash('password', 12),
         telNumber: '+33600000005',
@@ -138,6 +143,7 @@ export async function seedUsers(): Promise<User[]> {
       update: {},
       create: {
         email: 'manager2@nolosay.com',
+        emailVerified: true,
         username: 'Manager2',
         password: await hash('password', 12),
         telNumber: '+33600000006',

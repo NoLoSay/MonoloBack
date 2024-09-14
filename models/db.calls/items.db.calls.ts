@@ -9,6 +9,11 @@ class PersonSelect {
   name: boolean = true
 }
 
+class PictureSelect {
+  id: boolean = true
+  hostingUrl: boolean = true
+}
+
 class ItemCategorySelect {
   id: boolean = true
   name: boolean = true
@@ -22,17 +27,27 @@ class ItemTypeSelect {
   }
 }
 
+class SiteSelect {
+  id: boolean = true
+  name: boolean = true
+}
+
 export class ItemCommonSelect {
   id: boolean = true
   name: boolean = true
   description: boolean = true
   textToTranslate: boolean = true
-  picture: boolean = true
+  pictures: object = {
+    select: new PictureSelect()
+  }
   relatedPerson: object = {
     select: new PersonSelect()
   }
   itemType: object = {
     select: new ItemTypeSelect()
+  }
+  site: object = {
+    select: new SiteSelect()
   }
 }
 

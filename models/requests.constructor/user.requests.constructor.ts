@@ -10,6 +10,7 @@ export class UserRequestModel {
   username: string = ''
   password: string | undefined = undefined
   email: string = ''
+  emailVerified: Boolean = false
   picture: string = ''
   telNumber: string = ''
   createdAt: Date = new Date()

@@ -2,6 +2,12 @@ import { Exhibition, SiteHasManager, SiteTag, SiteType } from '@prisma/client/ba
 import { AddressCommonReturn } from './addresses.api.returns'
 import { ProfileUserAdminReturn } from './profiles.api.returns'
 
+class Picture {
+  id: number = 0
+  uuid: string = ''
+  hostingUrl: string = ''
+}
+
 export class SiteCommonReturn {
   id: number = 0
   uuid: string = ''
@@ -12,7 +18,7 @@ export class SiteCommonReturn {
   email: string | null = null
   website: string | null = null
   price: number = 0
-  picture: string | null = null
+  pictures: Picture[] | null = null
   type: SiteTag = SiteTag.OTHER
   tags: SiteType[] = []
   address: AddressCommonReturn = new AddressCommonReturn()

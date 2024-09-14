@@ -5,9 +5,11 @@ import {
   User
 } from '@noloback/prisma-client-base'
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
-  InternalServerErrorException
+  InternalServerErrorException,
+  NotFoundException
 } from '@nestjs/common'
 import { hash } from 'bcrypt'
 import { LoggerService } from '@noloback/logger-lib'
@@ -25,6 +27,7 @@ import {
 import { UserCreateModel, UserUpdateModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import * as _ from 'lodash';
+import { FiltersGetMany } from 'models/filters-get-many'
 
 @Injectable()
 export class UsersService {
@@ -60,6 +63,7 @@ export class UsersService {
           username: createUserDto.username,
           email: createUserDto.email,
           password: await hash(createUserDto.password, 12),
+          emailVerified: false,
           telNumber: createUserDto.telNumber,
           profiles: {
             create: {
@@ -84,6 +88,48 @@ export class UsersService {
       id: newUser.id,
       username: newUser.username,
       email: newUser.email
+    }
+  }
+  async markEmailAsConfirmed(email: string) {
+    try {
+      const result = await this.prismaBase.user.update({
+        where: { email: email },
+        data: {
+          emailVerified: true,
+        },
+      });
+  
+      if (!result) {
+        throw new NotFoundException(`User with email ${email} not found`);
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`User with email ${email} not found`);
+      } else {
+        throw new InternalServerErrorException('Failed to mark email as confirmed');
+      }
+    }
+  }
+
+  async changePassword(userId: number, newPassword: string) {
+    try {
+      const hashedPassword = await hash(newPassword, 12);
+      const result = await this.prismaBase.user.update({
+        where: { id: userId },
+        data: {
+          password: hashedPassword,
+        },
+      });
+  
+      if (!result) {
+        throw new NotFoundException(`User with ID ${userId} not found`);
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`User with ID ${userId} not found`);
+      } else {
+        throw new InternalServerErrorException('Failed to update the user password');
+      }
     }
   }
 
@@ -148,8 +194,15 @@ export class UsersService {
 
   async findAll (
     role: Role,
-    firstElem: number,
-    lastElem: number
+    filters: FiltersGetMany,
+    nameStart?: string | undefined,
+    telStart?: string | undefined,
+    emailStart?: string | undefined,
+    emailVerified?: boolean | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined,
+    deletedAtGte?: string | undefined,
+    deletedAtLte?: string | undefined
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
     let selectOptions: Prisma.UserSelect
 
@@ -162,10 +215,26 @@ export class UsersService {
     }
 
     const users = await this.prismaBase.user.findMany({
-      skip: firstElem,
-      take: lastElem - firstElem,
-      where: role === Role.ADMIN ? undefined : { deletedAt: null },
-      select: selectOptions
+      skip: +filters.start,
+      take: +filters.end - filters.start,
+      select: selectOptions,
+      where: {
+        username: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        telNumber: telStart ? { startsWith: telStart, mode: 'insensitive' } : undefined,
+        email: emailStart ? { startsWith: emailStart, mode: 'insensitive' } : undefined,
+        emailVerified: emailVerified ? emailVerified : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+        deletedAt: role === Role.ADMIN ? {
+          gte: deletedAtGte ? new Date(deletedAtGte) : undefined,
+          lte: deletedAtLte ? new Date(deletedAtLte) : undefined,
+        } : null,
+      },
+      orderBy: {
+        [filters.sort]: filters.order,
+      }
     })
 
     switch (role) {
@@ -216,6 +285,7 @@ export class UsersService {
           username: user.username,
           password: user.password,
           email: user.email,
+          emailVerified: user.emailVerified,
           picture: user.picture,
           telNumber: user.telNumber,
           createdAt: user.createdAt,

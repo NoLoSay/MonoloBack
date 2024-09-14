@@ -2,7 +2,7 @@ class ItemSelect {
   id: boolean = true
   name: boolean = true
   description: boolean = true
-  picture: boolean = true
+  pictures: boolean = true
 }
 
 export class PersonCommonSelect {

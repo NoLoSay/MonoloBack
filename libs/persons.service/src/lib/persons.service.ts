@@ -21,6 +21,7 @@ import {
   PersonDetailledSelect
 } from '@noloback/db.calls'
 import { UtilsService } from '@noloback/utils.service'
+import { FiltersGetMany } from 'models/filters-get-many'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
@@ -32,7 +33,14 @@ export class PersonsService {
   ) {}
 
   async findAll (
-    role: Role
+    role: Role,
+    filters: FiltersGetMany,
+    personType?: PersonType | undefined,
+    nameStart?: string | undefined,
+    birthStart?: string | undefined,
+    deathStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined
   ): Promise<PersonCommonReturn[] | PersonAdminReturn[]> {
     let selectOptions: Prisma.PersonSelect
 
@@ -45,8 +53,24 @@ export class PersonsService {
     }
     const persons: unknown[] = await this.prismaBase.person
       .findMany({
+        skip: +filters.start,
+        take: +filters.end - filters.start,
         select: selectOptions,
-        where: role === Role.ADMIN ? undefined : { deletedAt: null }
+        where: {
+          type: personType ? personType : undefined,
+          name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+          birthDate: birthStart ? { startsWith: birthStart, mode: 'insensitive' } : undefined,
+          deathDate: deathStart ? { startsWith: deathStart, mode: 'insensitive' } : undefined,
+          createdAt: {
+            gte: createdAtGte ? new Date(createdAtGte) : undefined,
+            lte: createdAtLte ? new Date(createdAtLte) : undefined,
+          },
+  
+          deletedAt: role === Role.ADMIN ? undefined : null,
+        },
+        orderBy: {
+          [filters.sort]: filters.order,
+        }
       })
       .catch((e: Error) => {
         console.log(e)

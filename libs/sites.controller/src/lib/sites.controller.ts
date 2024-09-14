@@ -10,7 +10,10 @@ import {
   Request,
   Response,
   UnauthorizedException,
-  Patch
+  Patch,
+  UseInterceptors,
+  UploadedFile,
+  Query
 } from '@nestjs/common'
 import { ADMIN, MANAGER, Roles } from '@noloback/roles'
 import { SitesService } from '@noloback/sites.service'
@@ -21,8 +24,14 @@ import {
   SiteManipulationRequestBody
 } from '@noloback/api.request.bodies'
 import { SitesManagersService } from '@noloback/sites.managers.service'
-import { Role } from '@prisma/client/base'
+import { Role, SiteType } from '@prisma/client/base'
 import { LoggerService } from '@noloback/logger-lib'
+import { FileInterceptor } from '@nestjs/platform-express'
+import multer = require('multer')
+import { randomUUID } from 'crypto'
+import { extname } from 'path'
+import { FiltersGetMany } from 'models/filters-get-many'
+import { count } from 'console'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('sites')
@@ -33,8 +42,34 @@ export class SitesController {
   ) {}
 
   @Get()
-  async findAll (@Request() request: any, @Response() res: any) {
-    return res.status(200).json(await this.sitesService.findAll(request.user))
+  async findAll (@Request() request: any, @Response() res: any,
+  @Query('_start') firstElem: number = 0,
+  @Query('_end') lastElem: number = 10,
+  @Query('_sort') sort?: string | undefined,
+  @Query('_order') order?: 'asc' | 'desc' | undefined,
+  @Query('name_start') nameStart?: string | undefined,
+  @Query('tel_start') telStart?: string | undefined,
+  @Query('email_start') emailStart?: string | undefined,
+  @Query('website_contains') websiteContains?: string | undefined,
+  @Query('price') price?: number | undefined,
+  @Query('site_type') type?: SiteType | undefined,
+  @Query('address_id') addressId?: number | undefined,
+  @Query('createdAt_gte') createdAtGte?: string | undefined,
+  @Query('createdAt_lte') createdAtLte?: string | undefined) {
+    const data = await this.sitesService.findAll(request.user, new FiltersGetMany(firstElem, lastElem, sort, order,
+      ['id', 'type', 'name', 'telNumber', 'email', 'website', 'price', 'type', 'addressId', 'createdAt']),
+      nameStart, telStart, emailStart, websiteContains, price, type, addressId, createdAtGte, createdAtLte)
+
+    return res
+    .set({
+      'Access-Control-Expose-Headers': 'X-Total-Count',
+      'X-Total-Count': await this.sitesService.count(request.user, new FiltersGetMany(firstElem, lastElem, sort, order,
+        ['id', 'type', 'name', 'telNumber', 'email', 'website', 'price', 'type', 'addressId', 'createdAt']),
+        nameStart, telStart, emailStart, websiteContains, price, type, addressId, createdAtGte, createdAtLte),
+    })
+    .json(
+      data
+    );
   }
 
   @Get(':id')
@@ -52,20 +87,42 @@ export class SitesController {
 
   @Roles([ADMIN])
   @Post()
+  @UseInterceptors(FileInterceptor('picture', {
+    storage: multer.diskStorage({
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
+      filename: (req, file, cb) => {
+        const uuid = randomUUID
+        ();
+        cb(null, `${uuid}${extname(file.originalname)}`);
+      },
+    }),
+  }))
   async create (
     @Response() res: any,
-    @Body() sites: SiteManipulationRequestBody
+    @Body() sites: SiteManipulationRequestBody,
+    @UploadedFile() picture: Express.Multer.File
   ) {
-    return res.status(200).json(await this.sitesService.create(sites))
+    return res.status(200).json(await this.sitesService.create(sites, picture))
   }
 
   @Roles([ADMIN, MANAGER])
   @Put(':id')
+  @UseInterceptors(FileInterceptor('picture', {
+    storage: multer.diskStorage({
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
+      filename: (req, file, cb) => {
+        const uuid = randomUUID
+        ();
+        cb(null, `${uuid}${extname(file.originalname)}`);
+      },
+    }),
+  }))
   async update (
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any,
     @Response() res: any,
-    @Body() updatedSite: SiteManipulationRequestBody
+    @Body() updatedSite: SiteManipulationRequestBody,
+    @UploadedFile() picture: Express.Multer.File
   ) {
     if (await this.sitesManagersService.isAllowedToModify(request.user, id)) {
       LoggerService.sensitiveLog(
@@ -78,13 +135,23 @@ export class SitesController {
 
       return res
         .status(200)
-        .json(await this.sitesService.update(id, updatedSite, request.user.activeProfile.role))
+        .json(await this.sitesService.update(id, updatedSite, request.user.activeProfile.role, picture))
     }
     throw new UnauthorizedException()
   }
 
   @Roles([ADMIN])
   @Patch(':id')
+  @UseInterceptors(FileInterceptor('picture', {
+    storage: multer.diskStorage({
+      destination: `${process.env["LOCAL_PICTURE_PATH"]}`,
+      filename: (req, file, cb) => {
+        const uuid = randomUUID
+        ();
+        cb(null, `${uuid}${extname(file.originalname)}`);
+      },
+    }),
+  }))
   async patch (
     @Param('id', ParseIntPipe) id: number,
     @Request() request: any,

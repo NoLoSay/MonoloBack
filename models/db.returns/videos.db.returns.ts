@@ -12,11 +12,17 @@ class Profile {
   user: User = new User()
 }
 
+class Picture {
+  id: number = 0
+  uuid: string = ''
+  hostingUrl: string = ''
+}
+
 class Item {
   id: number = 0
   uuid: string = ''
   name: string = ''
-  picture: string = ''
+  pictures: Picture[] = []
 }
 
 export abstract class VideoDefaultDbReturn {

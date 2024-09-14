@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "UserSanctions" ALTER COLUMN "sanctionStart" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "sanctionEnd" DROP NOT NULL;
