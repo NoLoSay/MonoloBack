@@ -24,7 +24,7 @@ abstract class VideoDefaultSelect {
   duration: boolean = true
   hostingProviderId: boolean = true
   hostingProviderVideoId: boolean = true
-  // validationStatus: boolean = true
+  validationStatus: boolean = true
   createdAt: boolean = true
   likedBy: object = {
     select: {

@@ -31,7 +31,7 @@ export abstract class VideoDefaultDbReturn {
   duration: number = 0
   hostingProviderId: number = 0
   hostingProviderVideoId: string = ''
-  // validationStatus: string = ''
+  validationStatus: string = ''
   createdAt: Date = new Date()
   likedBy: UserLikeVideo[] = []
   item: Item | undefined = undefined
