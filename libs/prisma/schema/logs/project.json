@@ -11,12 +11,6 @@
         "cwd": "libs/prisma/schema/logs"
       }
     },
-    "generate-types": {
-      "command": "prisma generate",
-      "options": {
-        "cwd": "libs/prisma/schema/logs"
-      }
-    },
     "migrate": {
       "command": "prisma migrate dev",
       "options": {

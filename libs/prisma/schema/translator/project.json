@@ -11,12 +11,6 @@
         "cwd": "libs/prisma/schema/translator"
       }
     },
-    "generate-types": {
-      "command": "prisma generate",
-      "options": {
-        "cwd": "libs/prisma/schema/translator"
-      }
-    },
     "migrate": {
       "command": "prisma migrate dev",
       "options": {
