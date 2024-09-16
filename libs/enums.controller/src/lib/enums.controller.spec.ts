@@ -7,7 +7,7 @@ describe('EnumsController', () => {
   let controller: EnumsController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({ 
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [EnumsController],
       providers: [EnumsService],
       imports: [RootTestModule],

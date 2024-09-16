@@ -10,7 +10,7 @@ describe('WatchController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [WatchController],
       imports: [RootTestModule],
-      providers: [VideoService]
+      providers: [VideoService],
     }).compile();
 
     controller = module.get<WatchController>(WatchController);

@@ -53,11 +53,15 @@ export class UploadController {
     const video = await this.videoService.getYoutubeById(+videoId);
     if (video) {
       if (video.video.hostingProviderId === 1) {
-        unlink(`${process.env["LOCAL_VIDEO_PATH"]}/` + video.video.hostingProviderVideoId, (err) => {
-          if (err) {
-            console.error(err);
+        unlink(
+          `${process.env['LOCAL_VIDEO_PATH']}/` +
+            video.video.hostingProviderVideoId,
+          (err) => {
+            if (err) {
+              console.error(err);
+            }
           }
-        });
+        );
       }
       return await this.videoService.setHostingProvider(
         +videoId,
@@ -78,7 +82,9 @@ export class UploadController {
     @Param('videoId') videoId: string
   ) {
     try {
-      const file = readFileSync(`${process.env["LOCAL_VIDEO_PATH"]}/` + videoId);
+      const file = readFileSync(
+        `${process.env['LOCAL_VIDEO_PATH']}/` + videoId
+      );
       if (!file) {
         return new NotFoundException("Video doesn't exist");
       }
@@ -100,7 +106,7 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: multer.diskStorage({
-        destination: `${process.env["LOCAL_VIDEO_PATH"]}`,
+        destination: `${process.env['LOCAL_VIDEO_PATH']}`,
         filename: (req, file, cb) => {
           const uuid = randomUUID();
           cb(null, `${uuid}${extname(file.originalname)}`);

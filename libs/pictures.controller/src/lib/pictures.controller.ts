@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Res,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller, Get, Param, Res, NotFoundException } from '@nestjs/common';
 import { PicturesService } from '@noloback/pictures.service';
 import { Public } from '@noloback/jwt';
 import { Response } from 'express';
@@ -16,14 +10,11 @@ export class PicturesController {
 
   @Get(':uuid')
   @Public()
-  async findOne(
-    @Param('uuid') uuid: string,
-    @Res() res: Response,
-  ) {
+  async findOne(@Param('uuid') uuid: string, @Res() res: Response) {
     try {
-      uuid = uuid.replace(/\.[^/.]+$/, "");
+      uuid = uuid.replace(/\.[^/.]+$/, '');
       const pictureBuffer = await this.picturesService.getPicture(uuid);
-      
+
       const picture = await this.picturesService.getPictureDetails(uuid);
       if (!picture) {
         throw new NotFoundException('Picture not found');

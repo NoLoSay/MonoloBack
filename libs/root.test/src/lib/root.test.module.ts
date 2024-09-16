@@ -15,7 +15,10 @@ import { MailConfirmationService } from '@noloback/mail-confirmation.service';
 import { MailerService } from '@noloback/mailer';
 import { PersonsService } from '@noloback/persons.service';
 import { PicturesService } from '@noloback/pictures.service';
-import { PrismaBaseService, PrismaClientBaseModule } from '@noloback/prisma-client-base';
+import {
+  PrismaBaseService,
+  PrismaClientBaseModule,
+} from '@noloback/prisma-client-base';
 import { PrismaLogsService } from '@noloback/prisma-client-logs';
 import { PrismaTranslatorService } from '@noloback/prisma-client-translator';
 import { ProfileService } from '@noloback/profile.service';
@@ -33,7 +36,7 @@ import { VideoService } from '@noloback/video.service';
     // NodeModules
     {
       provide: JwtService,
-      useValue: {}
+      useValue: {},
     },
     // NoLoModules
     {
