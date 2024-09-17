@@ -67,7 +67,7 @@ export class VideoListedFromUserCommonDbReturn extends VideoDefaultDbReturn {
 // Generalize the return of a video
 
 export class VideoManagerDbReturn extends VideoDefaultDbReturn {
-  validationStatus: string = ''
+  // validationStatus: string = ''
 
   // constructor (entity?: VideoListedFromUserCommonDbReturn | VideoListedFromUserCommonDbReturn | VideoCommonDbReturn) {
   //   super()

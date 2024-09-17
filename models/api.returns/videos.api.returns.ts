@@ -77,7 +77,7 @@ export class VideoCommonReturn extends VideoDefaultReturn {
 // Generalize the return of a video
 
 export class VideoManagerReturn extends VideoDefaultReturn {
-  validationStatus: string = ''
+  // validationStatus: string = ''
 
   constructor (dbReturn: VideoManagerDbReturn) {
     super(dbReturn)
