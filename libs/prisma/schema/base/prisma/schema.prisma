@@ -184,6 +184,8 @@ model Address {
 
   /// The sites associated with this address.
   sites Site[]
+
+  @@unique([houseNumber, street, zip, cityId])
 }
 
 
@@ -405,6 +407,10 @@ model OAuthProviderUser {
 
   // /// The refresh token for the OAuth provider.
   // refreshToken String
+
+  
+  @@unique([providerUserId, providerId])
+  @@unique([userId, providerId])
 }
 
 // -----------------------------
