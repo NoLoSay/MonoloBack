@@ -35,7 +35,7 @@ export class SanctionsController {
     let sanctionTypeEnum: SanctionType | undefined;
     if (
       sanctionType &&
-      Object.values(sanctionType).includes(
+      Object.values(SanctionType).includes(
         sanctionType as SanctionType
       )
     ) {
