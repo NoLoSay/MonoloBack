@@ -12,6 +12,7 @@ export class SanctionsService {
   async count(
     userId?: number | undefined,
     issuerId?: number | undefined,
+    issuerUserId?: number | undefined,
     reasonContains?: string | undefined,
     sanctionType?: SanctionType | undefined,
     createdAtGte?: string | undefined,
@@ -26,7 +27,8 @@ export class SanctionsService {
     return await this.prismaBase.sanctions.count({
       where: {
         userId: userId ? +userId : undefined,
-        issuerId: issuerId ? issuerId : undefined,
+        issuerId: issuerId ? +issuerId : undefined,
+        issuer: issuerUserId ? { userId: +issuerUserId } : undefined,
         sanctionType: sanctionType ? sanctionType : undefined,
 
         reason: reasonContains? {
@@ -58,6 +60,7 @@ export class SanctionsService {
     filters: FiltersGetMany,
     userId?: number | undefined,
     issuerId?: number | undefined,
+    issuerUserId?: number | undefined,
     reasonContains?: string | undefined,
     sanctionType?: SanctionType | undefined,
     sanctionStartAtGte?: string | undefined,
@@ -75,6 +78,7 @@ export class SanctionsService {
       where: {
         userId: userId ? +userId : undefined,
         issuerId: issuerId ? +issuerId : undefined,
+        issuer: issuerUserId ? { userId: +issuerUserId } : undefined,
         sanctionType: sanctionType ? sanctionType : undefined,
 
         reason: reasonContains? {

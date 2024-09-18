@@ -20,6 +20,7 @@ export class SanctionsController {
     @Query('_order') order?: 'asc' | 'desc' | undefined,
     @Query('target_user') userId?: number | undefined,
     @Query('issuer') issuerId?: number | undefined,
+    @Query('issuer_user') issuerUserId?: number | undefined,
     @Query('reason_contains') reasonContains?: string | undefined,
     @Query('sanction_type') sanctionType?: string | undefined,
     @Query('sanctionStartAt_gte') sanctionStartAtGte?: string | undefined,
@@ -49,14 +50,14 @@ export class SanctionsController {
         order,
         ['id', 'userId', 'issuerId', 'reason', 'sanctionType', 'sanctionStart', 'sanctionEnd', 'createdAt', 'updatedAt']
     ),
-    userId, issuerId, reasonContains, sanctionTypeEnum,
+    userId, issuerId, issuerUserId, reasonContains, sanctionTypeEnum,
     sanctionStartAtGte, sanctionStartAtLte, sanctionEndAtGte, sanctionEndAtLte,
     createdAtGte, createdAtLte, updatedAtGte, updatedAtLte);
 
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': this.sanctionsService.count(userId, issuerId, reasonContains, sanctionTypeEnum,
+        'X-Total-Count': this.sanctionsService.count(userId, issuerId, issuerUserId, reasonContains, sanctionTypeEnum,
           sanctionStartAtGte, sanctionStartAtLte, sanctionEndAtGte, sanctionEndAtLte,
           createdAtGte, createdAtLte, updatedAtGte, updatedAtLte),
       })
