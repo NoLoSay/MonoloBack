@@ -85,4 +85,14 @@ export class SanctionsController {
       .status(200)
       .json(data);
   }
+
+  @Get(':id')
+  @HttpCode(200)
+  @Roles([ADMIN, MODERATOR])
+  async findById(@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
+    const data = await this.sanctionsService.findById(id);
+    return res
+      .status(200)
+      .json(data);
+  }
 }
