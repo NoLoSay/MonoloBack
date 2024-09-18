@@ -106,6 +106,9 @@ export class SanctionsService {
       orderBy: {
         [filters.sort]: filters.order,
       },
+      include: {
+        issuer: true,
+      },
     });
   }
 
@@ -113,6 +116,9 @@ export class SanctionsService {
     return await this.prismaBase.sanctions.findUnique({
       where: {
         id: +id
+      },
+      include: {
+        issuer: true,
       }
     });
   }
