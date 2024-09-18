@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
+import { LoggerService } from '@noloback/logger-lib';
 import { PrismaBaseService, SanctionType, Sanctions } from '@noloback/prisma-client-base';
 import { UserRequestModel } from '@noloback/requests.constructor';
 import { FiltersGetMany } from 'models/filters-get-many';
@@ -186,15 +187,30 @@ export class SanctionsService {
   async patch(
     user: UserRequestModel,
     sanctionId: number,
+    data: Partial<Sanctions>,
   ) {
-    // throw new NotFoundException('Not implemented');
-    throw new NotImplementedException;
+    const before = await this.prismaBase.sanctions.findUnique({ where: { id: +sanctionId } });
+    const updated = await this.prismaBase.sanctions.update({
+      where: {
+        id: +sanctionId
+      },
+      data: data
+    });
+    if (updated) {
+      LoggerService.sensitiveLog(user.activeProfile.id, 'PATCH', 'Sanctions', +sanctionId, JSON.stringify(
+      {
+        "before": before,
+        "after": data
+      }));
+    }
+    return updated;
   }
 
   async delete(
     user: UserRequestModel,
     sanctionId: number,
   ) {
+    LoggerService.sensitiveLog(user.activeProfile.id, 'DELETE', 'Sanctions', +sanctionId);
     return await this.prismaBase.sanctions.update({
       where: {
         id: +sanctionId

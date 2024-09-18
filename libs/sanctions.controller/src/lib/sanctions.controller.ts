@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpCode, Param, Post, Query, Request, Response } from "@nestjs/common";
+import { Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, Query, Request, Response } from "@nestjs/common";
 import { SanctionType } from "@noloback/prisma-client-base";
 import { SanctionsService } from "@noloback/sanctions.service";
 import { FiltersGetMany } from "models/filters-get-many";
@@ -91,6 +91,16 @@ export class SanctionsController {
   @Roles([ADMIN, MODERATOR])
   async findById(@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
     const data = await this.sanctionsService.findById(id);
+    return res
+      .status(200)
+      .json(data);
+  }
+
+  @Patch(':id')
+  @HttpCode(200)
+  @Roles([ADMIN, MODERATOR])
+  async update(@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
+    const data = await this.sanctionsService.patch(request.user, id, request.body);
     return res
       .status(200)
       .json(data);
