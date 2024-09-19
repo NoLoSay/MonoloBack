@@ -5,6 +5,14 @@ class Picture {
   hostingUrl: boolean = true
 }
 
+class Exhibition {
+  id: boolean = true
+  name: boolean = true
+  shortDescription: boolean = true
+  startDate: boolean = true
+  endDate: boolean = true
+}
+
 export class SiteCommonSelect {
   id: boolean = true
   uuid: boolean = true
@@ -23,7 +31,9 @@ export class SiteCommonSelect {
   address: object = {
     select: new AddressCommonSelect()
   }
-  //exhibition: boolean = true
+  exhibitions: object = {
+    select: new Exhibition()
+  }
 }
 
 export class SiteManagerSelect extends SiteCommonSelect {
