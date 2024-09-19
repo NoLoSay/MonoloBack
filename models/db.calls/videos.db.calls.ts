@@ -28,7 +28,7 @@ abstract class VideoDefaultSelect {
   createdAt: boolean = true
   likedBy: object = {
     select: {
-      User: {
+      user: {
         select: new UserVideoSelect()
       }
     }

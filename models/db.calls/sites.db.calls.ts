@@ -23,7 +23,7 @@ export class SiteCommonSelect {
   address: object = {
     select: new AddressCommonSelect()
   }
-  exhibition: boolean = true
+  //exhibition: boolean = true
 }
 
 export class SiteManagerSelect extends SiteCommonSelect {

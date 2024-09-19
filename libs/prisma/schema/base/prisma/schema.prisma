@@ -188,8 +188,6 @@ model Address {
   @@unique([houseNumber, street, zip, cityId])
 }
 
-
-
 // ---------------------------
 // ---------- Users ----------
 // ---------------------------
@@ -408,7 +406,6 @@ model OAuthProviderUser {
   // /// The refresh token for the OAuth provider.
   // refreshToken String
 
-  
   @@unique([providerUserId, providerId])
   @@unique([userId, providerId])
 }
@@ -435,8 +432,6 @@ enum PersonType {
   /// Other types of persons.
   OTHER
 }
-
-
 
 /// @namespace Persons
 /// Represents a person in the system.
@@ -609,8 +604,6 @@ enum ValidationStatus {
   PENDING
 }
 
-
-
 /// @namespace Videos
 /// Represents a sign language used in videos.
 model SignLanguage {
@@ -755,7 +748,6 @@ model UserlikesVideos {
   video Video @relation(fields: [videoId], references: [id])
 }
 
-
 // ----------------------------
 // ---------- Sites ----------
 // ----------------------------
@@ -785,8 +777,6 @@ enum SiteType {
   OTHER
 }
 
-
-
 /// @namespace Sites
 /// Represents a tag for a site.
 enum SiteTag {
@@ -805,8 +795,6 @@ enum SiteTag {
   /// Other types of site tags.
   OTHER
 }
-
-
 
 /// @namespace Sites
 /// Represents a site in the system.
@@ -904,7 +892,6 @@ model SiteHasManager {
 
   @@unique([profileId, siteId])
 }
-
 
 // -------------------------------
 // ---------- Exhibitions --------
@@ -1099,7 +1086,6 @@ model SensitiveActionLog {
 // -----------------------------
 // ------Front-Tags-Colors------
 // -----------------------------
-
 
 /// @namespace Front Tags Colors
 /// Represents the color associated with each user role.
