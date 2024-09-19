@@ -221,17 +221,11 @@ export class SanctionsService {
     })
   }
 
-  async getUserSanctions(userId: number) : Promise<{
+  private async getUserSanctions(sanctions: Sanctions[]) : Promise<{
     banned: boolean,
     uploadBlocked: boolean,
     sanctions: Sanctions[]
   }> {
-    const sanctions = await this.prismaBase.sanctions.findMany({
-      where: {
-        userId: userId
-      }
-    });
-
     const now = new Date(); // Get the current date and time
 
     const banned = (sanctions.find(sanction => 
@@ -255,5 +249,51 @@ export class SanctionsService {
       uploadBlocked: uploadBlocked,
       sanctions: sanctions
     }
+  }
+
+  async getUserSanctionsById(userId: number) : Promise<{
+    banned: boolean,
+    uploadBlocked: boolean,
+    sanctions: Sanctions[]
+  }> {
+    if (!userId) {
+      return {
+        banned: false,
+        uploadBlocked: false,
+        sanctions: []
+      }
+    }
+
+    const sanctions = await this.prismaBase.sanctions.findMany({
+      where: {
+        userId: +userId
+      }
+    });
+
+    return this.getUserSanctions(sanctions);
+  }
+
+  async getUserSanctionsByEmail(email: string) : Promise<{
+    banned: boolean,
+    uploadBlocked: boolean,
+    sanctions: Sanctions[]
+  }> {
+    if (!email) {
+      return {
+        banned: false,
+        uploadBlocked: false,
+        sanctions: []
+      }
+    }
+
+    const sanctions = await this.prismaBase.sanctions.findMany({
+      where: {
+        user: {
+          email: email
+        }
+      }
+    });
+
+    return this.getUserSanctions(sanctions);
   }
 }
