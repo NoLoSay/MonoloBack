@@ -98,7 +98,7 @@ export class LoggerService {
         profileId: profileId,
         action: action,
         object: object,
-        objectId: objectId,
+        objectId: +objectId,
         details: details,
       },
     });
@@ -112,7 +112,7 @@ export class LoggerService {
         profileId: profileId,
         action: action,
         object: object,
-        objectId: objectId,
+        objectId: +objectId,
         details: details,
       },
     });

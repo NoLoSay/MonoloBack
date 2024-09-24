@@ -18,7 +18,7 @@ export class AuthService {
 
   async validateUser(login: string, pass: string): Promise<any> {
     const user = await this.usersService.connectUserByEmailOrUsername(login);
-    // if ((await this.sanctionsService.getUserSanctions(user.id))?.banned) {
+    // if ((await this.sanctionsService.getUserSanctionsById(user.id))?.banned) {
     //   throw new UnauthorizedException('User is banned');
     // }
     if (user && user.password && (await compare(pass, user.password))) {
