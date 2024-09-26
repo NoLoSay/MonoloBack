@@ -30,13 +30,11 @@ export class AddressManipulationModel {
 
   @ApiProperty()
   @IsNumber()
-  @IsOptional()
-  longitude?: number
+  longitude: number = -1.5753814518204865
 
   @ApiProperty()
   @IsNumber()
-  @IsOptional()
-  latitude?: number
+  latitude: number = 47.20937936224022
 
   @ApiProperty()
   @IsNumber()
