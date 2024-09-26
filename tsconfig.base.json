@@ -97,6 +97,7 @@
       ],
       "@noloback/requests.constructor": ["models/requests.constructor"],
       "@noloback/roles": ["models/roles"],
+      "@noloback/root.test": ["libs/root.test/src/index.ts"],
       "@noloback/sanctions.controller": [
         "libs/sanctions.controller/src/index.ts"
       ],

@@ -1,8 +1,8 @@
 # CONTRIBUTING
 
-## Branches
+## Code
 
-Still need to be defined
+Your code MUST follow the repository's eslint configuration (run nx lint before committing)
 
 ## Commit messages
 

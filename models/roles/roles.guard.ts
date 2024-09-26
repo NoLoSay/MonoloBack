@@ -13,7 +13,7 @@ export class RolesGuard implements CanActivate {
   async canActivate (context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()
     const user = request.user
-    const sanctions = await this.sanctionsService.getUserSanctions(user?.id)
+    const sanctions = await this.sanctionsService.getUserSanctionsByEmail(request?.body?.username)
     const isBanned = sanctions?.banned
     if (isBanned) {
       throw new UnauthorizedException('User is banned');

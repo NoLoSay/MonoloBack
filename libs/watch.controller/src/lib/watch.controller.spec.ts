@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { WatchController } from './watch.controller';
 import { VideoService } from '@noloback/video.service';
+import { RootTestModule } from '@noloback/root.test';
 
 describe('WatchController', () => {
   let controller: WatchController;
@@ -8,7 +9,8 @@ describe('WatchController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [WatchController],
-      providers: [VideoService],
+      imports: [RootTestModule],
+      providers: [VideoService]
     }).compile();
 
     controller = module.get<WatchController>(WatchController);

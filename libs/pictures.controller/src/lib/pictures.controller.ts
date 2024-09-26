@@ -25,6 +25,12 @@ export class PicturesController {
       const pictureBuffer = await this.picturesService.getPicture(uuid);
       
       const picture = await this.picturesService.getPictureDetails(uuid);
+      if (!picture) {
+        throw new NotFoundException('Picture not found');
+      }
+      if (!picture.localPath) {
+        throw new NotFoundException('Error while getting picture');
+      }
       const extension = path.extname(picture.localPath).toLowerCase();
       let contentType = 'application/octet-stream';
 
@@ -47,7 +53,7 @@ export class PicturesController {
       });
 
       res.send(pictureBuffer);
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof NotFoundException) {
         res.status(404).send('Picture not found');
       } else {

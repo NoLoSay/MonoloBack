@@ -74,6 +74,10 @@ export class PicturesService {
       throw new NotFoundException(`Picture with UUID ${uuid} not found`);
     }
 
+    if (!picture.localPath) {
+      throw new InternalServerErrorException(`Error while getting picture with UUID ${uuid} not found`);
+    }
+
     const fileContent = readFileSync(picture.localPath);
     return fileContent;
   }

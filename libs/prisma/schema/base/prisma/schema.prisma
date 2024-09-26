@@ -12,490 +12,1156 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// generator docs {
-//   provider = "node node_modules/prisma-docs-generator"
-//   output   = "../../../../../docs/prisma"
-// }
+generator markdown {
+  provider = "prisma-markdown"
+  output   = "../../../../../docs/prisma/ERD.md"
+  title    = "NoLoSay Database ERD"
+}
 
-// generator dbml {
-//   provider = "prisma-dbml-generator"
-//   output   = "../../../../../docs/prisma-dbml"
-// }
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+  output   = "../../../../../docs/prisma/generated-docs"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+  output   = "../../../../../docs/prisma/dbml"
+}
 
 // ----------------------------------
 // ---------- Localization ----------
 // ----------------------------------
 
+/// @namespace Localization
+/// Represents a country with its geographical details and departments.
 model Country {
-  id          Int          @id @default(autoincrement())
-  name        String       @unique
-  code        String       @unique
-  longitude   Float?
-  latitude    Float?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  deletedAt   DateTime?
+  /// The unique identifier for a country.
+  id Int @id @default(autoincrement())
+
+  /// The name of the country.
+  name String @unique
+
+  /// The ISO code of the country.
+  code String @unique
+
+  /// The longitude coordinate of the country.
+  longitude Float?
+
+  /// The latitude coordinate of the country.
+  latitude Float?
+
+  /// The date and time when the country was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the country was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the country was deleted.
+  deletedAt DateTime?
+
+  /// The departments within the country.
   departments Department[]
 }
 
+/// @namespace Localization
+/// Represents a department within a country, including its geographical details.
 model Department {
-  id        Int       @id @default(autoincrement())
-  name      String
-  code      String
+  /// The unique identifier for a department.
+  id Int @id @default(autoincrement())
+
+  /// The name of the department.
+  name String
+
+  /// The code of the department.
+  code String
+
+  /// The longitude coordinate of the department.
   longitude Float?
-  latitude  Float?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+
+  /// The latitude coordinate of the department.
+  latitude Float?
+
+  /// The date and time when the department was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the department was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the department was deleted.
   deletedAt DateTime?
+
+  /// The ID of the country to which the department belongs.
   countryId Int
-  country   Country   @relation(fields: [countryId], references: [id])
-  cities    City[]
+
+  /// The country to which the department belongs.
+  country Country @relation(fields: [countryId], references: [id])
+
+  /// The cities within the department.
+  cities City[]
 
   @@unique([name, countryId])
   @@unique([code, countryId])
 }
 
+/// @namespace Localization
+/// Represents a city within a department, including its geographical details and addresses.
 model City {
-  id           Int        @id @default(autoincrement())
-  name         String
-  zip          String
-  longitude    Float?
-  latitude     Float?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  deletedAt    DateTime?
+  /// The unique identifier for a city.
+  id Int @id @default(autoincrement())
+
+  /// The name of the city.
+  name String
+
+  /// The ZIP code of the city.
+  zip String
+
+  /// The longitude coordinate of the city.
+  longitude Float?
+
+  /// The latitude coordinate of the city.
+  latitude Float?
+
+  /// The date and time when the city was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the city was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the city was deleted.
+  deletedAt DateTime?
+
+  /// The ID of the department to which the city belongs.
   departmentId Int
-  department   Department @relation(fields: [departmentId], references: [id])
-  addresses    Address[]
+
+  /// The department to which the city belongs.
+  department Department @relation(fields: [departmentId], references: [id])
+
+  /// The addresses within the city.
+  addresses Address[]
 
   @@unique([name, departmentId])
   @@unique([zip, departmentId])
 }
 
+/// @namespace Localization
+/// Represents an address within a city, including its geographical details.
 model Address {
-  id           Int       @id @default(autoincrement())
-  houseNumber  String?
-  street       String
-  zip          String
+  /// The unique identifier for an address.
+  id Int @id @default(autoincrement())
+
+  /// The house number of the address.
+  houseNumber String?
+
+  /// The street name of the address.
+  street String
+
+  /// The ZIP code of the address.
+  zip String
+
+  /// Additional details about the address.
   otherDetails String?
-  longitude    Float?
-  latitude     Float?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  deletedAt    DateTime?
-  cityId       Int
-  city         City      @relation(fields: [cityId], references: [id])
-  sites        Site[]
+
+  /// The longitude coordinate of the address.
+  longitude Float
+
+  /// The latitude coordinate of the address.
+  latitude Float
+
+  /// The date and time when the address was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the address was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the address was deleted.
+  deletedAt DateTime?
+
+  /// The ID of the city to which the address belongs.
+  cityId Int
+
+  /// The city to which the address belongs.
+  city City @relation(fields: [cityId], references: [id])
+
+  /// The sites associated with this address.
+  sites Site[]
 
   @@unique([houseNumber, street, zip, cityId])
-}
-
-// ---------------------------
-// ---------- OAuth ----------
-// ---------------------------
-
-model OAuthProviders {
-  providerId        Int                 @id @default(autoincrement())
-  provider          String              @unique
-  OAuthProviderUser OAuthProviderUser[]
-  UserLoginLog      UserLoginLog[]
-}
-
-model OAuthProviderUser {
-  providerUserId String
-  userId         Int
-  providerId     Int
-  id             Int            @id @default(autoincrement())
-  user           User           @relation(fields: [userId], references: [id])
-  provider       OAuthProviders @relation(fields: [providerId], references: [providerId])
-  // accessToken  String
-  // refreshToken String
-
-  @@unique([providerUserId, providerId])
-  @@unique([userId, providerId])
 }
 
 // ---------------------------
 // ---------- Users ----------
 // ---------------------------
 
+/// @namespace Users
+/// Represents the different roles a user can have in the system.
 enum Role {
+  /// A regular user.
   USER
+
+  /// A user who can create content.
   CREATOR
+
+  /// A user who manages content or other users.
   MANAGER
+
+  /// A user who moderates content.
   MODERATOR
+
+  /// An administrator with full access.
   ADMIN
 }
 
-model RoleColor {
-  id    Int    @id @default(autoincrement())
-  role  Role   @unique
-  color String @default("#ffffff")
-}
-
+/// @namespace Users
+/// Represents a user in the system, including their profile and authentication details.
 model User {
-  id            Int                 @id @default(autoincrement())
-  uuid          String              @unique @default(uuid())
-  username      String              @unique @default(uuid())
-  email         String              @unique
+  /// The unique identifier for the user.
+  id Int @id @default(autoincrement())
+
+  /// The universally unique identifier for the user.
+  uuid String @unique @default(uuid())
+
+  /// The username of the user.
+  username String @unique @default(uuid())
+
+  /// The email address of the user.
+  email String @unique
+
+  /// Indicates whether the user's email is verified.
   emailVerified Boolean
-  password      String
-  picture       String?
-  telNumber     String?
-  createdAt     DateTime            @default(now())
-  updatedAt     DateTime            @updatedAt
-  deletedAt     DateTime?
-  likedVideos   UserlikesVideos[]
+
+  /// The hashed password of the user.
+  password String
+
+  /// The profile picture of the user.
+  picture String?
+
+  /// The telephone number of the user.
+  telNumber String?
+
+  /// The date and time when the user was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the user was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the user was deleted.
+  deletedAt DateTime?
+
+  /// The videos liked by the user.
+  likedVideos UserlikesVideos[]
+
+  /// The OAuth accounts associated with the user.
   oAuthAccounts OAuthProviderUser[]
-  loginHistory  UserLoginLog[]
-  profiles      Profile[]
-  sanctions     Sanctions[]
+
+  /// The login history of the user.
+  loginHistory UserLoginLog[]
+
+  /// The profiles associated with the user.
+  profiles Profile[]
+
+  /// The sanctions associated with the user.
+  sanctions Sanctions[]
 }
 
+/// @namespace Users
+/// Represents a profile for a user, including personal details and preferences.
 model Profile {
-  id                 Int                  @id @default(autoincrement())
-  role               Role                 @default(USER)
-  isActive           Boolean              @default(false)
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
-  deletedAt          DateTime?
-  userId             Int
-  user               User                 @relation(fields: [userId], references: [id])
-  videos             Video[]
-  managerOf          SiteHasManager[]
-  UserActionLog      UserActionLog[]
+  /// The unique identifier for the profile.
+  id Int @id @default(autoincrement())
+
+  /// The role of the profile.
+  role Role @default(USER)
+
+  /// Indicates whether the profile is active.
+  isActive Boolean @default(false)
+
+  /// The date and time when the profile was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the profile was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the profile was deleted.
+  deletedAt DateTime?
+
+  /// The ID of the user associated with the profile.
+  userId Int
+
+  /// The user associated with the profile.
+  user User @relation(fields: [userId], references: [id])
+
+  /// The videos associated with the profile.
+  videos Video[]
+
+  /// The sites managed by the profile.
+  managerOf SiteHasManager[]
+
+  /// The user action logs associated with the profile.
+  UserActionLog UserActionLog[]
+
+  /// The sensitive action logs associated with the profile.
   SensitiveActionLog SensitiveActionLog[]
-  issuedSanctions    Sanctions[]
+
+  /// The sanctions issued by the profile.
+  issuedSanctions Sanctions[]
 
   @@unique([userId, role])
 }
 
+/// @namespace Users
+/// Represents a sanction imposed on a user.
 model Sanctions {
-  id            Int          @id @default(autoincrement())
-  user          User         @relation(fields: [userId], references: [id])
-  userId        Int
-  sanctionType  SanctionType
-  reason        String
-  issuer        Profile?     @relation(fields: [issuerId], references: [id])
-  issuerId      Int?
-  sanctionStart DateTime     @default(now())
-  sanctionEnd   DateTime?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  deletedAt     DateTime?
+  /// The unique identifier for the sanction.
+  id Int @id @default(autoincrement())
+
+  /// The user associated with the sanction.
+  user User @relation(fields: [userId], references: [id])
+
+  /// The ID of the user associated with the sanction.
+  userId Int
+
+  /// The type of the sanction.
+  sanctionType SanctionType
+
+  /// The reason for the sanction.
+  reason String
+
+  /// The profile that issued the sanction.
+  issuer Profile? @relation(fields: [issuerId], references: [id])
+
+  /// The ID of the profile that issued the sanction.
+  issuerId Int?
+
+  /// The start date and time of the sanction.
+  sanctionStart DateTime @default(now())
+
+  /// The end date and time of the sanction.
+  sanctionEnd DateTime?
+
+  /// The date and time when the sanction was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the sanction was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the sanction was deleted.
+  deletedAt DateTime?
 }
 
+/// @namespace Sanctions
+/// Represents the type of a sanction.
 enum SanctionType {
+  /// A ban sanction.
   BAN
+
+  /// A block upload sanction.
   BLOCK_UPLOAD
 }
 
-model SanctionTypeColor {
-  id           Int          @id @default(autoincrement())
-  sanctionType SanctionType @unique
-  color        String       @default("#ffffff")
+// ---------------------------
+// ---------- OAuth ----------
+// ---------------------------
+
+/// @namespace OAuth
+/// Represents the OAuth providers available for authentication.
+model OAuthProviders {
+  /// The unique identifier for the OAuth provider.
+  providerId Int @id @default(autoincrement())
+
+  /// The name of the OAuth provider.
+  provider String @unique
+
+  /// The users associated with this OAuth provider.
+  oAuthProviderUser OAuthProviderUser[]
+
+  /// The login logs associated with this OAuth provider.
+  UserLoginLog UserLoginLog[]
 }
 
-// ----------------------------
-// ---------- Videos ----------
-// ----------------------------
+/// @namespace OAuth
+/// Represents the association between an OAuth provider and a user.
+model OAuthProviderUser {
+  /// The unique identifier for the user in the OAuth provider.
+  providerUserId String
 
-enum ValidationStatus {
-  VALIDATED
-  REFUSED
-  PENDING
-}
+  /// The unique identifier for the user in the system.
+  userId Int
 
-model ValidationStatusColor {
-  id               Int              @id @default(autoincrement())
-  validationStatus ValidationStatus @unique
-  color            String           @default("#ffffff")
-}
+  /// The unique identifier for the OAuth provider.
+  providerId Int
 
-model SignLanguage {
-  id        Int       @id @default(autoincrement())
-  uuid      String    @unique @default(uuid())
-  name      String    @unique
-  code      String    @unique
-  color     String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  Video     Video[]
-}
+  /// The unique identifier for the OAuth provider user association.
+  id Int @id @default(autoincrement())
 
-model Video {
-  id                     Int               @id @default(autoincrement())
-  uuid                   String            @unique @default(uuid())
-  hostingProviderId      Int
-  hostingProviderVideoId String
-  validationStatus       ValidationStatus  @default(PENDING)
-  duration               Int               @default(0)
-  createdAt              DateTime          @default(now())
-  updatedAt              DateTime          @updatedAt
-  deletedAt              DateTime?
-  deletedReason          String?
-  itemId                 Int
-  profileId              Int
-  signLanguageId         Int?
-  signLanguage           SignLanguage?     @relation(fields: [signLanguageId], references: [id])
-  likedBy                UserlikesVideos[]
-  item                   Item              @relation(fields: [itemId], references: [id])
-  postedBy               Profile           @relation(fields: [profileId], references: [id])
-  hostingProvider        HostingProvider   @relation(fields: [hostingProviderId], references: [id])
+  /// The user associated with this OAuth provider user.
+  user User @relation(fields: [userId], references: [id])
 
-  @@unique([hostingProviderId, hostingProviderVideoId])
-}
+  /// The OAuth provider associated with this user.
+  provider OAuthProviders @relation(fields: [providerId], references: [providerId])
 
-model HostingProvider {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  url       String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  videos    Video[]
-}
+  // Uncomment the following lines if you want to store access and refresh tokens
+  // /// The access token for the OAuth provider.
+  // accessToken  String
 
-model UserlikesVideos {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  userId    Int
-  videoId   Int
-  User      User      @relation(fields: [userId], references: [id])
-  Video     Video     @relation(fields: [videoId], references: [id])
+  // /// The refresh token for the OAuth provider.
+  // refreshToken String
+
+  @@unique([providerUserId, providerId])
+  @@unique([userId, providerId])
 }
 
 // -----------------------------
 // ---------- Persons ----------
 // -----------------------------
 
+/// @namespace Persons
+/// Represents the type of a person.
 enum PersonType {
+  /// An artist.
   ARTIST
+
+  /// A writer.
   WRITER
+
+  /// A scientist.
   SCIENTIST
+
+  /// A celebrity.
   CELEBRITY
+
+  /// Other types of persons.
   OTHER
 }
 
-model PersonTypeColor {
-  id         Int        @id @default(autoincrement())
-  personType PersonType @unique
-  color      String     @default("#ffffff")
-}
-
+/// @namespace Persons
+/// Represents a person in the system.
 model Person {
-  id        Int        @id @default(autoincrement())
-  name      String
-  bio       String?
-  type      PersonType
+  /// The unique identifier for the person.
+  id Int @id @default(autoincrement())
+
+  /// The name of the person.
+  name String
+
+  /// The biography of the person.
+  bio String?
+
+  /// The type of the person.
+  type PersonType
+
+  /// The birth date of the person.
   birthDate String?
+
+  /// The death date of the person.
   deathDate String?
-  picture   String?
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+
+  /// The picture of the person.
+  picture String?
+
+  /// The date and time when the person was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the person was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the person was deleted.
   deletedAt DateTime?
-  items     Item[]
+
+  /// The items associated with the person.
+  items Item[]
 }
 
 // -----------------------------
 // ---------- Items ----------
 // -----------------------------
 
+/// @namespace Items
+/// Represents a category of items.
 model ItemCategory {
-  id          Int        @id @default(autoincrement())
-  name        String     @unique
+  /// The unique identifier for the item category.
+  id Int @id @default(autoincrement())
+
+  /// The name of the item category.
+  name String @unique
+
+  /// The description of the item category.
   description String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  deletedAt   DateTime?
-  itemTypes   ItemType[]
+
+  /// The date and time when the item category was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the item category was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the item category was deleted.
+  deletedAt DateTime?
+
+  /// The item types associated with the item category.
+  itemTypes ItemType[]
 }
 
+/// @namespace Items
+/// Represents a type of item.
 model ItemType {
-  id             Int          @id @default(autoincrement())
-  name           String
-  description    String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  deletedAt      DateTime?
+  /// The unique identifier for the item type.
+  id Int @id @default(autoincrement())
+
+  /// The name of the item type.
+  name String
+
+  /// The description of the item type.
+  description String?
+
+  /// The date and time when the item type was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the item type was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the item type was deleted.
+  deletedAt DateTime?
+
+  /// The ID of the item category to which the item type belongs.
   itemCategoryId Int
-  itemCategory   ItemCategory @relation(fields: [itemCategoryId], references: [id])
-  items          Item[]
+
+  /// The item category to which the item type belongs.
+  itemCategory ItemCategory @relation(fields: [itemCategoryId], references: [id])
+
+  /// The items associated with the item type.
+  items Item[]
 
   @@unique([name, itemCategoryId])
 }
 
+/// @namespace Items
+/// Represents an item in the system.
 model Item {
-  id              Int             @id @default(autoincrement())
-  uuid            String          @unique @default(uuid())
-  name            String
-  description     String?
+  /// The unique identifier for the item.
+  id Int @id @default(autoincrement())
+
+  /// The universally unique identifier for the item.
+  uuid String @unique @default(uuid())
+
+  /// The name of the item.
+  name String
+
+  /// The description of the item.
+  description String?
+
+  /// The text to be translated for the item.
   textToTranslate String
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  deletedAt       DateTime?
-  itemTypeId      Int?
+
+  /// The date and time when the item was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the item was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the item was deleted.
+  deletedAt DateTime?
+
+  /// The ID of the item type to which the item belongs.
+  itemTypeId Int?
+
+  /// The ID of the person related to the item.
   relatedPersonId Int?
-  siteId          Int?
-  site            Site?           @relation(fields: [siteId], references: [id])
-  itemType        ItemType?       @relation(fields: [itemTypeId], references: [id])
-  relatedPerson   Person?         @relation(fields: [relatedPersonId], references: [id])
-  exhibitedBy     ExhibitedItem[]
-  videos          Video[]
-  pictures        Picture[]       @relation("ItemPictures")
+
+  /// The ID of the site where the item is located.
+  siteId Int?
+
+  /// The site where the item is located.
+  site Site? @relation(fields: [siteId], references: [id])
+
+  /// The item type to which the item belongs.
+  itemType ItemType? @relation(fields: [itemTypeId], references: [id])
+
+  /// The person related to the item.
+  relatedPerson Person? @relation(fields: [relatedPersonId], references: [id])
+
+  /// The exhibitions where the item is exhibited.
+  exhibitedBy ExhibitedItem[]
+
+  /// The videos associated with the item.
+  videos Video[]
+
+  /// The pictures associated with the item.
+  pictures Picture[] @relation("ItemPictures")
 }
 
-model Picture {
-  id         Int       @id @default(autoincrement())
-  uuid       String    @unique @default(uuid())
-  localPath  String?
-  hostingUrl String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
-  itemId     Int?
-  item       Item?     @relation(fields: [itemId], references: [id], name: "ItemPictures")
-  siteId     Int?
-  site       Site?     @relation(fields: [siteId], references: [id], name: "SitePictures")
+// ----------------------------
+// ---------- Videos ----------
+// ----------------------------
+
+/// @namespace Videos
+/// Represents the validation status of a video.
+enum ValidationStatus {
+  /// The video has been validated.
+  VALIDATED
+
+  /// The video has been refused.
+  REFUSED
+
+  /// The video is pending validation.
+  PENDING
 }
 
-// -------------------------------
-// ---------- Exhibitions --------
-// -------------------------------
+/// @namespace Videos
+/// Represents a sign language used in videos.
+model SignLanguage {
+  /// The unique identifier for the sign language.
+  id Int @id @default(autoincrement())
 
-model Exhibition {
-  id               Int             @id @default(autoincrement())
-  name             String
-  shortDescription String?
-  longDescription  String?
-  startDate        DateTime?
-  endDate          DateTime?
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  deletedAt        DateTime?
-  siteId           Int
-  site             Site            @relation(fields: [siteId], references: [id])
-  exhibitedItems   ExhibitedItem[]
+  /// The universally unique identifier for the sign language.
+  uuid String @unique @default(uuid())
 
-  @@unique([name, siteId])
+  /// The name of the sign language.
+  name String @unique
+
+  /// The code of the sign language.
+  code String @unique
+
+  /// The color associated with the sign language.
+  color String
+
+  /// The date and time when the sign language was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the sign language was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the sign language was deleted.
+  deletedAt DateTime?
+
+  /// The videos associated with the sign language.
+  videos Video[]
 }
 
-model ExhibitedItem {
-  id           Int        @id @default(autoincrement())
-  itemId       Int
-  exhibitionId Int
-  item         Item       @relation(fields: [itemId], references: [id])
-  exhibition   Exhibition @relation(fields: [exhibitionId], references: [id])
+/// @namespace Videos
+/// Represents a video in the system.
+model Video {
+  /// The unique identifier for the video.
+  id Int @id @default(autoincrement())
 
-  @@unique([itemId, exhibitionId])
+  /// The universally unique identifier for the video.
+  uuid String @unique @default(uuid())
+
+  /// The ID of the hosting provider for the video.
+  hostingProviderId Int
+
+  /// The ID of the video on the hosting provider's platform.
+  hostingProviderVideoId String
+
+  /// The validation status of the video.
+  validationStatus ValidationStatus @default(PENDING)
+
+  /// The duration of the video in seconds.
+  duration Int @default(0)
+
+  /// The date and time when the video was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the video was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the video was deleted.
+  deletedAt DateTime?
+
+  /// The reason why the video was deleted.
+  deletedReason String?
+
+  /// The ID of the item associated with the video.
+  itemId Int
+
+  /// The ID of the profile that posted the video.
+  profileId Int
+
+  /// The ID of the sign language used in the video.
+  signLanguageId Int?
+
+  /// The sign language used in the video.
+  signLanguage SignLanguage? @relation(fields: [signLanguageId], references: [id])
+
+  /// The users who liked the video.
+  likedBy UserlikesVideos[]
+
+  /// The item associated with the video.
+  item Item @relation(fields: [itemId], references: [id])
+
+  /// The profile that posted the video.
+  postedBy Profile @relation(fields: [profileId], references: [id])
+
+  /// The hosting provider for the video.
+  hostingProvider HostingProvider @relation(fields: [hostingProviderId], references: [id])
+
+  @@unique([hostingProviderId, hostingProviderVideoId])
+}
+
+/// @namespace Videos
+/// Represents a hosting provider for videos.
+model HostingProvider {
+  /// The unique identifier for the hosting provider.
+  id Int @id @default(autoincrement())
+
+  /// The name of the hosting provider.
+  name String @unique
+
+  /// The URL of the hosting provider.
+  url String
+
+  /// The date and time when the hosting provider was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the hosting provider was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the hosting provider was deleted.
+  deletedAt DateTime?
+
+  /// The videos hosted by the provider.
+  videos Video[]
+}
+
+/// @namespace Videos
+/// Represents the relationship between users and videos they like.
+model UserlikesVideos {
+  /// The unique identifier for the user-video like relationship.
+  id Int @id @default(autoincrement())
+
+  /// The date and time when the like was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the like was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the like was deleted.
+  deletedAt DateTime?
+
+  /// The ID of the user who liked the video.
+  userId Int
+
+  /// The ID of the video that was liked.
+  videoId Int
+
+  /// The user who liked the video.
+  user User @relation(fields: [userId], references: [id])
+
+  /// The video that was liked.
+  video Video @relation(fields: [videoId], references: [id])
 }
 
 // ----------------------------
 // ---------- Sites ----------
 // ----------------------------
 
+/// @namespace Sites
+/// Represents the type of a site.
 enum SiteType {
+  /// A museum site.
   MUSEUM
+
+  /// A library site.
   LIBRARY
+
+  /// An archive site.
   ARCHIVE
+
+  /// A restaurant site.
   RESTAURANT
+
+  /// An attraction site.
   ATTRACTION
+
+  /// A public place site.
   PUBLIC_PLACE
+
+  /// Other types of sites.
   OTHER
 }
 
-model SiteTypeColor {
-  id       Int      @id @default(autoincrement())
-  siteType SiteType @unique
-  color    String   @default("#ffffff")
-}
-
+/// @namespace Sites
+/// Represents a tag for a site.
 enum SiteTag {
+  /// A site with no losay.
   NOLOSAY
+
+  /// A site that is disability friendly.
   DISABILITY_FRIENDLY
+
+  /// A site that is deaf friendly.
   DEAF_FRIENDLY
+
+  /// A site that is blind friendly.
   BLIND_FRIENDLY
+
+  /// Other types of site tags.
   OTHER
 }
 
-model SiteTagColor {
-  id      Int     @id @default(autoincrement())
-  siteTag SiteTag @unique
-  color   String  @default("#ffffff")
-}
-
+/// @namespace Sites
+/// Represents a site in the system.
 model Site {
-  id               Int              @id @default(autoincrement())
-  uuid             String           @unique @default(uuid())
-  name             String
+  /// The unique identifier for the site.
+  id Int @id @default(autoincrement())
+
+  /// The universally unique identifier for the site.
+  uuid String @unique @default(uuid())
+
+  /// The name of the site.
+  name String
+
+  /// A short description of the site.
   shortDescription String?
-  longDescription  String?
-  telNumber        String?
-  email            String?
-  website          String?
-  price            Float
-  type             SiteType
-  tags             SiteTag[]
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  deletedAt        DateTime?
-  addressId        Int
-  address          Address          @relation(fields: [addressId], references: [id])
-  exhibition       Exhibition[]
-  siteHasManagers  SiteHasManager[]
-  items            Item[]
-  pictures         Picture[]        @relation("SitePictures")
+
+  /// A long description of the site.
+  longDescription String?
+
+  /// The telephone number of the site.
+  telNumber String?
+
+  /// The email address of the site.
+  email String?
+
+  /// The website of the site.
+  website String?
+
+  /// The price associated with the site.
+  price Float
+
+  /// The type of the site.
+  type SiteType
+
+  /// The tags associated with the site.
+  tags SiteTag[]
+
+  /// The date and time when the site was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the site was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the site was deleted.
+  deletedAt DateTime?
+
+  /// The ID of the address associated with the site.
+  addressId Int
+
+  /// The address associated with the site.
+  address Address @relation(fields: [addressId], references: [id])
+
+  /// The exhibitions held at the site.
+  exhibitions Exhibition[]
+
+  /// The managers of the site.
+  siteHasManagers SiteHasManager[]
+
+  /// The items associated with the site.
+  items Item[]
+
+  /// The pictures associated with the site.
+  pictures Picture[] @relation("SitePictures")
 }
 
+/// @namespace Sites
+/// Represents the relationship between sites and their managers.
 model SiteHasManager {
-  id        Int       @id @default(autoincrement())
-  isMain    Boolean   @default(false)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  /// The unique identifier for the site-manager relationship.
+  id Int @id @default(autoincrement())
+
+  /// Indicates whether the manager is the main manager.
+  isMain Boolean @default(false)
+
+  /// The date and time when the relationship was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the relationship was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the relationship was deleted.
   deletedAt DateTime?
-  siteId    Int
+
+  /// The ID of the site.
+  siteId Int
+
+  /// The ID of the profile managing the site.
   profileId Int
-  site      Site      @relation(fields: [siteId], references: [id])
-  profile   Profile   @relation(fields: [profileId], references: [id])
+
+  /// The site associated with the relationship.
+  site Site @relation(fields: [siteId], references: [id])
+
+  /// The profile managing the site.
+  profile Profile @relation(fields: [profileId], references: [id])
 
   @@unique([profileId, siteId])
+}
+
+// -------------------------------
+// ---------- Exhibitions --------
+// -------------------------------
+
+/// @namespace Exhibitions
+/// Represents an exhibition in the system.
+model Exhibition {
+  /// The unique identifier for the exhibition.
+  id Int @id @default(autoincrement())
+
+  /// The name of the exhibition.
+  name String
+
+  /// A short description of the exhibition.
+  shortDescription String?
+
+  /// A long description of the exhibition.
+  longDescription String?
+
+  /// The start date of the exhibition.
+  startDate DateTime?
+
+  /// The end date of the exhibition.
+  endDate DateTime?
+
+  /// The date and time when the exhibition was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the exhibition was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the exhibition was deleted.
+  deletedAt DateTime?
+
+  /// The ID of the site where the exhibition is held.
+  siteId Int
+
+  /// The site where the exhibition is held.
+  site Site @relation(fields: [siteId], references: [id])
+
+  /// The items exhibited in the exhibition.
+  exhibitedItems ExhibitedItem[]
+
+  @@unique([name, siteId])
+}
+
+/// @namespace Exhibitions
+/// Represents an item exhibited in an exhibition.
+model ExhibitedItem {
+  /// The unique identifier for the exhibited item.
+  id Int @id @default(autoincrement())
+
+  /// The ID of the item being exhibited.
+  itemId Int
+
+  /// The ID of the exhibition where the item is exhibited.
+  exhibitionId Int
+
+  /// The item being exhibited.
+  item Item @relation(fields: [itemId], references: [id])
+
+  /// The exhibition where the item is exhibited.
+  exhibition Exhibition @relation(fields: [exhibitionId], references: [id])
+
+  @@unique([itemId, exhibitionId])
+}
+
+//--------------------------------
+// -------------Media-------------
+//--------------------------------
+
+/// @namespace Media
+/// Represents a picture in the system.
+model Picture {
+  /// The unique identifier for the picture.
+  id Int @id @default(autoincrement())
+
+  /// The universally unique identifier for the picture.
+  uuid String @unique @default(uuid())
+
+  /// The local path of the picture.
+  localPath String?
+
+  /// The hosting URL of the picture.
+  hostingUrl String
+
+  /// The date and time when the picture was created.
+  createdAt DateTime @default(now())
+
+  /// The date and time when the picture was last updated.
+  updatedAt DateTime @updatedAt
+
+  /// The date and time when the picture was deleted.
+  deletedAt DateTime?
+
+  /// The ID of the item associated with the picture.
+  itemId Int?
+
+  /// The item associated with the picture.
+  item Item? @relation(fields: [itemId], references: [id], name: "ItemPictures")
+
+  /// The ID of the site associated with the picture.
+  siteId Int?
+
+  /// The site associated with the picture.
+  site Site? @relation(fields: [siteId], references: [id], name: "SitePictures")
 }
 
 // --------------------------
 // ---------- Logs ----------
 // --------------------------
 
+/// @namespace Logs
+/// Represents a log of user login attempts.
 model UserLoginLog {
-  id          Int             @id @default(autoincrement())
-  loginTime   DateTime        @default(now())
-  // ip                       String
+  /// The unique identifier for the user login log.
+  id Int @id @default(autoincrement())
+
+  /// The date and time when the login attempt occurred.
+  loginTime DateTime @default(now())
+
+  /// The OAuth provider used for the login attempt.
   loginMethod OAuthProviders? @relation(fields: [providerId], references: [providerId])
-  User        User?           @relation(fields: [userId], references: [id])
-  userId      Int
-  providerId  Int?
+
+  /// The user associated with the login attempt.
+  user User? @relation(fields: [userId], references: [id])
+
+  /// The ID of the user associated with the login attempt.
+  userId Int
+
+  /// The ID of the OAuth provider used for the login attempt.
+  providerId Int?
 }
 
+/// @namespace Logs
+/// Represents a log of user actions.
 model UserActionLog {
-  id        Int      @id @default(autoincrement())
-  action    String
-  object    String
-  objectId  Int
-  details   String?
+  /// The unique identifier for the user action log.
+  id Int @id @default(autoincrement())
+
+  /// The action performed by the user.
+  action String
+
+  /// The object on which the action was performed.
+  object String
+
+  /// The ID of the object on which the action was performed.
+  objectId Int
+
+  /// Additional details about the action.
+  details String?
+
+  /// The date and time when the action was logged.
   createdAt DateTime @default(now())
+
+  /// The ID of the profile that performed the action.
   profileId Int
-  profile   Profile  @relation(fields: [profileId], references: [id])
+
+  /// The profile that performed the action.
+  profile Profile @relation(fields: [profileId], references: [id])
 }
 
+/// @namespace Logs
+/// Represents a log of sensitive user actions.
 model SensitiveActionLog {
-  id        Int      @id @default(autoincrement())
-  action    String
-  object    String
-  objectId  Int
-  details   String?
+  /// The unique identifier for the sensitive action log.
+  id Int @id @default(autoincrement())
+
+  /// The sensitive action performed by the user.
+  action String
+
+  /// The object on which the sensitive action was performed.
+  object String
+
+  /// The ID of the object on which the sensitive action was performed.
+  objectId Int
+
+  /// Additional details about the sensitive action.
+  details String?
+
+  /// The date and time when the sensitive action was logged.
   createdAt DateTime @default(now())
+
+  /// The ID of the profile that performed the sensitive action.
   profileId Int
-  profile   Profile  @relation(fields: [profileId], references: [id])
+
+  /// The profile that performed the sensitive action.
+  profile Profile @relation(fields: [profileId], references: [id])
+}
+
+// -----------------------------
+// ------Front-Tags-Colors------
+// -----------------------------
+
+/// @namespace Front Tags Colors
+/// Represents the color associated with each user role.
+model RoleColor {
+  /// The unique identifier for the role color.
+  id Int @id @default(autoincrement())
+
+  /// The role associated with the color.
+  role Role @unique
+
+  /// The color associated with the role.
+  color String @default("#ffffff")
+}
+
+/// @namespace Front Tags Colors
+/// Represents the color associated with each site tag.
+model SiteTagColor {
+  /// The unique identifier for the site tag color.
+  id Int @id @default(autoincrement())
+
+  /// The tag of the site.
+  siteTag SiteTag @unique
+
+  /// The color associated with the site tag.
+  color String @default("#ffffff")
+}
+
+/// @namespace Front Tags Colors
+/// Represents the color associated with each site type.
+model SiteTypeColor {
+  /// The unique identifier for the site type color.
+  id Int @id @default(autoincrement())
+
+  /// The type of the site.
+  siteType SiteType @unique
+
+  /// The color associated with the site type.
+  color String @default("#ffffff")
+}
+
+/// @namespace Front Tags Colors
+/// Represents the color associated with each person type.
+model PersonTypeColor {
+  /// The unique identifier for the person type color.
+  id Int @id @default(autoincrement())
+
+  /// The type of the person.
+  personType PersonType @unique
+
+  /// The color associated with the person type.
+  color String @default("#ffffff")
+}
+
+/// @namespace Front Tags Colors
+///
+/// Represents the color associated with each sanction type.
+model SanctionTypeColor {
+  /// The unique identifier for the sanction type color.
+  id Int @id @default(autoincrement())
+
+  /// The type of the sanction.
+  sanctionType SanctionType @unique
+
+  /// The color associated with the sanction type.
+  color String @default("#ffffff")
+}
+
+/// @namespace Front Tags Colors
+/// Represents the color associated with each validation status.
+model ValidationStatusColor {
+  /// The unique identifier for the validation status color.
+  id Int @id @default(autoincrement())
+
+  /// The validation status associated with the color.
+  validationStatus ValidationStatus @unique
+
+  /// The color associated with the validation status.
+  color String @default("#ffffff")
 }
