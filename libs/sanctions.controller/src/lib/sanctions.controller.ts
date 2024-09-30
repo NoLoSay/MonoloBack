@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpCode, Param, Post, Query, Request, Response } from "@nestjs/common";
+import { Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, Query, Request, Response } from "@nestjs/common";
 import { SanctionType } from "@noloback/prisma-client-base";
 import { SanctionsService } from "@noloback/sanctions.service";
 import { FiltersGetMany } from "models/filters-get-many";
@@ -20,6 +20,7 @@ export class SanctionsController {
     @Query('_order') order?: 'asc' | 'desc' | undefined,
     @Query('target_user') userId?: number | undefined,
     @Query('issuer') issuerId?: number | undefined,
+    @Query('issuer_user') issuerUserId?: number | undefined,
     @Query('reason_contains') reasonContains?: string | undefined,
     @Query('sanction_type') sanctionType?: string | undefined,
     @Query('sanctionStartAt_gte') sanctionStartAtGte?: string | undefined,
@@ -34,7 +35,7 @@ export class SanctionsController {
     let sanctionTypeEnum: SanctionType | undefined;
     if (
       sanctionType &&
-      Object.values(sanctionType).includes(
+      Object.values(SanctionType).includes(
         sanctionType as SanctionType
       )
     ) {
@@ -49,14 +50,14 @@ export class SanctionsController {
         order,
         ['id', 'userId', 'issuerId', 'reason', 'sanctionType', 'sanctionStart', 'sanctionEnd', 'createdAt', 'updatedAt']
     ),
-    userId, issuerId, reasonContains, sanctionTypeEnum,
+    userId, issuerId, issuerUserId, reasonContains, sanctionTypeEnum,
     sanctionStartAtGte, sanctionStartAtLte, sanctionEndAtGte, sanctionEndAtLte,
     createdAtGte, createdAtLte, updatedAtGte, updatedAtLte);
 
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': this.sanctionsService.count(userId, issuerId, reasonContains, sanctionTypeEnum,
+        'X-Total-Count': this.sanctionsService.count(userId, issuerId, issuerUserId, reasonContains, sanctionTypeEnum,
           sanctionStartAtGte, sanctionStartAtLte, sanctionEndAtGte, sanctionEndAtLte,
           createdAtGte, createdAtLte, updatedAtGte, updatedAtLte),
       })
@@ -80,6 +81,26 @@ export class SanctionsController {
   @Roles([ADMIN])
   async delete (@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
     const data = await this.sanctionsService.delete(request.user, id);
+    return res
+      .status(200)
+      .json(data);
+  }
+
+  @Get(':id')
+  @HttpCode(200)
+  @Roles([ADMIN, MODERATOR])
+  async findById(@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
+    const data = await this.sanctionsService.findById(id);
+    return res
+      .status(200)
+      .json(data);
+  }
+
+  @Patch(':id')
+  @HttpCode(200)
+  @Roles([ADMIN, MODERATOR])
+  async update(@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
+    const data = await this.sanctionsService.patch(request.user, id, request.body);
     return res
       .status(200)
       .json(data);

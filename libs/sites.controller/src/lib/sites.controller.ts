@@ -20,6 +20,7 @@ import { SitesService } from '@noloback/sites.service'
 import {
   InviteManagerRequestBody,
   RemoveManagerRequestBody,
+  SiteCreationRequestBody,
   SiteManagerModificationRequestBody,
   SiteManipulationRequestBody
 } from '@noloback/api.request.bodies'
@@ -99,7 +100,7 @@ export class SitesController {
   }))
   async create (
     @Response() res: any,
-    @Body() sites: SiteManipulationRequestBody,
+    @Body() sites: SiteCreationRequestBody,
     @UploadedFile() picture: Express.Multer.File
   ) {
     return res.status(200).json(await this.sitesService.create(sites, picture))

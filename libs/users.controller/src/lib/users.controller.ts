@@ -70,7 +70,7 @@ export class UsersController {
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number
   ) {
-    return this.sanctionsService.getUserSanctions(id);
+    return this.sanctionsService.getUserSanctionsById(id);
   }
 
   @Get('me')

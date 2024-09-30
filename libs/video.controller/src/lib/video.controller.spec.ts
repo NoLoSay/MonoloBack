@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { VideoController } from './video.controller';
-import { HttpModule } from '@nestjs/axios';
 import { VideoService } from '@noloback/video.service';
-import { MulterModule } from '@nestjs/platform-express';
+
+class MockVideoService {}
 
 describe('VideoController', () => {
   let video: TestingModule;
@@ -10,14 +10,11 @@ describe('VideoController', () => {
   beforeAll(async () => {
     video = await Test.createTestingModule({
       controllers: [VideoController],
-      providers: [VideoService],
-      imports: [
-        HttpModule,
-        MulterModule.registerAsync({
-          useFactory: () => ({
-            dest: './upload',
-          }),
-        }),
+      providers: [
+        {
+          provide: VideoService,
+          useClass: MockVideoService,
+        },
       ],
     }).compile();
   });

@@ -11,11 +11,6 @@ export class SiteManipulationRequestBody {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
-  managerId: number = 0;
-
-  @ApiProperty()
-  @IsString()
   @IsOptional()
   shortDescription?: string;
 
@@ -65,4 +60,11 @@ export class SiteManipulationRequestBody {
   @IsNumber()
   @IsPositive()
   addressId?: number;
+}
+
+export class SiteCreationRequestBody extends SiteManipulationRequestBody {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  managerId: number = 0;
 }

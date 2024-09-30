@@ -28,7 +28,7 @@ abstract class VideoDefaultSelect {
   createdAt: boolean = true
   likedBy: object = {
     select: {
-      User: {
+      user: {
         select: new UserVideoSelect()
       }
     }
@@ -74,7 +74,7 @@ export class VideoListedFromUserCommonSelect extends VideoDefaultSelect {
 // Generalize the return of a video
 
 export class VideoManagerSelect extends VideoDefaultSelect {
-  validationStatus: boolean = true
+  // validationStatus: boolean = true
 
   constructor (entity: VideoDefaultSelect) {
     super()
