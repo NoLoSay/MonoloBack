@@ -33,12 +33,14 @@ import { randomUUID } from 'crypto'
 import { extname } from 'path'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { count } from 'console'
+import { RoomsService } from '@noloback/rooms.service'
 // import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('sites')
 export class SitesController {
   constructor (
     private readonly sitesService: SitesService,
+    private readonly roomsService: RoomsService,
     private readonly sitesManagersService: SitesManagersService // private loggingService: LoggerService
   ) {}
 
@@ -268,10 +270,72 @@ export class SitesController {
         )
     throw new UnauthorizedException()
   }
-}
 
   // |--------------------|
   // |    ROOMS ROUTES    |
   // |--------------------|
 
-  
+  @Get(':id/rooms')
+  async getRoomsFromSite (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Response() res: any
+  ) {
+    return res
+      .status(200)
+      .json(await this.roomsService.getRoomsFromSite(id, request.user))
+  }
+
+  // @Get(':id/rooms/:roomId')
+  // async getOneRoomFromSite (
+  //   @Request() request: any,
+  //   @Param('id', ParseIntPipe) siteId: number,
+  //   @Param('roomId', ParseIntPipe) roomId: number,
+  //   @Response() res: any
+  // ) {
+  //   return res
+  //     .status(200)
+  //     .json(await this.roomsService.getOneRoomFromSite(siteId, roomId, request.user))
+  // }
+
+  // @Roles([ADMIN, MANAGER])
+  // @Post(':id/rooms')
+  // async createRoom (
+  //   @Request() request: any,
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Response() res: any,
+  //   @Body() room: any
+  // ) {
+  //   return res
+  //     .status(200)
+  //     .json(await this.roomsService.createRoom(id, room, request.user))
+  // }
+
+  // @Roles([ADMIN, MANAGER])
+  // @Put(':id/rooms/:roomId')
+  // async updateRoom (
+  //   @Request() request: any,
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Param('roomId', ParseIntPipe) roomId: number,
+  //   @Response() res: any,
+  //   @Body() room: any
+  // ) {
+  //   return res
+  //     .status(200)
+  //     .json(await this.roomsService.updateRoom(id, roomId, room, request.user))
+  // }
+
+  // @Roles([ADMIN, MANAGER])
+  // @Delete(':id/rooms/:roomId')
+  // async deleteRoom (
+  //   @Request() request: any,
+  //   @Param('id', ParseIntPipe) id: number,
+  //   @Param('roomId', ParseIntPipe) roomId: number,
+  //   @Response() res: any
+  // ) {
+  //   return res
+  //     .status(200)
+  //     .json(await this.roomsService.deleteRoom(id, roomId, request.user))
+  // }
+
+}

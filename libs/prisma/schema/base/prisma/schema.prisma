@@ -916,7 +916,7 @@ model Room {
   /// The date and time when the room was deleted.
   deletedAt   DateTime?
 
-  /// The ID of the site where the room is located.  
+  /// The ID of the site where the room is located.
   siteId      Int
 
   /// The site where the room is located.
