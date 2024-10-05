@@ -5,6 +5,15 @@ class Exhibition {
   endDate: boolean = true
 }
 
+class LinkedExhibition {
+  id: boolean = true
+  specName: boolean = true
+  specDesc: boolean = true
+  exhibition: object = {
+    select : new Exhibition()
+  }
+}
+
 export class RoomCommonSelect {
   id: boolean = true
   name: boolean = true
@@ -12,8 +21,8 @@ export class RoomCommonSelect {
 }
 
 export class RoomWithExhibitionsSelect extends RoomCommonSelect {
-  exhibitions: object = {
-    select : new Exhibition()
+  linkedExhibitions: object = {
+    select : new LinkedExhibition()
   }
 }
 
@@ -23,8 +32,8 @@ export class RoomManagerSelect extends RoomCommonSelect {
 }
 
 export class RoomManagerWithExhibitionsSelect extends RoomManagerSelect {
-  exhibitions: object = {
-    select : new Exhibition()
+  linkedExhibitions: object = {
+    select : new LinkedExhibition()
   }
 }
 
@@ -32,3 +41,8 @@ export class RoomAdminSelect extends RoomManagerSelect {
   deletedAt: boolean = true
 }
 
+export class RoomAdminWithExhibitionsSelect extends RoomAdminSelect {
+  linkedExhibitions: object = {
+    select : new LinkedExhibition()
+  }
+}

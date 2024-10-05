@@ -5,6 +5,13 @@ class Exhibition {
   endDate: Date = new Date()
 }
 
+class LinkedExhibition {
+  id: number = 0
+  specName: string = ''
+  specDesc: string = ''
+  exhibition: Exhibition = new Exhibition()
+}
+
 export class RoomCommonReturn {
   id: number = 0
   name: string = ''
@@ -12,7 +19,7 @@ export class RoomCommonReturn {
 }
 
 export class RoomWithExhibitionsReturn extends RoomCommonReturn {
-  exhibitions: Exhibition[] = []
+  linkedExhibitions: LinkedExhibition[] = []
 }
 
 export class RoomManagerReturn extends RoomCommonReturn {
@@ -21,9 +28,13 @@ export class RoomManagerReturn extends RoomCommonReturn {
 }
 
 export class RoomManagerWithExhibitionsReturn extends RoomManagerReturn {
-  exhibitions: Exhibition[] = []
+  linkedExhibitions: LinkedExhibition[] = []
 }
 
 export class RoomAdminReturn extends RoomManagerReturn {
   deletedAt: Date | null = null
+}
+
+export class RoomAdminWithExhibitionsReturn extends RoomAdminReturn {
+  linkedExhibitions: LinkedExhibition[] = []
 }

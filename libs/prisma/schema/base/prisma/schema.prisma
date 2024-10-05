@@ -923,7 +923,7 @@ model Room {
   site        Site                @relation(fields: [siteId], references: [id])
 
   /// The exhibitions associated with the room.
-  exhibitions ExhibitionHasRoom[]
+  linkedExhibitions ExhibitionHasRoom[]
 
   @@unique([name, siteId])
 }

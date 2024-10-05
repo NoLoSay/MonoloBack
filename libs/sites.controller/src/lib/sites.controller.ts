@@ -286,17 +286,17 @@ export class SitesController {
       .json(await this.roomsService.getRoomsFromSite(id, request.user))
   }
 
-  // @Get(':id/rooms/:roomId')
-  // async getOneRoomFromSite (
-  //   @Request() request: any,
-  //   @Param('id', ParseIntPipe) siteId: number,
-  //   @Param('roomId', ParseIntPipe) roomId: number,
-  //   @Response() res: any
-  // ) {
-  //   return res
-  //     .status(200)
-  //     .json(await this.roomsService.getOneRoomFromSite(siteId, roomId, request.user))
-  // }
+  @Get(':id/rooms/:roomId')
+  async getOneRoomFromSite (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) siteId: number,
+    @Param('roomId', ParseIntPipe) roomId: number,
+    @Response() res: any
+  ) {
+    return res
+      .status(200)
+      .json(await this.roomsService.getOneRoomFromSite(siteId, roomId, request.user))
+  }
 
   // @Roles([ADMIN, MANAGER])
   // @Post(':id/rooms')
