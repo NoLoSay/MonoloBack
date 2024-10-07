@@ -315,19 +315,21 @@ export class SitesController {
     throw new ForbiddenException()
   }
 
-  // @Roles([ADMIN, MANAGER])
-  // @Put(':id/rooms/:roomId')
-  // async updateRoom (
-  //   @Request() request: any,
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Param('roomId', ParseIntPipe) roomId: number,
-  //   @Response() res: any,
-  //   @Body() room: any
-  // ) {
-  //   return res
-  //     .status(200)
-  //     .json(await this.roomsService.updateRoom(id, roomId, room, request.user))
-  // }
+  @Roles([ADMIN, MANAGER])
+  @Put(':id/rooms/:roomId')
+  async updateRoom (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Param('roomId', ParseIntPipe) roomId: number,
+    @Response() res: any,
+    @Body() room: RoomManipulationModel
+  ) {
+    if (await this.sitesManagersService.isAllowedToModify(request.user, id))
+      return res
+        .status(200)
+        .json(await this.roomsService.updateRoom(roomId, room))
+    throw new ForbiddenException()
+  }
 
   @Roles([ADMIN, MANAGER])
   @Delete(':id/rooms/:roomId')

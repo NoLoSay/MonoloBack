@@ -123,6 +123,30 @@ export class RoomsService {
     }
   }
 
+  async updateRoom (
+    roomId: number,
+    room: RoomManipulationModel
+  ): Promise<RoomManagerReturn> {
+    try {
+      return (await this.prisma.room.update({
+        where: { id: roomId, deletedAt: null },
+        data: room,
+        select: new RoomManagerSelect()
+      })) as RoomManagerReturn
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025')
+          throw new NotFoundException('Room not found')
+        if (error.code === 'P2002')
+          throw new BadRequestException('Room name already exists in this site')
+      }
+      // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e
+      throw new InternalServerErrorException(
+        'Error while updating room, please try again later. If the problem persists, contact the administrator'
+      )
+    }
+  }
+
   async deleteRoom (roomId: number): Promise<RoomManagerReturn> {
     try {
       return (await this.prisma.room.update({
@@ -138,6 +162,7 @@ export class RoomsService {
           throw new NotFoundException('Room not found')
         }
       }
+      // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e
       throw new InternalServerErrorException(
         'Error while deleting room, please try again later. If the problem persists, contact the administrator'
       )
