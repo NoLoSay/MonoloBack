@@ -13,13 +13,15 @@ import {
   Patch,
   UseInterceptors,
   UploadedFile,
-  Query
+  Query,
+  ForbiddenException
 } from '@nestjs/common'
 import { ADMIN, MANAGER, Roles } from '@noloback/roles'
 import { SitesService } from '@noloback/sites.service'
 import {
   InviteManagerRequestBody,
   RemoveManagerRequestBody,
+  RoomManipulationModel,
   SiteCreationRequestBody,
   SiteManagerModificationRequestBody,
   SiteManipulationRequestBody
@@ -105,7 +107,7 @@ export class SitesController {
     @Body() sites: SiteCreationRequestBody,
     @UploadedFile() picture: Express.Multer.File
   ) {
-    return res.status(200).json(await this.sitesService.create(sites, picture))
+    return res.status(201).json(await this.sitesService.create(sites, picture))
   }
 
   @Roles([ADMIN, MANAGER])
@@ -298,18 +300,20 @@ export class SitesController {
       .json(await this.roomsService.getOneRoomFromSite(siteId, roomId, request.user))
   }
 
-  // @Roles([ADMIN, MANAGER])
-  // @Post(':id/rooms')
-  // async createRoom (
-  //   @Request() request: any,
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Response() res: any,
-  //   @Body() room: any
-  // ) {
-  //   return res
-  //     .status(200)
-  //     .json(await this.roomsService.createRoom(id, room, request.user))
-  // }
+  @Roles([ADMIN, MANAGER])
+  @Post(':id/rooms')
+  async createRoom (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Response() res: any,
+    @Body() room: RoomManipulationModel
+  ) {
+    if (await this.sitesManagersService.isAllowedToModify(request.user, id))
+      return res
+        .status(200)
+        .json(await this.roomsService.createRoom(id, room))
+    throw new ForbiddenException()
+  }
 
   // @Roles([ADMIN, MANAGER])
   // @Put(':id/rooms/:roomId')
