@@ -4,7 +4,12 @@ import {
   InternalServerErrorException,
   NotFoundException
 } from '@nestjs/common'
-import { Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
+import {
+  Prisma,
+  PrismaBaseService,
+  Role,
+  Room
+} from '@noloback/prisma-client-base'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import {
   RoomAdminReturn,
@@ -77,7 +82,8 @@ export class RoomsService {
     const room = (await this.prisma.room.findUnique({
       where: {
         id: roomId,
-        siteId: siteId
+        siteId: siteId,
+        deletedAt: Role.ADMIN === user.activeProfile.role ? undefined : null
       },
       select: selectOptions
     })) as unknown as
@@ -111,7 +117,30 @@ export class RoomsService {
         }
       }
       // this.loggingService.log(LogCritiitemCategory.Critical, this.constructor.name, e)
-      throw new InternalServerErrorException('Error while creating room, please try again later. If the problem persists, contact the administrator')
+      throw new InternalServerErrorException(
+        'Error while creating room, please try again later. If the problem persists, contact the administrator'
+      )
+    }
+  }
+
+  async deleteRoom (roomId: number): Promise<RoomManagerReturn> {
+    try {
+      return (await this.prisma.room.update({
+        where: { id: roomId, deletedAt: null },
+        data: {
+          deletedAt: new Date()
+        },
+        select: new RoomManagerSelect()
+      })) as RoomManagerReturn
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException('Room not found')
+        }
+      }
+      throw new InternalServerErrorException(
+        'Error while deleting room, please try again later. If the problem persists, contact the administrator'
+      )
     }
   }
 }

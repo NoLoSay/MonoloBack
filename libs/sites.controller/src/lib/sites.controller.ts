@@ -310,7 +310,7 @@ export class SitesController {
   ) {
     if (await this.sitesManagersService.isAllowedToModify(request.user, id))
       return res
-        .status(200)
+        .status(201)
         .json(await this.roomsService.createRoom(id, room))
     throw new ForbiddenException()
   }
@@ -329,17 +329,19 @@ export class SitesController {
   //     .json(await this.roomsService.updateRoom(id, roomId, room, request.user))
   // }
 
-  // @Roles([ADMIN, MANAGER])
-  // @Delete(':id/rooms/:roomId')
-  // async deleteRoom (
-  //   @Request() request: any,
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Param('roomId', ParseIntPipe) roomId: number,
-  //   @Response() res: any
-  // ) {
-  //   return res
-  //     .status(200)
-  //     .json(await this.roomsService.deleteRoom(id, roomId, request.user))
-  // }
+  @Roles([ADMIN, MANAGER])
+  @Delete(':id/rooms/:roomId')
+  async deleteRoom (
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Param('roomId', ParseIntPipe) roomId: number,
+    @Response() res: any
+  ) {
+    if (await this.sitesManagersService.isAllowedToModify(request.user, id))
+      return res
+        .status(200)
+        .json(await this.roomsService.deleteRoom(roomId))
+    throw new ForbiddenException()
+  }
 
 }
