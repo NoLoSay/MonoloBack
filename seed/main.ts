@@ -26,7 +26,7 @@ async function main() {
   const cities = await seedCities();
   console.log(cities);
 
-  const sites = await seedSites(countries, departments, cities);
+  const sites = await seedSites();
   console.log(sites);
 
   const exhibitions = await seedExhibitions();

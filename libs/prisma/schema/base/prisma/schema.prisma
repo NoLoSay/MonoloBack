@@ -773,6 +773,15 @@ enum SiteType {
   /// A public place site.
   PUBLIC_PLACE
 
+  /// A castle site.
+  CASTLE
+
+  /// A monument site.
+  MONUMENT
+
+  /// A park site.
+  GARDEN
+
   /// Other types of sites.
   OTHER
 }
