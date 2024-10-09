@@ -104,7 +104,18 @@ export async function seedDepartments() {
     { name: 'Hauts-de-Seine', code: '92', latitude: 48.847, longitude: 2.2113, countryCode: 'FR' },
     { name: 'Seine-Saint-Denis', code: '93', latitude: 48.909, longitude: 2.4006, countryCode: 'FR' },
     { name: 'Val-de-Marne', code: '94', latitude: 48.7926, longitude: 2.4755, countryCode: 'FR' },
-    { name: "Val-d'Oise", code: '95', latitude: 49.046, longitude: 2.2097, countryCode: 'FR' }
+    { name: "Val-d'Oise", code: '95', latitude: 49.046, longitude: 2.2097, countryCode: 'FR' },
+    { name: 'Anvers', code: 'VAN', latitude: 51.2194, longitude: 4.4025, countryCode: 'BE' },
+    { name: 'Brabant Flamand', code: 'VBR', latitude: 50.9006, longitude: 4.4857, countryCode: 'BE' },
+    { name: 'Brabant Wallon', code: 'WBR', latitude: 50.6806, longitude: 4.6161, countryCode: 'BE' },
+    { name: 'Hainaut', code: 'WHT', latitude: 50.5257, longitude: 4.0624, countryCode: 'BE' },
+    { name: 'Liège', code: 'WLG', latitude: 50.6337, longitude: 5.5676, countryCode: 'BE' },
+    { name: 'Limbourg', code: 'VLI', latitude: 50.9743, longitude: 5.8987, countryCode: 'BE' },
+    { name: 'Luxembourg', code: 'WLX', latitude: 49.8333, longitude: 5.75, countryCode: 'BE' },
+    { name: 'Namur', code: 'WNA', latitude: 50.4669, longitude: 4.8674, countryCode: 'BE' },
+    { name: 'Flandre Orientale', code: 'VOV', latitude: 51.0362, longitude: 3.736, countryCode: 'BE' },
+    { name: 'Flandre Occidentale', code: 'VWV', latitude: 51.0536, longitude: 3.197, countryCode: 'BE' },
+    { name: 'Bruxelles', code: 'BRU', latitude: 50.8503, longitude: 4.3517, countryCode: 'BE' }
   ]
 
   for (const departmentData of departmentsData) {
