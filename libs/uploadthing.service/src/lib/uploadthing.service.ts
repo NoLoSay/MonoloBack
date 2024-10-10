@@ -32,7 +32,7 @@ export class UploadthingService {
       }
     } catch (error: any) {
       console.error(error)
-      // LoggerService.log('Critical', 'PicturesService.createPicture', error, `Error uploading file: ${error.message}`)
+      LoggerService.log('Critical', 'PicturesService.createPicture', error, `Error uploading file: ${error.message}`)
       throw error;
     }
   }
