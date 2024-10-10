@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 
+import { CrashControllerModule } from '@noloback/crash.controller'
 import { LoggerLibModule } from '@noloback/logger-lib'
 import { TranslatorLibModule } from '@noloback/translator-lib'
 import { UsersControllerModule } from '@noloback/users.controller'
@@ -31,6 +32,7 @@ import { APP_GUARD } from '@nestjs/core'
 
 @Module({
   imports: [
+    CrashControllerModule,
     AuthControllerModule,
     SanctionsServiceModule,
     LoggerLibModule,
