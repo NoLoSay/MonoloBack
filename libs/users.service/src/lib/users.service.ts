@@ -1,4 +1,5 @@
 import {
+  LogCriticity,
   Prisma,
   PrismaBaseService,
   Role,
@@ -13,7 +14,6 @@ import {
 } from '@nestjs/common'
 import { hash } from 'bcrypt'
 import { LoggerService } from '@noloback/logger-lib'
-import { LogCriticity } from '@prisma/client/logs'
 import {
   UserAdminReturn,
   UserCommonReturn,

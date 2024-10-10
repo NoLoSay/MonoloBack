@@ -4,6 +4,7 @@ import { ExhibitionsServiceModule } from '@noloback/exhibitions.service'
 import { ExhibitionsController } from './exhibitions.controller'
 import { ExhibitedItemsServiceModule } from '@noloback/exhibited.items.service'
 import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
+import { LoggerLibModule } from '@noloback/logger-lib'
 
 @Module({
   controllers: [ExhibitionsController],
@@ -13,6 +14,7 @@ import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
     AuthServiceModule,
     ExhibitionsServiceModule,
     ExhibitedItemsServiceModule,
+    LoggerLibModule,
     SitesManagersServiceModule
   ]
 })

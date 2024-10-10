@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
 import {
   BadGatewayException,
   BadRequestException,
@@ -10,13 +10,12 @@ import { AddressManipulationModel } from '@noloback/api.request.bodies'
 import { AddressAdminReturn, AddressCommonReturn } from '@noloback/api.returns'
 import { AddressAdminSelect, AddressCommonSelect } from '@noloback/db.calls'
 import { FiltersGetMany } from 'models/filters-get-many'
-//import { LogCritiaddress } from '@prisma/client/logs'
-//import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class AddressesService {
   constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async count(
@@ -106,7 +105,7 @@ export class AddressesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })) as unknown as AddressCommonReturn
     return newAddress
@@ -154,7 +153,7 @@ export class AddressesService {
         select: selectOptions
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     switch (role) {

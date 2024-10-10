@@ -1,4 +1,4 @@
-import { Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
+import { LogCriticity, Prisma, PrismaBaseService, Role } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
@@ -17,13 +17,12 @@ import {
   ItemTypeDetailledSelect
 } from '@noloback/db.calls'
 import { FiltersGetMany } from 'models/filters-get-many'
-//import { LogCriticity } from '@prisma/client/logs'
-//import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ItemTypesService {
   constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async findAll (
@@ -93,7 +92,7 @@ export class ItemTypesService {
         select: selectOptions
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiitemCategory.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new NotFoundException('Item type not found')
       })
 
@@ -129,7 +128,7 @@ export class ItemTypesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })) as unknown as ItemTypeAdminReturn
   }
@@ -159,7 +158,7 @@ export class ItemTypesService {
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })) as unknown as ItemTypeAdminReturn
   }

@@ -12,17 +12,18 @@ import { SiteManagerCommonReturn } from '@noloback/api.returns'
 import { SiteManagerCommonSelect } from '@noloback/db.calls'
 import { SiteManagerCommonDbReturn } from '@noloback/db.returns'
 import {
+  LogCriticity,
   PrismaBaseService,
   Role,
   SiteHasManager
 } from '@noloback/prisma-client-base'
 import { UserRequestModel } from '@noloback/requests.constructor'
-// import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class SitesManagersService {
   constructor (
-    private prismaBase: PrismaBaseService // private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async isAllowedToModify (
@@ -45,7 +46,7 @@ export class SitesManagersService {
         select: new SiteManagerCommonSelect()
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
       .then((managers: unknown[]) => {
@@ -151,7 +152,7 @@ export class SitesManagersService {
               select: new SiteManagerCommonSelect()
             })
             .catch((e: Error) => {
-              // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+              this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
               throw new InternalServerErrorException(e)
             })) as unknown as SiteManagerCommonDbReturn
         )
@@ -234,7 +235,7 @@ export class SitesManagersService {
           select: new SiteManagerCommonSelect()
         })
         .catch((e: Error) => {
-          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
           throw new InternalServerErrorException(e)
         })) as unknown as SiteManagerCommonDbReturn
     )
@@ -268,7 +269,7 @@ export class SitesManagersService {
           select: new SiteManagerCommonSelect()
         })
         .catch((e: Error) => {
-          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
           throw new InternalServerErrorException(e)
         })) as unknown as SiteManagerCommonDbReturn
     )
@@ -289,7 +290,7 @@ export class SitesManagersService {
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     return relation !== null
@@ -308,7 +309,7 @@ export class SitesManagersService {
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     return relation !== null

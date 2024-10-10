@@ -11,7 +11,8 @@ import {
   Picture,
   PrismaBaseService,
   Prisma,
-  Role
+  Role,
+  LogCriticity
 } from '@noloback/prisma-client-base'
 import {
   SiteCreationRequestBody,
@@ -29,7 +30,7 @@ import {
 } from '@noloback/db.calls'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import { SitesManagersService } from '@noloback/sites.managers.service'
-// import { LoggerService } from '@noloback/logger-lib';
+import { LoggerService } from '@noloback/logger-lib';
 import { PicturesService } from '@noloback/pictures.service'
 import { FiltersGetMany } from 'models/filters-get-many'
 
@@ -38,7 +39,7 @@ export class SitesService {
   constructor (
     private readonly prismaBase: PrismaBaseService,
     private readonly picturesService: PicturesService,
-    private readonly sitesManagerService: SitesManagersService // private loggingService: LoggerService
+    private readonly sitesManagerService: SitesManagersService, private loggingService: LoggerService
   ) {}
 
   async count (
@@ -239,7 +240,7 @@ export class SitesService {
         })
         .catch((e: Error) => {
           console.log(e)
-          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
           throw new InternalServerErrorException(e)
         })
 
@@ -311,7 +312,7 @@ export class SitesService {
         })
         .catch((e: Error) => {
           console.log(e)
-          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
           throw new InternalServerErrorException(e)
         })
 
@@ -409,7 +410,7 @@ export class SitesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -430,7 +431,7 @@ export class SitesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })) as unknown as SiteAdminReturn
   }
@@ -493,7 +494,7 @@ export class SitesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 

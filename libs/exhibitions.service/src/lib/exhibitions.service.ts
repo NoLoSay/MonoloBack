@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
@@ -30,14 +30,13 @@ import {
   ExhibitionManagerDetailedDbReturn
 } from '@noloback/db.returns'
 import { FiltersGetMany } from 'models/filters-get-many'
-//import { LogCriticity } from '@prisma/client/logs'
-//import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ExhibitionsService {
   constructor (
     private readonly prismaBase: PrismaBaseService,
-    private readonly siteManagersService: SitesManagersService // private loggingService: LoggerService
+    private readonly siteManagersService: SitesManagersService, private loggingService: LoggerService
   ) {}
 
   async count(
@@ -197,7 +196,7 @@ export class ExhibitionsService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -241,7 +240,7 @@ export class ExhibitionsService {
         select: new ExhibitionManagerSelect()
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException('Error updating exhibition')
       })
 

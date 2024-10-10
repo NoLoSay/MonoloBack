@@ -5,6 +5,7 @@ import { ItemsController } from './items.controller'
 import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
 import { UploadthingServiceModule } from '@noloback/uploadthing.service'
 import { VideoServiceModule } from '@noloback/video.service'
+import { LoggerLibModule } from '@noloback/logger-lib'
 
 @Module({
   controllers: [ItemsController],
@@ -15,6 +16,7 @@ import { VideoServiceModule } from '@noloback/video.service'
     ItemsServiceModule,
     SitesManagersServiceModule,
     UploadthingServiceModule,
+    LoggerLibModule,
     VideoServiceModule
   ]
 })

@@ -35,7 +35,7 @@ export class ExhibitionsController {
   constructor (
     private readonly exhibitionsService: ExhibitionsService,
     private readonly exhibitedItemsService: ExhibitedItemsService,
-    private readonly sitesManagersService: SitesManagersService // private loggingService: LoggerService
+    private readonly sitesManagersService: SitesManagersService, private loggingService: LoggerService
   ) {}
 
   @Get()
