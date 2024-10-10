@@ -21,7 +21,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
     await this.prismaBaseService.userLoginLog.create({
       data: {
-        userId: user.id,
+        userId: +user.id,
       },
     });
 

@@ -69,10 +69,10 @@ export class LoggerService {
   async userLog(profileId: number, action: string, object: string, objectId: number, details?: string) {
     await this.prismaBase.userActionLog.create({
       data: {
-        profileId: profileId,
+        profileId: +profileId,
         action: action,
         object: object,
-        objectId: objectId,
+        objectId: +objectId,
         details: details,
       },
     });
@@ -83,10 +83,10 @@ export class LoggerService {
 
     await prisma.userActionLog.create({
       data: {
-        profileId: profileId,
+        profileId: +profileId,
         action: action,
         object: object,
-        objectId: objectId,
+        objectId: +objectId,
         details: details,
       },
     });
@@ -95,7 +95,7 @@ export class LoggerService {
   async sensitiveLog(profileId: number, action: string, object: string, objectId: number, details?: string) {
     await this.prismaBase.sensitiveActionLog.create({
       data: {
-        profileId: profileId,
+        profileId: +profileId,
         action: action,
         object: object,
         objectId: +objectId,
@@ -109,7 +109,7 @@ export class LoggerService {
 
     await prisma.sensitiveActionLog.create({
       data: {
-        profileId: profileId,
+        profileId: +profileId,
         action: action,
         object: object,
         objectId: +objectId,

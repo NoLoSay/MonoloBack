@@ -131,7 +131,7 @@ export class SitesService {
 
   async patch(id: number, body: any) {
     return await this.prismaBase.site.update({
-      where: { id: id },
+      where: { id: +id },
       data: body,
     })
   }
@@ -155,7 +155,7 @@ export class SitesService {
 
     const site = (await this.prismaBase.site.findUnique({
       where: {
-        id: id,
+        id: +id,
         deletedAt: user.activeProfile.role !== Role.ADMIN ? null : undefined
       },
       select: selectOptions
@@ -200,7 +200,7 @@ export class SitesService {
         price: +site.price,
         pictures: newPicture ? {
           connect: {
-            id: newPicture.id
+            id: +newPicture.id
           }
         } : {},
         type: site.type as unknown as SiteType,
@@ -252,12 +252,12 @@ export class SitesService {
           price: +site.price,
           pictures: newPicture ? {
             connect: {
-              id: newPicture.id
+              id: +newPicture.id
             }
           } : {},
           type: site.type as unknown as SiteType,
           tags: site.tags as unknown[] as SiteTag[],
-          // addressId: site.addressId,
+          // addressId: +site.addressId,
           address: {
             connectOrCreate: {
               where: {
@@ -341,7 +341,7 @@ export class SitesService {
 
     const updatedSite: unknown = await this.prismaBase.site
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: site.name,
           shortDescription: site.shortDescription,
@@ -352,7 +352,7 @@ export class SitesService {
           price: site.price,
           pictures: newPicture ? {
             set: {
-              id: newPicture.id
+              id: +newPicture.id
             }
           } : {},
           type: site.type as unknown as SiteType,
@@ -373,7 +373,7 @@ export class SitesService {
           //     longitude: site.address.longitude,
           //     city: {
           //       connect: {
-          //         id: site.address.cityId
+          //         id: +site.address.cityId
           //       }
           //     }
           //   }
@@ -398,7 +398,7 @@ export class SitesService {
   async delete (id: number) {
     return (await this.prismaBase.site
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: { deletedAt: new Date() },
         select: new SiteAdminSelect()
       })

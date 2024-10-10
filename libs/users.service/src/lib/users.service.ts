@@ -80,7 +80,7 @@ export class UsersService {
 
     await this.prismaBase.userLoginLog.create({
       data: {
-        userId: newUser.id
+        userId: +newUser.id
       }
     })
 
@@ -115,7 +115,7 @@ export class UsersService {
     try {
       const hashedPassword = await hash(newPassword, 12);
       const result = await this.prismaBase.user.update({
-        where: { id: userId },
+        where: { id: +userId },
         data: {
           password: hashedPassword,
         },
@@ -135,7 +135,7 @@ export class UsersService {
 
   async patch(id: number, body: any) {
     const user = await this.prismaBase.user.findUnique({
-      where: { id: id },
+      where: { id: +id },
       include: {
         profiles: {
           select: {
@@ -154,9 +154,9 @@ export class UsersService {
           // if (!user?.profiles.find((profile: any) => profile.role == value && profile.deletedAt == null)) {
           // }
           await this.prismaBase.profile.upsert({
-            where: { userId_role: {userId: id, role: value} },
+            where: { userId_role: {userId: +id, role: value} },
             create: {
-              userId: id,
+              userId: +id,
               role: value,
             },
             update: {
@@ -167,7 +167,7 @@ export class UsersService {
         else if (value != Role.USER && user?.profiles.find((profile: any) => profile.role == value)) {
           if (user.profiles.find(profile => profile.role === value)?.isActive) {
             await this.prismaBase.profile.update({
-              where: { userId_role: {userId: id, role: Role.USER} },
+              where: { userId_role: {userId: +id, role: Role.USER} },
               data: {
                 isActive: true
               }
@@ -175,7 +175,7 @@ export class UsersService {
           }
 
           await this.prismaBase.profile.update({
-            where: { userId_role: {userId: id, role: value} },
+            where: { userId_role: {userId: +id, role: value} },
             data: {
               isActive: false,
               deletedAt: new Date()
@@ -187,7 +187,7 @@ export class UsersService {
       body.profiles = undefined;
     }
     return await this.prismaBase.user.update({
-      where: { id: id },
+      where: { id: +id },
       data: body
     })
   }
@@ -247,7 +247,7 @@ export class UsersService {
 
   async findMe (user: UserRequestModel) {
     const userMe = await this.prismaBase.user.findUnique({
-      where: { id: user.id },
+      where: { id: +user.id },
       select: new UserMeSelect()
     })
 
@@ -266,7 +266,7 @@ export class UsersService {
     }
 
     const user = await this.prismaBase.user.findUnique({
-      where: { id: id, deletedAt: role === Role.ADMIN ? null : undefined },
+      where: { id: +id, deletedAt: role === Role.ADMIN ? null : undefined },
       select: selectOptions
     })
 
@@ -343,7 +343,7 @@ export class UsersService {
   ): Promise<UserRequestModel | null> {
     const reactivatedProfiles = await this.prismaBase.profile.updateMany({
       where: {
-        userId: user.id,
+        userId: +user.id,
         role: Role.USER,
         deletedAt: null
       },
@@ -414,7 +414,7 @@ export class UsersService {
     )
 
     return (await this.prismaBase.user.update({
-      where: { id: id },
+      where: { id: +id },
       data: filteredData,
       select: new UserMeSelect()
     })) as unknown as UserMeReturn
@@ -422,7 +422,7 @@ export class UsersService {
 
   async remove (id: number) {
     return (await this.prismaBase.user.update({
-      where: { id: id },
+      where: { id: +id },
       data: { deletedAt: new Date() },
       select: new UserMeSelect()
     })) as unknown as UserMeReturn

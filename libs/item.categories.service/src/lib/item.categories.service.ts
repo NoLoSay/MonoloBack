@@ -100,7 +100,7 @@ export class ItemCategoriesService {
     }
     const category: unknown = await this.prismaBase.itemCategory
       .findUnique({
-        where: { id: id, deletedAt: role === Role.ADMIN ? undefined : null },
+        where: { id: +id, deletedAt: role === Role.ADMIN ? undefined : null },
         select: selectOptions
       })
       .catch((e: Error) => {
@@ -140,7 +140,7 @@ export class ItemCategoriesService {
   ): Promise<ItemCategoryAdminReturn> {
     return (await this.prismaBase.itemCategory
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedItemCategory.name,
           description: updatedItemCategory.description
@@ -155,7 +155,7 @@ export class ItemCategoriesService {
 
   async delete (id: number): Promise<ItemCategoryAdminReturn> {
     return (await this.prismaBase.itemCategory.update({
-      where: { id: id },
+      where: { id: +id },
       data: { deletedAt: new Date() }
     })) as unknown as ItemCategoryAdminReturn
   }

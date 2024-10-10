@@ -45,7 +45,7 @@ export class ItemsService {
 
   private async checkExistingItem (id: number): Promise<Item> {
     const item = await this.prismaBase.item.findUnique({
-      where: { id: id, deletedAt: null }
+      where: { id: +id, deletedAt: null }
     })
     if (!item) throw new NotFoundException('Item not found')
     return item
@@ -54,7 +54,7 @@ export class ItemsService {
   private async checkExistingSite (id: number) {
     if (
       (await this.prismaBase.site.count({
-        where: { id: id, deletedAt: null }
+        where: { id: +id, deletedAt: null }
       })) === 0
     )
       throw new NotFoundException('Site not found')
@@ -73,7 +73,7 @@ export class ItemsService {
       body.picture = uploadedPicture;
     }
     return this.prismaBase.item.update({
-      where: { id },
+      where: { id: +id },
       data: body,
       select: new ItemManagerSelect()
     }) as unknown as ItemManagerReturn
@@ -190,7 +190,7 @@ export class ItemsService {
     const item: unknown = await this.prismaBase.item
       .findUnique({
         where: {
-          id: id,
+          id: +id,
           deletedAt: user.activeProfile.role === Role.ADMIN ? null : undefined
         },
         select: selectOptions
@@ -309,7 +309,7 @@ export class ItemsService {
     this.checkExistingItem(id)
     const deleted: unknown = await this.prismaBase.item
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: { deletedAt: new Date() },
         select: new ItemCommonSelect()
       })
@@ -354,11 +354,11 @@ export class ItemsService {
 
     const updatedItem: unknown = await this.prismaBase.item
       .update({
-        where: { id: itemId },
+        where: { id: +itemId },
         data: {
           site: {
             connect: {
-              id: siteId
+              id: +siteId
             }
           }
         }

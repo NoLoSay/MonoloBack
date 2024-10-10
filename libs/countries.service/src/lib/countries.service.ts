@@ -105,7 +105,7 @@ export class CountriesService {
 
     const country = await this.prismaBase.country
       .findUnique({
-        where: { id: id, deletedAt: role === Role.ADMIN ? undefined : null },
+        where: { id: +id, deletedAt: role === Role.ADMIN ? undefined : null },
         select: selectOptions
       })
       .catch((e: Error) => {
@@ -148,7 +148,7 @@ export class CountriesService {
   ): Promise<CountryAdminReturn> {
     const updated: CountryAdminReturn = await this.prismaBase.country
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedCountry.name,
           code: updatedCountry.code,
@@ -168,7 +168,7 @@ export class CountriesService {
   async delete (id: number): Promise<CountryAdminReturn> {
     const deleted: CountryAdminReturn = await this.prismaBase.country
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: { deletedAt: new Date() },
         select: new CountryAdminSelect()
       })

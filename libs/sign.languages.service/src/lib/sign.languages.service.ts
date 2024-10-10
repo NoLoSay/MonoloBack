@@ -48,7 +48,7 @@ export class SignLanguagesService {
 
       if (foundCode && foundName && foundCode.id === foundName.id) {
         return this.prismaBase.signLanguage.update({
-          where: { id: foundCode.id },
+          where: { id: +foundCode.id },
           data: { ...body, deletedAt: null },
           select: new SignLanguageAdminSelect()
         })

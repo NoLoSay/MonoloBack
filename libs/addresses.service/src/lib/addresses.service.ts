@@ -67,7 +67,7 @@ export class AddressesService {
 
   async findOne (id: number): Promise<AddressAdminReturn> {
     const address: unknown = await this.prismaBase.address.findUnique({
-      where: { id: id },
+      where: { id: +id },
       select: new AddressAdminSelect()
     })
 
@@ -98,7 +98,7 @@ export class AddressesService {
           longitude: address.longitude,
           city: {
             connect: {
-              id: address.cityId
+              id: +address.cityId
             }
           }
         },
@@ -137,7 +137,7 @@ export class AddressesService {
 
     const updated: unknown = await this.prismaBase.address
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           houseNumber: updatedAddress.houseNumber,
           street: updatedAddress.street,
@@ -147,7 +147,7 @@ export class AddressesService {
           longitude: updatedAddress.longitude,
           city: {
             connect: {
-              id: updatedAddress.cityId
+              id: +updatedAddress.cityId
             }
           }
         },
@@ -167,7 +167,7 @@ export class AddressesService {
 
   async delete (id: number): Promise<AddressAdminReturn> {
     return (await this.prismaBase.address.update({
-      where: { id: id },
+      where: { id: +id },
       data: { deletedAt: new Date() },
       select: new AddressAdminSelect()
     })) as unknown as AddressAdminReturn
