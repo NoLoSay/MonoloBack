@@ -32,8 +32,8 @@ async function main() {
   const exhibitions = await seedExhibitions();
   console.log(exhibitions);
 
-  const itemTypes = await seedItemTypes();
-  console.log(itemTypes);
+  const itemCategories = await newSeedItemCategories();
+  console.log(itemCategories);
 
   const items = await seedItems();
   console.log(items);

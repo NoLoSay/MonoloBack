@@ -1,0 +1,136 @@
+[
+  {
+    "name": "Architecture",
+    "description": "Structures built for human use, ranging from ancient to modern buildings.",
+    "associatedTypes": [
+      {
+        "name": "Building",
+        "description": "A structure with walls and a roof."
+      },
+      {
+        "name": "Bridge",
+        "description": "A structure built to span a physical obstacle."
+      },
+      {
+        "name": "Monument",
+        "description": "A statue, building, or other structure erected to commemorate a notable person or event."
+      },
+      {
+        "name": "Statue",
+        "description": "A three-dimensional representation of a person or animal, often sculpted from stone or metal."
+      },
+      {
+        "name": "Tower",
+        "description": "A tall, narrow building or structure that is often used for observation or as a lookout."
+      },
+      {
+        "name": "Castle",
+        "description": "A large fortified building or complex, typically used as a residence and defensive structure."
+      }
+    ]
+  },
+  {
+    "name": "Art",
+    "description": "Creative works that express the artist's imagination and skill.",
+    "associatedTypes": [
+      {
+        "name": "Painting",
+        "description": "A work of art created by applying pigment to a surface."
+      },
+      {
+        "name": "Sculpture",
+        "description": "A three-dimensional work of art created by shaping materials."
+      },
+      {
+        "name": "Drawing",
+        "description": "A visual art form that involves marking a surface to create an image."
+      },
+      {
+        "name": "Photography",
+        "description": "The art or practice of capturing images using a camera."
+      },
+      {
+        "name": "Installation",
+        "description": "A three-dimensional work that transforms a space and engages the viewer."
+      }
+    ]
+  },
+  {
+    "name": "History",
+    "description": "Items related to past events and periods.",
+    "associatedTypes": [
+      {
+        "name": "Artifact",
+        "description": "An object made or used by humans, typically of historical or cultural interest."
+      },
+      {
+        "name": "Document",
+        "description": "A written or printed paper that provides information or evidence."
+      },
+      {
+        "name": "Photograph",
+        "description": "A visual representation of a person, place, or event from the past."
+      },
+      {
+        "name": "Fossil",
+        "description": "The remains or impression of a prehistoric organism preserved in rock."
+      },
+      {
+        "name": "Map",
+        "description": "A visual representation of an area that shows physical features and landmarks."
+      }
+    ]
+  },
+  {
+    "name": "Science",
+    "description": "Items related to scientific study and research.",
+    "associatedTypes": [
+      {
+        "name": "Specimen",
+        "description": "A sample of material used for scientific study."
+      },
+      {
+        "name": "Model",
+        "description": "A three-dimensional representation of an object or concept."
+      },
+      {
+        "name": "Instrument",
+        "description": "A tool used for scientific measurement or experimentation."
+      },
+      {
+        "name": "Publication",
+        "description": "A written work that disseminates scientific knowledge or research findings."
+      },
+      {
+        "name": "Data Set",
+        "description": "A collection of related data used for analysis and interpretation."
+      }
+    ]
+  },
+  {
+    "name": "Culture",
+    "description": "Items that reflect the traditions and practices of a community or society.",
+    "associatedTypes": [
+      {
+        "name": "Textile",
+        "description": "A type of fabric or cloth, often handmade and culturally significant."
+      },
+      {
+        "name": "Ceremony Object",
+        "description": "Items used in cultural rituals and ceremonies."
+      },
+      {
+        "name": "Musical Instrument",
+        "description": "A device used to produce musical sounds."
+      },
+      {
+        "name": "Craft",
+        "description": "An item made by hand, often reflecting local traditions."
+      },
+      {
+        "name": "Traditional Clothing",
+        "description": "Garments that are characteristic of a particular culture or community."
+      }
+    ]
+  }
+]
