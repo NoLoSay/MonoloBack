@@ -1,11 +1,6 @@
 import {
   Address,
-  City,
-  Country,
-  Department,
   PrismaClient as PrismaBaseClient,
-  SiteTag,
-  SiteType,
 } from '@prisma/client/base';
 import * as fs from 'fs'
 

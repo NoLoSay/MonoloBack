@@ -5,8 +5,8 @@
       "street": "Place Marc Élan",
       "zip": "44000",
       "cityName": "Nantes",
-      "longitude": -1.556901,
-      "latitude": 47.21664
+      "longitude": -1.5487716025981275,
+      "latitude": 47.21635008275387
     },
     "site": {
       "name": "Château des Ducs de Bretagne",
@@ -26,8 +26,8 @@
       "street": "Place de la Lice",
       "zip": "49000",
       "cityName": "Angers",
-      "longitude": -0.557457,
-      "latitude": 47.472507
+      "longitude": -0.5599838187508617,
+      "latitude": 47.47010475394988
     },
     "site": {
       "name": "Château d'Angers",
@@ -47,8 +47,8 @@
       "street": "Rue des Petits Champs",
       "zip": "75001",
       "cityName": "Paris",
-      "longitude": 2.332017,
-      "latitude": 48.861893
+      "longitude":  2.337622539808551,
+      "latitude": 48.86072400604509
     },
     "site": {
       "name": "Musée du Louvre",
@@ -68,8 +68,8 @@
       "street": "Rue des Rivoli",
       "zip": "75004",
       "cityName": "Paris",
-      "longitude": 2.345044,
-      "latitude": 48.860882
+      "longitude": 2.352234268644071,
+      "latitude": 48.86083254839467
     },
     "site": {
       "name": "Centre Pompidou",
@@ -89,8 +89,8 @@
       "street": "Place de l'Opéra",
       "zip": "75002",
       "cityName": "Paris",
-      "longitude": 2.332837,
-      "latitude": 48.871749
+      "longitude": 2.331558482137999,
+      "latitude": 48.872103750839656
     },
     "site": {
       "name": "Palais Garnier",
@@ -110,8 +110,8 @@
       "street": "Avenue du Général Eisenhower",
       "zip": "49000",
       "cityName": "Angers",
-      "longitude": -0.552832,
-      "latitude": 47.470649
+      "longitude": -0.5544075025863217,
+      "latitude": 47.46917362240194
     },
     "site": {
       "name": "Musée des Beaux-Arts d'Angers",
@@ -131,8 +131,8 @@
       "street": "Rue de l'École de Médecine",
       "zip": "75006",
       "cityName": "Paris",
-      "longitude": 2.339045,
-      "latitude": 48.842781
+      "longitude": 2.3408547551502576,
+      "latitude": 48.85148690607938
     },
     "site": {
       "name": "Musée de l'Histoire de la Médecine",
@@ -152,8 +152,8 @@
       "street": "Place de la Bourse",
       "zip": "44000",
       "cityName": "Nantes",
-      "longitude": -1.554871,
-      "latitude": 47.217224
+      "longitude": -1.5475975909533142,
+      "latitude": 47.21976036550241
     },
     "site": {
       "name": "Musée d'Arts de Nantes",
@@ -173,8 +173,8 @@
       "street": "Place de la Concorde",
       "zip": "75008",
       "cityName": "Paris",
-      "longitude": 2.321304,
-      "latitude": 48.865648
+      "longitude": 2.3227045839863782,
+      "latitude": 48.863908356839175
     },
     "site": {
       "name": "Musée de l'Orangerie",
@@ -194,8 +194,8 @@
       "street": "Place du Palais Royal",
       "zip": "75001",
       "cityName": "Paris",
-      "longitude": 2.334701,
-      "latitude": 48.866063
+      "longitude":  2.337047477113175,
+      "latitude": 48.86452156567738
     },
     "site": {
       "name": "Palais Royal",
@@ -215,8 +215,8 @@
       "street": "Rue de l'Université",
       "zip": "75007",
       "cityName": "Paris",
-      "longitude": 2.32512,
-      "latitude": 48.861639
+      "longitude": 2.3125719398083042,
+      "latitude": 48.85596974869329
     },
     "site": {
       "name": "Musée de l'Armée",
@@ -236,8 +236,8 @@
       "street": "Quai Branly",
       "zip": "75007",
       "cityName": "Paris",
-      "longitude": 2.296,
-      "latitude": 48.85527
+      "longitude":  2.29790472631519,
+      "latitude": 48.86100886379034
     },
     "site": {
       "name": "Musée du quai Branly",
@@ -257,8 +257,8 @@
       "street": "Rue de Rivoli",
       "zip": "75001",
       "cityName": "Paris",
-      "longitude": 2.332861,
-      "latitude": 48.867631
+      "longitude": 2.33349451,
+      "latitude": 48.863248703234795 
     },
     "site": {
       "name": "Musée des Arts Décoratifs",
@@ -278,8 +278,8 @@
       "street": "Rue de la République",
       "zip": "69002",
       "cityName": "Lyon",
-      "longitude": 4.865155,
-      "latitude": 45.743727
+      "longitude":  4.868708926169585,
+      "latitude": 45.74551501289779
     },
     "site": {
       "name": "Institut Lumière",
@@ -299,8 +299,8 @@
       "street": "Quai Perrache",
       "zip": "69002",
       "cityName": "Lyon",
-      "longitude": 4.835716,
-      "latitude": 45.764078
+      "longitude": 4.818281876168982,
+      "latitude": 45.732792109000435
     },
     "site": {
       "name": "Musée des Confluences",
@@ -316,12 +316,12 @@
   },
   {
     "address": {
-      "houseNumber": "20",
-      "street": "Avenue des Frères Lumière",
+      "houseNumber": "17",
+      "street": "rue de la Mertzau",
       "zip": "69100",
-      "cityName": "Villeurbanne",
-      "longitude": 4.882896,
-      "latitude": 45.765554
+      "cityName": "MULHOUSE",
+      "longitude":  7.3289092441776615,
+      "latitude": 47.76161724530454
     },
     "site": {
       "name": "Musée de l'Automobile",
@@ -329,7 +329,7 @@
       "type": "MUSEUM",
       "tags": ["NOLOSAY"],
       "email": "",
-      "telNumber": "04 78 89 47 00",
+      "telNumber": "0389332321",
       "website": "http://www.musee-automobile.fr/",
       "shortDescription": "Collection de voitures anciennes.",
       "longDescription": "Le Musée de l'Automobile de Villeurbanne présente une collection impressionnante de voitures anciennes, de la fin du XIXe siècle à nos jours."
@@ -337,12 +337,12 @@
   },
   {
     "address": {
-      "houseNumber": "12",
-      "street": "Quai de l'Hotel de Ville",
-      "zip": "75004",
+      "houseNumber": "4",
+      "street": "Rue de la Montagne Ste Geneviève",
+      "zip": "75005",
       "cityName": "Paris",
-      "longitude": 2.345285,
-      "latitude": 48.843582
+      "longitude": 2.3482931842930084,
+      "latitude": 48.849505795295116 
     },
     "site": {
       "name": "Musée de la Préfecture de Police",
