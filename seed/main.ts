@@ -13,9 +13,6 @@ import { seedSignLanguages } from './sign-languages';
 
 const prisma = new PrismaBaseClient();
 async function main() {
-  const users = await seedUsers();
-  console.log(users);
-
   const countries = await seedCountries();
   console.log(countries);
 
@@ -45,6 +42,10 @@ async function main() {
 
   const enumsColors = await seedEnumsColors();
   console.log(enumsColors);
+  
+  const users = await seedUsers();
+  console.log(users);
+
 
   console.log('Seeding completed');
 }
