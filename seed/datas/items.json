@@ -1,0 +1,1680 @@
+[
+  {
+    "name": "Couronne du Duc François II",
+    "description": "Une couronne emblématique symbolisant le pouvoir du Duc François II.",
+    "textToTranslate": "Cette couronne est un symbole de l'autorité des ducs de Bretagne, ornée de pierres précieuses et de symboles celtiques.",
+    "itemType": {
+      "name": "Crown"
+    },
+    "site": {
+      "name": "Château des Ducs de Bretagne"
+    },
+    "relatedPerson": {
+      "name": "François II de Bretagne",
+      "type": "ROYALTY",
+      "bio": "Dernier duc héréditaire de Bretagne, il a été un fervent défenseur de l'indépendance bretonne.",
+      "birthDate": "1433-01-01",
+      "deathDate": "1488-07-09"
+    }
+  },
+  {
+    "name": "Épée de Gilles de Rais",
+    "description": "Une épée légendaire appartenant à Gilles de Rais, compagnon de Jeanne d'Arc.",
+    "textToTranslate": "Cette épée a été utilisée lors de nombreuses batailles, emblématique du courage et de la tragédie de Gilles de Rais.",
+    "itemType": {
+      "name": "Sword"
+    },
+    "site": {
+      "name": "Château des Ducs de Bretagne"
+    },
+    "relatedPerson": {
+      "name": "Gilles de Rais",
+      "type": "ROYALTY",
+      "bio": "Noble breton et militaire, il a été compagnon de Jeanne d'Arc et a été exécuté pour crimes.",
+      "birthDate": "1404-09-29",
+      "deathDate": "1440-10-26"
+    }
+  },
+  {
+    "name": "Statue de la Liberté",
+    "description": "Une statue emblématique représentant la liberté et l'indépendance.",
+    "textToTranslate": "Cette statue a été un don de la France aux États-Unis, symbole d'amitié entre les deux nations.",
+    "itemType": {
+      "name": "Statue"
+    },
+    "site": {
+      "name": "Château des Ducs de Bretagne"
+    },
+    "relatedPerson": {
+      "name": "Frédéric Auguste Bartholdi",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, il est connu pour avoir conçu la Statue de la Liberté.",
+      "birthDate": "1834-04-02",
+      "deathDate": "1904-10-04"
+    }
+  },
+  {
+    "name": "Tableau de la Révolution Française",
+    "description": "Un tableau représentant les événements clés de la Révolution Française.",
+    "textToTranslate": "Ce tableau illustre la lutte pour la liberté et les droits de l'homme en France.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Château des Ducs de Bretagne"
+    },
+    "relatedPerson": {
+      "name": "Eugène Delacroix",
+      "type": "ARTIST",
+      "bio": "Peintre français, il est connu pour ses œuvres dramatiques et ses scènes historiques.",
+      "birthDate": "1798-04-26",
+      "deathDate": "1863-08-13"
+    }
+  },
+  {
+    "name": "Manteau du Duc de Bretagne",
+    "description": "Un manteau richement décoré porté par les ducs de Bretagne lors des cérémonies.",
+    "textToTranslate": "Ce manteau est un symbole de la royauté bretonne et de la richesse de son histoire.",
+    "itemType": {
+      "name": "Cloak"
+    },
+    "site": {
+      "name": "Château des Ducs de Bretagne"
+    },
+    "relatedPerson": {
+      "name": "Jean IV de Bretagne",
+      "type": "ROYALTY",
+      "bio": "Duc de Bretagne, il a joué un rôle important dans l'histoire de la Bretagne au XIVe siècle.",
+      "birthDate": "1339-01-01",
+      "deathDate": "1399-10-01"
+    }
+  },
+
+  {
+    "name": "Tapisserie de l'Apocalypse",
+    "description": "Une tapisserie médiévale impressionnante représentant l'Apocalypse.",
+    "textToTranslate": "Cette tapisserie, richement colorée, raconte l'histoire de l'Apocalypse, un chef-d'œuvre de l'art médiéval.",
+    "itemType": {
+      "name": "Tapestry"
+    },
+    "site": {
+      "name": "Château d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Jean de France",
+      "type": "ROYALTY",
+      "bio": "Jean de France, duc d'Anjou, a commandé la tapisserie et a joué un rôle important dans la culture médiévale.",
+      "birthDate": "1340-01-01",
+      "deathDate": "1416-09-02"
+    }
+  },
+  {
+    "name": "Coffre des trésors",
+    "description": "Un coffre ancien utilisé pour stocker les trésors royaux.",
+    "textToTranslate": "Ce coffre en bois sculpté renfermait les trésors des ducs d'Anjou, symbole de richesse et de pouvoir.",
+    "itemType": {
+      "name": "Chest"
+    },
+    "site": {
+      "name": "Château d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Louis II d'Anjou",
+      "type": "ROYALTY",
+      "bio": "Duc d'Anjou et roi de Naples, Louis II était connu pour sa richesse et son mécénat des arts.",
+      "birthDate": "1377-07-10",
+      "deathDate": "1417-08-29"
+    }
+  },
+  {
+    "name": "Sceptre de Charles d'Anjou",
+    "description": "Un sceptre symbolisant le pouvoir du roi Charles d'Anjou.",
+    "textToTranslate": "Ce sceptre est un symbole de la royauté, richement orné de pierres précieuses.",
+    "itemType": {
+      "name": "Scepter"
+    },
+    "site": {
+      "name": "Château d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Charles d'Anjou",
+      "type": "ROYALTY",
+      "bio": "Roi de Sicile et duc d'Anjou, il a eu une influence considérable en Europe.",
+      "birthDate": "1226-03-21",
+      "deathDate": "1285-05-07"
+    }
+  },
+  {
+    "name": "Fresque de la chapelle",
+    "description": "Une fresque représentant des scènes religieuses dans la chapelle du château.",
+    "textToTranslate": "Cette fresque est un exemple de l'art religieux médiéval, captivant et coloré.",
+    "itemType": {
+      "name": "Fresco"
+    },
+    "site": {
+      "name": "Château d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Jacques Le Moyne",
+      "type": "ARTIST",
+      "bio": "Artiste flamand connu pour ses fresques et ses illustrations.",
+      "birthDate": "1533-01-01",
+      "deathDate": "1588-01-01"
+    }
+  },
+  {
+    "name": "Gant de velours",
+    "description": "Un gant de velours porté par les nobles durant les cérémonies.",
+    "textToTranslate": "Ce gant est un symbole de l'élégance et du statut social dans la noblesse.",
+    "itemType": {
+      "name": "Glove"
+    },
+    "site": {
+      "name": "Château d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Anne de Bretagne",
+      "type": "ROYALTY",
+      "bio": "Duchesse de Bretagne et reine de France, elle est connue pour son rôle dans l'union de la Bretagne et de la France.",
+      "birthDate": "1477-01-01",
+      "deathDate": "1514-01-09"
+    }
+  },
+
+  {
+    "name": "Vase de l'antiquité",
+    "description": "Un vase ancien décoré de motifs historiques.",
+    "textToTranslate": "Ce vase est un exemple de l'artisanat de l'époque et révèle l'histoire de la civilisation.",
+    "itemType": {
+      "name": "Vase"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Inconnu",
+      "type": "ARTIST",
+      "bio": "Artisan anonyme dont l'œuvre est préservée à travers les âges.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Code de Hammurabi",
+    "description": "Une stèle en pierre gravée contenant l'un des plus anciens codes de lois écrits au monde.",
+    "textToTranslate": "Ce code de lois babylonien régissait la justice dans l'ancien royaume de Babylone.",
+    "itemType": {
+      "name": "Stele"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Hammurabi",
+      "type": "PERFORMER",
+      "bio": "Hammurabi était un roi de Babylone qui a régné au XVIIIe siècle avant J.-C. et a créé l'un des premiers codes de lois écrits.",
+      "birthDate": "-1810-01-01",
+      "deathDate": "-1750-01-01"
+    }
+  },
+  {
+    "name": "La Joconde",
+    "description": "Un portrait célèbre de Léonard de Vinci, emblématique de l'art de la Renaissance.",
+    "textToTranslate": "Ce tableau est reconnu dans le monde entier pour son sourire mystérieux et son histoire fascinante.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Léonard de Vinci",
+      "type": "ARTIST",
+      "bio": "Peintre et inventeur italien, il est considéré comme l'un des plus grands génies de l'histoire.",
+      "birthDate": "1452-04-15",
+      "deathDate": "1519-05-02"
+    }
+  },
+  {
+    "name": "Statue de la Liberté",
+    "description": "Une réplique de la célèbre statue offerte par la France aux États-Unis.",
+    "textToTranslate": "Cette statue est un symbole de la liberté et de l'amitié entre les nations.",
+    "itemType": {
+      "name": "Statue"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Frédéric Auguste Bartholdi",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, il est connu pour avoir conçu la Statue de la Liberté.",
+      "birthDate": "1834-04-02",
+      "deathDate": "1904-10-04"
+    }
+  },
+  {
+    "name": "Peinture de David",
+    "description": "Une œuvre emblématique de Jacques-Louis David, représentant une scène historique.",
+    "textToTranslate": "Cette peinture illustre la grandeur de l'histoire française et le talent de David.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Jacques-Louis David",
+      "type": "ARTIST",
+      "bio": "Peintre néoclassique français, il a été un artiste majeur de la Révolution française.",
+      "birthDate": "1748-08-30",
+      "deathDate": "1825-01-29"
+    }
+  },
+  {
+    "name": "Le Penseur",
+    "description": "Une sculpture emblématique d'Auguste Rodin, représentant la contemplation.",
+    "textToTranslate": "Cette sculpture est une représentation classique de la réflexion et de la philosophie.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Centre Pompidou"
+    },
+    "relatedPerson": {
+      "name": "Auguste Rodin",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, il est connu pour ses œuvres expressives et novatrices.",
+      "birthDate": "1840-11-12",
+      "deathDate": "1917-11-17"
+    }
+  },
+  {
+    "name": "L'Homme qui marche",
+    "description": "Une sculpture moderne de Alberto Giacometti représentant la condition humaine.",
+    "textToTranslate": "Cette sculpture est un symbole de l'errance et de la solitude dans l'art moderne.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Centre Pompidou"
+    },
+    "relatedPerson": {
+      "name": "Alberto Giacometti",
+      "type": "ARTIST",
+      "bio": "Sculpteur et peintre suisse, il est connu pour ses figures élancées et expressives.",
+      "birthDate": "1901-10-10",
+      "deathDate": "1966-01-11"
+    }
+  },
+  {
+    "name": "Composition de Braque",
+    "description": "Une œuvre cubiste de Georges Braque, représentant l'innovation artistique.",
+    "textToTranslate": "Cette peinture est un exemple clé du mouvement cubiste, cofondé par Braque.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Centre Pompidou"
+    },
+    "relatedPerson": {
+      "name": "Georges Braque",
+      "type": "ARTIST",
+      "bio": "Peintre français, il a été l'un des pionniers du cubisme avec Pablo Picasso.",
+      "birthDate": "1882-05-13",
+      "deathDate": "1963-08-31"
+    }
+  },
+  {
+    "name": "Le Sacre de Napoléon",
+    "description": "Une grande peinture de Jacques-Louis David représentant le couronnement de Napoléon.",
+    "textToTranslate": "Cette œuvre majestueuse symbolise le pouvoir et l'autorité de Napoléon Bonaparte.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Centre Pompidou"
+    },
+    "relatedPerson": {
+      "name": "Jacques-Louis David",
+      "type": "ARTIST",
+      "bio": "Peintre néoclassique français, il a été un artiste majeur de la Révolution française.",
+      "birthDate": "1748-08-30",
+      "deathDate": "1825-01-29"
+    }
+  },
+  {
+    "name": "Fenêtre de Cézanne",
+    "description": "Une nature morte emblématique de Paul Cézanne, représentant la perspective et la couleur.",
+    "textToTranslate": "Cette peinture est un exemple parfait de la transition entre impressionnisme et post-impressionnisme.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Centre Pompidou"
+    },
+    "relatedPerson": {
+      "name": "Paul Cézanne",
+      "type": "ARTIST",
+      "bio": "Peintre français, il est considéré comme le père de l'art moderne.",
+      "birthDate": "1839-01-19",
+      "deathDate": "1906-10-22"
+    }
+  },
+  {
+    "name": "Costume de ballet",
+    "description": "Un costume spectaculaire porté lors des représentations de ballet au Palais Garnier.",
+    "textToTranslate": "Ce costume illustre l'élégance et la créativité du ballet français.",
+    "itemType": {
+      "name": "Costume"
+    },
+    "site": {
+      "name": "Palais Garnier"
+    },
+    "relatedPerson": {
+      "name": "Marie Taglioni",
+      "type": "PERFORMER",
+      "bio": "Danseuse étoile du XIXe siècle, célèbre pour son rôle dans 'La Sylphide'.",
+      "birthDate": "1804-04-23",
+      "deathDate": "1884-04-23"
+    }
+  },
+  {
+    "name": "Chandelier du Palais",
+    "description": "Un magnifique chandelier en cristal suspendu dans le foyer du Palais Garnier.",
+    "textToTranslate": "Ce chandelier est un exemple d'artisanat exceptionnel et d'élégance.",
+    "itemType": {
+      "name": "Chandelier"
+    },
+    "site": {
+      "name": "Palais Garnier"
+    },
+    "relatedPerson": {
+      "name": "Charles Garnier",
+      "type": "ARCHITECT",
+      "bio": "Architecte français, il est célèbre pour la conception du Palais Garnier.",
+      "birthDate": "1825-11-06",
+      "deathDate": "1898-08-17"
+    }
+  },
+  {
+    "name": "Maquette de l'Opéra",
+    "description": "Une maquette du Palais Garnier montrant son architecture grandiose.",
+    "textToTranslate": "Cette maquette illustre la vision architecturale de Garnier pour l'Opéra de Paris.",
+    "itemType": {
+      "name": "Model"
+    },
+    "site": {
+      "name": "Palais Garnier"
+    },
+    "relatedPerson": {
+      "name": "Charles Garnier",
+      "type": "ARCHITECT",
+      "bio": "Architecte français, il est célèbre pour la conception du Palais Garnier.",
+      "birthDate": "1825-11-06",
+      "deathDate": "1898-08-17"
+    }
+  },
+  {
+    "name": "Affiche de ballet",
+    "description": "Une affiche publicitaire pour un ballet célèbre présenté au Palais Garnier.",
+    "textToTranslate": "Cette affiche témoigne de l'importance culturelle du ballet à Paris.",
+    "itemType": {
+      "name": "Poster"
+    },
+    "site": {
+      "name": "Palais Garnier"
+    },
+    "relatedPerson": {
+      "name": "Marius Petipa",
+      "type": "PERFORMER",
+      "bio": "Célèbre chorégraphe russe, il a influencé le ballet classique en France.",
+      "birthDate": "1818-03-11",
+      "deathDate": "1910-07-01"
+    }
+  },
+
+  {
+    "name": "Peinture de Monet",
+    "description": "Une œuvre impressionniste de Claude Monet, capturant la beauté des jardins.",
+    "textToTranslate": "Cette peinture est un exemple de la technique de la lumière et de la couleur de Monet.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée des Beaux-Arts d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Claude Monet",
+      "type": "ARTIST",
+      "bio": "Peintre français, il est un pionnier de l'impressionnisme.",
+      "birthDate": "1840-11-14",
+      "deathDate": "1926-12-05"
+    }
+  },
+  {
+    "name": "Sculpture de Rodin",
+    "description": "Une sculpture emblématique d'Auguste Rodin, représentant l'amour et la passion.",
+    "textToTranslate": "Cette sculpture est un chef-d'œuvre de Rodin, emblématique de la sculpture moderne.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée des Beaux-Arts d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Auguste Rodin",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, il est connu pour ses œuvres expressives et novatrices.",
+      "birthDate": "1840-11-12",
+      "deathDate": "1917-11-17"
+    }
+  },
+  {
+    "name": "Portrait de Van Gogh",
+    "description": "Un portrait célèbre de Vincent van Gogh, capturant son génie artistique.",
+    "textToTranslate": "Ce portrait illustre le style unique et la profondeur émotionnelle de Van Gogh.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée des Beaux-Arts d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Vincent van Gogh",
+      "type": "ARTIST",
+      "bio": "Peintre néerlandais, il est connu pour son utilisation audacieuse de la couleur et de la texture.",
+      "birthDate": "1853-03-30",
+      "deathDate": "1890-07-29"
+    }
+  },
+  {
+    "name": "Vase antique",
+    "description": "Un vase ancien de la période romaine, orné de motifs traditionnels.",
+    "textToTranslate": "Ce vase est un exemple de l'artisanat romain, représentant l'héritage culturel.",
+    "itemType": {
+      "name": "Vase"
+    },
+    "site": {
+      "name": "Musée des Beaux-Arts d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Inconnu",
+      "type": "ARTIST",
+      "bio": "Artisan anonyme dont l'œuvre est préservée à travers les âges.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Mosaïque romaine",
+    "description": "Une mosaïque historique représentant des scènes de la vie quotidienne.",
+    "textToTranslate": "Cette mosaïque est un exemple fascinant de l'art romain et de sa richesse culturelle.",
+    "itemType": {
+      "name": "Mosaic"
+    },
+    "site": {
+      "name": "Musée des Beaux-Arts d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Inconnu",
+      "type": "ARTIST",
+      "bio": "Artisan anonyme dont l'œuvre est préservée à travers les âges.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+
+  {
+    "name": "Squelette humain",
+    "description": "Un squelette humain exposé pour illustrer l'anatomie.",
+    "textToTranslate": "Ce squelette est utilisé à des fins éducatives pour comprendre le corps humain.",
+    "itemType": {
+      "name": "Skeleton"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de la Médecine"
+    },
+    "relatedPerson": {
+      "name": "Hippocrate",
+      "type": "SCIENTIST",
+      "bio": "Médecin grec ancien, souvent appelé le père de la médecine.",
+      "birthDate": "-460-01-01",
+      "deathDate": "-370-01-01"
+    }
+  },
+  {
+    "name": "Appareil de désarticulation",
+    "description": "Un instrument médical utilisé pour la désarticulation des membres.",
+    "textToTranslate": "Cet appareil historique montre l'évolution des techniques médicales au fil des siècles.",
+    "itemType": {
+      "name": "Instrument"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de la Médecine"
+    },
+    "relatedPerson": {
+      "name": "Ambroise Paré",
+      "type": "SCIENTIST",
+      "bio": "Chirurgien français, il a révolutionné la chirurgie au XVIe siècle.",
+      "birthDate": "1510-01-01",
+      "deathDate": "1590-01-01"
+    }
+  },
+  {
+    "name": "Manuel de chirurgie",
+    "description": "Un ancien manuel contenant des techniques chirurgicales.",
+    "textToTranslate": "Ce manuel est un témoignage précieux de l'histoire de la chirurgie.",
+    "itemType": {
+      "name": "Book"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de la Médecine"
+    },
+    "relatedPerson": {
+      "name": "Andreas Vesalius",
+      "type": "SCIENTIST",
+      "bio": "Médecin et anatomiste belge, il est considéré comme le père de l'anatomie moderne.",
+      "birthDate": "1514-12-31",
+      "deathDate": "1564-10-15"
+    }
+  },
+  {
+    "name": "Instruments de saignées",
+    "description": "Des instruments utilisés pour la saignée dans les pratiques médicales anciennes.",
+    "textToTranslate": "Ces instruments témoignent des méthodes médicales de l'époque.",
+    "itemType": {
+      "name": "Instrument"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de la Médecine"
+    },
+    "relatedPerson": {
+      "name": "Galen",
+      "type": "SCIENTIST",
+      "bio": "Médecin grec, connu pour ses travaux sur l'anatomie et la médecine.",
+      "birthDate": "-129-01-01",
+      "deathDate": "-200-01-01"
+    }
+  },
+  {
+    "name": "Système de mesure",
+    "description": "Un système de mesure utilisé pour évaluer les médicaments.",
+    "textToTranslate": "Ce système historique montre l'évolution des pratiques médicales.",
+    "itemType": {
+      "name": "Instrument"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de la Médecine"
+    },
+    "relatedPerson": {
+      "name": "Avicenne",
+      "type": "SCIENTIST",
+      "bio": "Médecin et philosophe persan, il a influencé la médecine et la philosophie au Moyen Âge.",
+      "birthDate": "980-01-01",
+      "deathDate": "1037-01-01"
+    }
+  },
+  {
+    "name": "Portrait de femme",
+    "description": "Un portrait classique d'une femme de l'époque romantique.",
+    "textToTranslate": "Ce tableau illustre les idéaux de beauté du XIXe siècle.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée d'Arts de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Gustave Courbet",
+      "type": "ARTIST",
+      "bio": "Peintre français, chef de file du mouvement réaliste.",
+      "birthDate": "1819-06-10",
+      "deathDate": "1877-12-31"
+    }
+  },
+  {
+    "name": "Sculpture de marbre",
+    "description": "Une sculpture en marbre représentant une figure mythologique.",
+    "textToTranslate": "Cette œuvre met en valeur le travail minutieux de l'artiste.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée d'Arts de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Jean-Baptiste Carpeaux",
+      "type": "ARTIST",
+      "bio": "Sculpteur et peintre français du XIXe siècle, célèbre pour ses statues.",
+      "birthDate": "1827-05-11",
+      "deathDate": "1875-10-12"
+    }
+  },
+  {
+    "name": "Tableau abstrait",
+    "description": "Une œuvre d'art abstrait moderne qui interpelle le spectateur.",
+    "textToTranslate": "Cette pièce reflète la complexité des émotions humaines.",
+    "itemType": {
+      "name": "Abstract Art"
+    },
+    "site": {
+      "name": "Musée d'Arts de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Wassily Kandinsky",
+      "type": "ARTIST",
+      "bio": "Peintre et théoricien russe, considéré comme le pionnier de l'art abstrait.",
+      "birthDate": "1866-12-16",
+      "deathDate": "1944-12-13"
+    }
+  },
+  {
+    "name": "Installation interactive",
+    "description": "Une installation qui engage le public à interagir avec l'œuvre.",
+    "textToTranslate": "Cette œuvre moderne brise les barrières entre l'art et le spectateur.",
+    "itemType": {
+      "name": "Installation"
+    },
+    "site": {
+      "name": "Musée d'Arts de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Yoko Ono",
+      "type": "ARTIST",
+      "bio": "Artiste et musicienne japonaise, célèbre pour son art conceptuel.",
+      "birthDate": "1933-02-18",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Tapisserie médiévale",
+    "description": "Une tapisserie datant du Moyen Âge, riche en détails.",
+    "textToTranslate": "Cette œuvre textile raconte des histoires d'une époque révolue.",
+    "itemType": {
+      "name": "Tapestry"
+    },
+    "site": {
+      "name": "Musée d'Arts de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Anonyme",
+      "type": "ARTIST",
+      "bio": "Artisan tisserand du Moyen Âge, son nom est inconnu.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Nymphéas",
+    "description": "Une série de peintures de nénuphars réalisées par Claude Monet.",
+    "textToTranslate": "Ces œuvres représentent le jardin de Monet à Giverny.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée de l'Orangerie"
+    },
+    "relatedPerson": {
+      "name": "Claude Monet",
+      "type": "ARTIST",
+      "bio": "Peintre français, fondateur du mouvement impressionniste.",
+      "birthDate": "1840-11-14",
+      "deathDate": "1926-12-05"
+    }
+  },
+  {
+    "name": "Sculpture de Camille Claudel",
+    "description": "Une sculpture emblématique de Camille Claudel, représentant une figure féminine.",
+    "textToTranslate": "Cette œuvre met en lumière la complexité des émotions humaines.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée de l'Orangerie"
+    },
+    "relatedPerson": {
+      "name": "Camille Claudel",
+      "type": "ARTIST",
+      "bio": "Sculptrice française, connue pour ses œuvres audacieuses.",
+      "birthDate": "1864-12-08",
+      "deathDate": "1943-10-19"
+    }
+  },
+  {
+    "name": "Tableau de Renoir",
+    "description": "Une œuvre de Pierre-Auguste Renoir, illustrant des scènes de la vie quotidienne.",
+    "textToTranslate": "Cette peinture célèbre la beauté des moments simples.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée de l'Orangerie"
+    },
+    "relatedPerson": {
+      "name": "Pierre-Auguste Renoir",
+      "type": "ARTIST",
+      "bio": "Peintre français, membre du mouvement impressionniste.",
+      "birthDate": "1841-02-25",
+      "deathDate": "1919-12-03"
+    }
+  },
+  {
+    "name": "Nature morte",
+    "description": "Une nature morte classique représentant des fleurs.",
+    "textToTranslate": "Cette œuvre illustre la maîtrise de la lumière et des couleurs.",
+    "itemType": {
+      "name": "Still Life"
+    },
+    "site": {
+      "name": "Musée de l'Orangerie"
+    },
+    "relatedPerson": {
+      "name": "Henri Matisse",
+      "type": "ARTIST",
+      "bio": "Peintre français, connu pour sa couleur audacieuse et son style.",
+      "birthDate": "1869-12-31",
+      "deathDate": "1954-11-03"
+    }
+  },
+  {
+    "name": "Jardin du Palais",
+    "description": "Un jardin historique entouré de sculptures et de fontaines.",
+    "textToTranslate": "Ce jardin est un lieu de détente au cœur de Paris.",
+    "itemType": {
+      "name": "Garden"
+    },
+    "site": {
+      "name": "Palais Royal"
+    },
+    "relatedPerson": {
+      "name": "Cardinal Richelieu",
+      "type": "LEADER",
+      "bio": "Cardinal et homme d'État français, fondateur du Palais Royal.",
+      "birthDate": "1585-09-09",
+      "deathDate": "1642-12-04"
+    }
+  },
+  {
+    "name": "Fontaine du Palais Royal",
+    "description": "Une fontaine historique au cœur du jardin.",
+    "textToTranslate": "Cette fontaine apporte une touche de sérénité au jardin.",
+    "itemType": {
+      "name": "Fountain"
+    },
+    "site": {
+      "name": "Palais Royal"
+    },
+    "relatedPerson": {
+      "name": "André Le Nôtre",
+      "type": "INVENTOR",
+      "bio": "Jardinier et paysagiste français, célèbre pour ses jardins à la française.",
+      "birthDate": "1613-03-12",
+      "deathDate": "1700-04-15"
+    }
+  },
+  {
+    "name": "Ancien moteur à vapeur",
+    "description": "Un moteur à vapeur historique utilisé pour des expériences scientifiques.",
+    "textToTranslate": "Cet objet illustre l'ingéniosité des ingénieurs du passé.",
+    "itemType": {
+      "name": "Engine"
+    },
+    "site": {
+      "name": "Musée des Arts et Métiers"
+    },
+    "relatedPerson": {
+      "name": "James Watt",
+      "type": "INVENTOR",
+      "bio": "Ingénieur et inventeur écossais, célèbre pour ses travaux sur la machine à vapeur.",
+      "birthDate": "1736-01-19",
+      "deathDate": "1819-08-25"
+    }
+  },
+  {
+    "name": "Antique bicycle",
+    "description": "Une bicyclette ancienne qui a marqué l'évolution du transport.",
+    "textToTranslate": "Ce modèle montre l'évolution du design des vélos.",
+    "itemType": {
+      "name": "Bicycle"
+    },
+    "site": {
+      "name": "Musée des Arts et Métiers"
+    },
+    "relatedPerson": {
+      "name": "Pierre Michaux",
+      "type": "INVENTOR",
+      "bio": "Inventeur français, connu pour avoir popularisé la bicyclette.",
+      "birthDate": "1813-01-01",
+      "deathDate": "1885-01-01"
+    }
+  },
+  {
+    "name": "Thermometer",
+    "description": "Un thermomètre ancien utilisé pour mesurer la température.",
+    "textToTranslate": "Cet instrument scientifique a évolué au fil des siècles.",
+    "itemType": {
+      "name": "Scientific Instrument"
+    },
+    "site": {
+      "name": "Musée des Arts et Métiers"
+    },
+    "relatedPerson": {
+      "name": "Galileo Galilei",
+      "type": "SCIENTIST",
+      "bio": "Astronome, physicien et ingénieur italien, connu pour ses découvertes.",
+      "birthDate": "1564-02-15",
+      "deathDate": "1642-01-08"
+    }
+  },
+  {
+    "name": "Antique camera",
+    "description": "Une caméra ancienne utilisée pour capturer des moments historiques.",
+    "textToTranslate": "Cet objet représente l'évolution de la photographie.",
+    "itemType": {
+      "name": "Camera"
+    },
+    "site": {
+      "name": "Musée des Arts et Métiers"
+    },
+    "relatedPerson": {
+      "name": "Louis Daguerre",
+      "type": "ARTIST",
+      "bio": "Photographe français, inventeur du daguerréotype.",
+      "birthDate": "1787-11-18",
+      "deathDate": "1851-07-10"
+    }
+  },
+  {
+    "name": "Impression, soleil levant",
+    "description": "Une peinture de Claude Monet qui a donné son nom au mouvement impressionniste.",
+    "textToTranslate": "Cette œuvre illustre la technique de la lumière et de la couleur.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée Marmottan Monet"
+    },
+    "relatedPerson": {
+      "name": "Claude Monet",
+      "type": "ARTIST",
+      "bio": "Peintre français, fondateur du mouvement impressionniste.",
+      "birthDate": "1840-11-14",
+      "deathDate": "1926-12-05"
+    }
+  },
+  {
+    "name": "Autoportrait",
+    "description": "Un autoportrait de l'artiste, témoignant de son style unique.",
+    "textToTranslate": "Cette œuvre montre l'évolution de l'artiste au fil des ans.",
+    "itemType": {
+      "name": "Self-Portrait"
+    },
+    "site": {
+      "name": "Musée Marmottan Monet"
+    },
+    "relatedPerson": {
+      "name": "Édouard Manet",
+      "type": "ARTIST",
+      "bio": "Peintre français, considéré comme le précurseur de l'impressionnisme.",
+      "birthDate": "1832-01-23",
+      "deathDate": "1883-04-30"
+    }
+  },
+  {
+    "name": "Pêcheur au repos",
+    "description": "Une peinture de Monet représentant un pêcheur au bord de l'eau.",
+    "textToTranslate": "Cette œuvre montre la tranquillité de la vie au bord de l'eau.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée Marmottan Monet"
+    },
+    "relatedPerson": {
+      "name": "Claude Monet",
+      "type": "ARTIST",
+      "bio": "Peintre français, fondateur du mouvement impressionniste.",
+      "birthDate": "1840-11-14",
+      "deathDate": "1926-12-05"
+    }
+  },
+  {
+    "name": "Collection de pastels",
+    "description": "Une collection de pastels d'artistes impressionnistes.",
+    "textToTranslate": "Ces œuvres illustrent la diversité des styles au sein du mouvement.",
+    "itemType": {
+      "name": "Pastels"
+    },
+    "site": {
+      "name": "Musée Marmottan Monet"
+    },
+    "relatedPerson": {
+      "name": "Berthe Morisot",
+      "type": "ARTIST",
+      "bio": "Peintre française, membre du mouvement impressionniste.",
+      "birthDate": "1841-01-14",
+      "deathDate": "1895-03-02"
+    }
+  },
+  {
+    "name": "Paysage de Giverny",
+    "description": "Une peinture représentant le jardin de Monet à Giverny.",
+    "textToTranslate": "Cette œuvre montre la beauté de la nature au fil des saisons.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée Marmottan Monet"
+    },
+    "relatedPerson": {
+      "name": "Claude Monet",
+      "type": "ARTIST",
+      "bio": "Peintre français, fondateur du mouvement impressionniste.",
+      "birthDate": "1840-11-14",
+      "deathDate": "1926-12-05"
+    }
+  },
+  {
+    "name": "Carte historique de Nantes",
+    "description": "Une carte ancienne représentant Nantes au fil des siècles.",
+    "textToTranslate": "Cette carte illustre l'évolution de la ville.",
+    "itemType": {
+      "name": "Map"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Georges Clemenceau",
+      "type": "LEADER",
+      "bio": "Homme d'État français, né à Nantes.",
+      "birthDate": "1841-09-28",
+      "deathDate": "1929-11-24"
+    }
+  },
+  {
+    "name": "Maquette de château",
+    "description": "Une maquette représentant le château des Ducs de Bretagne.",
+    "textToTranslate": "Cette maquette témoigne de l'architecture médiévale.",
+    "itemType": {
+      "name": "Model"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de Nantes"
+    },
+    "relatedPerson": {
+      "name": "François 1er",
+      "type": "ROYALTY",
+      "bio": "Roi de France, connu pour son règne durant la Renaissance.",
+      "birthDate": "1494-09-12",
+      "deathDate": "1547-03-31"
+    }
+  },
+  {
+    "name": "Vêtements médiévaux",
+    "description": "Des vêtements datant du Moyen Âge, illustrant la mode de l'époque.",
+    "textToTranslate": "Ces vêtements montrent l'artisanat textile du passé.",
+    "itemType": {
+      "name": "Clothing"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Catherine de Médicis",
+      "type": "ROYALTY",
+      "bio": "Reine de France, connue pour son influence politique.",
+      "birthDate": "1519-04-13",
+      "deathDate": "1589-01-05"
+    }
+  },
+  {
+    "name": "Documents historiques",
+    "description": "Des documents retraçant l'histoire de Nantes.",
+    "textToTranslate": "Ces archives témoignent de la vie quotidienne à Nantes.",
+    "itemType": {
+      "name": "Documents"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Jean V de Bretagne",
+      "type": "ROYALTY",
+      "bio": "Duc de Bretagne, connu pour son rôle historique dans la région.",
+      "birthDate": "1399-03-23",
+      "deathDate": "1442-09-01"
+    }
+  },
+  {
+    "name": "Monnaies anciennes",
+    "description": "Des monnaies utilisées dans la région de Nantes à travers les âges.",
+    "textToTranslate": "Ces pièces de monnaie reflètent la vie économique de l'époque.",
+    "itemType": {
+      "name": "Coins"
+    },
+    "site": {
+      "name": "Musée de l'Histoire de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Hugues Capet",
+      "type": "ROYALTY",
+      "bio": "Roi des Francs, fondateur de la dynastie capétienne.",
+      "birthDate": "941-05-01",
+      "deathDate": "996-10-24"
+    }
+  },
+  {
+    "name": "Le Penseur",
+    "description": "Une sculpture emblématique d'Auguste Rodin, représentant un homme en pleine réflexion.",
+    "textToTranslate": "Cette œuvre symbolise la pensée humaine et la créativité.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée Rodin"
+    },
+    "relatedPerson": {
+      "name": "Auguste Rodin",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, considéré comme l'un des fondateurs de la sculpture moderne.",
+      "birthDate": "1840-11-12",
+      "deathDate": "1917-11-17"
+    }
+  },
+  {
+    "name": "Le Baiser",
+    "description": "Une sculpture romantique d'Auguste Rodin représentant un couple enlacé.",
+    "textToTranslate": "Cette œuvre illustre la passion et l'amour.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée Rodin"
+    },
+    "relatedPerson": {
+      "name": "Auguste Rodin",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, considéré comme l'un des fondateurs de la sculpture moderne.",
+      "birthDate": "1840-11-12",
+      "deathDate": "1917-11-17"
+    }
+  },
+  {
+    "name": "La Porte de l'Enfer",
+    "description": "Une sculpture monumentale de Rodin inspirée de la Divine Comédie.",
+    "textToTranslate": "Cette œuvre représente les tourments de l'âme.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée Rodin"
+    },
+    "relatedPerson": {
+      "name": "Auguste Rodin",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, considéré comme l'un des fondateurs de la sculpture moderne.",
+      "birthDate": "1840-11-12",
+      "deathDate": "1917-11-17"
+    }
+  },
+  {
+    "name": "L'Age d'Airain",
+    "description": "Une sculpture représentant un homme nu en bronze.",
+    "textToTranslate": "Cette œuvre est un exemple de la maîtrise technique de Rodin.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée Rodin"
+    },
+    "relatedPerson": {
+      "name": "Auguste Rodin",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, considéré comme l'un des fondateurs de la sculpture moderne.",
+      "birthDate": "1840-11-12",
+      "deathDate": "1917-11-17"
+    }
+  },
+  {
+    "name": "Le Monument à Balzac",
+    "description": "Une sculpture monumentale dédiée à l'écrivain Honoré de Balzac.",
+    "textToTranslate": "Cette œuvre reflète l'admiration de Rodin pour Balzac.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée Rodin"
+    },
+    "relatedPerson": {
+      "name": "Honoré de Balzac",
+      "type": "ARTIST",
+      "bio": "Écrivain français, connu pour ses romans réalistes.",
+      "birthDate": "1799-05-20",
+      "deathDate": "1850-08-18"
+    }
+  },
+  {
+    "name": "Armure médiévale",
+    "description": "Une armure d'un chevalier du Moyen Âge, emblématique de l'époque.",
+    "textToTranslate": "Cette armure montre l'évolution de la protection dans les combats.",
+    "itemType": {
+      "name": "Armor"
+    },
+    "site": {
+      "name": "Musée de l'Armée"
+    },
+    "relatedPerson": {
+      "name": "Jeanne d'Arc",
+      "type": "LEADER",
+      "bio": "Figure historique française, connue pour son rôle durant la guerre de Cent Ans.",
+      "birthDate": "1412-01-06",
+      "deathDate": "1431-05-30"
+    }
+  },
+  {
+    "name": "Canons de guerre",
+    "description": "Une collection de canons utilisés lors des guerres napoléoniennes.",
+    "textToTranslate": "Ces canons témoignent de l'art de la guerre à l'époque.",
+    "itemType": {
+      "name": "Cannon"
+    },
+    "site": {
+      "name": "Musée de l'Armée"
+    },
+    "relatedPerson": {
+      "name": "Napoléon Bonaparte",
+      "type": "LEADER",
+      "bio": "Empereur français, connu pour ses campagnes militaires.",
+      "birthDate": "1769-08-15",
+      "deathDate": "1821-05-05"
+    }
+  },
+  {
+    "name": "Uniforme de général",
+    "description": "Un uniforme porté par un général français au XIXe siècle.",
+    "textToTranslate": "Cet uniforme représente le statut et l'autorité.",
+    "itemType": {
+      "name": "Uniform"
+    },
+    "site": {
+      "name": "Musée de l'Armée"
+    },
+    "relatedPerson": {
+      "name": "Charles de Gaulle",
+      "type": "LEADER",
+      "bio": "Général et homme politique français, figure de la Seconde Guerre mondiale.",
+      "birthDate": "1890-11-22",
+      "deathDate": "1970-11-09"
+    }
+  },
+  {
+    "name": "Drapeau tricolore",
+    "description": "Le drapeau national français, symbole de la République.",
+    "textToTranslate": "Ce drapeau représente l'unité et la liberté.",
+    "itemType": {
+      "name": "Flag"
+    },
+    "site": {
+      "name": "Musée de l'Armée"
+    },
+    "relatedPerson": {
+      "name": "Marianne",
+      "type": "OTHER",
+      "bio": "Personnification de la République française.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Médaille militaire",
+    "description": "Une médaille décernée pour des actes de bravoure au combat.",
+    "textToTranslate": "Cette médaille honore le courage des soldats.",
+    "itemType": {
+      "name": "Medal"
+    },
+    "site": {
+      "name": "Musée de l'Armée"
+    },
+    "relatedPerson": {
+      "name": "Georges Clemenceau",
+      "type": "LEADER",
+      "bio": "Homme d'État français, connu pour son rôle durant la Première Guerre mondiale.",
+      "birthDate": "1841-09-28",
+      "deathDate": "1929-11-24"
+    }
+  },
+  {
+    "name": "Masque tribal",
+    "description": "Un masque en bois sculpté utilisé dans les rituels traditionnels.",
+    "textToTranslate": "Ce masque représente l'identité culturelle d'une tribu.",
+    "itemType": {
+      "name": "Mask"
+    },
+    "site": {
+      "name": "Musée du quai Branly"
+    },
+    "relatedPerson": {
+      "name": "Un artisan tribal",
+      "type": "ARTIST",
+      "bio": "Artisan anonyme ayant créé des œuvres pour la communauté.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Statue d'ancêtre",
+    "description": "Une sculpture représentant un ancêtre vénéré dans la culture locale.",
+    "textToTranslate": "Cette statue symbolise la continuité de la lignée familiale.",
+    "itemType": {
+      "name": "Statue"
+    },
+    "site": {
+      "name": "Musée du quai Branly"
+    },
+    "relatedPerson": {
+      "name": "Un chef tribal",
+      "type": "LEADER",
+      "bio": "Chef respecté de la tribu, connu pour ses décisions sages.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Tissu traditionnel",
+    "description": "Un morceau de tissu tissé à la main avec des motifs culturels.",
+    "textToTranslate": "Ce tissu raconte l'histoire et les traditions de la communauté.",
+    "itemType": {
+      "name": "Textile"
+    },
+    "site": {
+      "name": "Musée du quai Branly"
+    },
+    "relatedPerson": {
+      "name": "Une tisseuse locale",
+      "type": "ARTISAN",
+      "bio": "Artisanne spécialisée dans la fabrication de textiles traditionnels.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Instrument de musique",
+    "description": "Un instrument de musique traditionnel utilisé lors des cérémonies.",
+    "textToTranslate": "Cet instrument est essentiel pour les célébrations culturelles.",
+    "itemType": {
+      "name": "Musical Instrument"
+    },
+    "site": {
+      "name": "Musée du quai Branly"
+    },
+    "relatedPerson": {
+      "name": "Un musicien traditionnel",
+      "type": "PERFORMER",
+      "bio": "Musicien anonyme qui a transmis la musique traditionnelle.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Parure en perles",
+    "description": "Un collier traditionnel fabriqué à partir de perles colorées.",
+    "textToTranslate": "Cette parure est portée lors des cérémonies importantes.",
+    "itemType": {
+      "name": "Necklace"
+    },
+    "site": {
+      "name": "Musée du quai Branly"
+    },
+    "relatedPerson": {
+      "name": "Une créatrice de bijoux",
+      "type": "ARTIST",
+      "bio": "Artisane spécialisée dans la fabrication de bijoux traditionnels.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Vase Art Déco",
+    "description": "Un vase décoratif de style Art Déco, célèbre pour ses lignes géométriques.",
+    "textToTranslate": "Ce vase est un exemple emblématique du design des années 1920.",
+    "itemType": {
+      "name": "Vase"
+    },
+    "site": {
+      "name": "Musée des Arts Décoratifs"
+    },
+    "relatedPerson": {
+      "name": "Émile Gallé",
+      "type": "ARTIST",
+      "bio": "Designer et verrier français, connu pour ses créations en verre.",
+      "birthDate": "1846-05-04",
+      "deathDate": "1904-09-17"
+    }
+  },
+  {
+    "name": "Chaise en bois",
+    "description": "Une chaise au design épuré, typique du mouvement Bauhaus.",
+    "textToTranslate": "Cette chaise illustre l'harmonie entre fonction et esthétique.",
+    "itemType": {
+      "name": "Chair"
+    },
+    "site": {
+      "name": "Musée des Arts Décoratifs"
+    },
+    "relatedPerson": {
+      "name": "Marcel Breuer",
+      "type": "ARTIST",
+      "bio": "Architecte et designer, connu pour ses meubles en acier tubulaire.",
+      "birthDate": "1902-05-21",
+      "deathDate": "1981-07-01"
+    }
+  },
+  {
+    "name": "Tapis persan",
+    "description": "Un tapis fait à la main avec des motifs traditionnels persans.",
+    "textToTranslate": "Ce tapis représente l'artisanat textile d'une culture ancienne.",
+    "itemType": {
+      "name": "Carpet"
+    },
+    "site": {
+      "name": "Musée des Arts Décoratifs"
+    },
+    "relatedPerson": {
+      "name": "Un artisan persan",
+      "type": "ARTIST",
+      "bio": "Artisan anonyme reconnu pour ses compétences en tissage.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Porcelaine de Sèvres",
+    "description": "Un service en porcelaine fine, symbole du luxe à la française.",
+    "textToTranslate": "Cette porcelaine est célèbre pour sa qualité et son artisanat.",
+    "itemType": {
+      "name": "Porcelain"
+    },
+    "site": {
+      "name": "Musée des Arts Décoratifs"
+    },
+    "relatedPerson": {
+      "name": "Bernard de Montmorency",
+      "type": "ARTIST",
+      "bio": "Céramiste célèbre pour ses créations en porcelaine de Sèvres.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Lampe Art Nouveau",
+    "description": "Une lampe en verre soufflé avec des motifs floraux, typique de l'Art Nouveau.",
+    "textToTranslate": "Cette lampe est un exemple du design inspiré par la nature.",
+    "itemType": {
+      "name": "Lamp"
+    },
+    "site": {
+      "name": "Musée des Arts Décoratifs"
+    },
+    "relatedPerson": {
+      "name": "Gustave Moreau",
+      "type": "ARTIST",
+      "bio": "Peintre français, influent dans le mouvement symboliste.",
+      "birthDate": "1826-04-06",
+      "deathDate": "1898-04-18"
+    }
+  },
+  {
+    "name": "Caméra de projection",
+    "description": "Une caméra utilisée pour projeter les premiers films muets.",
+    "textToTranslate": "Cet appareil a joué un rôle clé dans l'histoire du cinéma.",
+    "itemType": {
+      "name": "Projector"
+    },
+    "site": {
+      "name": "Institut Lumière"
+    },
+    "relatedPerson": {
+      "name": "Louis Lumière",
+      "type": "INVENTOR",
+      "bio": "Inventeur et pionnier du cinéma, il a co-inventé le cinématographe.",
+      "birthDate": "1864-10-05",
+      "deathDate": "1948-04-06"
+    }
+  },
+  {
+    "name": "Affiche de film",
+    "description": "Une affiche originale des premiers films de l'ère du cinéma muet.",
+    "textToTranslate": "Ces affiches étaient essentielles pour promouvoir les films.",
+    "itemType": {
+      "name": "Poster"
+    },
+    "site": {
+      "name": "Institut Lumière"
+    },
+    "relatedPerson": {
+      "name": "Georges Méliès",
+      "type": "ARTIST",
+      "bio": "Réalisateur et illusionniste, pionnier du cinéma de fiction.",
+      "birthDate": "1861-12-08",
+      "deathDate": "1938-01-21"
+    }
+  },
+  {
+    "name": "Projecteur de films",
+    "description": "Un projecteur utilisé pour diffuser des films dans les cinémas des années 1900.",
+    "textToTranslate": "Ce projecteur est une pièce emblématique de l'histoire du cinéma.",
+    "itemType": {
+      "name": "Film Projector"
+    },
+    "site": {
+      "name": "Institut Lumière"
+    },
+    "relatedPerson": {
+      "name": "David Wark Griffith",
+      "type": "ARTIST",
+      "bio": "Réalisateur américain, connu pour son influence sur le cinéma moderne.",
+      "birthDate": "1875-01-22",
+      "deathDate": "1948-07-23"
+    }
+  },
+  {
+    "name": "Scénario original",
+    "description": "Un scénario d'un film emblématique du cinéma français.",
+    "textToTranslate": "Ce scénario a été à l'origine d'un film culte.",
+    "itemType": {
+      "name": "Screenplay"
+    },
+    "site": {
+      "name": "Institut Lumière"
+    },
+    "relatedPerson": {
+      "name": "Jean-Luc Godard",
+      "type": "ARTIST",
+      "bio": "Réalisateur suisse, figure majeure de la Nouvelle Vague française.",
+      "birthDate": "1930-12-03",
+      "deathDate": "2022-09-13"
+    }
+  },
+  {
+    "name": "Squelette de dinosaure",
+    "description": "Un squelette reconstitué d'un dinosaure ayant vécu dans les temps préhistoriques.",
+    "textToTranslate": "Ce squelette illustre la diversité de la vie sur Terre.",
+    "itemType": {
+      "name": "Dinosaur Skeleton"
+    },
+    "site": {
+      "name": "Musée des Confluences"
+    },
+    "relatedPerson": {
+      "name": "Bernard G. W. R. W. S. Brown",
+      "type": "SCIENTIST",
+      "bio": "Paleontologue ayant contribué à la découverte de plusieurs fossiles.",
+      "birthDate": "1955-06-30",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Masque africain",
+    "description": "Un masque traditionnel utilisé dans les cérémonies rituelles en Afrique.",
+    "textToTranslate": "Ce masque représente les ancêtres et la culture d'une tribu.",
+    "itemType": {
+      "name": "Mask"
+    },
+    "site": {
+      "name": "Musée des Confluences"
+    },
+    "relatedPerson": {
+      "name": "Artisan anonyme",
+      "type": "ARTIST",
+      "bio": "Créateur anonyme connu pour son travail dans l'art tribal.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Outils préhistoriques",
+    "description": "Une collection d'outils utilisés par les premiers humains.",
+    "textToTranslate": "Ces outils montrent l'ingéniosité de nos ancêtres.",
+    "itemType": {
+      "name": "Tools"
+    },
+    "site": {
+      "name": "Musée des Confluences"
+    },
+    "relatedPerson": {
+      "name": "Un archéologue",
+      "type": "SCIENTIST",
+      "bio": "Archéologue ayant étudié les premiers habitants de notre planète.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Parure de bijoux anciens",
+    "description": "Des bijoux anciens représentant l'artisanat d'une culture disparue.",
+    "textToTranslate": "Ces bijoux témoignent de la richesse d'une civilisation.",
+    "itemType": {
+      "name": "Jewelry"
+    },
+    "site": {
+      "name": "Musée des Confluences"
+    },
+    "relatedPerson": {
+      "name": "Un bijoutier ancien",
+      "type": "ARTIST",
+      "bio": "Bijoutier anonyme, connu pour son travail dans les civilisations anciennes.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Poupée en terre cuite",
+    "description": "Une poupée fabriquée en terre cuite, représentant des personnages de l'Antiquité.",
+    "textToTranslate": "Cette poupée illustre l'art et la culture d'une époque.",
+    "itemType": {
+      "name": "Doll"
+    },
+    "site": {
+      "name": "Musée des Confluences"
+    },
+    "relatedPerson": {
+      "name": "Artisan anonyme",
+      "type": "ARTIST",
+      "bio": "Artisan ayant créé des objets du quotidien pour les enfants.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Uniforme de police",
+    "description": "Un uniforme porté par les policiers à la fin du 19e siècle.",
+    "textToTranslate": "Cet uniforme représente l'évolution de la police en France.",
+    "itemType": {
+      "name": "Uniform"
+    },
+    "site": {
+      "name": "Musée de la Préfecture de Police"
+    },
+    "relatedPerson": {
+      "name": "Maréchal de la police",
+      "type": "LEADER",
+      "bio": "Un maréchal de la police connu pour ses efforts pour maintenir l'ordre.",
+      "birthDate": "1860-01-01",
+      "deathDate": "1930-01-01"
+    }
+  },
+  {
+    "name": "Révolver",
+    "description": "Un révolver utilisé par la police à la fin du 19e siècle.",
+    "textToTranslate": "Cet arme représente les techniques d'application de la loi de l'époque.",
+    "itemType": {
+      "name": "Revolver"
+    },
+    "site": {
+      "name": "Musée de la Préfecture de Police"
+    },
+    "relatedPerson": {
+      "name": "Un policier",
+      "type": "LEADER",
+      "bio": "Policier ayant servi avec honneur dans la police française.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Dossier d'enquête",
+    "description": "Un dossier contenant des informations sur une affaire criminelle historique.",
+    "textToTranslate": "Ce dossier montre l'évolution des enquêtes policières.",
+    "itemType": {
+      "name": "Case File"
+    },
+    "site": {
+      "name": "Musée de la Préfecture de Police"
+    },
+    "relatedPerson": {
+      "name": "Inspecteur de police",
+      "type": "LEADER",
+      "bio": "Inspecteur ayant résolu plusieurs affaires célèbres.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Plan de la ville",
+    "description": "Un ancien plan de Paris utilisé par les policiers pour naviguer dans la ville.",
+    "textToTranslate": "Ce plan montre l'organisation de Paris à l'époque.",
+    "itemType": {
+      "name": "Map"
+    },
+    "site": {
+      "name": "Musée de la Préfecture de Police"
+    },
+    "relatedPerson": {
+      "name": "Un cartographe",
+      "type": "INVENTOR",
+      "bio": "Cartographe anonyme ayant créé des cartes pour la police.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  },
+  {
+    "name": "Appareil photo ancien",
+    "description": "Un appareil photo utilisé pour documenter les scènes de crime.",
+    "textToTranslate": "Cet appareil représente les premières méthodes de documentation policière.",
+    "itemType": {
+      "name": "Camera"
+    },
+    "site": {
+      "name": "Musée de la Préfecture de Police"
+    },
+    "relatedPerson": {
+      "name": "Un photographe de police",
+      "type": "ARTIST",
+      "bio": "Photographe anonyme ayant travaillé pour le service de police.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    }
+  }
+]

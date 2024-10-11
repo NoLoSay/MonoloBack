@@ -426,8 +426,23 @@ enum PersonType {
   /// A scientist.
   SCIENTIST
 
-  /// A celebrity.
-  CELEBRITY
+  /// A royalty.
+  ROYALTY
+
+  /// A performer.
+  PERFORMER
+
+  /// A leader.
+  LEADER
+
+  /// An inventor.
+  INVENTOR
+
+  /// An artisan.
+  ARTISAN
+
+  /// An architect
+  ARCHITECT
 
   /// Other types of persons.
   OTHER
@@ -501,7 +516,7 @@ model ItemCategory {
 
 /// @namespace Items
 /// Represents a type of item.
-model ItemType {
+model  ItemType {
   /// The unique identifier for the item type.
   id Int @id @default(autoincrement())
 
@@ -566,10 +581,10 @@ model Item {
   relatedPersonId Int?
 
   /// The ID of the site where the item is located.
-  siteId Int?
+  siteId Int
 
   /// The site where the item is located.
-  site Site? @relation(fields: [siteId], references: [id])
+  site Site @relation(fields: [siteId], references: [id])
 
   /// The item type to which the item belongs.
   itemType ItemType? @relation(fields: [itemTypeId], references: [id])
