@@ -4,7 +4,7 @@ import { seedCountries } from './countries';
 import { seedDepartments } from './departments';
 import { seedCities } from './cities';
 import { seedSites } from './sites';
-import { seedItemTypes } from './item-types';
+import { newSeedItemCategories } from './item-categories';
 import { seedItems } from './items';
 import { seedVideos } from './videos';
 import { seedExhibitions } from './exhibitions';
