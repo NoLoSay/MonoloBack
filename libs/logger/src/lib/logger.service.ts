@@ -8,6 +8,76 @@ export class LoggerService {
     private prismaBase: PrismaBaseService
   ) {}
 
+  private static getCriticityColor(criticity: LogCriticity) {
+    switch (criticity) {
+      case LogCriticity.Critical: // purple
+        return 0x9c27b0;
+      case LogCriticity.High: // red
+        return 0xe91e63;
+      case LogCriticity.Medium: // yellow
+        return 0xfbc02d;
+      case LogCriticity.Low: // green
+        return 0x2e7d32;
+      case LogCriticity.Info: // blue
+        return 0x2196f3;
+      default:
+        return 0x9c27b0;
+    }
+  }
+
+  private static async getHookMessage(criticity: LogCriticity, e: any) {
+    let hookMessage = '';
+    if (criticity === LogCriticity.Critical || criticity === LogCriticity.High) {
+      hookMessage = process.env['LOG_DISCORD_PING_IDS'] || '';
+    }
+
+    return await fetch(process.env['LOG_DISCORD_WEBHOOK_URL'], {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+        {
+          username: "Incident Back",
+          content: hookMessage,
+          embeds: [
+            {
+              title: criticity,
+              color: this.getCriticityColor(criticity),
+              "fields": [
+                {
+                  "name": "Context",
+                  "value": e.context || 'N/A',
+                  "inline": true
+                },
+                {
+                  "name": "Message",
+                  "value": e.message || 'N/A',
+                  "inline": true
+                },
+                {
+                  "name": "Content",
+                  "value": e.content || 'N/A',
+                  "inline": true
+                },
+                {
+                  "name": "Exception",
+                  "value": e.exception || 'N/A',
+                  "inline": false
+                },
+                {
+                  "name": "Stack",
+                  "value": e.stack || 'N/A',
+                  "inline": false,
+                },
+              ],
+            },
+          ],
+        }
+      ),
+    });
+  }
+
   async log(
     criticity: LogCriticity,
     context: string,
@@ -25,8 +95,9 @@ export class LoggerService {
           message: message,
         },
       })
-      .then((e) => {
+      .then(async (e) => {
         console.log(e);
+        LoggerService.getHookMessage(criticity, e);
       })
       .catch((e) => {
         console.log(e);
@@ -52,8 +123,9 @@ export class LoggerService {
           message: message,
         },
       })
-      .then((e) => {
+      .then(async (e) => {
         console.log(e);
+        LoggerService.getHookMessage(criticity, e);
       })
       .catch((e) => {
         console.log(e);
