@@ -2,12 +2,13 @@ import { Controller, Get } from "@nestjs/common";
 import { Public } from "@noloback/jwt";
 import { LoggerService } from '@noloback/logger-lib';
 import { LogCriticity } from "@noloback/prisma-client-base";
+import { ADMIN, Roles } from "@noloback/roles";
 
 @Controller('crash')
 export class CrashController {
   constructor (private readonly loggingService: LoggerService) {}
 
-  @Public()
+  @Roles([ADMIN])
   @Get('info')
   async getInfo() {
     this.loggingService.log(LogCriticity.Info, this.constructor.name, undefined, 'cool');
@@ -16,7 +17,7 @@ export class CrashController {
     }
   }
 
-  @Public()
+  @Roles([ADMIN])
   @Get('low')
   async getlow() {
     try {
@@ -29,7 +30,7 @@ export class CrashController {
     }
   }
 
-  @Public()
+  @Roles([ADMIN])
   @Get('medium')
   async getMedium() {
     try {
@@ -42,7 +43,7 @@ export class CrashController {
     }
   }
 
-  @Public()
+  @Roles([ADMIN])
   @Get('high')
   async getHigh() {
     try {
@@ -55,7 +56,7 @@ export class CrashController {
     }
   }
 
-  @Public()
+  @Roles([ADMIN])
   @Get('critical')
   async getCritical() {
     try {
