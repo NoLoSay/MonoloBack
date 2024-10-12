@@ -1188,3 +1188,28 @@ model ValidationStatusColor {
   /// The color associated with the validation status.
   color String @default("#ffffff")
 }
+
+// -----------------------------
+// ------------Logs-------------
+// -----------------------------
+
+/// @namespace Logs
+/// Log bad things happening in the apps
+model Logs {
+  id        Int          @id @default(autoincrement())
+  uuid      String       @unique @default(uuid())
+  criticity LogCriticity @default(Info)
+  context   String?
+  exception String?
+  content   String?
+  stack     String?
+  message   String?
+}
+
+enum LogCriticity {
+  Info
+  Low
+  Medium
+  High
+  Critical
+}

@@ -45,7 +45,7 @@ export class ItemsController {
     private readonly itemsService: ItemsService,
     private readonly sitesManagersService: SitesManagersService,
     private readonly uploadthingService: UploadthingService,
-    private readonly videoService: VideoService // private loggingService: LoggerService
+    private readonly videoService: VideoService, private loggingService: LoggerService
   ) {}
 
   @Get()

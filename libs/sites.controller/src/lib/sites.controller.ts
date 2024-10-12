@@ -20,6 +20,7 @@ import { SitesService } from '@noloback/sites.service'
 import {
   InviteManagerRequestBody,
   RemoveManagerRequestBody,
+  SiteCreationRequestBody,
   SiteManagerModificationRequestBody,
   SiteManipulationRequestBody
 } from '@noloback/api.request.bodies'
@@ -32,13 +33,12 @@ import { randomUUID } from 'crypto'
 import { extname } from 'path'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { count } from 'console'
-// import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('sites')
 export class SitesController {
   constructor (
     private readonly sitesService: SitesService,
-    private readonly sitesManagersService: SitesManagersService // private loggingService: LoggerService
+    private readonly sitesManagersService: SitesManagersService, private loggingService: LoggerService
   ) {}
 
   @Get()
@@ -99,7 +99,7 @@ export class SitesController {
   }))
   async create (
     @Response() res: any,
-    @Body() sites: SiteManipulationRequestBody,
+    @Body() sites: SiteCreationRequestBody,
     @UploadedFile() picture: Express.Multer.File
   ) {
     return res.status(200).json(await this.sitesService.create(sites, picture))

@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
@@ -14,13 +14,14 @@ import {
   DepartmentCommonSelect
 } from '@noloback/db.calls'
 import { FiltersGetMany } from 'models/filters-get-many'
+import { LoggerService } from '@noloback/logger-lib'
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class DepartmentsService {
   constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async count(
@@ -86,7 +87,7 @@ export class DepartmentsService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     switch (role) {
@@ -114,9 +115,9 @@ export class DepartmentsService {
       .findUnique({
         where:
           role === Role.ADMIN
-            ? { id: id }
+            ? { id: +id }
             : {
-                id: id,
+                id: +id,
                 deletedAt: null,
                 country: { deletedAt: null }
               },
@@ -124,7 +125,7 @@ export class DepartmentsService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new BadRequestException('Department not found')
       })
     switch (role) {
@@ -155,7 +156,7 @@ export class DepartmentsService {
             longitude: department.longitude,
             country: {
               connect: {
-                id: department.countryId
+                id: +department.countryId
               }
             }
           },
@@ -163,7 +164,7 @@ export class DepartmentsService {
         })
         .catch((e: Error) => {
           console.log(e)
-          // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
           throw new InternalServerErrorException(e)
         })
 
@@ -183,7 +184,7 @@ export class DepartmentsService {
     }
     const updated: DepartmentAdminReturn = await this.prismaBase.department
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedDepartment.name,
           code: updatedDepartment.code,
@@ -191,14 +192,14 @@ export class DepartmentsService {
           longitude: updatedDepartment.longitude,
           country: {
             connect: {
-              id: updatedDepartment.countryId
+              id: +updatedDepartment.countryId
             }
           }
         },
         select: new DepartmentAdminSelect()
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -208,12 +209,12 @@ export class DepartmentsService {
   async delete (id: number): Promise<DepartmentAdminReturn> {
     return (await this.prismaBase.department
       .update({
-        where: { id: id },
+        where: { id: +id },
         select: new DepartmentAdminSelect(),
         data: { deletedAt: new Date() }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })) as DepartmentAdminReturn
   }

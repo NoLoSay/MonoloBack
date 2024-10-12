@@ -12,17 +12,18 @@ import { SiteManagerCommonReturn } from '@noloback/api.returns'
 import { SiteManagerCommonSelect } from '@noloback/db.calls'
 import { SiteManagerCommonDbReturn } from '@noloback/db.returns'
 import {
+  LogCriticity,
   PrismaBaseService,
   Role,
   SiteHasManager
 } from '@noloback/prisma-client-base'
 import { UserRequestModel } from '@noloback/requests.constructor'
-// import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class SitesManagersService {
   constructor (
-    private prismaBase: PrismaBaseService // private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async isAllowedToModify (
@@ -40,12 +41,12 @@ export class SitesManagersService {
     return await this.prismaBase.siteHasManager
       .findMany({
         where: {
-          siteId: siteId
+          siteId: +siteId
         },
         select: new SiteManagerCommonSelect()
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
       .then((managers: unknown[]) => {
@@ -65,7 +66,7 @@ export class SitesManagersService {
           role: Role.MANAGER,
           user: {
             connect: {
-              id: userId
+              id: +userId
             }
           }
         },
@@ -85,7 +86,7 @@ export class SitesManagersService {
     profileId: number
   ): Promise<{ id: number; role: Role; deletedAt: Date | null }> {
     return await this.prismaBase.profile.update({
-      where: { id: profileId },
+      where: { id: +profileId },
       data: { deletedAt: null },
       select: {
         id: true,
@@ -129,8 +130,8 @@ export class SitesManagersService {
     const alreadyManager = await this.prismaBase.siteHasManager.findUnique({
       where: {
         profileId_siteId: {
-          profileId: managerProfile.id,
-          siteId: siteId
+          profileId: +managerProfile.id,
+          siteId: +siteId
         }
       }
     })
@@ -141,8 +142,8 @@ export class SitesManagersService {
             .update({
               where: {
                 profileId_siteId: {
-                  profileId: managerProfile.id,
-                  siteId: siteId
+                  profileId: +managerProfile.id,
+                  siteId: +siteId
                 }
               },
               data: {
@@ -151,7 +152,7 @@ export class SitesManagersService {
               select: new SiteManagerCommonSelect()
             })
             .catch((e: Error) => {
-              // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+              this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
               throw new InternalServerErrorException(e)
             })) as unknown as SiteManagerCommonDbReturn
         )
@@ -161,8 +162,8 @@ export class SitesManagersService {
     return new SiteManagerCommonReturn(
       (await this.prismaBase.siteHasManager.create({
         data: {
-          profileId: managerProfile.id,
-          siteId: siteId
+          profileId: +managerProfile.id,
+          siteId: +siteId
         },
         select: new SiteManagerCommonSelect()
       })) as unknown as SiteManagerCommonDbReturn
@@ -171,7 +172,7 @@ export class SitesManagersService {
 
   private async checkSiteValidity (siteId: number) {
     const site = await this.prismaBase.site.findUnique({
-      where: { id: siteId }
+      where: { id: +siteId }
     })
     if (site === null) {
       throw new NotFoundException('Site not found')
@@ -224,8 +225,8 @@ export class SitesManagersService {
         .update({
           where: {
             profileId_siteId: {
-              profileId: managerProfile.id,
-              siteId: siteId
+              profileId: +managerProfile.id,
+              siteId: +siteId
             }
           },
           data: {
@@ -234,7 +235,7 @@ export class SitesManagersService {
           select: new SiteManagerCommonSelect()
         })
         .catch((e: Error) => {
-          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
           throw new InternalServerErrorException(e)
         })) as unknown as SiteManagerCommonDbReturn
     )
@@ -258,8 +259,8 @@ export class SitesManagersService {
         .update({
           where: {
             profileId_siteId: {
-              profileId: managerProfile.id,
-              siteId: siteId
+              profileId: +managerProfile.id,
+              siteId: +siteId
             }
           },
           data: {
@@ -268,7 +269,7 @@ export class SitesManagersService {
           select: new SiteManagerCommonSelect()
         })
         .catch((e: Error) => {
-          // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
           throw new InternalServerErrorException(e)
         })) as unknown as SiteManagerCommonDbReturn
     )
@@ -282,14 +283,14 @@ export class SitesManagersService {
       .findUnique({
         where: {
           profileId_siteId: {
-            siteId: siteId,
-            profileId: managerProfileId
+            siteId: +siteId,
+            profileId: +managerProfileId
           },
           deletedAt: null
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     return relation !== null
@@ -300,15 +301,15 @@ export class SitesManagersService {
       .findUnique({
         where: {
           profileId_siteId: {
-            siteId: siteId,
-            profileId: managerProfileId
+            siteId: +siteId,
+            profileId: +managerProfileId
           },
           isMain: true,
           deletedAt: null
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     return relation !== null

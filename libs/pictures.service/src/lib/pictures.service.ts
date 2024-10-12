@@ -39,7 +39,7 @@ export class PicturesService {
           unlink(updatedPicture.localPath, (err) => {
             if (err) {
               console.log(err)
-              // LoggerService.log('High', 'PicturesService.createPicture', undefined, JSON.stringify(err))
+              LoggerService.log('High', 'PicturesService.createPicture', undefined, JSON.stringify(err))
             }
           });
         }
@@ -58,7 +58,7 @@ export class PicturesService {
       return updatedPicture;
     } catch (error: any) {
       console.error(error)
-      // LoggerService.log('Critical', 'PicturesService.createPicture', error, `Error creating picture: ${error.message}`)
+      LoggerService.log('Critical', 'PicturesService.createPicture', error, `Error creating picture: ${error.message}`)
       throw new InternalServerErrorException(`Error creating picture`);
     }
   }

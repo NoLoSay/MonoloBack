@@ -3,7 +3,8 @@ import {
   Item,
   Prisma,
   PrismaBaseService,
-  Role
+  Role,
+  LogCriticity
 } from '@noloback/prisma-client-base'
 import {
   ForbiddenException,
@@ -28,10 +29,9 @@ import { ItemManipulationModel } from '@noloback/api.request.bodies'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { SitesManagersService } from '@noloback/sites.managers.service'
-//import { LogCriticity } from '@prisma/client/logs'
-//import { LoggerService } from '@noloback/logger-lib'
 import { UploadthingService } from '@noloback/uploadthing.service';
 import { PicturesService } from '@noloback/pictures.service'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ItemsService {
@@ -39,13 +39,14 @@ export class ItemsService {
     private prismaBase: PrismaBaseService,
     private readonly sitesManagersService: SitesManagersService,
     private readonly picturesService: PicturesService,
-    private videoService: VideoService, //private loggingService: LoggerService
+    private videoService: VideoService,
+    private loggingService: LoggerService,
     private uploadthingService: UploadthingService
   ) {}
 
   private async checkExistingItem (id: number): Promise<Item> {
     const item = await this.prismaBase.item.findUnique({
-      where: { id: id, deletedAt: null }
+      where: { id: +id, deletedAt: null }
     })
     if (!item) throw new NotFoundException('Item not found')
     return item
@@ -54,7 +55,7 @@ export class ItemsService {
   private async checkExistingSite (id: number) {
     if (
       (await this.prismaBase.site.count({
-        where: { id: id, deletedAt: null }
+        where: { id: +id, deletedAt: null }
       })) === 0
     )
       throw new NotFoundException('Site not found')
@@ -73,7 +74,7 @@ export class ItemsService {
       body.picture = uploadedPicture;
     }
     return this.prismaBase.item.update({
-      where: { id },
+      where: { id: +id },
       data: body,
       select: new ItemManagerSelect()
     }) as unknown as ItemManagerReturn
@@ -110,7 +111,7 @@ export class ItemsService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     }
@@ -162,7 +163,7 @@ export class ItemsService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -190,14 +191,14 @@ export class ItemsService {
     const item: unknown = await this.prismaBase.item
       .findUnique({
         where: {
-          id: id,
+          id: +id,
           deletedAt: user.activeProfile.role === Role.ADMIN ? null : undefined
         },
         select: selectOptions
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -309,13 +310,13 @@ export class ItemsService {
     this.checkExistingItem(id)
     const deleted: unknown = await this.prismaBase.item
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: { deletedAt: new Date() },
         select: new ItemCommonSelect()
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     return deleted as ItemCommonReturn
@@ -354,18 +355,18 @@ export class ItemsService {
 
     const updatedItem: unknown = await this.prismaBase.item
       .update({
-        where: { id: itemId },
+        where: { id: +itemId },
         data: {
           site: {
             connect: {
-              id: siteId
+              id: +siteId
             }
           }
         }
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 

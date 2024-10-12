@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
@@ -9,13 +9,12 @@ import { CityCommonReturn, CityAdminReturn } from '@noloback/api.returns'
 import { CityAdminSelect, CityCommonSelect } from '@noloback/db.calls'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { ADMIN } from '@noloback/roles'
-//import { LogCriticity } from '@prisma/client/logs'
-//import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class CitiesService {
   constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async count(
@@ -84,7 +83,7 @@ export class CitiesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -113,9 +112,9 @@ export class CitiesService {
       .findUnique({
         where:
           role === Role.ADMIN
-            ? { id: id }
+            ? { id: +id }
             : {
-                id: id,
+                id: +id,
                 deletedAt: null,
                 department: { deletedAt: null, country: { deletedAt: null } }
               },
@@ -123,7 +122,7 @@ export class CitiesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new BadRequestException(e)
       })
 
@@ -152,7 +151,7 @@ export class CitiesService {
           longitude: city.longitude,
           department: {
             connect: {
-              id: city.departmentId
+              id: +city.departmentId
             }
           }
         },
@@ -160,7 +159,7 @@ export class CitiesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -180,7 +179,7 @@ export class CitiesService {
     }
     const updated: unknown = await this.prismaBase.city
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedCity.name,
           zip: updatedCity.zip,
@@ -188,14 +187,14 @@ export class CitiesService {
           longitude: updatedCity.longitude,
           department: {
             connect: {
-              id: updatedCity.departmentId
+              id: +updatedCity.departmentId
             }
           }
         },
         select: new CityAdminSelect()
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -204,7 +203,7 @@ export class CitiesService {
 
   async delete (id: number): Promise<CityAdminReturn> {
     const deleted: unknown = await this.prismaBase.city.update({
-      where: { id: id },
+      where: { id: +id },
       data: { deletedAt: new Date() },
       select: new CityAdminSelect()
     })

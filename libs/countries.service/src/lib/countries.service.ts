@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
@@ -8,13 +8,12 @@ import { CountryManipulationModel } from '@noloback/api.request.bodies'
 import { CountryAdminReturn, CountryCommonReturn } from '@noloback/api.returns'
 import { CountryAdminSelect, CountryCommonSelect } from '@noloback/db.calls'
 import { FiltersGetMany } from 'models/filters-get-many'
-//import { LogCriticity } from '@prisma/client/logs'
-//import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class CountriesService {
   constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async count(
@@ -77,7 +76,7 @@ export class CountriesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -105,12 +104,12 @@ export class CountriesService {
 
     const country = await this.prismaBase.country
       .findUnique({
-        where: { id: id, deletedAt: role === Role.ADMIN ? undefined : null },
+        where: { id: +id, deletedAt: role === Role.ADMIN ? undefined : null },
         select: selectOptions
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new BadRequestException('Country not found')
       })
 
@@ -135,7 +134,7 @@ export class CountriesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -148,7 +147,7 @@ export class CountriesService {
   ): Promise<CountryAdminReturn> {
     const updated: CountryAdminReturn = await this.prismaBase.country
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedCountry.name,
           code: updatedCountry.code,
@@ -158,7 +157,7 @@ export class CountriesService {
         select: new CountryAdminSelect()
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -168,12 +167,12 @@ export class CountriesService {
   async delete (id: number): Promise<CountryAdminReturn> {
     const deleted: CountryAdminReturn = await this.prismaBase.country
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: { deletedAt: new Date() },
         select: new CountryAdminSelect()
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
