@@ -2,6 +2,8 @@ import {
   Exhibition,
   PrismaClient as PrismaBaseClient
 } from '@prisma/client/base'
+import * as fs from 'fs';
+import * as path from 'path';
 
 const prisma = new PrismaBaseClient()
 
@@ -63,6 +65,35 @@ export async function newSeedExhibitions () {
               }
             })
           }
+        },
+        select: {
+          id: true,
+          name: true,
+          shortDescription: true,
+          longDescription: true,
+          startDate: true,
+          endDate: true,
+          site: {
+            select: {
+              id: true,
+              name: true
+            }
+          },
+          exhibitedItems: {
+            select: {
+              item: {
+                select: {
+                  name: true,
+                  site: {
+                    select: {
+                      id: true,
+                      name: true
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       })
 
@@ -70,6 +101,9 @@ export async function newSeedExhibitions () {
       currentDate = new Date(endDate) // Update currentDate to the end date of the last exhibition
     }
   }
+
+  const filePath = path.join(__dirname, 'datas/exhibitions.json');
+  fs.writeFileSync(filePath, JSON.stringify(exhibitions, null, 2), 'utf-8');
 
   return exhibitions
 }
