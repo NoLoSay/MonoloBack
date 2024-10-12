@@ -114,9 +114,9 @@ export class DepartmentsService {
       .findUnique({
         where:
           role === Role.ADMIN
-            ? { id: id }
+            ? { id: +id }
             : {
-                id: id,
+                id: +id,
                 deletedAt: null,
                 country: { deletedAt: null }
               },
@@ -155,7 +155,7 @@ export class DepartmentsService {
             longitude: department.longitude,
             country: {
               connect: {
-                id: department.countryId
+                id: +department.countryId
               }
             }
           },
@@ -183,7 +183,7 @@ export class DepartmentsService {
     }
     const updated: DepartmentAdminReturn = await this.prismaBase.department
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedDepartment.name,
           code: updatedDepartment.code,
@@ -191,7 +191,7 @@ export class DepartmentsService {
           longitude: updatedDepartment.longitude,
           country: {
             connect: {
-              id: updatedDepartment.countryId
+              id: +updatedDepartment.countryId
             }
           }
         },
@@ -208,7 +208,7 @@ export class DepartmentsService {
   async delete (id: number): Promise<DepartmentAdminReturn> {
     return (await this.prismaBase.department
       .update({
-        where: { id: id },
+        where: { id: +id },
         select: new DepartmentAdminSelect(),
         data: { deletedAt: new Date() }
       })

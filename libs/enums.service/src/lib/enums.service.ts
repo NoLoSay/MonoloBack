@@ -59,7 +59,7 @@ export class EnumsService {
     }
     try {
       return await this.prismaBase.roleColor.update({
-        where: { id },
+        where: { id: +id },
         data: body,
         select: new RoleColorAdminSelect()
       })
@@ -93,7 +93,7 @@ export class EnumsService {
     }
     try {
       return await this.prismaBase.validationStatusColor.update({
-        where: { id },
+        where: { id: +id },
         data: body,
         select: new ValidationStatusColorAdminSelect()
       })
@@ -123,7 +123,7 @@ export class EnumsService {
     }
     try {
       return await this.prismaBase.personTypeColor.update({
-        where: { id },
+        where: { id: +id },
         data: body,
         select: new PersonTypeColorAdminSelect()
       })
@@ -153,7 +153,7 @@ export class EnumsService {
     }
     try {
       return await this.prismaBase.siteTypeColor.update({
-        where: { id },
+        where: { id: +id },
         data: body,
         select: new SiteTypeColorAdminSelect()
       })
@@ -183,7 +183,7 @@ export class EnumsService {
     }
     try {
       return await this.prismaBase.siteTagColor.update({
-        where: { id },
+        where: { id: +id },
         data: body,
         select: new SiteTagColorAdminSelect()
       })

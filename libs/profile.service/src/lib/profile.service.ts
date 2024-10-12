@@ -36,7 +36,7 @@ export class ProfileService {
     }
     const profiles = await this.prismaBase.profile.findMany({
       where: {
-        userId: user.activeProfile.role !== Role.ADMIN ? user.id : undefined,
+        userId: user.activeProfile.role !== Role.ADMIN ? +user.id : undefined,
         role: role ? role as Role : undefined,
         deletedAt: null
       },
@@ -53,7 +53,7 @@ export class ProfileService {
   async getMyProfiles (user: UserRequestModel): Promise<ProfileListReturn[]> {
     return await this.prismaBase.profile.findMany({
       where: {
-        userId: user.id,
+        userId: +user.id,
         deletedAt: null
       },
       select: new ProfileListSelect()
@@ -63,7 +63,7 @@ export class ProfileService {
   async getActiveProfile (user: UserRequestModel): Promise<ProfileCommonReturn> {
     const activeProfiles = await this.prismaBase.profile.findMany({
       where: {
-        userId: user.id,
+        userId: +user.id,
         isActive: true
       },
       select: new ProfileCommonSelect()
@@ -76,7 +76,7 @@ export class ProfileService {
 
   private async unactiveAllProfiles (userId: number) {
     return this.prismaBase.profile.updateMany({
-      where: { userId: userId },
+      where: { userId: +userId },
       data: { isActive: false }
     })
   }
@@ -86,14 +86,14 @@ export class ProfileService {
     profileId: number
   ) {
     return this.prismaBase.profile.updateMany({
-      where: { userId: userId, NOT: { id: profileId } },
+      where: { userId: +userId, NOT: { id: +profileId } },
       data: { isActive: false }
     })
   }
 
   private async activateProfile (profileId: number) {
     return this.prismaBase.profile.update({
-      where: { id: profileId },
+      where: { id: +profileId },
       data: { isActive: true },
       select: new ProfileCommonSelect()
     })
@@ -101,7 +101,7 @@ export class ProfileService {
 
   private async activateProfileByRole (userId: number, role: Role) {
     return this.prismaBase.profile.update({
-      where: { userId_role: { userId: userId, role: role } },
+      where: { userId_role: { userId: +userId, role: role } },
       data: { isActive: true },
       select: new ProfileCommonSelect()
     })
@@ -112,7 +112,7 @@ export class ProfileService {
     role: Role
   ): Promise<boolean> {
     const profile = await this.prismaBase.profile.findFirst({
-      where: { userId: userId, role: role }
+      where: { userId: +userId, role: role }
     })
     return !!(profile && !profile.deletedAt)
   }
@@ -122,7 +122,7 @@ export class ProfileService {
     profileId: number
   ): Promise<boolean> {
     const profile = await this.prismaBase.profile.findFirst({
-      where: { userId: userId, id: profileId }
+      where: { userId: +userId, id: +profileId }
     })
     return !!(profile && !profile.deletedAt)
   }
@@ -155,7 +155,7 @@ export class ProfileService {
     role: Role
   ): Promise<ProfileCommonReturn> {
     const toWho = await this.prismaBase.user.findUnique({
-      where: { id: userId },
+      where: { id: +userId },
       include: {
         profiles: {
           select: {
@@ -177,7 +177,7 @@ export class ProfileService {
       if (!profileExist.deletedAt)
         throw new ConflictException('Profile already exist')
       const reactivatedProfile = await this.prismaBase.profile.update({
-        where: { id: profileExist.id },
+        where: { id: +profileExist.id },
         data: { deletedAt: null },
         select: new ProfileCommonSelect()
       })
@@ -188,7 +188,7 @@ export class ProfileService {
         role: role,
         user: {
           connect: {
-            id: userId
+            id: +userId
           }
         }
       },
@@ -202,7 +202,7 @@ export class ProfileService {
     role: Role
   ): Promise<ProfileCommonReturn> {
     const toWho = await this.prismaBase.user.findUnique({
-      where: { id: userId },
+      where: { id: +userId },
       include: {
         profiles: {
           select: {
@@ -226,7 +226,7 @@ export class ProfileService {
       throw new ConflictException('Profile not found or already deleted')
     }
     const deletedProfile = await this.prismaBase.profile.update({
-      where: { id: profileToDelete.id },
+      where: { id: +profileToDelete.id },
       data: { isActive: false, deletedAt: new Date() },
       select: new ProfileCommonSelect()
     })
@@ -241,7 +241,7 @@ export class ProfileService {
     profileId: number
   ): Promise<ProfileCommonReturn> {
     const toWho = await this.prismaBase.user.findUnique({
-      where: { id: userId },
+      where: { id: +userId },
       include: {
         profiles: {
           select: {
@@ -266,7 +266,7 @@ export class ProfileService {
     if (profileToDelete.role === Role.USER)
       throw new ForbiddenException('Cannot delete user profile')
     const deletedProfile = await this.prismaBase.profile.update({
-      where: { id: profileToDelete.id },
+      where: { id: +profileToDelete.id },
       data: { isActive: false, deletedAt: new Date() },
       select: new ProfileCommonSelect()
     })

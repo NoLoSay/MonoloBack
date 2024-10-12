@@ -129,7 +129,7 @@ export class VideoService {
     return await this.prismaBase.video.update({
       data: body,
       where: {
-        id: videoId,
+        id: +videoId,
       },
     });
   }
@@ -148,7 +148,7 @@ export class VideoService {
 
       const provider = await this.prismaBase.hostingProvider.findUnique({
         where: {
-          id: video.hostingProviderId,
+          id: +video.hostingProviderId,
         },
       });
 
@@ -173,7 +173,7 @@ export class VideoService {
   async getYoutube(video: VideoCommonReturn) {
     const provider = await this.prismaBase.hostingProvider.findUnique({
       where: {
-        id: video.hostingProviderId,
+        id: +video.hostingProviderId,
       },
     });
 
@@ -197,7 +197,7 @@ export class VideoService {
         validationStatus: validationStatus,
       },
       where: {
-        id: id,
+        id: +id,
       },
     });
 
@@ -240,7 +240,7 @@ export class VideoService {
         validationStatus: status,
       },
       where: {
-        id: id,
+        id: +id,
       },
     });
 
@@ -276,7 +276,7 @@ export class VideoService {
       data: {
         hostingProvider: {
           connect: {
-            id: provider.id,
+            id: +provider.id,
           },
         },
         hostingProviderVideoId: video.filename,
@@ -284,14 +284,14 @@ export class VideoService {
           connect: {
             userId_role: {
               role: Role.CREATOR,
-              userId: user.id,
+              userId: +user.id,
             },
           },
         },
         uuid: video.filename.split('.')[0],
         item: {
           connect: {
-            id: itemId,
+            id: +itemId,
           },
         },
       },
@@ -352,10 +352,10 @@ export class VideoService {
   //     },
   //    connect: {
   //       postedBy: {
-  //         userId: user.id
+  //         userId: +user.id
   //      },
   //      item: {
-  //        id: itemId
+  //        id: +itemId
   //      }
   //   })
 
@@ -394,7 +394,7 @@ export class VideoService {
 
     const videoEntities: unknown[] = await this.prismaBase.video.findMany({
       where: {
-        itemId: itemId,
+        itemId: +itemId,
         validationStatus: {
           in: getValidationStatusFromRole(user.activeProfile.role),
         },
@@ -462,7 +462,7 @@ export class VideoService {
       where: {
         postedBy: {
           role: Role.CREATOR,
-          userId: userId,
+          userId: +userId,
         },
         validationStatus: {
           in: getValidationStatusFromRole(
@@ -514,7 +514,7 @@ export class VideoService {
         postedBy: userId
           ? {
               role: Role.CREATOR,
-              userId: userId,
+              userId: +userId,
             }
           : undefined,
         createdAt: {
@@ -559,7 +559,7 @@ export class VideoService {
         postedBy: userId
           ? {
               role: Role.CREATOR,
-              userId: userId,
+              userId: +userId,
             }
           : undefined,
         createdAt: {
@@ -595,7 +595,7 @@ export class VideoService {
         deletedReason: deleteReason,
       },
       where: {
-        id: id,
+        id: +id,
       },
     });
   }

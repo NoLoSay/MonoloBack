@@ -40,7 +40,7 @@ export class SitesManagersService {
     return await this.prismaBase.siteHasManager
       .findMany({
         where: {
-          siteId: siteId
+          siteId: +siteId
         },
         select: new SiteManagerCommonSelect()
       })
@@ -65,7 +65,7 @@ export class SitesManagersService {
           role: Role.MANAGER,
           user: {
             connect: {
-              id: userId
+              id: +userId
             }
           }
         },
@@ -85,7 +85,7 @@ export class SitesManagersService {
     profileId: number
   ): Promise<{ id: number; role: Role; deletedAt: Date | null }> {
     return await this.prismaBase.profile.update({
-      where: { id: profileId },
+      where: { id: +profileId },
       data: { deletedAt: null },
       select: {
         id: true,
@@ -129,8 +129,8 @@ export class SitesManagersService {
     const alreadyManager = await this.prismaBase.siteHasManager.findUnique({
       where: {
         profileId_siteId: {
-          profileId: managerProfile.id,
-          siteId: siteId
+          profileId: +managerProfile.id,
+          siteId: +siteId
         }
       }
     })
@@ -141,8 +141,8 @@ export class SitesManagersService {
             .update({
               where: {
                 profileId_siteId: {
-                  profileId: managerProfile.id,
-                  siteId: siteId
+                  profileId: +managerProfile.id,
+                  siteId: +siteId
                 }
               },
               data: {
@@ -161,8 +161,8 @@ export class SitesManagersService {
     return new SiteManagerCommonReturn(
       (await this.prismaBase.siteHasManager.create({
         data: {
-          profileId: managerProfile.id,
-          siteId: siteId
+          profileId: +managerProfile.id,
+          siteId: +siteId
         },
         select: new SiteManagerCommonSelect()
       })) as unknown as SiteManagerCommonDbReturn
@@ -171,7 +171,7 @@ export class SitesManagersService {
 
   private async checkSiteValidity (siteId: number) {
     const site = await this.prismaBase.site.findUnique({
-      where: { id: siteId }
+      where: { id: +siteId }
     })
     if (site === null) {
       throw new NotFoundException('Site not found')
@@ -224,8 +224,8 @@ export class SitesManagersService {
         .update({
           where: {
             profileId_siteId: {
-              profileId: managerProfile.id,
-              siteId: siteId
+              profileId: +managerProfile.id,
+              siteId: +siteId
             }
           },
           data: {
@@ -258,8 +258,8 @@ export class SitesManagersService {
         .update({
           where: {
             profileId_siteId: {
-              profileId: managerProfile.id,
-              siteId: siteId
+              profileId: +managerProfile.id,
+              siteId: +siteId
             }
           },
           data: {
@@ -282,8 +282,8 @@ export class SitesManagersService {
       .findUnique({
         where: {
           profileId_siteId: {
-            siteId: siteId,
-            profileId: managerProfileId
+            siteId: +siteId,
+            profileId: +managerProfileId
           },
           deletedAt: null
         }
@@ -300,8 +300,8 @@ export class SitesManagersService {
       .findUnique({
         where: {
           profileId_siteId: {
-            siteId: siteId,
-            profileId: managerProfileId
+            siteId: +siteId,
+            profileId: +managerProfileId
           },
           isMain: true,
           deletedAt: null

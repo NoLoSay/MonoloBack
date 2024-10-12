@@ -88,8 +88,8 @@ export class ItemTypesService {
       .findUnique({
         where:
           role === Role.ADMIN
-            ? { id: id }
-            : { id: id, deletedAt: null, itemCategory: { deletedAt: null } },
+            ? { id: +id }
+            : { id: +id, deletedAt: null, itemCategory: { deletedAt: null } },
         select: selectOptions
       })
       .catch((e: Error) => {
@@ -122,7 +122,7 @@ export class ItemTypesService {
           description: itemType.description,
           itemCategory: {
             connect: {
-              id: itemType.itemCategoryId
+              id: +itemType.itemCategoryId
             }
           }
         }
@@ -147,13 +147,13 @@ export class ItemTypesService {
     }
     return (await this.prismaBase.itemType
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedItemType.name,
           description: updatedItemType.description,
           itemCategory: {
             connect: {
-              id: updatedItemType.itemCategoryId
+              id: +updatedItemType.itemCategoryId
             }
           }
         }
@@ -166,7 +166,7 @@ export class ItemTypesService {
 
   async delete (id: number): Promise<ItemTypeAdminReturn> {
     return (await this.prismaBase.itemType.update({
-      where: { id: id },
+      where: { id: +id },
       data: { deletedAt: new Date() }
     })) as unknown as ItemTypeAdminReturn
   }

@@ -113,9 +113,9 @@ export class CitiesService {
       .findUnique({
         where:
           role === Role.ADMIN
-            ? { id: id }
+            ? { id: +id }
             : {
-                id: id,
+                id: +id,
                 deletedAt: null,
                 department: { deletedAt: null, country: { deletedAt: null } }
               },
@@ -152,7 +152,7 @@ export class CitiesService {
           longitude: city.longitude,
           department: {
             connect: {
-              id: city.departmentId
+              id: +city.departmentId
             }
           }
         },
@@ -180,7 +180,7 @@ export class CitiesService {
     }
     const updated: unknown = await this.prismaBase.city
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedCity.name,
           zip: updatedCity.zip,
@@ -188,7 +188,7 @@ export class CitiesService {
           longitude: updatedCity.longitude,
           department: {
             connect: {
-              id: updatedCity.departmentId
+              id: +updatedCity.departmentId
             }
           }
         },
@@ -204,7 +204,7 @@ export class CitiesService {
 
   async delete (id: number): Promise<CityAdminReturn> {
     const deleted: unknown = await this.prismaBase.city.update({
-      where: { id: id },
+      where: { id: +id },
       data: { deletedAt: new Date() },
       select: new CityAdminSelect()
     })

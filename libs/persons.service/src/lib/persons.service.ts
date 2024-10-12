@@ -101,7 +101,7 @@ export class PersonsService {
     }
     const person: unknown = await this.prismaBase.person
       .findUnique({
-        where: { id: id, deletedAt: role === Role.ADMIN ? undefined : null },
+        where: { id: +id, deletedAt: role === Role.ADMIN ? undefined : null },
         select: selectOptions
       })
       .catch((e: Error) => {
@@ -144,7 +144,7 @@ export class PersonsService {
   ): Promise<PersonAdminReturn> {
     return (await this.prismaBase.person
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedPerson.name,
           bio: updatedPerson.bio,
@@ -163,7 +163,7 @@ export class PersonsService {
 
   async delete (id: number): Promise<PersonAdminReturn> {
     return (await this.prismaBase.person.update({
-      where: { id: id },
+      where: { id: +id },
       data: { deletedAt: new Date() },
       select: new PersonAdminSelect()
     })) as unknown as PersonAdminReturn
