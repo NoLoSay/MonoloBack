@@ -10,7 +10,7 @@ export class CrashController {
   @Public()
   @Get('info')
   async getInfo() {
-    this.loggingService.log(LogCriticity.Info, this.constructor.name, undefined, 'logged info');
+    this.loggingService.log(LogCriticity.Info, this.constructor.name, undefined, 'cool');
     return {
       message: 'logged info',
     }
@@ -19,7 +19,11 @@ export class CrashController {
   @Public()
   @Get('low')
   async getlow() {
-    this.loggingService.log(LogCriticity.Low, this.constructor.name, undefined, 'logged low');
+    try {
+      throw new Error('logged low');
+    } catch (e: any) {
+      this.loggingService.log(LogCriticity.Low, this.constructor.name, e, 'yeahhhhhhh');
+    }
     return {
       message: 'logged low',
     }
@@ -28,7 +32,11 @@ export class CrashController {
   @Public()
   @Get('medium')
   async getMedium() {
-    this.loggingService.log(LogCriticity.Medium, this.constructor.name, undefined, 'logged medium');
+    try {
+      throw new Error('logged medium');
+    } catch (e: any) {
+      this.loggingService.log(LogCriticity.Medium, this.constructor.name, e, 'kinda problematic');
+    }
     return {
       message: 'logged medium',
     }
@@ -37,7 +45,11 @@ export class CrashController {
   @Public()
   @Get('high')
   async getHigh() {
-    this.loggingService.log(LogCriticity.High, this.constructor.name, undefined, 'logged high');
+    try {
+      throw new Error('logged high');
+    } catch (e: any) {
+      this.loggingService.log(LogCriticity.High, this.constructor.name, e, 'actually problematic');
+    }
     return {
       message: 'logged high',
     }
@@ -46,7 +58,11 @@ export class CrashController {
   @Public()
   @Get('critical')
   async getCritical() {
-    this.loggingService.log(LogCriticity.Critical, this.constructor.name, undefined, 'logged critical');
+    try {
+      throw new Error('logged critical');
+    } catch (e: any) {
+      this.loggingService.log(LogCriticity.Critical, this.constructor.name, e, 'extreme skill issue');
+    }
     return {
       message: 'logged critical',
     }
