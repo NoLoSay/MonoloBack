@@ -1,16 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import {
-  LogCriticity,
-  PrismaClient as PrismaLogsClient,
-} from '@prisma/client/logs';
-import { PrismaClient as PrismaBaseClient } from '@prisma/client/base';
-import { PrismaLogsService } from '@noloback/prisma-client-logs';
+import { LogCriticity, PrismaClient as PrismaBaseClient } from '@prisma/client/base';
 import { PrismaBaseService } from '@noloback/prisma-client-base';
 
 @Injectable()
 export class LoggerService {
   constructor(
-    private prismaLogs: PrismaLogsService,
     private prismaBase: PrismaBaseService
   ) {}
 
@@ -20,7 +14,7 @@ export class LoggerService {
     exception: Error | undefined,
     message: string = ''
   ) {
-    await this.prismaLogs.logs
+    await this.prismaBase.logs
       .create({
         data: {
           criticity: criticity,
@@ -45,7 +39,7 @@ export class LoggerService {
     exception: Error | undefined,
     message: string = ''
   ) {
-    const prisma: PrismaLogsClient = new PrismaLogsClient();
+    const prisma: PrismaBaseClient = new PrismaBaseClient();
 
     await prisma.logs
       .create({

@@ -2,7 +2,8 @@ import {
   PrismaBaseService,
   PersonType,
   Prisma,
-  Role
+  Role,
+  LogCriticity
 } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
@@ -22,14 +23,13 @@ import {
 } from '@noloback/db.calls'
 import { UtilsService } from '@noloback/utils.service'
 import { FiltersGetMany } from 'models/filters-get-many'
-//import { LogCriticity } from '@prisma/client/logs'
-//import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class PersonsService {
   constructor (
     private prismaBase: PrismaBaseService,
-    private utilsService: UtilsService //private loggingService: LoggerService
+    private utilsService: UtilsService, private loggingService: LoggerService
   ) {}
 
   async findAll (
@@ -74,7 +74,7 @@ export class PersonsService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -106,7 +106,7 @@ export class PersonsService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new BadRequestException('Person not found')
       })
 
@@ -133,7 +133,7 @@ export class PersonsService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })) as unknown as PersonAdminReturn
   }
@@ -156,7 +156,7 @@ export class PersonsService {
         select: new PersonAdminSelect()
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })) as unknown as PersonAdminReturn
   }

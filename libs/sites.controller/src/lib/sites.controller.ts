@@ -33,13 +33,12 @@ import { randomUUID } from 'crypto'
 import { extname } from 'path'
 import { FiltersGetMany } from 'models/filters-get-many'
 import { count } from 'console'
-// import { LoggerService } from '@noloback/logger-lib'
 
 @Controller('sites')
 export class SitesController {
   constructor (
     private readonly sitesService: SitesService,
-    private readonly sitesManagersService: SitesManagersService // private loggingService: LoggerService
+    private readonly sitesManagersService: SitesManagersService, private loggingService: LoggerService
   ) {}
 
   @Get()

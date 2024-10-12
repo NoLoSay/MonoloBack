@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 
-import { PrismaClientLogsModule } from '@noloback/prisma-client-logs';
 import { PrismaClientBaseModule } from '@noloback/prisma-client-base';
 import { LoggerService } from './logger.service';
 
@@ -8,6 +7,6 @@ import { LoggerService } from './logger.service';
   controllers: [],
   providers: [LoggerService],
   exports: [LoggerService],
-  imports: [PrismaClientLogsModule, PrismaClientBaseModule],
+  imports: [PrismaClientBaseModule],
 })
 export class LoggerLibModule {}

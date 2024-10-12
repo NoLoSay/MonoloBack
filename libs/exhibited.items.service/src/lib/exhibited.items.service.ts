@@ -4,16 +4,16 @@ import {
   InternalServerErrorException,
   NotFoundException
 } from '@nestjs/common'
-import { PrismaBaseService } from '@noloback/prisma-client-base'
+import { LogCriticity, PrismaBaseService } from '@noloback/prisma-client-base'
 import { ExhibitedItemAdditionModel } from '@noloback/api.request.bodies'
 import { ExhibitionCommonSelect, ItemCommonSelect } from '@noloback/db.calls'
 import { ExhibitionCommonReturn, ItemCommonReturn } from '@noloback/api.returns'
-// import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ExhibitedItemsService {
   constructor (
-    private prismaBase: PrismaBaseService // private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async canItemBeUsedInExhibition (
@@ -54,7 +54,7 @@ export class ExhibitedItemsService {
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     return exhibitedItems.map(exhibitedItem => {
@@ -96,7 +96,7 @@ export class ExhibitedItemsService {
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -131,7 +131,7 @@ export class ExhibitedItemsService {
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
   }
