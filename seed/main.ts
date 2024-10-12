@@ -7,7 +7,7 @@ import { seedSites } from './sites';
 import { newSeedItemCategories } from './item-categories';
 import { newSeedItems } from './items';
 import { seedVideos } from './videos';
-import { seedExhibitions } from './exhibitions';
+import { seedExhibitions, newSeedExhibitions } from './exhibitions';
 import { seedEnumsColors } from './enums-colors';
 import { seedSignLanguages } from './sign-languages';
 
@@ -25,14 +25,14 @@ async function main() {
   const sites = await seedSites();
   console.log(sites);
 
-  const exhibitions = await seedExhibitions();
-  console.log(exhibitions);
-
   const itemCategories = await newSeedItemCategories();
   console.log(itemCategories);
 
   const items = await newSeedItems();
   console.log(items);
+
+  const exhibitions = newSeedExhibitions();
+  console.log(exhibitions);
 
   const signLanguages = await seedSignLanguages();
   console.log(signLanguages);
@@ -42,12 +42,12 @@ async function main() {
 
   const enumsColors = await seedEnumsColors();
   console.log(enumsColors);
-  
+
   const users = await seedUsers();
   console.log(users);
 
-
   console.log('Seeding completed');
+
 }
 
 main()
