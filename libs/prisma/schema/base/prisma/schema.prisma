@@ -12,21 +12,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-generator markdown {
-  provider = "prisma-markdown"
-  output   = "../../../../../docs/prisma/ERD.md"
-  title    = "NoLoSay Database ERD"
-}
+// generator markdown {
+//   provider = "prisma-markdown"
+//   output   = "../../../../../docs/prisma/ERD.md"
+//   title    = "NoLoSay Database ERD"
+// }
 
-generator docs {
-  provider = "node node_modules/prisma-docs-generator"
-  output   = "../../../../../docs/prisma/generated-docs"
-}
+// generator docs {
+//   provider = "node node_modules/prisma-docs-generator"
+//   output   = "../../../../../docs/prisma/generated-docs"
+// }
 
-generator dbml {
-  provider = "prisma-dbml-generator"
-  output   = "../../../../../docs/prisma/dbml"
-}
+// generator dbml {
+//   provider = "prisma-dbml-generator"
+//   output   = "../../../../../docs/prisma/dbml"
+// }
 
 // ----------------------------------
 // ---------- Localization ----------

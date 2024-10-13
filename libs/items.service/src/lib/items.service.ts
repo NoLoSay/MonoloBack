@@ -238,11 +238,11 @@ export class ItemsService {
             id: +item.itemTypeId
           }
         } : {},
-        site: item.siteId ? {
+        site: {
           connect: {
             id: +item.siteId
           }
-        } : {}
+        }
       },
       select: new ItemCommonSelect()
     })
