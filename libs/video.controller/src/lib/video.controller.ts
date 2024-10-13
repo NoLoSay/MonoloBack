@@ -18,7 +18,7 @@ import { VideoService } from '@noloback/video.service';
 import multer = require('multer');
 import { Role, ValidationStatus } from '@prisma/client/base';
 import { FiltersGetMany } from 'models/filters-get-many';
-import { ADMIN, MODERATOR, Roles } from '@noloback/roles';
+import { ADMIN, MANAGER, MODERATOR, Roles } from '@noloback/roles';
 import { LoggerService } from '@noloback/logger-lib';
 
 const storage = multer.diskStorage({
@@ -149,6 +149,29 @@ export class VideoController {
     return await this.videoservice.patchYoutubeValidation(
       +id,
       validationStatus
+    );
+  }
+
+  @Roles([ADMIN, MODERATOR, MANAGER])
+  @Put(':id/showcased')
+  @HttpCode(200)
+  async updateShowcased(
+    @Request() request: any,
+    @Param('id') id: number,
+    @Body('showcased') showcased: boolean
+  ) {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'Video',
+      +id,
+      'New showcased status: ' + showcased
+    );
+
+    return await this.videoservice.updateVideoShowcased(
+      request.user.activeProfile,
+      +id,
+      showcased
     );
   }
 

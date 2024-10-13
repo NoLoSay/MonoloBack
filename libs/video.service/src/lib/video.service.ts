@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Redirect,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ReadStream, createReadStream, readFileSync, unlink } from 'fs';
 import {
@@ -89,6 +90,46 @@ export class VideoService {
     this.youtube = google.youtube({
       version: 'v3',
       auth: this.auth,
+    });
+  }
+
+  async updateVideoShowcased(profile: any, id: number, showcased: any) {
+    showcased = showcased === 'true' || showcased === true;
+
+    if (profile.role === Role.MANAGER) {
+      const video = await this.prismaBase.video.findFirst({
+        where: {
+          id: +id,
+        },
+      });
+      if (!video) {
+        throw new NotFoundException('Video not found');
+      }
+
+      const site = await this.prismaBase.site.findFirst({ where: { items: {some: { id: +video?.itemId} } }});
+      if (!site) {
+        throw new InternalServerErrorException('Video not linked to a site');
+      }
+
+      const siteHasManagers = await this.prismaBase.siteHasManager.findFirst({
+        where: {
+          profileId: +profile.id,
+          siteId: (await this.prismaBase.site.findFirst({ where: { items: {some: { id: +video?.itemId} } }}))?.id,
+        },
+      });
+
+      if (!siteHasManagers) {
+        throw new UnauthorizedException('You are not a manager of this site');
+      }
+    }
+
+    return await this.prismaBase.video.update({
+      where: {
+        id: +id,
+      },
+      data: {
+        showcased: showcased,
+      },
     });
   }
 
