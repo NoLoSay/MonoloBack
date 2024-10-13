@@ -41,10 +41,9 @@ export class ItemManipulationModel {
   itemTypeId?: number
 
   @ApiProperty()
-  @IsOptional()
   @IsInt()
   @IsPositive()
-  siteId?: number
+  siteId: number = 0
 }
 
 export class ItemGiveModel {

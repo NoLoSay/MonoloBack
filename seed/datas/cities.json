@@ -1,0 +1,2111 @@
+[
+  {
+    "name": "Bourg-en-Bresse",
+    "departmentCode": "01",
+    "zip": "01000",
+    "latitude": 46.2053,
+    "longitude": 5.2339
+  },
+  {
+    "name": "Oyonnax",
+    "departmentCode": "01",
+    "zip": "01100",
+    "latitude": 46.2435,
+    "longitude": 5.6425
+  },
+  {
+    "name": "Belley",
+    "departmentCode": "01",
+    "zip": "01300",
+    "latitude": 45.6815,
+    "longitude": 5.6907
+  },
+  {
+    "name": "Laon",
+    "departmentCode": "02",
+    "zip": "02000",
+    "latitude": 49.5701,
+    "longitude": 3.6167
+  },
+  {
+    "name": "Saint-Quentin",
+    "departmentCode": "02",
+    "zip": "02100",
+    "latitude": 49.8483,
+    "longitude": 3.2871
+  },
+  {
+    "name": "Soissons",
+    "departmentCode": "02",
+    "zip": "02200",
+    "latitude": 49.375,
+    "longitude": 3.3238
+  },
+  {
+    "name": "Montluçon",
+    "departmentCode": "03",
+    "zip": "03100",
+    "latitude": 46.3406,
+    "longitude": 2.6063
+  },
+  {
+    "name": "Vichy",
+    "departmentCode": "03",
+    "zip": "03200",
+    "latitude": 46.1283,
+    "longitude": 3.4268
+  },
+  {
+    "name": "Cusset",
+    "departmentCode": "03",
+    "zip": "03300",
+    "latitude": 46.1291,
+    "longitude": 3.4174
+  },
+  {
+    "name": "Manosque",
+    "departmentCode": "04",
+    "zip": "04100",
+    "latitude": 43.8297,
+    "longitude": 5.7863
+  },
+  {
+    "name": "Digne-les-Bains",
+    "departmentCode": "04",
+    "zip": "04000",
+    "latitude": 44.0853,
+    "longitude": 6.2344
+  },
+  {
+    "name": "Forcalquier",
+    "departmentCode": "04",
+    "zip": "04300",
+    "latitude": 43.9561,
+    "longitude": 5.7653
+  },
+  {
+    "name": "Gap",
+    "departmentCode": "05",
+    "zip": "05000",
+    "latitude": 44.5586,
+    "longitude": 6.0831
+  },
+  {
+    "name": "Embrun",
+    "departmentCode": "05",
+    "zip": "05200",
+    "latitude": 44.5308,
+    "longitude": 6.4934
+  },
+  {
+    "name": "Briançon",
+    "departmentCode": "05",
+    "zip": "05100",
+    "latitude": 44.895,
+    "longitude": 6.6378
+  },
+  {
+    "name": "Nice",
+    "departmentCode": "06",
+    "zip": "06000",
+    "latitude": 43.7102,
+    "longitude": 7.262
+  },
+  {
+    "name": "Antibes",
+    "departmentCode": "06",
+    "zip": "06600",
+    "latitude": 43.5804,
+    "longitude": 7.1251
+  },
+  {
+    "name": "Cannes",
+    "departmentCode": "06",
+    "zip": "06400",
+    "latitude": 43.5528,
+    "longitude": 6.9074
+  },
+  {
+    "name": "Privas",
+    "departmentCode": "07",
+    "zip": "07000",
+    "latitude": 44.7243,
+    "longitude": 4.577
+  },
+  {
+    "name": "Aubenas",
+    "departmentCode": "07",
+    "zip": "07200",
+    "latitude": 44.6172,
+    "longitude": 4.4085
+  },
+  {
+    "name": "Annonay",
+    "departmentCode": "07",
+    "zip": "07100",
+    "latitude": 45.2444,
+    "longitude": 4.67
+  },
+  {
+    "name": "Charleville-Mézières",
+    "departmentCode": "08",
+    "zip": "08000",
+    "latitude": 49.7623,
+    "longitude": 4.7096
+  },
+  {
+    "name": "Sedan",
+    "departmentCode": "08",
+    "zip": "08200",
+    "latitude": 49.6912,
+    "longitude": 4.9423
+  },
+  {
+    "name": "Rethel",
+    "departmentCode": "08",
+    "zip": "08300",
+    "latitude": 49.4833,
+    "longitude": 4.1389
+  },
+  {
+    "name": "Foix",
+    "departmentCode": "09",
+    "zip": "09000",
+    "latitude": 42.9589,
+    "longitude": 1.604
+  },
+  {
+    "name": "Pamiers",
+    "departmentCode": "09",
+    "zip": "09100",
+    "latitude": 43.1181,
+    "longitude": 1.6057
+  },
+  {
+    "name": "Lavelanet",
+    "departmentCode": "09",
+    "zip": "09300",
+    "latitude": 42.8672,
+    "longitude": 1.6719
+  },
+  {
+    "name": "Troyes",
+    "departmentCode": "10",
+    "zip": "10000",
+    "latitude": 48.295,
+    "longitude": 4.074
+  },
+  {
+    "name": "Romilly-sur-Seine",
+    "departmentCode": "10",
+    "zip": "10100",
+    "latitude": 48.3603,
+    "longitude": 4.0748
+  },
+  {
+    "name": "Bar-sur-Aube",
+    "departmentCode": "10",
+    "zip": "10200",
+    "latitude": 48.2094,
+    "longitude": 4.6803
+  },
+
+  {
+    "name": "Carcassonne",
+    "departmentCode": "11",
+    "zip": "11000",
+    "latitude": 43.2115,
+    "longitude": 2.3522
+  },
+  {
+    "name": "Narbonne",
+    "departmentCode": "11",
+    "zip": "11100",
+    "latitude": 43.184,
+    "longitude": 3.0042
+  },
+  {
+    "name": "Castelnaudary",
+    "departmentCode": "11",
+    "zip": "11400",
+    "latitude": 43.3547,
+    "longitude": 1.8278
+  },
+  {
+    "name": "Rodez",
+    "departmentCode": "12",
+    "zip": "12000",
+    "latitude": 44.3517,
+    "longitude": 2.5735
+  },
+  {
+    "name": "Millau",
+    "departmentCode": "12",
+    "zip": "12100",
+    "latitude": 44.1002,
+    "longitude": 3.098
+  },
+  {
+    "name": "Saint-Amans-Soult",
+    "departmentCode": "12",
+    "zip": "81240",
+    "latitude": 43.5383,
+    "longitude": 2.5163
+  },
+  {
+    "name": "Marseille",
+    "departmentCode": "13",
+    "zip": "13000",
+    "latitude": 43.2965,
+    "longitude": 5.3698
+  },
+  {
+    "name": "Aix-en-Provence",
+    "departmentCode": "13",
+    "zip": "13100",
+    "latitude": 43.5297,
+    "longitude": 5.4541
+  },
+  {
+    "name": "Vitrolles",
+    "departmentCode": "13",
+    "zip": "13127",
+    "latitude": 43.4254,
+    "longitude": 5.2723
+  },
+  {
+    "name": "Caen",
+    "departmentCode": "14",
+    "zip": "14000",
+    "latitude": 49.4144,
+    "longitude": -0.8837
+  },
+  {
+    "name": "Lisieux",
+    "departmentCode": "14",
+    "zip": "14100",
+    "latitude": 49.1406,
+    "longitude": 0.2264
+  },
+  {
+    "name": "Vire",
+    "departmentCode": "14",
+    "zip": "14500",
+    "latitude": 49.1189,
+    "longitude": -0.7482
+  },
+  {
+    "name": "Aurillac",
+    "departmentCode": "15",
+    "zip": "15000",
+    "latitude": 44.9225,
+    "longitude": 2.4417
+  },
+  {
+    "name": "Saint-Flour",
+    "departmentCode": "15",
+    "zip": "15100",
+    "latitude": 44.9403,
+    "longitude": 3.0715
+  },
+  {
+    "name": "Mauriac",
+    "departmentCode": "15",
+    "zip": "15200",
+    "latitude": 45.2282,
+    "longitude": 2.4515
+  },
+  {
+    "name": "Angoulême",
+    "departmentCode": "16",
+    "zip": "16000",
+    "latitude": 45.6489,
+    "longitude": 0.1639
+  },
+  {
+    "name": "Cognac",
+    "departmentCode": "16",
+    "zip": "16100",
+    "latitude": 45.6882,
+    "longitude": -0.2997
+  },
+  {
+    "name": "Ruelle-sur-Touvre",
+    "departmentCode": "16",
+    "zip": "16600",
+    "latitude": 45.6417,
+    "longitude": 0.1734
+  },
+  {
+    "name": "La Rochelle",
+    "departmentCode": "17",
+    "zip": "17000",
+    "latitude": 46.1584,
+    "longitude": -1.1511
+  },
+  {
+    "name": "Rochefort",
+    "departmentCode": "17",
+    "zip": "17300",
+    "latitude": 45.9253,
+    "longitude": -0.9488
+  },
+  {
+    "name": "Saintes",
+    "departmentCode": "17",
+    "zip": "17100",
+    "latitude": 45.7475,
+    "longitude": -0.6345
+  },
+  {
+    "name": "Bourges",
+    "departmentCode": "18",
+    "zip": "18000",
+    "latitude": 47.0795,
+    "longitude": 2.3985
+  },
+  {
+    "name": "Vierzon",
+    "departmentCode": "18",
+    "zip": "18100",
+    "latitude": 47.204,
+    "longitude": 2.0781
+  },
+  {
+    "name": "Saint-Amand-Montrond",
+    "departmentCode": "18",
+    "zip": "18200",
+    "latitude": 46.7275,
+    "longitude": 2.4083
+  },
+  {
+    "name": "Tulle",
+    "departmentCode": "19",
+    "zip": "19000",
+    "latitude": 45.2534,
+    "longitude": 1.9964
+  },
+  {
+    "name": "Brive-la-Gaillarde",
+    "departmentCode": "19",
+    "zip": "19100",
+    "latitude": 45.1565,
+    "longitude": 1.535
+  },
+  {
+    "name": "Ussel",
+    "departmentCode": "19",
+    "zip": "19200",
+    "latitude": 45.5245,
+    "longitude": 2.3134
+  },
+  {
+    "name": "Ajaccio",
+    "departmentCode": "2A",
+    "zip": "20000",
+    "latitude": 41.9031,
+    "longitude": 8.7387
+  },
+  {
+    "name": "Bastia",
+    "departmentCode": "2B",
+    "zip": "20200",
+    "latitude": 42.6972,
+    "longitude": 9.4507
+  },
+  {
+    "name": "Porto-Vecchio",
+    "departmentCode": "2A",
+    "zip": "20137",
+    "latitude": 41.5906,
+    "longitude": 9.2852
+  },
+  {
+    "name": "Dijon",
+    "departmentCode": "21",
+    "zip": "21000",
+    "latitude": 47.322,
+    "longitude": 5.0415
+  },
+  {
+    "name": "Beaune",
+    "departmentCode": "21",
+    "zip": "21200",
+    "latitude": 47.0204,
+    "longitude": 4.8452
+  },
+  {
+    "name": "Chenôve",
+    "departmentCode": "21",
+    "zip": "21300",
+    "latitude": 47.3092,
+    "longitude": 5.0271
+  },
+  {
+    "name": "Saint-Brieuc",
+    "departmentCode": "22",
+    "zip": "22000",
+    "latitude": 48.513,
+    "longitude": -2.7545
+  },
+  {
+    "name": "Lamballe",
+    "departmentCode": "22",
+    "zip": "22400",
+    "latitude": 48.4651,
+    "longitude": -2.5168
+  },
+  {
+    "name": "Dinan",
+    "departmentCode": "22",
+    "zip": "22100",
+    "latitude": 48.4507,
+    "longitude": -2.0283
+  },
+  {
+    "name": "Guéret",
+    "departmentCode": "23",
+    "zip": "23000",
+    "latitude": 46.1658,
+    "longitude": 1.8718
+  },
+  {
+    "name": "Aubusson",
+    "departmentCode": "23",
+    "zip": "23200",
+    "latitude": 45.9511,
+    "longitude": 2.0214
+  },
+  {
+    "name": "La Souterraine",
+    "departmentCode": "23",
+    "zip": "23300",
+    "latitude": 46.1543,
+    "longitude": 1.6469
+  },
+  {
+    "name": "Périgueux",
+    "departmentCode": "24",
+    "zip": "24000",
+    "latitude": 45.1842,
+    "longitude": 0.7211
+  },
+  {
+    "name": "Bergerac",
+    "departmentCode": "24",
+    "zip": "24100",
+    "latitude": 44.8451,
+    "longitude": 0.4813
+  },
+  {
+    "name": "Sarlat-la-Canéda",
+    "departmentCode": "24",
+    "zip": "24200",
+    "latitude": 44.8924,
+    "longitude": 1.2194
+  },
+  {
+    "name": "Besançon",
+    "departmentCode": "25",
+    "zip": "25000",
+    "latitude": 47.2487,
+    "longitude": 6.0185
+  },
+  {
+    "name": "Montbéliard",
+    "departmentCode": "25",
+    "zip": "25200",
+    "latitude": 47.5041,
+    "longitude": 6.8982
+  },
+  {
+    "name": "Valence",
+    "departmentCode": "26",
+    "zip": "26000",
+    "latitude": 44.9331,
+    "longitude": 4.892
+  },
+  {
+    "name": "Montélimar",
+    "departmentCode": "26",
+    "zip": "26200",
+    "latitude": 44.5585,
+    "longitude": 4.7588
+  },
+  {
+    "name": "Pierrelatte",
+    "departmentCode": "26",
+    "zip": "26700",
+    "latitude": 44.4142,
+    "longitude": 4.6835
+  },
+  {
+    "name": "Évreux",
+    "departmentCode": "27",
+    "zip": "27000",
+    "latitude": 49.0205,
+    "longitude": 1.15
+  },
+  {
+    "name": "Louviers",
+    "departmentCode": "27",
+    "zip": "27400",
+    "latitude": 49.0273,
+    "longitude": 1.1892
+  },
+  {
+    "name": "Vernon",
+    "departmentCode": "27",
+    "zip": "27200",
+    "latitude": 49.0805,
+    "longitude": 1.4824
+  },
+  {
+    "name": "Chartres",
+    "departmentCode": "28",
+    "zip": "28000",
+    "latitude": 48.446,
+    "longitude": 1.489
+  },
+  {
+    "name": "Dreux",
+    "departmentCode": "28",
+    "zip": "28100",
+    "latitude": 48.7338,
+    "longitude": 1.3676
+  },
+  {
+    "name": "Quimper",
+    "departmentCode": "29",
+    "zip": "29000",
+    "latitude": 47.9999,
+    "longitude": -4.0914
+  },
+  {
+    "name": "Brest",
+    "departmentCode": "29",
+    "zip": "29200",
+    "latitude": 48.39,
+    "longitude": -4.4861
+  },
+  {
+    "name": "Morlaix",
+    "departmentCode": "29",
+    "zip": "29600",
+    "latitude": 48.577,
+    "longitude": -3.8316
+  },
+  {
+    "name": "Nîmes",
+    "departmentCode": "30",
+    "zip": "30000",
+    "latitude": 43.8364,
+    "longitude": 4.3601
+  },
+  {
+    "name": "Alès",
+    "departmentCode": "30",
+    "zip": "30100",
+    "latitude": 44.1393,
+    "longitude": 4.0812
+  },
+  {
+    "name": "Bagnols-sur-Cèze",
+    "departmentCode": "30",
+    "zip": "30200",
+    "latitude": 44.145,
+    "longitude": 4.5965
+  },
+  {
+    "name": "Toulouse",
+    "departmentCode": "31",
+    "zip": "31000",
+    "latitude": 43.6047,
+    "longitude": 1.4442
+  },
+  {
+    "name": "Colomiers",
+    "departmentCode": "31",
+    "zip": "31770",
+    "latitude": 43.6301,
+    "longitude": 1.3723
+  },
+  {
+    "name": "Muret",
+    "departmentCode": "31",
+    "zip": "31600",
+    "latitude": 43.6333,
+    "longitude": 1.4842
+  },
+  {
+    "name": "Auch",
+    "departmentCode": "32",
+    "zip": "32000",
+    "latitude": 43.65,
+    "longitude": 0.5833
+  },
+  {
+    "name": "Condom",
+    "departmentCode": "32",
+    "zip": "32100",
+    "latitude": 43.6462,
+    "longitude": 0.3722
+  },
+  {
+    "name": "Mirande",
+    "departmentCode": "32",
+    "zip": "32300",
+    "latitude": 43.3931,
+    "longitude": 0.2285
+  },
+  {
+    "name": "Bordeaux",
+    "departmentCode": "33",
+    "zip": "33000",
+    "latitude": 44.8378,
+    "longitude": -0.5792
+  },
+  {
+    "name": "Mérignac",
+    "departmentCode": "33",
+    "zip": "33700",
+    "latitude": 44.8233,
+    "longitude": -0.6482
+  },
+  {
+    "name": "Pessac",
+    "departmentCode": "33",
+    "zip": "33600",
+    "latitude": 44.813,
+    "longitude": -0.6145
+  },
+  {
+    "name": "Montpellier",
+    "departmentCode": "34",
+    "zip": "34000",
+    "latitude": 43.6112,
+    "longitude": 3.8767
+  },
+  {
+    "name": "Sète",
+    "departmentCode": "34",
+    "zip": "34200",
+    "latitude": 43.403,
+    "longitude": 3.6882
+  },
+  {
+    "name": "Lunel",
+    "departmentCode": "34",
+    "zip": "34400",
+    "latitude": 43.6569,
+    "longitude": 4.0933
+  },
+  {
+    "name": "Rennes",
+    "departmentCode": "35",
+    "zip": "35000",
+    "latitude": 48.1173,
+    "longitude": -1.6778
+  },
+  {
+    "name": "Saint-Malo",
+    "departmentCode": "35",
+    "zip": "35400",
+    "latitude": 48.635,
+    "longitude": -2.0247
+  },
+  {
+    "name": "Fougères",
+    "departmentCode": "35",
+    "zip": "35300",
+    "latitude": 48.3548,
+    "longitude": -1.2061
+  },
+  {
+    "name": "Châteauroux",
+    "departmentCode": "36",
+    "zip": "36000",
+    "latitude": 46.8102,
+    "longitude": 1.6885
+  },
+  {
+    "name": "Issoudun",
+    "departmentCode": "36",
+    "zip": "36100",
+    "latitude": 46.9975,
+    "longitude": 1.9945
+  },
+  {
+    "name": "Le Blanc",
+    "departmentCode": "36",
+    "zip": "36300",
+    "latitude": 46.7248,
+    "longitude": 1.0165
+  },
+  {
+    "name": "Tours",
+    "departmentCode": "37",
+    "zip": "37000",
+    "latitude": 47.3941,
+    "longitude": 0.6848
+  },
+  {
+    "name": "Chinon",
+    "departmentCode": "37",
+    "zip": "37500",
+    "latitude": 47.1576,
+    "longitude": 0.2836
+  },
+  {
+    "name": "Amboise",
+    "departmentCode": "37",
+    "zip": "37400",
+    "latitude": 47.4111,
+    "longitude": 0.9788
+  },
+  {
+    "name": "Grenoble",
+    "departmentCode": "38",
+    "zip": "38000",
+    "latitude": 45.1885,
+    "longitude": 5.7245
+  },
+  {
+    "name": "Échirolles",
+    "departmentCode": "38",
+    "zip": "38130",
+    "latitude": 45.1507,
+    "longitude": 5.7033
+  },
+  {
+    "name": "Vienne",
+    "departmentCode": "38",
+    "zip": "38200",
+    "latitude": 45.5204,
+    "longitude": 4.8976
+  },
+  {
+    "name": "Dole",
+    "departmentCode": "39",
+    "zip": "39100",
+    "latitude": 47.0924,
+    "longitude": 5.4895
+  },
+  {
+    "name": "Lons-le-Saunier",
+    "departmentCode": "39",
+    "zip": "39000",
+    "latitude": 46.6764,
+    "longitude": 5.5547
+  },
+  {
+    "name": "Saint-Claude",
+    "departmentCode": "39",
+    "zip": "39200",
+    "latitude": 46.3841,
+    "longitude": 5.8542
+  },
+  {
+    "name": "Mont-de-Marsan",
+    "departmentCode": "40",
+    "zip": "40000",
+    "latitude": 43.8848,
+    "longitude": -0.503
+  },
+  {
+    "name": "Dax",
+    "departmentCode": "40",
+    "zip": "40100",
+    "latitude": 43.7073,
+    "longitude": -1.0581
+  },
+  {
+    "name": "Saint-Paul-lès-Dax",
+    "departmentCode": "40",
+    "zip": "40990",
+    "latitude": 43.6939,
+    "longitude": -1.0455
+  },
+
+  {
+    "name": "Blois",
+    "departmentCode": "41",
+    "zip": "41000",
+    "latitude": 47.5867,
+    "longitude": 1.3307
+  },
+  {
+    "name": "Romorantin-Lanthenay",
+    "departmentCode": "41",
+    "zip": "41200",
+    "latitude": 47.1765,
+    "longitude": 1.7476
+  },
+  {
+    "name": "Château-Renault",
+    "departmentCode": "41",
+    "zip": "37110",
+    "latitude": 47.5296,
+    "longitude": 1.0799
+  },
+  {
+    "name": "Saint-Étienne",
+    "departmentCode": "42",
+    "zip": "42000",
+    "latitude": 45.4397,
+    "longitude": 4.3872
+  },
+  {
+    "name": "Roanne",
+    "departmentCode": "42",
+    "zip": "42300",
+    "latitude": 46.0372,
+    "longitude": 4.0774
+  },
+  {
+    "name": "Saint-Chamond",
+    "departmentCode": "42",
+    "zip": "42400",
+    "latitude": 45.4481,
+    "longitude": 4.4873
+  },
+  {
+    "name": "Le Puy-en-Velay",
+    "departmentCode": "43",
+    "zip": "43000",
+    "latitude": 45.0424,
+    "longitude": 3.8854
+  },
+  {
+    "name": "Yssingeaux",
+    "departmentCode": "43",
+    "zip": "43200",
+    "latitude": 45.3001,
+    "longitude": 4.0189
+  },
+  {
+    "name": "Monistrol-sur-Loire",
+    "departmentCode": "43",
+    "zip": "43120",
+    "latitude": 45.4372,
+    "longitude": 4.1211
+  },
+  {
+    "name": "Nantes",
+    "departmentCode": "44",
+    "zip": "44000",
+    "latitude": 47.2184,
+    "longitude": -1.5536
+  },
+  {
+    "name": "Saint-Nazaire",
+    "departmentCode": "44",
+    "zip": "44600",
+    "latitude": 47.2867,
+    "longitude": -2.2006
+  },
+  {
+    "name": "Cholet",
+    "departmentCode": "44",
+    "zip": "49300",
+    "latitude": 47.0581,
+    "longitude": -0.882
+  },
+  {
+    "name": "Orléans",
+    "departmentCode": "45",
+    "zip": "45000",
+    "latitude": 47.9029,
+    "longitude": 1.9092
+  },
+  {
+    "name": "Montargis",
+    "departmentCode": "45",
+    "zip": "45200",
+    "latitude": 47.9743,
+    "longitude": 2.7268
+  },
+  {
+    "name": "Gien",
+    "departmentCode": "45",
+    "zip": "45500",
+    "latitude": 47.6643,
+    "longitude": 2.6083
+  },
+  {
+    "name": "Cahors",
+    "departmentCode": "46",
+    "zip": "46000",
+    "latitude": 44.4444,
+    "longitude": 1.4402
+  },
+  {
+    "name": "Figeac",
+    "departmentCode": "46",
+    "zip": "46100",
+    "latitude": 44.6091,
+    "longitude": 2.0426
+  },
+  {
+    "name": "Souillac",
+    "departmentCode": "46",
+    "zip": "46200",
+    "latitude": 44.5662,
+    "longitude": 1.4671
+  },
+  {
+    "name": "Agen",
+    "departmentCode": "47",
+    "zip": "47000",
+    "latitude": 44.2014,
+    "longitude": 0.6199
+  },
+  {
+    "name": "Marmande",
+    "departmentCode": "47",
+    "zip": "47200",
+    "latitude": 44.5208,
+    "longitude": 0.1551
+  },
+  {
+    "name": "Villeneuve-sur-Lot",
+    "departmentCode": "47",
+    "zip": "47300",
+    "latitude": 44.3919,
+    "longitude": 0.6452
+  },
+  {
+    "name": "Mende",
+    "departmentCode": "48",
+    "zip": "48000",
+    "latitude": 44.506,
+    "longitude": 3.5004
+  },
+  {
+    "name": "Florac",
+    "departmentCode": "48",
+    "zip": "48400",
+    "latitude": 44.2852,
+    "longitude": 3.5853
+  },
+  {
+    "name": "Langogne",
+    "departmentCode": "48",
+    "zip": "48300",
+    "latitude": 44.5707,
+    "longitude": 3.866
+  },
+  {
+    "name": "Angers",
+    "departmentCode": "49",
+    "zip": "49000",
+    "latitude": 47.4784,
+    "longitude": -0.5632
+  },
+  {
+    "name": "Cholet",
+    "departmentCode": "49",
+    "zip": "49300",
+    "latitude": 47.0581,
+    "longitude": -0.882
+  },
+  {
+    "name": "Saumur",
+    "departmentCode": "49",
+    "zip": "49400",
+    "latitude": 47.2594,
+    "longitude": -0.0742
+  },
+  {
+    "name": "Saint-Lô",
+    "departmentCode": "50",
+    "zip": "50000",
+    "latitude": 49.1158,
+    "longitude": -1.0835
+  },
+  {
+    "name": "Cherbourg-en-Cotentin",
+    "departmentCode": "50",
+    "zip": "50100",
+    "latitude": 49.638,
+    "longitude": -1.65
+  },
+  {
+    "name": "L'épine",
+    "departmentCode": "50",
+    "zip": "50330",
+    "latitude": 49.389,
+    "longitude": -1.8225
+  },
+  {
+    "name": "Châlons-en-Champagne",
+    "departmentCode": "51",
+    "zip": "51000",
+    "latitude": 48.9535,
+    "longitude": 4.366
+  },
+  {
+    "name": "Épernay",
+    "departmentCode": "51",
+    "zip": "51200",
+    "latitude": 49.0407,
+    "longitude": 3.9519
+  },
+  {
+    "name": "Vitry-le-François",
+    "departmentCode": "51",
+    "zip": "51300",
+    "latitude": 48.6796,
+    "longitude": 4.1908
+  },
+  {
+    "name": "Chaumont",
+    "departmentCode": "52",
+    "zip": "52000",
+    "latitude": 48.1125,
+    "longitude": 5.1378
+  },
+  {
+    "name": "Saint-Dizier",
+    "departmentCode": "52",
+    "zip": "52100",
+    "latitude": 48.635,
+    "longitude": 4.9045
+  },
+  {
+    "name": "Langres",
+    "departmentCode": "52",
+    "zip": "52200",
+    "latitude": 47.8374,
+    "longitude": 5.3663
+  },
+  {
+    "name": "Laval",
+    "departmentCode": "53",
+    "zip": "53000",
+    "latitude": 48.0665,
+    "longitude": -0.7667
+  },
+  {
+    "name": "Mayenne",
+    "departmentCode": "53",
+    "zip": "53100",
+    "latitude": 48.3557,
+    "longitude": -0.632
+  },
+  {
+    "name": "Evron",
+    "departmentCode": "53",
+    "zip": "53600",
+    "latitude": 48.0718,
+    "longitude": -0.491
+  },
+  {
+    "name": "Nancy",
+    "departmentCode": "54",
+    "zip": "54000",
+    "latitude": 48.6921,
+    "longitude": 6.1844
+  },
+  {
+    "name": "Épinal",
+    "departmentCode": "54",
+    "zip": "88000",
+    "latitude": 48.1755,
+    "longitude": 6.4432
+  },
+  {
+    "name": "Tomblaine",
+    "departmentCode": "54",
+    "zip": "54510",
+    "latitude": 48.6825,
+    "longitude": 6.1239
+  },
+  {
+    "name": "Bar-le-Duc",
+    "departmentCode": "55",
+    "zip": "55000",
+    "latitude": 48.7731,
+    "longitude": 5.3714
+  },
+  {
+    "name": "Commercy",
+    "departmentCode": "55",
+    "zip": "55200",
+    "latitude": 48.8689,
+    "longitude": 5.5484
+  },
+  {
+    "name": "Saint-Dizier",
+    "departmentCode": "55",
+    "zip": "52200",
+    "latitude": 48.6361,
+    "longitude": 4.9107
+  },
+  {
+    "name": "Vannes",
+    "departmentCode": "56",
+    "zip": "56000",
+    "latitude": 47.6553,
+    "longitude": -2.76
+  },
+  {
+    "name": "L'Orient",
+    "departmentCode": "56",
+    "zip": "56100",
+    "latitude": 47.7405,
+    "longitude": -3.3667
+  },
+  {
+    "name": "Pontivy",
+    "departmentCode": "56",
+    "zip": "56300",
+    "latitude": 48.0678,
+    "longitude": -2.9663
+  },
+  {
+    "name": "Metz",
+    "departmentCode": "57",
+    "zip": "57000",
+    "latitude": 49.1193,
+    "longitude": 6.1752
+  },
+  {
+    "name": "Thionville",
+    "departmentCode": "57",
+    "zip": "57100",
+    "latitude": 49.3522,
+    "longitude": 6.1775
+  },
+  {
+    "name": "Forbach",
+    "departmentCode": "57",
+    "zip": "57600",
+    "latitude": 49.1124,
+    "longitude": 6.8602
+  },
+  {
+    "name": "Nevers",
+    "departmentCode": "58",
+    "zip": "58000",
+    "latitude": 46.9897,
+    "longitude": 3.1517
+  },
+  {
+    "name": "Decize",
+    "departmentCode": "58",
+    "zip": "58300",
+    "latitude": 46.9562,
+    "longitude": 3.5152
+  },
+  {
+    "name": "La Charité-sur-Loire",
+    "departmentCode": "58",
+    "zip": "58400",
+    "latitude": 47.1363,
+    "longitude": 3.1953
+  },
+  {
+    "name": "Lille",
+    "departmentCode": "59",
+    "zip": "59000",
+    "latitude": 50.6292,
+    "longitude": 3.0573
+  },
+  {
+    "name": "Roubaix",
+    "departmentCode": "59",
+    "zip": "59100",
+    "latitude": 50.6942,
+    "longitude": 3.1746
+  },
+  {
+    "name": "Tourcoing",
+    "departmentCode": "59",
+    "zip": "59200",
+    "latitude": 50.7281,
+    "longitude": 3.1572
+  },
+  {
+    "name": "Beauvais",
+    "departmentCode": "60",
+    "zip": "60000",
+    "latitude": 49.4314,
+    "longitude": 2.0977
+  },
+  {
+    "name": "Compiègne",
+    "departmentCode": "60",
+    "zip": "60200",
+    "latitude": 49.4174,
+    "longitude": 2.8221
+  },
+  {
+    "name": "Creil",
+    "departmentCode": "60",
+    "zip": "60100",
+    "latitude": 49.2432,
+    "longitude": 2.4615
+  },
+  {
+    "name": "Alençon",
+    "departmentCode": "61",
+    "zip": "61000",
+    "latitude": 48.4354,
+    "longitude": 0.0834
+  },
+  {
+    "name": "Flers",
+    "departmentCode": "61",
+    "zip": "61100",
+    "latitude": 48.7342,
+    "longitude": -0.5669
+  },
+  {
+    "name": "Argentan",
+    "departmentCode": "61",
+    "zip": "61200",
+    "latitude": 48.94,
+    "longitude": -0.004
+  },
+  {
+    "name": "Arras",
+    "departmentCode": "62",
+    "zip": "62000",
+    "latitude": 50.2913,
+    "longitude": 2.7793
+  },
+  {
+    "name": "Calais",
+    "departmentCode": "62",
+    "zip": "62100",
+    "latitude": 50.9513,
+    "longitude": 1.8554
+  },
+  {
+    "name": "Boulogne-sur-Mer",
+    "departmentCode": "62",
+    "zip": "62200",
+    "latitude": 50.7244,
+    "longitude": 1.6097
+  },
+  {
+    "name": "Clermont-Ferrand",
+    "departmentCode": "63",
+    "zip": "63000",
+    "latitude": 45.7792,
+    "longitude": 3.0826
+  },
+  {
+    "name": "Cébazat",
+    "departmentCode": "63",
+    "zip": "63118",
+    "latitude": 45.7614,
+    "longitude": 3.1411
+  },
+  {
+    "name": "Montluçon",
+    "departmentCode": "63",
+    "zip": "03100",
+    "latitude": 46.339,
+    "longitude": 2.6086
+  },
+  {
+    "name": "Pau",
+    "departmentCode": "64",
+    "zip": "64000",
+    "latitude": 43.2951,
+    "longitude": -0.3708
+  },
+  {
+    "name": "Bayonne",
+    "departmentCode": "64",
+    "zip": "64100",
+    "latitude": 43.4835,
+    "longitude": -1.4748
+  },
+  {
+    "name": "Biarritz",
+    "departmentCode": "64",
+    "zip": "64200",
+    "latitude": 43.4806,
+    "longitude": -1.5586
+  },
+  {
+    "name": "Tarbes",
+    "departmentCode": "65",
+    "zip": "65000",
+    "latitude": 43.2314,
+    "longitude": -0.0685
+  },
+  {
+    "name": "Lourdes",
+    "departmentCode": "65",
+    "zip": "65100",
+    "latitude": 43.1007,
+    "longitude": -0.0412
+  },
+  {
+    "name": "Bagnères-de-Bigorre",
+    "departmentCode": "65",
+    "zip": "65200",
+    "latitude": 43.0436,
+    "longitude": 0.1648
+  },
+  {
+    "name": "Perpignan",
+    "departmentCode": "66",
+    "zip": "66000",
+    "latitude": 42.6886,
+    "longitude": 2.8946
+  },
+  {
+    "name": "Céret",
+    "departmentCode": "66",
+    "zip": "66400",
+    "latitude": 42.5756,
+    "longitude": 2.7639
+  },
+  {
+    "name": "Argelès-sur-Mer",
+    "departmentCode": "66",
+    "zip": "66700",
+    "latitude": 42.547,
+    "longitude": 3.0242
+  },
+  {
+    "name": "Strasbourg",
+    "departmentCode": "67",
+    "zip": "67000",
+    "latitude": 48.5734,
+    "longitude": 7.7521
+  },
+  {
+    "name": "Mulhouse",
+    "departmentCode": "68",
+    "zip": "68100",
+    "latitude": 47.7508,
+    "longitude": 7.3359
+  },
+  {
+    "name": "Colmar",
+    "departmentCode": "68",
+    "zip": "68000",
+    "latitude": 48.0798,
+    "longitude": 7.3582
+  },
+  {
+    "name": "Mulhouse",
+    "departmentCode": "68",
+    "zip": "68100",
+    "latitude": 47.7508,
+    "longitude": 7.3359
+  },
+  {
+    "name": "Lyon",
+    "departmentCode": "69",
+    "zip": "69000",
+    "latitude": 45.764,
+    "longitude": 4.8357
+  },
+  {
+    "name": "Villeurbanne",
+    "departmentCode": "69",
+    "zip": "69100",
+    "latitude": 45.7669,
+    "longitude": 4.8835
+  },
+  {
+    "name": "Vénissieux",
+    "departmentCode": "69",
+    "zip": "69200",
+    "latitude": 45.6333,
+    "longitude": 4.898
+  },
+  {
+    "name": "Gray",
+    "departmentCode": "70",
+    "zip": "70100",
+    "latitude": 47.3286,
+    "longitude": 5.4555
+  },
+  {
+    "name": "Luxeuil-les-Bains",
+    "departmentCode": "70",
+    "zip": "70300",
+    "latitude": 47.7858,
+    "longitude": 6.0341
+  },
+  {
+    "name": "Vesoul",
+    "departmentCode": "70",
+    "zip": "70000",
+    "latitude": 47.6227,
+    "longitude": 6.1591
+  },
+  {
+    "name": "Chalon-sur-Saône",
+    "departmentCode": "71",
+    "zip": "71100",
+    "latitude": 47.0305,
+    "longitude": 4.857
+  },
+  {
+    "name": "Macon",
+    "departmentCode": "71",
+    "zip": "71000",
+    "latitude": 46.3108,
+    "longitude": 4.8314
+  },
+  {
+    "name": "Montceau-les-Mines",
+    "departmentCode": "71",
+    "zip": "71300",
+    "latitude": 46.6758,
+    "longitude": 4.3839
+  },
+  {
+    "name": "Le Mans",
+    "departmentCode": "72",
+    "zip": "72000",
+    "latitude": 48.0061,
+    "longitude": 0.1996
+  },
+  {
+    "name": "La Flèche",
+    "departmentCode": "72",
+    "zip": "72200",
+    "latitude": 47.6685,
+    "longitude": -0.0862
+  },
+  {
+    "name": "Sablé-sur-Sarthe",
+    "departmentCode": "72",
+    "zip": "72300",
+    "latitude": 47.801,
+    "longitude": -0.3641
+  },
+  {
+    "name": "Chambéry",
+    "departmentCode": "73",
+    "zip": "73000",
+    "latitude": 45.5646,
+    "longitude": 5.9172
+  },
+  {
+    "name": "Albertville",
+    "departmentCode": "73",
+    "zip": "73200",
+    "latitude": 45.6105,
+    "longitude": 6.423
+  },
+  {
+    "name": "Saint-Jean-de-Maurienne",
+    "departmentCode": "73",
+    "zip": "73300",
+    "latitude": 45.2435,
+    "longitude": 6.3216
+  },
+  {
+    "name": "Annecy",
+    "departmentCode": "74",
+    "zip": "74000",
+    "latitude": 45.8992,
+    "longitude": 6.1294
+  },
+  {
+    "name": "Thonon-les-Bains",
+    "departmentCode": "74",
+    "zip": "74200",
+    "latitude": 46.3682,
+    "longitude": 6.4485
+  },
+  {
+    "name": "Evian-les-Bains",
+    "departmentCode": "74",
+    "zip": "74500",
+    "latitude": 46.4023,
+    "longitude": 6.5827
+  },
+  {
+    "name": "Paris",
+    "departmentCode": "75",
+    "zip": "75000",
+    "latitude": 48.8566,
+    "longitude": 2.3522
+  },
+  {
+    "name": "Boulogne-Billancourt",
+    "departmentCode": "75",
+    "zip": "92100",
+    "latitude": 48.8335,
+    "longitude": 2.2396
+  },
+  {
+    "name": "Saint-Denis",
+    "departmentCode": "75",
+    "zip": "93216",
+    "latitude": 48.9362,
+    "longitude": 2.3574
+  },
+  {
+    "name": "Rouen",
+    "departmentCode": "76",
+    "zip": "76000",
+    "latitude": 49.4432,
+    "longitude": 1.0999
+  },
+  {
+    "name": "Le Havre",
+    "departmentCode": "76",
+    "zip": "76600",
+    "latitude": 49.4944,
+    "longitude": 0.1079
+  },
+  {
+    "name": "Dieppe",
+    "departmentCode": "76",
+    "zip": "76200",
+    "latitude": 49.8982,
+    "longitude": 1.0756
+  },
+  {
+    "name": "Meaux",
+    "departmentCode": "77",
+    "zip": "77100",
+    "latitude": 48.9564,
+    "longitude": 2.8953
+  },
+  {
+    "name": "Chelles",
+    "departmentCode": "77",
+    "zip": "77500",
+    "latitude": 48.8574,
+    "longitude": 2.599
+  },
+  {
+    "name": "Melun",
+    "departmentCode": "77",
+    "zip": "77000",
+    "latitude": 48.5345,
+    "longitude": 2.6553
+  },
+  {
+    "name": "Versailles",
+    "departmentCode": "78",
+    "zip": "78000",
+    "latitude": 48.8049,
+    "longitude": 2.1204
+  },
+  {
+    "name": "Saint-Germain-en-Laye",
+    "departmentCode": "78",
+    "zip": "78100",
+    "latitude": 48.8952,
+    "longitude": 2.0883
+  },
+  {
+    "name": "Mantes-la-Jolie",
+    "departmentCode": "78",
+    "zip": "78200",
+    "latitude": 48.9855,
+    "longitude": 1.7032
+  },
+  {
+    "name": "Niort",
+    "departmentCode": "79",
+    "zip": "79000",
+    "latitude": 46.3236,
+    "longitude": -0.4634
+  },
+  {
+    "name": "Bressuire",
+    "departmentCode": "79",
+    "zip": "79300",
+    "latitude": 46.7491,
+    "longitude": -0.4828
+  },
+  {
+    "name": "Parthenay",
+    "departmentCode": "79",
+    "zip": "79200",
+    "latitude": 46.5855,
+    "longitude": -0.3353
+  },
+  {
+    "name": "Amiens",
+    "departmentCode": "80",
+    "zip": "80000",
+    "latitude": 49.8941,
+    "longitude": 2.302
+  },
+  {
+    "name": "Abbeville",
+    "departmentCode": "80",
+    "zip": "80100",
+    "latitude": 50.1008,
+    "longitude": 1.8351
+  },
+  {
+    "name": "Albert",
+    "departmentCode": "80",
+    "zip": "80300",
+    "latitude": 50.0055,
+    "longitude": 2.6505
+  },
+  {
+    "name": "Albi",
+    "departmentCode": "81",
+    "zip": "81000",
+    "latitude": 43.926,
+    "longitude": 2.1506
+  },
+  {
+    "name": "Castres",
+    "departmentCode": "81",
+    "zip": "81100",
+    "latitude": 43.604,
+    "longitude": 2.2495
+  },
+  {
+    "name": "Mazamet",
+    "departmentCode": "81",
+    "zip": "81200",
+    "latitude": 43.3673,
+    "longitude": 2.4304
+  },
+  {
+    "name": "Montauban",
+    "departmentCode": "82",
+    "zip": "82000",
+    "latitude": 44.0153,
+    "longitude": 1.355
+  },
+  {
+    "name": "Moissac",
+    "departmentCode": "82",
+    "zip": "82200",
+    "latitude": 44.0965,
+    "longitude": 1.0822
+  },
+  {
+    "name": "Castelsarrasin",
+    "departmentCode": "82",
+    "zip": "82100",
+    "latitude": 44.0726,
+    "longitude": 1.146
+  },
+  {
+    "name": "Toulon",
+    "departmentCode": "83",
+    "zip": "83000",
+    "latitude": 43.1242,
+    "longitude": 5.928
+  },
+  {
+    "name": "La Seyne-sur-Mer",
+    "departmentCode": "83",
+    "zip": "83500",
+    "latitude": 43.098,
+    "longitude": 5.8395
+  },
+  {
+    "name": "Hyères",
+    "departmentCode": "83",
+    "zip": "83400",
+    "latitude": 43.1212,
+    "longitude": 6.1032
+  },
+  {
+    "name": "Avignon",
+    "departmentCode": "84",
+    "zip": "84000",
+    "latitude": 43.9493,
+    "longitude": 4.8055
+  },
+  {
+    "name": "Carpentras",
+    "departmentCode": "84",
+    "zip": "84200",
+    "latitude": 44.0582,
+    "longitude": 5.0514
+  },
+  {
+    "name": "Cavaillon",
+    "departmentCode": "84",
+    "zip": "84300",
+    "latitude": 43.8367,
+    "longitude": 5.0526
+  },
+  {
+    "name": "La Roche-sur-Yon",
+    "departmentCode": "85",
+    "zip": "85000",
+    "latitude": 46.6708,
+    "longitude": -1.4336
+  },
+  {
+    "name": "Challans",
+    "departmentCode": "85",
+    "zip": "85300",
+    "latitude": 46.8416,
+    "longitude": -1.8677
+  },
+  {
+    "name": "Les Sables-d'Olonne",
+    "departmentCode": "85",
+    "zip": "85100",
+    "latitude": 46.4989,
+    "longitude": -1.7863
+  },
+  {
+    "name": "Poitiers",
+    "departmentCode": "86",
+    "zip": "86000",
+    "latitude": 46.5802,
+    "longitude": 0.3404
+  },
+  {
+    "name": "Châtellerault",
+    "departmentCode": "86",
+    "zip": "86100",
+    "latitude": 46.7911,
+    "longitude": 0.5117
+  },
+  {
+    "name": "Buxerolles",
+    "departmentCode": "86",
+    "zip": "86180",
+    "latitude": 46.5889,
+    "longitude": 0.3902
+  },
+  {
+    "name": "Limoges",
+    "departmentCode": "87",
+    "zip": "87000",
+    "latitude": 45.8312,
+    "longitude": 1.2622
+  },
+  {
+    "name": "Saint-Junien",
+    "departmentCode": "87",
+    "zip": "87200",
+    "latitude": 45.8855,
+    "longitude": 0.8276
+  },
+  {
+    "name": "Couzeix",
+    "departmentCode": "87",
+    "zip": "87200",
+    "latitude": 45.8555,
+    "longitude": 1.3062
+  },
+  {
+    "name": "Épinal",
+    "departmentCode": "88",
+    "zip": "88000",
+    "latitude": 48.1753,
+    "longitude": 6.444
+  },
+  {
+    "name": "Saint-Dié-des-Vosges",
+    "departmentCode": "88",
+    "zip": "88100",
+    "latitude": 48.3884,
+    "longitude": 6.9004
+  },
+  {
+    "name": "Golbey",
+    "departmentCode": "88",
+    "zip": "88190",
+    "latitude": 48.1574,
+    "longitude": 6.4556
+  },
+  {
+    "name": "Auxerre",
+    "departmentCode": "89",
+    "zip": "89000",
+    "latitude": 47.7971,
+    "longitude": 3.5706
+  },
+  {
+    "name": "Sens",
+    "departmentCode": "89",
+    "zip": "89100",
+    "latitude": 48.1947,
+    "longitude": 3.2965
+  },
+  {
+    "name": "Joigny",
+    "departmentCode": "89",
+    "zip": "89300",
+    "latitude": 47.9334,
+    "longitude": 3.2805
+  },
+  {
+    "name": "Belfort",
+    "departmentCode": "90",
+    "zip": "90000",
+    "latitude": 47.6385,
+    "longitude": 6.861
+  },
+  {
+    "name": "Danjoutin",
+    "departmentCode": "90",
+    "zip": "90400",
+    "latitude": 47.5982,
+    "longitude": 6.8702
+  },
+  {
+    "name": "Montbéliard",
+    "departmentCode": "90",
+    "zip": "25200",
+    "latitude": 47.5115,
+    "longitude": 6.9058
+  },
+  {
+    "name": "Évry",
+    "departmentCode": "91",
+    "zip": "91000",
+    "latitude": 48.6081,
+    "longitude": 2.4405
+  },
+  {
+    "name": "Corbeil-Essonnes",
+    "departmentCode": "91",
+    "zip": "91100",
+    "latitude": 48.6041,
+    "longitude": 2.4588
+  },
+  {
+    "name": "Savigny-sur-Orge",
+    "departmentCode": "91",
+    "zip": "91600",
+    "latitude": 48.6572,
+    "longitude": 2.372
+  },
+  {
+    "name": "Nanterre",
+    "departmentCode": "92",
+    "zip": "92000",
+    "latitude": 48.8926,
+    "longitude": 2.2067
+  },
+  {
+    "name": "Courbevoie",
+    "departmentCode": "92",
+    "zip": "92400",
+    "latitude": 48.8952,
+    "longitude": 2.2397
+  },
+  {
+    "name": "Colombes",
+    "departmentCode": "92",
+    "zip": "92700",
+    "latitude": 48.9253,
+    "longitude": 2.2529
+  },
+  {
+    "name": "Bobigny",
+    "departmentCode": "93",
+    "zip": "93000",
+    "latitude": 48.9052,
+    "longitude": 2.4458
+  },
+  {
+    "name": "Saint-Denis",
+    "departmentCode": "93",
+    "zip": "93200",
+    "latitude": 48.9362,
+    "longitude": 2.3574
+  },
+  {
+    "name": "Aubervilliers",
+    "departmentCode": "93",
+    "zip": "93300",
+    "latitude": 48.9022,
+    "longitude": 2.431
+  },
+  {
+    "name": "Créteil",
+    "departmentCode": "94",
+    "zip": "94000",
+    "latitude": 48.7897,
+    "longitude": 2.4609
+  },
+  {
+    "name": "Vitry-sur-Seine",
+    "departmentCode": "94",
+    "zip": "94400",
+    "latitude": 48.796,
+    "longitude": 2.4076
+  },
+  {
+    "name": "Maisons-Alfort",
+    "departmentCode": "94",
+    "zip": "94700",
+    "latitude": 48.8151,
+    "longitude": 2.425
+  },
+  {
+    "name": "Cesson",
+    "departmentCode": "95",
+    "zip": "95000",
+    "latitude": 49.0127,
+    "longitude": 2.0311
+  },
+  {
+    "name": "Argenteuil",
+    "departmentCode": "95",
+    "zip": "95100",
+    "latitude": 48.9511,
+    "longitude": 2.2365
+  },
+  {
+    "name": "Sarcelles",
+    "departmentCode": "95",
+    "zip": "95200",
+    "latitude": 48.9674,
+    "longitude": 2.337
+  },
+  {
+    "name": "Basse-Terre",
+    "departmentCode": "971",
+    "zip": "97100",
+    "latitude": 15.9664,
+    "longitude": -61.721
+  },
+  {
+    "name": "Pointe-à-Pitre",
+    "departmentCode": "971",
+    "zip": "97110",
+    "latitude": 16.2415,
+    "longitude": -61.532
+  },
+  {
+    "name": "Les Abymes",
+    "departmentCode": "971",
+    "zip": "97139",
+    "latitude": 16.2653,
+    "longitude": -61.5072
+  },
+  {
+    "name": "Fort-de-France",
+    "departmentCode": "972",
+    "zip": "97200",
+    "latitude": 14.6019,
+    "longitude": -61.0674
+  },
+  {
+    "name": "Le Lamentin",
+    "departmentCode": "972",
+    "zip": "97232",
+    "latitude": 14.6118,
+    "longitude": -61.0546
+  },
+  {
+    "name": "Saint-Martin",
+    "departmentCode": "973",
+    "zip": "97300",
+    "latitude": 5.8837,
+    "longitude": -63.0528
+  },
+  {
+    "name": "Cayenne",
+    "departmentCode": "973",
+    "zip": "97300",
+    "latitude": 4.9229,
+    "longitude": -52.3292
+  },
+  {
+    "name": "Saint-Denis",
+    "departmentCode": "974",
+    "zip": "97400",
+    "latitude": -20.8786,
+    "longitude": 55.4481
+  },
+  {
+    "name": "Saint-Paul",
+    "departmentCode": "974",
+    "zip": "97460",
+    "latitude": -20.9511,
+    "longitude": 55.2132
+  },
+  {
+    "name": "Mamoudzou",
+    "departmentCode": "976",
+    "zip": "97600",
+    "latitude": -12.7811,
+    "longitude": 45.2284
+  },
+  {
+    "name": "Bruxelles",
+    "departmentCode": "BRU",
+    "zip": "1000",
+    "latitude": 50.8467,
+    "longitude": 4.3499
+  },
+  {
+    "name": "Anvers",
+    "departmentCode": "ANT",
+    "zip": "2000",
+    "latitude": 51.2211,
+    "longitude": 4.421
+  },
+  {
+    "name": "Hasselt",
+    "departmentCode": "LIM",
+    "zip": "3500",
+    "latitude": 50.95,
+    "longitude": 5.2933
+  },
+  {
+    "name": "Gand",
+    "departmentCode": "OFL",
+    "zip": "9000",
+    "latitude": 51.0504,
+    "longitude": 3.7107
+  },
+  {
+    "name": "Louvain",
+    "departmentCode": "VBR",
+    "zip": "3000",
+    "latitude": 50.888,
+    "longitude": 4.7034
+  },
+  {
+    "name": "Ottignies-Louvain-la-Neuve",
+    "departmentCode": "WBR",
+    "zip": "1340",
+    "latitude": 50.6057,
+    "longitude": 4.5404
+  },
+  {
+    "name": "Namur",
+    "departmentCode": "NAM",
+    "zip": "5000",
+    "latitude": 50.4671,
+    "longitude": 4.8718
+  },
+  {
+    "name": "Liège",
+    "departmentCode": "LIE",
+    "zip": "4000",
+    "latitude": 50.6055,
+    "longitude": 5.5706
+  },
+  {
+    "name": "Mons",
+    "departmentCode": "HAI",
+    "zip": "7000",
+    "latitude": 50.4543,
+    "longitude": 3.959
+  },
+  {
+    "name": "Arlon",
+    "departmentCode": "LUX",
+    "zip": "6700",
+    "latitude": 49.683,
+    "longitude": 5.579
+  }
+]

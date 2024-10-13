@@ -1,0 +1,484 @@
+[
+  {
+    "name": "Architecture",
+    "description": "Structures construites pour un usage humain, allant des bâtiments anciens aux bâtiments modernes.",
+    "associatedTypes": [
+      {
+        "name": "Bâtiment",
+        "description": "Une structure avec des murs et un toit."
+      },
+      {
+        "name": "Pont",
+        "description": "Une structure construite pour enjamber un obstacle physique."
+      },
+      {
+        "name": "Monument",
+        "description": "Une statue, un bâtiment ou une autre structure érigée pour commémorer une personne ou un événement notable."
+      },
+      {
+        "name": "Statue",
+        "description": "Une représentation tridimensionnelle d'une personne ou d'un animal, souvent sculptée dans la pierre ou le métal."
+      },
+      {
+        "name": "Tour",
+        "description": "Un bâtiment ou une structure haute et étroite souvent utilisée pour l'observation ou comme poste de guet."
+      },
+      {
+        "name": "Château",
+        "description": "Un grand bâtiment fortifié ou un complexe, généralement utilisé comme résidence et structure défensive."
+      },
+      {
+        "name": "Fontaine",
+        "description": "Une structure décorative où l'eau coule ou est pompée pour un affichage public."
+      },
+      {
+        "name": "Jardin",
+        "description": "Un espace extérieur conçu, souvent avec des plantes, des fleurs et des éléments ornementaux."
+      }
+    ]
+  },
+  {
+    "name": "Art",
+    "description": "Œuvres créatives qui expriment l'imagination et l'habileté de l'artiste.",
+    "associatedTypes": [
+      {
+        "name": "Peinture",
+        "description": "Une œuvre d'art créée en appliquant du pigment sur une surface."
+      },
+      {
+        "name": "Vase",
+        "description": "Un récipient décoratif, souvent utilisé pour contenir des fleurs, et généralement fabriqué en céramique ou en verre."
+      },
+      {
+        "name": "Sculpture",
+        "description": "Une œuvre d'art tridimensionnelle créée en façonnant des matériaux."
+      },
+      {
+        "name": "Drawing",
+        "description": "Une forme d'art visuel qui consiste à marquer une surface pour créer une image."
+      },
+      {
+        "name": "Photography",
+        "description": "L'art ou la pratique de capturer des images à l'aide d'un appareil photo."
+      },
+      {
+        "name": "Installation",
+        "description": "Une œuvre tridimensionnelle qui transforme un espace et engage le spectateur."
+      },
+      {
+        "name": "Abstract Art",
+        "description": "Une forme d'art qui utilise des formes, des couleurs et des formes pour atteindre son effet sans représenter des objets physiques."
+      },
+      {
+        "name": "Mosaic",
+        "description": "Une œuvre d'art ou une image réalisée à partir de l'assemblage de petits morceaux de verre coloré, de pierre ou d'autres matériaux."
+      },
+      {
+        "name": "Fresco",
+        "description": "Une technique de peinture murale impliquant l'application de pigment sur du plâtre humide."
+      },
+      {
+        "name": "Still Life",
+        "description": "Une œuvre d'art représentant principalement des objets inanimés, généralement arrangés dans une composition."
+      },
+      {
+        "name": "Poster",
+        "description": "Une œuvre d'art imprimée ou une publicité conçue pour être attachée à un mur ou une surface verticale."
+      },
+      {
+        "name": "Self-Portrait",
+        "description": "Une représentation artistique de l'artiste créée par lui-même."
+      },
+      {
+        "name": "Pastels",
+        "description": "Une œuvre d'art réalisée à l'aide de craies ou de crayons colorés."
+      }
+    ]
+  },
+  {
+    "name": "Histoire",
+    "description": "Objets liés à des événements et périodes passés.",
+    "associatedTypes": [
+      {
+        "name": "Artéfact",
+        "description": "Un objet fabriqué ou utilisé par des humains, généralement d'intérêt historique ou culturel."
+      },
+      {
+        "name": "Document",
+        "description": "Un papier écrit ou imprimé qui fournit des informations ou des preuves."
+      },
+      {
+        "name": "Photographie",
+        "description": "Une représentation visuelle d'une personne, d'un lieu ou d'un événement du passé."
+      },
+      {
+        "name": "Stèle",
+        "description": "Une dalle de pierre ou de bois, souvent utilisée comme monument ou marqueur, inscrite avec du texte ou des gravures."
+      },
+      {
+        "name": "Fossile",
+        "description": "Les restes ou l'empreinte d'un organisme préhistorique conservé dans la roche."
+      },
+      {
+        "name": "Carte",
+        "description": "Une représentation visuelle d'une zone montrant les caractéristiques physiques et les points de repère."
+      },
+      {
+        "name": "Pièces de monnaie",
+        "description": "Des morceaux de métal historiquement significatifs utilisés dans le commerce, souvent marqués de symboles ou de figures du passé."
+      },
+      {
+        "name": "Squelette",
+        "description": "Une structure faite d'os, représentant un squelette complet ou partiel d'un organisme."
+      },
+      {
+        "name": "Dossier",
+        "description": "Une collection de documents, photos et enregistrements associés à une affaire historique ou juridique."
+      }
+    ]
+  },
+  {
+    "name": "Science",
+    "description": "Objets liés à l'étude et à la recherche scientifiques.",
+    "associatedTypes": [
+      {
+        "name": "Spécimen",
+        "description": "Un échantillon de matière utilisé pour l'étude scientifique."
+      },
+      {
+        "name": "Modèle",
+        "description": "Une représentation tridimensionnelle d'un objet ou d'un concept."
+      },
+      {
+        "name": "Instrument",
+        "description": "Un outil utilisé pour la mesure ou l'expérimentation scientifique."
+      },
+      {
+        "name": "Publication",
+        "description": "Un ouvrage écrit qui diffuse des connaissances scientifiques ou des résultats de recherche."
+      },
+      {
+        "name": "Ensemble de données",
+        "description": "Une collection de données liées utilisées pour l'analyse et l'interprétation."
+      },
+      {
+        "name": "Moteur",
+        "description": "Une machine conçue pour convertir l'énergie en travail mécanique."
+      },
+      {
+        "name": "Bicyclette",
+        "description": "Un véhicule à propulsion humaine avec deux roues en tandem."
+      },
+      {
+        "name": "Appareil photo",
+        "description": "Un dispositif utilisé pour capturer des images, soit sous forme de photographies, soit sous forme de vidéos."
+      },
+      {
+        "name": "Instrument scientifique",
+        "description": "Outils utilisés dans la pratique de la recherche scientifique, tels que les microscopes et les télescopes."
+      }
+    ]
+  },
+  {
+    "name": "Éducation & Connaissance",
+    "description": "Objets liés à la diffusion et à l'acquisition de connaissances, utilisés dans l'enseignement, l'apprentissage et la recherche.",
+    "associatedTypes": [
+      {
+        "name": "Livre",
+        "description": "Un ouvrage écrit ou imprimé destiné à fournir des informations, raconter des histoires ou diffuser des connaissances."
+      }
+    ]
+  },
+  {
+    "name": "Culture",
+    "description": "Objets qui reflètent les traditions et les pratiques d'une communauté ou d'une société.",
+    "associatedTypes": [
+      {
+        "name": "Textile",
+        "description": "Un type de tissu ou de toile, souvent fait à la main et culturellement significatif."
+      },
+      {
+        "name": "Objet de cérémonie",
+        "description": "Objets utilisés dans les rituels et cérémonies culturels."
+      },
+      {
+        "name": "Instrument de musique",
+        "description": "Un dispositif utilisé pour produire des sons musicaux."
+      },
+      {
+        "name": "Artisanat",
+        "description": "Un objet fabriqué à la main, souvent reflétant les traditions locales."
+      },
+      {
+        "name": "Vêtements traditionnels",
+        "description": "Vêtements caractéristiques d'une culture ou d'une communauté particulière."
+      },
+      {
+        "name": "Costume",
+        "description": "Un ensemble de vêtements portés pour une occasion ou un rôle particulier, souvent lors de performances ou de cérémonies."
+      },
+      {
+        "name": "Coiffure",
+        "description": "Une couverture cérémoniale ou symbolique pour la tête, souvent portée lors d'événements importants."
+      },
+      {
+        "name": "Cape",
+        "description": "Un vêtement ample porté sur les épaules, souvent avec une capuche, utilisé pour la chaleur ou à des fins cérémonielles."
+      },
+      {
+        "name": "Robe",
+        "description": "Un long vêtement fluide porté à des fins cérémonielles, religieuses ou formelles."
+      },
+      {
+        "name": "Uniforme",
+        "description": "Un ensemble spécifique de vêtements portés par les membres d'une organisation, signifiant souvent le rang ou la profession."
+      }
+    ]
+  },
+  {
+    "name": "Armes et Armures",
+    "description": "Objets utilisés pour le combat ou la défense, historiquement et à l'époque moderne.",
+    "associatedTypes": [
+      {
+        "name": "Épée",
+        "description": "Une arme tranchante utilisée pour couper ou percer."
+      },
+      {
+        "name": "Arc",
+        "description": "Une arme à distance qui tire des flèches, généralement fabriquée en bois ou en matériaux composites."
+      },
+      {
+        "name": "Bouclier",
+        "description": "Un dispositif de protection utilisé pour bloquer les attaques."
+      },
+      {
+        "name": "Lance",
+        "description": "Une arme à long manche avec une pointe, utilisée pour percer."
+      },
+      {
+        "name": "Fusil",
+        "description": "Une arme à feu conçue pour tirer des projectiles, généralement des balles."
+      },
+      {
+        "name": "Hache",
+        "description": "Une arme avec une tête lourde et tranchante montée sur un manche, utilisée pour couper."
+      },
+      {
+        "name": "Canon",
+        "description": "Un gros canon d'artillerie lourd qui tire des projectiles."
+      },
+      {
+        "name": "Revolver",
+        "description": "Un type de pistolet avec un cylindre rotatif contenant plusieurs chambres pour les balles."
+      },
+      {
+        "name": "Drapeau",
+        "description": "Un morceau de tissu, souvent avec des motifs distinctifs, utilisé comme symbole pour un groupe ou une nation."
+      },
+      {
+        "name": "Médaille",
+        "description": "Un petit disque en métal décerné pour des réalisations dans la vie militaire ou civile."
+      },
+      {
+        "name": "Masque",
+        "description": "Une couverture pour le visage, souvent utilisée pour la protection, la performance ou des fins cérémonielles."
+      },
+      {
+        "name": "Armure",
+        "description": "Une couverture protectrice portée par les soldats ou les guerriers pour se défendre contre les armes."
+      },
+      {
+        "name": "Casque",
+        "description": "Une pièce d'armure qui protège la tête."
+      }
+    ]
+  },
+  {
+    "name": "Furniture",
+    "description": "Moveable items used to make a room or space suitable for living or working, often decorative as well as functional.",
+    "associatedTypes": [
+      {
+        "name": "Chair",
+        "description": "A piece of furniture designed to seat one person, typically with four legs and a backrest."
+      },
+      {
+        "name": "Chandelier",
+        "description": "A decorative hanging light fixture, often made of crystal or glass."
+      },
+      {
+        "name": "Chest",
+        "description": "A large, sturdy box used for storage, often decorative and made of wood or metal."
+      },
+      {
+        "name": "Cabinet",
+        "description": "A piece of furniture with shelves or drawers for storing or displaying items."
+      },
+      {
+        "name": "Carpet",
+        "description": "A thick floor covering made of woven fabric or fibers."
+      },
+      {
+        "name": "Lamp",
+        "description": "A household object used for illumination, often decorative in nature."
+      }
+    ]
+  },
+  {
+    "name": "Mobilier",
+    "description": "Articles mobiles utilisés pour rendre une pièce ou un espace adapté à la vie ou au travail, souvent décoratifs et fonctionnels.",
+    "associatedTypes": [
+      {
+        "name": "Chaise",
+        "description": "Un meuble conçu pour asseoir une personne, généralement avec quatre pieds et un dossier."
+      },
+      {
+        "name": "Chandelier",
+        "description": "Un luminaire suspendu décoratif, souvent en cristal ou en verre."
+      },
+      {
+        "name": "Coffre",
+        "description": "Une grande boîte robuste utilisée pour le stockage, souvent décorative et en bois ou en métal."
+      },
+      {
+        "name": "Armoire",
+        "description": "Un meuble avec des étagères ou des tiroirs pour ranger ou exposer des objets."
+      },
+      {
+        "name": "Tapis",
+        "description": "Un revêtement de sol épais fait de tissu ou de fibres tissées."
+      },
+      {
+        "name": "Lampe",
+        "description": "Un objet ménager utilisé pour l'éclairage, souvent de nature décorative."
+      }
+    ]
+  },
+  {
+    "name": "Textile",
+    "description": "Articles fabriqués à partir de tissu, souvent utilisés pour les vêtements, la décoration ou des fins fonctionnelles.",
+    "associatedTypes": [ 
+      {
+        "name": "Tissu",
+        "description": "Un matériau fait de fils tissés ou tricotés."
+      },
+      {
+        "name": "Tapisserie",
+        "description": "Un grand tissu décoratif avec des motifs complexes, souvent accroché aux murs."
+      },
+      {
+        "name": "Vêtements",
+        "description": "Des vêtements portés par les individus pour la protection, la décoration ou la modestie."
+      },
+      {
+        "name": "Tapis",
+        "description": "Un textile épais placé sur le sol, souvent pour le confort ou la décoration."
+      },
+      {
+        "name": "Broderie",
+        "description": "Travail d'aiguille décoratif cousu dans le tissu pour créer des motifs ou des dessins."
+      },
+      {
+        "name": "Courtepointe",
+        "description": "Un textile en couches, souvent fait de morceaux cousus, utilisé pour la chaleur ou la décoration."
+      },
+      {
+        "name": "Gant",
+        "description": "Une couverture pour la main, souvent faite de tissu ou de cuir."
+      }
+    ]
+  },
+  {
+    "name": "Regalia",
+    "description": "Articles d'importance cérémonielle ou symbolique, représentant souvent le pouvoir ou l'autorité royale.",
+    "associatedTypes": [
+      {
+        "name": "Couronne",
+        "description": "Un couvre-chef symbolique porté par les monarques pour représenter leur autorité et leur pouvoir."
+      },
+      {
+        "name": "Sceptre",
+        "description": "Un bâton cérémoniel tenu par les monarques, symbolisant l'autorité et la souveraineté."
+      },
+      {
+        "name": "Orbe",
+        "description": "Un objet sphérique représentant le pouvoir royal sur le monde, souvent porté lors des cérémonies de couronnement."
+      }
+    ]
+  },
+  {
+    "name": "Bijoux",
+    "description": "Articles ornementaux portés pour la parure personnelle, souvent fabriqués à partir de métaux précieux et de pierres précieuses.",
+    "associatedTypes": [
+      {
+        "name": "Tiare",
+        "description": "Un ornement de tête en forme de couronne, généralement porté lors d'événements formels ou par la royauté."
+      },
+      {
+        "name": "Collier",
+        "description": "Une chaîne ornementale ou un cordon de perles, de bijoux ou de maillons porté autour du cou."
+      },
+      {
+        "name": "Bague",
+        "description": "Un anneau circulaire porté au doigt, souvent utilisé pour signifier des relations personnelles, un statut ou une autorité."
+      },
+      {
+        "name": "Bracelet",
+        "description": "Un bijou porté autour du poignet, souvent fabriqué à partir de métaux précieux ou orné de pierres précieuses."
+      },
+      {
+        "name": "Bijoux",
+        "description": "Articles décoratifs tels que des bagues, des colliers et des bracelets portés pour la parure ou à des fins symboliques."
+      }
+    ]
+  },
+  {
+    "name": "Céramique & Poterie",
+    "description": "Articles fabriqués à partir d'argile et d'autres matériaux, cuits à haute température pour créer des objets durables à usage fonctionnel ou décoratif.",
+    "associatedTypes": [
+      {
+        "name": "Porcelaine",
+        "description": "Un matériau céramique fin et blanc connu pour sa durabilité et souvent utilisé pour fabriquer des assiettes, des bols et des articles décoratifs."
+      }
+    ]
+  },
+  {
+    "name": "Littérature",
+    "description": "Œuvres écrites qui transmettent des histoires, des idées ou des instructions.",
+    "associatedTypes": [
+      {
+        "name": "Scénario",
+        "description": "Un script écrit pour une production cinématographique ou télévisuelle, détaillant les dialogues, les actions et les scènes."
+      }
+    ]
+  },
+  {
+    "name": "Paléontologie",
+    "description": "L'étude des formes de vie préhistoriques, principalement à travers l'analyse des fossiles.",
+    "associatedTypes": [
+      {
+        "name": "Squelette de dinosaure",
+        "description": "Les restes fossilisés d'un dinosaure préhistorique, souvent reconstruits pour être exposés."
+      }
+    ]
+  },
+  {
+    "name": "Technologie",
+    "description": "Objets utilisés pour accomplir des tâches, souvent conçus pour améliorer l'efficacité ou la précision.",
+    "associatedTypes": [
+      {
+        "name": "Outils",
+        "description": "Objets utilisés pour effectuer des tâches spécifiques, souvent pour le travail manuel ou la construction."
+      }
+    ]
+  },
+  {
+    "name": "Jouets & Jeux",
+    "description": "Objets utilisés pour le divertissement, le jeu ou des fins éducatives, souvent conçus pour les enfants.",
+    "associatedTypes": [
+      {
+        "name": "Poupée",
+        "description": "Un petit modèle de figure humaine, souvent utilisé comme jouet pour les enfants ou à des fins d'exposition."
+      }
+    ]
+  }
+]

@@ -74,7 +74,7 @@ export class ItemsController {
       ['id', 'name', 'description', 'itemType', 'createdAt'],
       'id'
     );
-    
+
     const data = await this.itemsService.findAll(
       request.user.activeProfile.role,
       filters,

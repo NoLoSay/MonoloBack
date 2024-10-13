@@ -12,21 +12,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-generator markdown {
-  provider = "prisma-markdown"
-  output   = "../../../../../docs/prisma/ERD.md"
-  title    = "NoLoSay Database ERD"
-}
+// generator markdown {
+//   provider = "prisma-markdown"
+//   output   = "../../../../../docs/prisma/ERD.md"
+//   title    = "NoLoSay Database ERD"
+// }
 
-generator docs {
-  provider = "node node_modules/prisma-docs-generator"
-  output   = "../../../../../docs/prisma/generated-docs"
-}
+// generator docs {
+//   provider = "node node_modules/prisma-docs-generator"
+//   output   = "../../../../../docs/prisma/generated-docs"
+// }
 
-generator dbml {
-  provider = "prisma-dbml-generator"
-  output   = "../../../../../docs/prisma/dbml"
-}
+// generator dbml {
+//   provider = "prisma-dbml-generator"
+//   output   = "../../../../../docs/prisma/dbml"
+// }
 
 // ----------------------------------
 // ---------- Localization ----------
@@ -139,8 +139,7 @@ model City {
   /// The addresses within the city.
   addresses Address[]
 
-  @@unique([name, departmentId])
-  @@unique([zip, departmentId])
+  @@unique([name, zip, departmentId])
 }
 
 /// @namespace Localization
@@ -426,8 +425,23 @@ enum PersonType {
   /// A scientist.
   SCIENTIST
 
-  /// A celebrity.
-  CELEBRITY
+  /// A royalty.
+  ROYALTY
+
+  /// A performer.
+  PERFORMER
+
+  /// A leader.
+  LEADER
+
+  /// An inventor.
+  INVENTOR
+
+  /// An artisan.
+  ARTISAN
+
+  /// An architect
+  ARCHITECT
 
   /// Other types of persons.
   OTHER
@@ -566,10 +580,10 @@ model Item {
   relatedPersonId Int?
 
   /// The ID of the site where the item is located.
-  siteId Int?
+  siteId Int
 
   /// The site where the item is located.
-  site Site? @relation(fields: [siteId], references: [id])
+  site Site @relation(fields: [siteId], references: [id])
 
   /// The item type to which the item belongs.
   itemType ItemType? @relation(fields: [itemTypeId], references: [id])
@@ -775,6 +789,15 @@ enum SiteType {
 
   /// A public place site.
   PUBLIC_PLACE
+
+  /// A castle site.
+  CASTLE
+
+  /// A monument site.
+  MONUMENT
+
+  /// A park site.
+  GARDEN
 
   /// Other types of sites.
   OTHER

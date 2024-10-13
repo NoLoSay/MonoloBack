@@ -1,95 +1,44 @@
-import {
-  City,
-  Country,
-  Department,
-  PrismaClient as PrismaBaseClient,
-} from '@prisma/client/base';
+import { PrismaClient as PrismaBaseClient } from '@prisma/client/base'
+import * as fs from 'fs'
 
-const prisma = new PrismaBaseClient();
+const prisma = new PrismaBaseClient()
 
-export async function seedCities(
-  countries: Country[],
-  department: Department[]
-) {
-  let cities: City[] = [];
+export async function seedCities () {
+  const departments = await prisma.department.findMany()
 
-  const france = countries.find((country) => country.code === 'FR');
-  if (france) {
-    const loireAtlantique = department.find(
-      (department) => department.code === '44'
-    );
-    if (loireAtlantique) {
-      cities.push(
-        await prisma.city.upsert({
-          where: {
-            name_departmentId: {
-              name: 'Nantes',
-              departmentId: loireAtlantique.id,
+  let cities: any[] = []
+
+  const rawData = fs.readFileSync('seed/datas/cities.json', 'utf-8')
+  const citiesData = JSON.parse(rawData)
+
+  for (const cityData of citiesData) {
+    const department = departments.find(d => d.code === cityData.departmentCode)
+    if (department) {
+      try {
+        cities.push(
+          await prisma.city.upsert({
+            where: {
+              name_zip_departmentId : {
+                name: cityData.name,
+                zip: cityData.zip,
+                departmentId: department.id
+              }
             },
-          },
-          update: {},
-          create: {
-            name: 'Nantes',
-            departmentId: loireAtlantique.id,
-            zip: '44000',
-            latitude: 47.2186371,
-            longitude: -1.5541362,
-          },
-        })
-      );
-    }
-
-    const parisDepartment = department.find(
-      (department) => department.code === '75'
-    );
-    if (parisDepartment) {
-      cities.push(
-        await prisma.city.upsert({
-          where: {
-            name_departmentId: {
-              name: 'Paris',
-              departmentId: parisDepartment.id,
-            },
-          },
-          update: {},
-          create: {
-            name: 'Paris',
-            departmentId: parisDepartment.id,
-            zip: '75000',
-            latitude: 48.8588897,
-            longitude: 2.320041,
-          },
-        })
-      );
+            update: {},
+            create: {
+              name: cityData.name,
+              departmentId: department.id,
+              latitude: cityData.latitude,
+              longitude: cityData.longitude,
+              zip: cityData.zip
+            }
+          })
+        )
+      } catch (e) {
+        console.error(e, cityData)
+      }
     }
   }
 
-  const belgium = countries.find((country) => country.code === 'BE');
-  if (belgium) {
-    const bruxellesCapitale = department.find(
-      (department) => department.code === 'Bruxelles-Capitale'
-    );
-    if (bruxellesCapitale) {
-      cities.push(
-        await prisma.city.upsert({
-          where: {
-            name_departmentId: {
-              name: 'Bruxelles',
-              departmentId: bruxellesCapitale.id,
-            },
-          },
-          update: {},
-          create: {
-            name: 'Bruxelles',
-            departmentId: bruxellesCapitale.id,
-            zip: '1000',
-            latitude: 50.8465573,
-            longitude: 4.351697,
-          },
-        })
-      );
-    }
-  }
-
-  return cities;
+  return cities
 }
