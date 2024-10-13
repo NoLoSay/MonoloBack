@@ -34,6 +34,7 @@ abstract class VideoDefaultSelect {
     }
   }
   item: object | undefined = undefined
+  showcased: boolean = true
   postedBy: object | undefined = undefined
 }
 

@@ -671,6 +671,9 @@ model Video {
   /// The ID of the item associated with the video.
   itemId Int
 
+  /// Indicates whether the video is currently being showcased.
+  showcased Boolean @default(false)
+
   /// The ID of the profile that posted the video.
   profileId Int
 

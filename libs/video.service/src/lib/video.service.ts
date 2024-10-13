@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Redirect,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ReadStream, createReadStream, readFileSync, unlink } from 'fs';
 import {
@@ -89,6 +90,39 @@ export class VideoService {
     this.youtube = google.youtube({
       version: 'v3',
       auth: this.auth,
+    });
+  }
+
+  async updateVideoShowcased(user: UserRequestModel, id: number, showcased: any) {
+    showcased = showcased === 'true' || showcased === true;
+
+    if (user.activeProfile.role === Role.MANAGER) {
+      const video = await this.prismaBase.video.findFirst({
+        where: {
+          id: +id,
+        },
+      });
+      if (!video) {
+        throw new NotFoundException('Video not found');
+      }
+
+      const site = await this.prismaBase.site.findFirst({ where: { items: {some: { id: +video?.itemId} } }});
+      if (!site) {
+        throw new InternalServerErrorException('The item owning this video is not linked to a site');
+      }
+
+      if (!(await this.sitesManagersService.isAllowedToModify(user, site.id))) {
+        throw new UnauthorizedException('You are not allowed to modify this resource');
+      }
+    }
+
+    return await this.prismaBase.video.update({
+      where: {
+        id: +id,
+      },
+      data: {
+        showcased: showcased,
+      },
     });
   }
 

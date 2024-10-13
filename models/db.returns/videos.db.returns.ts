@@ -35,6 +35,7 @@ export abstract class VideoDefaultDbReturn {
   createdAt: Date = new Date()
   likedBy: UserLikeVideo[] = []
   item: Item | undefined = undefined
+  showcased: boolean = false
   postedBy: Profile | undefined = undefined
 }
 

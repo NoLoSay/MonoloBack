@@ -36,6 +36,7 @@ abstract class VideoDefaultReturn {
   createdAt: Date = new Date()
   likedBy: User[] = []
   item: Item | undefined = undefined
+  showcased: boolean = false
   postedBy: User | undefined = undefined
 
   constructor (dbReturn: VideoDefaultDbReturn) {
@@ -48,6 +49,7 @@ abstract class VideoDefaultReturn {
     this.createdAt = dbReturn.createdAt
     this.likedBy = dbReturn.likedBy.map(like => like.User)
     this.item = dbReturn.item ?? undefined
+    this.showcased = dbReturn.showcased
     this.postedBy = dbReturn.postedBy?.user ?? undefined
   }
 }
