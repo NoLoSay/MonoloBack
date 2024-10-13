@@ -152,7 +152,7 @@ export class VideoController {
     );
   }
 
-  @Roles([ADMIN, MODERATOR, MANAGER])
+  @Roles([ADMIN, MANAGER])
   @Put(':id/showcased')
   @HttpCode(200)
   async updateShowcased(
@@ -169,7 +169,7 @@ export class VideoController {
     );
 
     return await this.videoservice.updateVideoShowcased(
-      request.user.activeProfile,
+      request.user,
       +id,
       showcased
     );

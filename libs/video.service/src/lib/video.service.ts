@@ -93,10 +93,10 @@ export class VideoService {
     });
   }
 
-  async updateVideoShowcased(profile: any, id: number, showcased: any) {
+  async updateVideoShowcased(user: UserRequestModel, id: number, showcased: any) {
     showcased = showcased === 'true' || showcased === true;
 
-    if (profile.role === Role.MANAGER) {
+    if (user.activeProfile.role === Role.MANAGER) {
       const video = await this.prismaBase.video.findFirst({
         where: {
           id: +id,
@@ -108,18 +108,11 @@ export class VideoService {
 
       const site = await this.prismaBase.site.findFirst({ where: { items: {some: { id: +video?.itemId} } }});
       if (!site) {
-        throw new InternalServerErrorException('Video not linked to a site');
+        throw new InternalServerErrorException('The item owning this video is not linked to a site');
       }
 
-      const siteHasManagers = await this.prismaBase.siteHasManager.findFirst({
-        where: {
-          profileId: +profile.id,
-          siteId: (await this.prismaBase.site.findFirst({ where: { items: {some: { id: +video?.itemId} } }}))?.id,
-        },
-      });
-
-      if (!siteHasManagers) {
-        throw new UnauthorizedException('You are not a manager of this site');
+      if (!(await this.sitesManagersService.isAllowedToModify(user, site.id))) {
+        throw new UnauthorizedException('You are not allowed to modify this resource');
       }
     }
 
