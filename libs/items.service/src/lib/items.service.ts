@@ -331,7 +331,8 @@ export class ItemsService {
             validationStatus: 'VALIDATED'
           }
         }
-      }
+      },
+      select: new ItemCommonSelect()
     })
     return items as ItemCommonReturn
   }
