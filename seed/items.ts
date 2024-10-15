@@ -59,6 +59,12 @@ export async function newSeedItems (): Promise<Item[]> {
                   deathDate: itemData.relatedPerson.deathDate
                 }
               }
+            : undefined,
+            pictures: itemData.pictures ? {
+              create: itemData.pictures.map((picture: {hostingUrl: string}) => ({
+                hostingUrl: picture.hostingUrl
+              }))
+            }
             : undefined
         }
       })
