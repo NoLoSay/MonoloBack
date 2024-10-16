@@ -11,7 +11,7 @@
     },
     "relatedPerson": {
       "name": "Anne de Bretagne",
-      "type": "Personnalité historique",
+      "type": "ARTIST",
       "bio": "Duchesse de Bretagne, reine de France par son mariage avec Charles VIII et Louis XII, elle est l'une des figures les plus influentes du Moyen Âge.",
       "birthDate": "1477-01-25",
       "deathDate": "1514-11-09"
