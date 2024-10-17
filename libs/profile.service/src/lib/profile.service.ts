@@ -131,7 +131,7 @@ export class ProfileService {
     user: UserRequestModel,
     profileId: number
   ): Promise<ProfileCommonReturn> {
-    if (!this.canUserUseThisProfileId(user.id, profileId))
+    if (!this.canUserUseThisProfileId(user.activeProfile.id, profileId))
       throw new UnauthorizedException('Profile not found')
     await this.unactiveAllProfiles(user.id)
     return (await this.activateProfile(profileId)) as ProfileCommonReturn
