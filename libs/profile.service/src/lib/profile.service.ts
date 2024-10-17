@@ -128,12 +128,12 @@ export class ProfileService {
   }
 
   async changeActiveProfile (
-    user: UserRequestModel,
+    id: number,
     profileId: number
   ): Promise<ProfileCommonReturn> {
-    if (!this.canUserUseThisProfileId(user.activeProfile.id, profileId))
+    if (!this.canUserUseThisProfileId(id, profileId))
       throw new UnauthorizedException('Profile not found')
-    await this.unactiveAllProfiles(user.id)
+    await this.unactiveAllProfiles(id)
     return (await this.activateProfile(profileId)) as ProfileCommonReturn
   }
 
