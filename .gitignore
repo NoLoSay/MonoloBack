@@ -47,6 +47,10 @@ Thumbs.db
 
 # database
 postgres-data
+nolovideos/*
+!nolovideos/.gitkeep
+nolopictures/*
+!nolopictures/.gitkeep
 
 #generated docs
 docs
