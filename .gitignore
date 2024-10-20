@@ -21,6 +21,8 @@ uploads
 *.launch
 .settings/
 *.sublime-workspace
+/.idx/.data
+/.data
 
 # IDE - VSCode
 .vscode/*
