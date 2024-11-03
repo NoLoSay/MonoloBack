@@ -9,6 +9,11 @@ import { SanctionsServiceModule } from '@noloback/sanctions.service';
   controllers: [UsersController],
   providers: [],
   exports: [],
-  imports: [AuthServiceModule, UsersServiceModule, VideoServiceModule, SanctionsServiceModule],
+  imports: [
+    AuthServiceModule,
+    UsersServiceModule,
+    VideoServiceModule,
+    SanctionsServiceModule,
+  ],
 })
 export class UsersControllerModule {}

@@ -7,7 +7,7 @@ describe('SanctionsController', () => {
   let controller: SanctionsController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({ 
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [SanctionsController],
       providers: [EnumsService],
       imports: [RootTestModule],

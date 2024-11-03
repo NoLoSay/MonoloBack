@@ -10,21 +10,21 @@ import {
   Request,
   Patch,
   Query,
-  Response
-} from '@nestjs/common'
-import { CountriesService } from '@noloback/countries.service'
-import { CountryManipulationModel } from '@noloback/api.request.bodies'
-import { CountryAdminReturn, CountryCommonReturn } from '@noloback/api.returns'
-import { ADMIN, Roles } from '@noloback/roles'
-import { LoggerService } from '@noloback/logger-lib'
-import { FiltersGetMany } from 'models/filters-get-many'
+  Response,
+} from '@nestjs/common';
+import { CountriesService } from '@noloback/countries.service';
+import { CountryManipulationModel } from '@noloback/api.request.bodies';
+import { CountryAdminReturn, CountryCommonReturn } from '@noloback/api.returns';
+import { ADMIN, Roles } from '@noloback/roles';
+import { LoggerService } from '@noloback/logger-lib';
+import { FiltersGetMany } from 'models/filters-get-many';
 
 @Controller('countries')
 export class CountriesController {
-  constructor (private readonly countriesService: CountriesService) {}
+  constructor(private readonly countriesService: CountriesService) {}
 
   @Get()
-  async findAll (
+  async findAll(
     @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
@@ -34,7 +34,7 @@ export class CountriesController {
     @Query('name_start') nameStart?: string | undefined,
     @Query('code_start') codeStart?: string | undefined,
     @Query('createdAt_gte') createdAtGte?: string | undefined,
-    @Query('createdAt_lte') createdAtLte?: string | undefined
+    @Query('createdAt_lte') createdAtLte?: string | undefined,
   ): Promise<CountryCommonReturn[] | CountryAdminReturn[]> {
     return res
       .set({
@@ -44,73 +44,92 @@ export class CountriesController {
           nameStart ? nameStart : undefined,
           codeStart ? codeStart : undefined,
           createdAtGte,
-          createdAtLte
+          createdAtLte,
         ),
       })
       .json(
-        await this.countriesService.findAll(request.user.activeProfile.role, new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'name', 'code', 'longitude', 'latitude', 'createdAt']), nameStart, codeStart, createdAtGte, createdAtLte)
+        await this.countriesService.findAll(
+          request.user.activeProfile.role,
+          new FiltersGetMany(firstElem, lastElem, sort, order, [
+            'id',
+            'name',
+            'code',
+            'longitude',
+            'latitude',
+            'createdAt',
+          ]),
+          nameStart,
+          codeStart,
+          createdAtGte,
+          createdAtLte,
+        ),
       );
   }
 
   @Get(':id')
-  async findOne (
+  async findOne(
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<CountryCommonReturn | CountryAdminReturn> {
-    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'Country', +id)
+    LoggerService.userLog(
+      +request.user.activeProfile.id,
+      'GET',
+      'Country',
+      +id,
+    );
 
-    return this.countriesService.findOne(id, request.user.activeProfile.role)
+    return this.countriesService.findOne(id, request.user.activeProfile.role);
   }
 
   @Roles([ADMIN])
   @Post()
-  async create (
-    @Body() country: CountryManipulationModel
+  async create(
+    @Body() country: CountryManipulationModel,
   ): Promise<CountryAdminReturn> {
-    return this.countriesService.create(country)
+    return this.countriesService.create(country);
   }
 
   @Roles([ADMIN])
   @Put(':id')
-  async update (
+  async update(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatedCountry: CountryManipulationModel
+    @Body() updatedCountry: CountryManipulationModel,
   ): Promise<CountryAdminReturn> {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Country',
       +id,
-      JSON.stringify(request.body)
+      JSON.stringify(request.body),
     );
 
-    return this.countriesService.update(id, updatedCountry)
+    return this.countriesService.update(id, updatedCountry);
   }
 
   @Roles([ADMIN])
   @Patch(':id')
-  async patch (
+  async patch(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatedCountry: CountryManipulationModel
+    @Body() updatedCountry: CountryManipulationModel,
   ): Promise<CountryAdminReturn> {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Country',
       +id,
-      JSON.stringify(request.body)
+      JSON.stringify(request.body),
     );
 
-    return this.countriesService.update(id, updatedCountry)
+    return this.countriesService.update(id, updatedCountry);
   }
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (
+  async delete(
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<CountryAdminReturn> {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
@@ -119,6 +138,6 @@ export class CountriesController {
       +id,
     );
 
-    return this.countriesService.delete(id)
+    return this.countriesService.delete(id);
   }
 }

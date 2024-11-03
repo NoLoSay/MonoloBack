@@ -7,7 +7,7 @@ describe('SignLanguagesController', () => {
   let controller: SignLanguagesController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({ 
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [SignLanguagesController],
       providers: [SignLanguagesService],
       imports: [RootTestModule],

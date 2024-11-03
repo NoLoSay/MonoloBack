@@ -8,7 +8,7 @@ import { PrismaBaseService } from '@noloback/prisma-client-base';
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(
     private authService: AuthService,
-    private prismaBaseService: PrismaBaseService
+    private prismaBaseService: PrismaBaseService,
   ) {
     super();
   }

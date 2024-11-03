@@ -3,58 +3,58 @@ import {
   Prisma,
   PrismaBaseService,
   Role,
-  User
-} from '@noloback/prisma-client-base'
+  User,
+} from '@noloback/prisma-client-base';
 import {
   BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException
-} from '@nestjs/common'
-import { hash } from 'bcrypt'
-import { LoggerService } from '@noloback/logger-lib'
+  NotFoundException,
+} from '@nestjs/common';
+import { hash } from 'bcrypt';
+import { LoggerService } from '@noloback/logger-lib';
 import {
   UserAdminReturn,
   UserCommonReturn,
-  UserMeReturn
-} from '@noloback/api.returns'
+  UserMeReturn,
+} from '@noloback/api.returns';
 import {
   UserAdminSelect,
   UserCommonSelect,
-  UserMeSelect
-} from '@noloback/db.calls'
-import { UserCreateModel, UserUpdateModel } from '@noloback/api.request.bodies'
-import { UserRequestModel } from '@noloback/requests.constructor'
+  UserMeSelect,
+} from '@noloback/db.calls';
+import { UserCreateModel, UserUpdateModel } from '@noloback/api.request.bodies';
+import { UserRequestModel } from '@noloback/requests.constructor';
 import * as _ from 'lodash';
-import { FiltersGetMany } from 'models/filters-get-many'
+import { FiltersGetMany } from 'models/filters-get-many';
 
 @Injectable()
 export class UsersService {
-  constructor (
+  constructor(
     private prismaBase: PrismaBaseService,
-    private loggingService: LoggerService
+    private loggingService: LoggerService,
   ) {}
 
-  async count () {
+  async count() {
     return await this.prismaBase.user.count({
-      where: { deletedAt: null }
-    })
+      where: { deletedAt: null },
+    });
   }
 
-  async create (createUserDto: UserCreateModel) {
+  async create(createUserDto: UserCreateModel) {
     const userUsername: User | null = await this.prismaBase.user.findUnique({
-      where: { username: createUserDto.username }
-    })
+      where: { username: createUserDto.username },
+    });
     if (userUsername != null) {
-      throw new ConflictException('Username already taken')
+      throw new ConflictException('Username already taken');
     }
 
     const userEmail: User | null = await this.prismaBase.user.findUnique({
-      where: { email: createUserDto.email }
-    })
+      where: { email: createUserDto.email },
+    });
     if (userEmail != null) {
-      throw new ConflictException('Email address already taken')
+      throw new ConflictException('Email address already taken');
     }
 
     const newUser: User = await this.prismaBase.user
@@ -68,27 +68,31 @@ export class UsersService {
           profiles: {
             create: {
               role: Role.USER,
-              isActive: true
-            }
-          }
-        }
+              isActive: true,
+            },
+          },
+        },
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
 
     await this.prismaBase.userLoginLog.create({
       data: {
-        userId: +newUser.id
-      }
-    })
+        userId: +newUser.id,
+      },
+    });
 
     return {
       id: newUser.id,
       username: newUser.username,
-      email: newUser.email
-    }
+      email: newUser.email,
+    };
   }
   async markEmailAsConfirmed(email: string) {
     try {
@@ -98,7 +102,7 @@ export class UsersService {
           emailVerified: true,
         },
       });
-  
+
       if (!result) {
         throw new NotFoundException(`User with email ${email} not found`);
       }
@@ -106,7 +110,9 @@ export class UsersService {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(`User with email ${email} not found`);
       } else {
-        throw new InternalServerErrorException('Failed to mark email as confirmed');
+        throw new InternalServerErrorException(
+          'Failed to mark email as confirmed',
+        );
       }
     }
   }
@@ -120,7 +126,7 @@ export class UsersService {
           password: hashedPassword,
         },
       });
-  
+
       if (!result) {
         throw new NotFoundException(`User with ID ${userId} not found`);
       }
@@ -128,7 +134,9 @@ export class UsersService {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(`User with ID ${userId} not found`);
       } else {
-        throw new InternalServerErrorException('Failed to update the user password');
+        throw new InternalServerErrorException(
+          'Failed to update the user password',
+        );
       }
     }
   }
@@ -141,45 +149,49 @@ export class UsersService {
           select: {
             role: true,
             isActive: true,
-            deletedAt: true
-          }
-        }
-      }
+            deletedAt: true,
+          },
+        },
+      },
     });
 
     const profiles: string[] = body.profiles;
     if (profiles) {
-      _.forIn(Role, async (value: Role) =>{
+      _.forIn(Role, async (value: Role) => {
         if (profiles.includes(value)) {
           // if (!user?.profiles.find((profile: any) => profile.role == value && profile.deletedAt == null)) {
           // }
           await this.prismaBase.profile.upsert({
-            where: { userId_role: {userId: +id, role: value} },
+            where: { userId_role: { userId: +id, role: value } },
             create: {
               userId: +id,
               role: value,
             },
             update: {
               deletedAt: null,
-            }
+            },
           });
-        }
-        else if (value != Role.USER && user?.profiles.find((profile: any) => profile.role == value)) {
-          if (user.profiles.find(profile => profile.role === value)?.isActive) {
+        } else if (
+          value != Role.USER &&
+          user?.profiles.find((profile: any) => profile.role == value)
+        ) {
+          if (
+            user.profiles.find((profile) => profile.role === value)?.isActive
+          ) {
             await this.prismaBase.profile.update({
-              where: { userId_role: {userId: +id, role: Role.USER} },
+              where: { userId_role: { userId: +id, role: Role.USER } },
               data: {
-                isActive: true
-              }
+                isActive: true,
+              },
             });
           }
 
           await this.prismaBase.profile.update({
-            where: { userId_role: {userId: +id, role: value} },
+            where: { userId_role: { userId: +id, role: value } },
             data: {
               isActive: false,
-              deletedAt: new Date()
-            }
+              deletedAt: new Date(),
+            },
           });
         }
       });
@@ -188,11 +200,11 @@ export class UsersService {
     }
     return await this.prismaBase.user.update({
       where: { id: +id },
-      data: body
-    })
+      data: body,
+    });
   }
 
-  async findAll (
+  async findAll(
     role: Role,
     filters: FiltersGetMany,
     nameStart?: string | undefined,
@@ -202,16 +214,16 @@ export class UsersService {
     createdAtGte?: string | undefined,
     createdAtLte?: string | undefined,
     deletedAtGte?: string | undefined,
-    deletedAtLte?: string | undefined
+    deletedAtLte?: string | undefined,
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
-    let selectOptions: Prisma.UserSelect
+    let selectOptions: Prisma.UserSelect;
 
     switch (role) {
       case Role.ADMIN:
-        selectOptions = new UserAdminSelect()
-        break
+        selectOptions = new UserAdminSelect();
+        break;
       default:
-        selectOptions = new UserCommonSelect()
+        selectOptions = new UserCommonSelect();
     }
 
     const users = await this.prismaBase.user.findMany({
@@ -219,66 +231,75 @@ export class UsersService {
       take: +filters.end - filters.start,
       select: selectOptions,
       where: {
-        username: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
-        telNumber: telStart ? { startsWith: telStart, mode: 'insensitive' } : undefined,
-        email: emailStart ? { startsWith: emailStart, mode: 'insensitive' } : undefined,
+        username: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
+        telNumber: telStart
+          ? { startsWith: telStart, mode: 'insensitive' }
+          : undefined,
+        email: emailStart
+          ? { startsWith: emailStart, mode: 'insensitive' }
+          : undefined,
         emailVerified: emailVerified ? emailVerified : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
         },
-        deletedAt: role === Role.ADMIN ? {
-          gte: deletedAtGte ? new Date(deletedAtGte) : undefined,
-          lte: deletedAtLte ? new Date(deletedAtLte) : undefined,
-        } : null,
+        deletedAt:
+          role === Role.ADMIN
+            ? {
+                gte: deletedAtGte ? new Date(deletedAtGte) : undefined,
+                lte: deletedAtLte ? new Date(deletedAtLte) : undefined,
+              }
+            : null,
       },
       orderBy: {
         [filters.sort]: filters.order,
-      }
-    })
+      },
+    });
 
     switch (role) {
       case Role.ADMIN:
-        return users as UserAdminReturn[]
+        return users as UserAdminReturn[];
       default:
-        return users as UserCommonReturn[]
+        return users as UserCommonReturn[];
     }
   }
 
-  async findMe (user: UserRequestModel) {
+  async findMe(user: UserRequestModel) {
     const userMe = await this.prismaBase.user.findUnique({
       where: { id: +user.id },
-      select: new UserMeSelect()
-    })
+      select: new UserMeSelect(),
+    });
 
-    return userMe as UserMeReturn
+    return userMe as UserMeReturn;
   }
 
-  async findOne (id: number, role: Role) {
-    let selectOptions: Prisma.UserSelect
+  async findOne(id: number, role: Role) {
+    let selectOptions: Prisma.UserSelect;
 
     switch (role) {
       case Role.ADMIN:
-        selectOptions = new UserAdminSelect()
-        break
+        selectOptions = new UserAdminSelect();
+        break;
       default:
-        selectOptions = new UserCommonSelect()
+        selectOptions = new UserCommonSelect();
     }
 
     const user = await this.prismaBase.user.findUnique({
       where: { id: +id, deletedAt: role === Role.ADMIN ? null : undefined },
-      select: selectOptions
-    })
+      select: selectOptions,
+    });
 
     switch (role) {
       case Role.ADMIN:
-        return user as unknown as UserAdminReturn
+        return user as unknown as UserAdminReturn;
       default:
-        return user as unknown as UserCommonReturn
+        return user as unknown as UserCommonReturn;
     }
   }
 
-  private formatUser (user: any, withPassword = true): UserRequestModel | null {
+  private formatUser(user: any, withPassword = true): UserRequestModel | null {
     const formatedUser = user
       ? {
           id: user.id,
@@ -289,16 +310,16 @@ export class UsersService {
           picture: user.picture,
           telNumber: user.telNumber,
           createdAt: user.createdAt,
-          activeProfile: user.profiles[0]
+          activeProfile: user.profiles[0],
         }
-      : null
+      : null;
     if (formatedUser && !withPassword) {
-      delete formatedUser.password
+      delete formatedUser.password;
     }
-    return formatedUser as UserRequestModel
+    return formatedUser as UserRequestModel;
   }
 
-  async findOneByUsername (username: string): Promise<UserRequestModel | null> {
+  async findOneByUsername(username: string): Promise<UserRequestModel | null> {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
         where: { username: username, deletedAt: null },
@@ -306,19 +327,19 @@ export class UsersService {
           profiles: {
             select: {
               id: true,
-              role: true
+              role: true,
             },
             where: {
-              isActive: true
-            }
-          }
-        }
+              isActive: true,
+            },
+          },
+        },
       }),
-      false
-    )
+      false,
+    );
   }
 
-  async findOneByEmail (username: string): Promise<UserRequestModel | null> {
+  async findOneByEmail(username: string): Promise<UserRequestModel | null> {
     return await this.formatUser(
       await this.prismaBase.user.findUnique({
         where: { email: username, deletedAt: null },
@@ -326,79 +347,79 @@ export class UsersService {
           profiles: {
             select: {
               id: true,
-              role: true
+              role: true,
             },
             where: {
-              isActive: true
-            }
-          }
-        }
+              isActive: true,
+            },
+          },
+        },
       }),
-      false
-    )
+      false,
+    );
   }
 
-  private async reactivateUserProfile (
-    user: User
+  private async reactivateUserProfile(
+    user: User,
   ): Promise<UserRequestModel | null> {
     const reactivatedProfiles = await this.prismaBase.profile.updateMany({
       where: {
         userId: +user.id,
         role: Role.USER,
-        deletedAt: null
+        deletedAt: null,
       },
       data: {
-        isActive: true
-      }
-    })
+        isActive: true,
+      },
+    });
     if (reactivatedProfiles.count === 0) {
       throw new InternalServerErrorException(
-        'User has no activable profile. Please contact us.'
-      )
+        'User has no activable profile. Please contact us.',
+      );
     }
-    return this.connectUserByEmailOrUsername(user.email)
+    return this.connectUserByEmailOrUsername(user.email);
   }
 
-  async connectUserByEmailOrUsername (
-    search: string
+  async connectUserByEmailOrUsername(
+    search: string,
   ): Promise<UserRequestModel | null> {
     const user = await this.prismaBase.user.findFirst({
       where: {
         deletedAt: null,
-        OR: [{ email: search }, { username: search }]
+        OR: [{ email: search }, { username: search }],
       },
       include: {
         profiles: {
           select: {
             id: true,
             role: true,
-            isActive: true
-          }
-        }
-      }
-    })
-    if (!user || user.deletedAt) return null
+            isActive: true,
+          },
+        },
+      },
+    });
+    if (!user || user.deletedAt) return null;
     const activeProfile = user.profiles.find(
-      profile => profile.isActive === true
-    )
+      (profile) => profile.isActive === true,
+    );
     if (!activeProfile) {
-      return this.reactivateUserProfile(user)
+      return this.reactivateUserProfile(user);
     }
     if (!activeProfile)
       throw new InternalServerErrorException(
-        'User has no activable profile. Please contact us.'
-      )
-    user.profiles = [activeProfile]
-    return this.formatUser(user)
+        'User has no activable profile. Please contact us.',
+      );
+    user.profiles = [activeProfile];
+    return this.formatUser(user);
   }
 
-  async update (id: number, updateUser: UserUpdateModel): Promise<UserMeReturn> {
+  async update(id: number, updateUser: UserUpdateModel): Promise<UserMeReturn> {
     const data: {
-      username?: string
-      email?: string
-      password?: string
-      picture?: string
-      telNumber?: string
+      username?: string;
+      email?: string;
+      password?: string;
+      picture?: string;
+      telNumber?: string;
     } = {
       username: updateUser.username,
       email: updateUser.email,
@@ -406,25 +427,25 @@ export class UsersService {
       password: updateUser.password
         ? await hash(updateUser.password, 12)
         : undefined,
-      telNumber: updateUser.telNumber
-    }
+      telNumber: updateUser.telNumber,
+    };
 
     const filteredData = Object.fromEntries(
-      Object.entries(data).filter(([_, value]) => value !== undefined)
-    )
+      Object.entries(data).filter(([_, value]) => value !== undefined),
+    );
 
     return (await this.prismaBase.user.update({
       where: { id: +id },
       data: filteredData,
-      select: new UserMeSelect()
-    })) as unknown as UserMeReturn
+      select: new UserMeSelect(),
+    })) as unknown as UserMeReturn;
   }
 
-  async remove (id: number) {
+  async remove(id: number) {
     return (await this.prismaBase.user.update({
       where: { id: +id },
       data: { deletedAt: new Date() },
-      select: new UserMeSelect()
-    })) as unknown as UserMeReturn
+      select: new UserMeSelect(),
+    })) as unknown as UserMeReturn;
   }
 }

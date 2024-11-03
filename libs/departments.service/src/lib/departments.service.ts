@@ -1,27 +1,33 @@
-import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
+import {
+  PrismaBaseService,
+  Prisma,
+  Role,
+  LogCriticity,
+} from '@noloback/prisma-client-base';
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException
-} from '@nestjs/common'
-import { DepartmentManipulationModel } from '@noloback/api.request.bodies'
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { DepartmentManipulationModel } from '@noloback/api.request.bodies';
 import {
   DepartmentAdminReturn,
-  DepartmentCommonReturn
-} from '@noloback/api.returns'
+  DepartmentCommonReturn,
+} from '@noloback/api.returns';
 import {
   DepartmentAdminSelect,
-  DepartmentCommonSelect
-} from '@noloback/db.calls'
-import { FiltersGetMany } from 'models/filters-get-many'
-import { LoggerService } from '@noloback/logger-lib'
+  DepartmentCommonSelect,
+} from '@noloback/db.calls';
+import { FiltersGetMany } from 'models/filters-get-many';
+import { LoggerService } from '@noloback/logger-lib';
 //import { LogCriticity } from '@prisma/client/logs'
 //import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class DepartmentsService {
-  constructor (
-    private prismaBase: PrismaBaseService, private loggingService: LoggerService
+  constructor(
+    private prismaBase: PrismaBaseService,
+    private loggingService: LoggerService,
   ) {}
 
   async count(
@@ -30,13 +36,17 @@ export class DepartmentsService {
     nameStart?: string | undefined,
     codeStart?: string | undefined,
     createdAtGte?: string | undefined,
-    createdAtLte?: string | undefined
+    createdAtLte?: string | undefined,
   ): Promise<number> {
     return await this.prismaBase.department.count({
       where: {
         countryId: countryId ? +countryId : undefined,
-        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
-        code: codeStart ? { startsWith: codeStart, mode: 'insensitive' } : undefined,
+        name: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
+        code: codeStart
+          ? { startsWith: codeStart, mode: 'insensitive' }
+          : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
@@ -47,23 +57,23 @@ export class DepartmentsService {
     });
   }
 
-  async findAll (
+  async findAll(
     role: Role,
     filters: FiltersGetMany,
     countryId?: number | undefined,
     nameStart?: string | undefined,
     codeStart?: string | undefined,
     createdAtGte?: string | undefined,
-    createdAtLte?: string | undefined
+    createdAtLte?: string | undefined,
   ): Promise<DepartmentCommonReturn[] | DepartmentAdminReturn[]> {
-    let selectOptions: Prisma.DepartmentSelect
+    let selectOptions: Prisma.DepartmentSelect;
 
     switch (role) {
       case Role.ADMIN:
-        selectOptions = new DepartmentAdminSelect()
-        break
+        selectOptions = new DepartmentAdminSelect();
+        break;
       default:
-        selectOptions = new DepartmentCommonSelect()
+        selectOptions = new DepartmentCommonSelect();
     }
     const departments: unknown[] = await this.prismaBase.department
       .findMany({
@@ -72,8 +82,12 @@ export class DepartmentsService {
         select: selectOptions,
         where: {
           countryId: countryId ? +countryId : undefined,
-          name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
-          code: codeStart ? { startsWith: codeStart, mode: 'insensitive' } : undefined,
+          name: nameStart
+            ? { startsWith: nameStart, mode: 'insensitive' }
+            : undefined,
+          code: codeStart
+            ? { startsWith: codeStart, mode: 'insensitive' }
+            : undefined,
           createdAt: {
             gte: createdAtGte ? new Date(createdAtGte) : undefined,
             lte: createdAtLte ? new Date(createdAtLte) : undefined,
@@ -83,33 +97,37 @@ export class DepartmentsService {
         },
         orderBy: {
           [filters.sort]: filters.order,
-        }
+        },
       })
       .catch((e: Error) => {
-        console.log(e)
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+        console.log(e);
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
     switch (role) {
       case Role.ADMIN:
-        return departments as DepartmentAdminReturn[]
+        return departments as DepartmentAdminReturn[];
       default:
-        return departments as DepartmentCommonReturn[]
+        return departments as DepartmentCommonReturn[];
     }
   }
 
-  async findOne (
+  async findOne(
     id: number,
-    role: Role
+    role: Role,
   ): Promise<DepartmentCommonReturn | DepartmentAdminReturn> {
-    let selectOptions: Prisma.DepartmentSelect
+    let selectOptions: Prisma.DepartmentSelect;
 
     switch (role) {
       case Role.ADMIN:
-        selectOptions = new DepartmentAdminSelect()
-        break
+        selectOptions = new DepartmentAdminSelect();
+        break;
       default:
-        selectOptions = new DepartmentCommonSelect()
+        selectOptions = new DepartmentCommonSelect();
     }
     const department: unknown = await this.prismaBase.department
       .findUnique({
@@ -119,32 +137,36 @@ export class DepartmentsService {
             : {
                 id: +id,
                 deletedAt: null,
-                country: { deletedAt: null }
+                country: { deletedAt: null },
               },
-        select: selectOptions
+        select: selectOptions,
       })
       .catch((e: Error) => {
-        console.log(e)
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new BadRequestException('Department not found')
-      })
+        console.log(e);
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new BadRequestException('Department not found');
+      });
     switch (role) {
       case Role.ADMIN:
-        return department as DepartmentAdminReturn
+        return department as DepartmentAdminReturn;
       default:
-        return department as DepartmentCommonReturn
+        return department as DepartmentCommonReturn;
     }
   }
 
-  async create (
-    department: DepartmentManipulationModel
+  async create(
+    department: DepartmentManipulationModel,
   ): Promise<DepartmentAdminReturn> {
     if (
       department.countryId === undefined ||
       department.countryId === null ||
       department.countryId <= 0
     ) {
-      throw new BadRequestException("DepartmentId can't be null or empty")
+      throw new BadRequestException("DepartmentId can't be null or empty");
     }
     const newDepartment: DepartmentAdminReturn =
       await this.prismaBase.department
@@ -156,31 +178,35 @@ export class DepartmentsService {
             longitude: department.longitude,
             country: {
               connect: {
-                id: +department.countryId
-              }
-            }
+                id: +department.countryId,
+              },
+            },
           },
-          select: new DepartmentAdminSelect()
+          select: new DepartmentAdminSelect(),
         })
         .catch((e: Error) => {
-          console.log(e)
-          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-          throw new InternalServerErrorException(e)
-        })
+          console.log(e);
+          this.loggingService.log(
+            LogCriticity.Critical,
+            this.constructor.name,
+            e,
+          );
+          throw new InternalServerErrorException(e);
+        });
 
-    return newDepartment
+    return newDepartment;
   }
 
-  async update (
+  async update(
     id: number,
-    updatedDepartment: DepartmentManipulationModel
+    updatedDepartment: DepartmentManipulationModel,
   ): Promise<DepartmentAdminReturn> {
     if (
       updatedDepartment.countryId === undefined ||
       updatedDepartment.countryId === null ||
       updatedDepartment.countryId <= 0
     ) {
-      throw new BadRequestException("DepartmentId can't be null or empty")
+      throw new BadRequestException("DepartmentId can't be null or empty");
     }
     const updated: DepartmentAdminReturn = await this.prismaBase.department
       .update({
@@ -192,30 +218,38 @@ export class DepartmentsService {
           longitude: updatedDepartment.longitude,
           country: {
             connect: {
-              id: +updatedDepartment.countryId
-            }
-          }
+              id: +updatedDepartment.countryId,
+            },
+          },
         },
-        select: new DepartmentAdminSelect()
+        select: new DepartmentAdminSelect(),
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
 
-    return updated
+    return updated;
   }
 
-  async delete (id: number): Promise<DepartmentAdminReturn> {
+  async delete(id: number): Promise<DepartmentAdminReturn> {
     return (await this.prismaBase.department
       .update({
         where: { id: +id },
         select: new DepartmentAdminSelect(),
-        data: { deletedAt: new Date() }
+        data: { deletedAt: new Date() },
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })) as DepartmentAdminReturn
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      })) as DepartmentAdminReturn;
   }
 }

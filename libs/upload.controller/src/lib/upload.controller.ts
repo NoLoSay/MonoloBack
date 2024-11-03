@@ -49,21 +49,25 @@ export class UploadController {
     @Request() request: any,
     @Param('videoId') videoId: number,
     @Query('providerId', ParseIntPipe) providerId: number,
-    @Query('providerVideoId') providerVideoId: string
+    @Query('providerVideoId') providerVideoId: string,
   ) {
     const video = await this.videoService.getYoutubeById(+videoId);
     if (video) {
       if (video.video.hostingProviderId === 1) {
-        unlink(`${process.env["LOCAL_VIDEO_PATH"]}/` + video.video.hostingProviderVideoId, (err) => {
-          if (err) {
-            console.error(err);
-          }
-        });
+        unlink(
+          `${process.env['LOCAL_VIDEO_PATH']}/` +
+            video.video.hostingProviderVideoId,
+          (err) => {
+            if (err) {
+              console.error(err);
+            }
+          },
+        );
       }
       return await this.videoService.setHostingProvider(
         +videoId,
         +providerId,
-        providerVideoId
+        providerVideoId,
       );
     }
     return new NotFoundException("Video doesn't exist");
@@ -76,10 +80,12 @@ export class UploadController {
     @Request() request: any,
     @Res({ passthrough: true }) res: Response,
     @UploadedFile() file: Express.Multer.File,
-    @Param('videoId') videoId: string
+    @Param('videoId') videoId: string,
   ) {
     try {
-      const file = readFileSync(`${process.env["LOCAL_VIDEO_PATH"]}/` + videoId);
+      const file = readFileSync(
+        `${process.env['LOCAL_VIDEO_PATH']}/` + videoId,
+      );
       if (!file) {
         return new NotFoundException("Video doesn't exist");
       }
@@ -101,18 +107,18 @@ export class UploadController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: multer.diskStorage({
-        destination: `${process.env["LOCAL_VIDEO_PATH"]}`,
+        destination: `${process.env['LOCAL_VIDEO_PATH']}`,
         filename: (req, file, cb) => {
           const uuid = randomUUID();
           cb(null, `${uuid}${extname(file.originalname)}`);
         },
       }),
-    })
+    }),
   )
   async createYoutube(
     @Request() request: any,
     @UploadedFile() file: Express.Multer.File,
-    @Param('itemId', ParseIntPipe) itemId: number
+    @Param('itemId', ParseIntPipe) itemId: number,
   ): Promise<Video> {
     const user = request.user;
     return await this.videoService.createYoutube(user, file, itemId);

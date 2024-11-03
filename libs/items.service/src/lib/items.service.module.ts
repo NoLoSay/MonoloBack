@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common'
-import { LoggerLibModule } from '@noloback/logger-lib'
-import { PrismaClientBaseModule } from '@noloback/prisma-client-base'
-import { ItemsService } from './items.service'
-import { VideoServiceModule } from '@noloback/video.service'
-import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
-import { UploadthingServiceModule } from '@noloback/uploadthing.service'
-import { PicturesServiceModule } from '@noloback/pictures.service'
+import { Module } from '@nestjs/common';
+import { LoggerLibModule } from '@noloback/logger-lib';
+import { PrismaClientBaseModule } from '@noloback/prisma-client-base';
+import { ItemsService } from './items.service';
+import { VideoServiceModule } from '@noloback/video.service';
+import { SitesManagersServiceModule } from '@noloback/sites.managers.service';
+import { UploadthingServiceModule } from '@noloback/uploadthing.service';
+import { PicturesServiceModule } from '@noloback/pictures.service';
 
 @Module({
   controllers: [],
@@ -17,7 +17,7 @@ import { PicturesServiceModule } from '@noloback/pictures.service'
     VideoServiceModule,
     UploadthingServiceModule,
     PicturesServiceModule,
-    SitesManagersServiceModule
-  ]
+    SitesManagersServiceModule,
+  ],
 })
 export class ItemsServiceModule {}

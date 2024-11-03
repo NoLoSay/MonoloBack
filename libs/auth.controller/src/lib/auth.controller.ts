@@ -1,4 +1,13 @@
-import { Controller, Get, Request, Post, UseGuards, Req, Body, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Request,
+  Post,
+  UseGuards,
+  Req,
+  Body,
+  Query,
+} from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
 import { LocalAuthGuard } from '@noloback/guards';
@@ -43,11 +52,12 @@ export class AuthController {
   async forgotPassword(@Body() body: any) {
     return this.authService.forgotPassword(body.email);
   }
-  
+
   @Get('confirm')
   @Public()
   async confirm(@Query('token') token: string) {
-    const email = await this.mailConfirmationService.decodeConfirmationToken(token);
+    const email =
+      await this.mailConfirmationService.decodeConfirmationToken(token);
     return this.mailConfirmationService.confirmEmail(email);
   }
 

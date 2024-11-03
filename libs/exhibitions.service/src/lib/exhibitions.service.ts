@@ -1,79 +1,87 @@
-import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
+import {
+  PrismaBaseService,
+  Prisma,
+  Role,
+  LogCriticity,
+} from '@noloback/prisma-client-base';
 import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException
-} from '@nestjs/common'
-import { ExhibitionManipulationModel } from '@noloback/api.request.bodies'
-import { UserRequestModel } from '@noloback/requests.constructor'
+  NotFoundException,
+} from '@nestjs/common';
+import { ExhibitionManipulationModel } from '@noloback/api.request.bodies';
+import { UserRequestModel } from '@noloback/requests.constructor';
 import {
   ExhibitionAdminDetailedReturn,
   ExhibitionAdminReturn,
   ExhibitionCommonDetailedReturn,
   ExhibitionCommonReturn,
   ExhibitionManagerDetailedReturn,
-  ExhibitionManagerReturn
-} from '@noloback/api.returns'
+  ExhibitionManagerReturn,
+} from '@noloback/api.returns';
 import {
   ExhibitionAdminDetailedSelect,
   ExhibitionAdminSelect,
   ExhibitionCommonDetailedSelect,
   ExhibitionCommonSelect,
   ExhibitionManagerDetailedSelect,
-  ExhibitionManagerSelect
-} from '@noloback/db.calls'
-import { SitesManagersService } from '@noloback/sites.managers.service'
+  ExhibitionManagerSelect,
+} from '@noloback/db.calls';
+import { SitesManagersService } from '@noloback/sites.managers.service';
 import {
   ExhibitionAdminDetailedDbReturn,
   ExhibitionCommonDetailedDbReturn,
-  ExhibitionManagerDetailedDbReturn
-} from '@noloback/db.returns'
-import { FiltersGetMany } from 'models/filters-get-many'
-import { LoggerService } from '@noloback/logger-lib'
+  ExhibitionManagerDetailedDbReturn,
+} from '@noloback/db.returns';
+import { FiltersGetMany } from 'models/filters-get-many';
+import { LoggerService } from '@noloback/logger-lib';
 
 @Injectable()
 export class ExhibitionsService {
-  constructor (
+  constructor(
     private readonly prismaBase: PrismaBaseService,
-    private readonly siteManagersService: SitesManagersService, private loggingService: LoggerService
+    private readonly siteManagersService: SitesManagersService,
+    private loggingService: LoggerService,
   ) {}
 
   async count(
     siteId?: number | undefined,
     nameStart?: string | undefined,
     createdAtGte?: string | undefined,
-    createdAtLte?: string | undefined
+    createdAtLte?: string | undefined,
   ): Promise<number> {
     return await this.prismaBase.exhibition.count({
       where: {
         siteId: siteId ? +siteId : undefined,
-        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        name: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
         },
 
-        deletedAt: null
+        deletedAt: null,
       },
     });
   }
 
-  async findAll (
+  async findAll(
     user: UserRequestModel,
     filters: FiltersGetMany,
     siteId?: number | undefined,
     nameStart?: string | undefined,
     createdAtGte?: string | undefined,
-    createdAtLte?: string | undefined
+    createdAtLte?: string | undefined,
   ): Promise<ExhibitionCommonReturn[] | ExhibitionAdminReturn[]> {
-    let selectOptions: Prisma.ExhibitionSelect
+    let selectOptions: Prisma.ExhibitionSelect;
     switch (user.activeProfile.role) {
       case Role.ADMIN:
-        selectOptions = new ExhibitionAdminSelect()
-        break
+        selectOptions = new ExhibitionAdminSelect();
+        break;
       default:
-        selectOptions = new ExhibitionCommonSelect()
+        selectOptions = new ExhibitionCommonSelect();
     }
 
     const exhibitions: unknown[] = await this.prismaBase.exhibition.findMany({
@@ -82,101 +90,103 @@ export class ExhibitionsService {
       select: selectOptions,
       where: {
         siteId: siteId ? +siteId : undefined,
-        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
+        name: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
         },
 
-        deletedAt: null
+        deletedAt: null,
       },
       orderBy: {
         [filters.sort]: filters.order,
-      }
-    })
+      },
+    });
 
     switch (user.activeProfile.role) {
       case Role.ADMIN:
-        return exhibitions as ExhibitionAdminReturn[]
+        return exhibitions as ExhibitionAdminReturn[];
       default:
-        return exhibitions as ExhibitionCommonReturn[]
+        return exhibitions as ExhibitionCommonReturn[];
     }
   }
 
-  private async isManagerOfExhibition (
+  private async isManagerOfExhibition(
     user: UserRequestModel,
-    exhibition: ExhibitionManagerDetailedDbReturn
+    exhibition: ExhibitionManagerDetailedDbReturn,
   ) {
     return await this.siteManagersService.isManagerOfSite(
       user.activeProfile.id,
-      exhibition.site.id
-    )
+      exhibition.site.id,
+    );
   }
 
-  async findOne (
+  async findOne(
     id: number,
-    user: UserRequestModel
+    user: UserRequestModel,
   ): Promise<
     | ExhibitionAdminDetailedReturn
     | ExhibitionManagerDetailedReturn
     | ExhibitionCommonDetailedReturn
   > {
-    let selectOptions: Prisma.ExhibitionSelect
+    let selectOptions: Prisma.ExhibitionSelect;
     switch (user.activeProfile.role) {
       case Role.ADMIN:
-        selectOptions = new ExhibitionAdminDetailedSelect()
-        break
+        selectOptions = new ExhibitionAdminDetailedSelect();
+        break;
       case Role.MANAGER:
-        selectOptions = new ExhibitionManagerDetailedSelect()
-        break
+        selectOptions = new ExhibitionManagerDetailedSelect();
+        break;
       default:
-        selectOptions = new ExhibitionCommonDetailedSelect()
+        selectOptions = new ExhibitionCommonDetailedSelect();
     }
     const exhibition: unknown = await this.prismaBase.exhibition.findUnique({
       where: {
         id: +id,
-        deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null
+        deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null,
       },
-      select: selectOptions
-    })
-    if (!exhibition) throw new NotFoundException('Exhibition not found')
+      select: selectOptions,
+    });
+    if (!exhibition) throw new NotFoundException('Exhibition not found');
 
     switch (user.activeProfile.role) {
       case Role.ADMIN:
         return new ExhibitionAdminDetailedReturn(
-          exhibition as ExhibitionAdminDetailedDbReturn
-        )
+          exhibition as ExhibitionAdminDetailedDbReturn,
+        );
       case Role.MANAGER:
         if (
           await this.isManagerOfExhibition(
             user,
-            exhibition as ExhibitionManagerDetailedDbReturn
+            exhibition as ExhibitionManagerDetailedDbReturn,
           )
         )
           return new ExhibitionManagerDetailedReturn(
-            exhibition as ExhibitionManagerDetailedDbReturn
-          )
+            exhibition as ExhibitionManagerDetailedDbReturn,
+          );
         else
           return new ExhibitionCommonDetailedReturn(
-            exhibition as ExhibitionCommonDetailedDbReturn
-          )
+            exhibition as ExhibitionCommonDetailedDbReturn,
+          );
 
       default:
         return new ExhibitionCommonDetailedReturn(
-          exhibition as ExhibitionCommonDetailedDbReturn
-        )
+          exhibition as ExhibitionCommonDetailedDbReturn,
+        );
     }
   }
 
-  async create (
-    exhibition: ExhibitionManipulationModel
+  async create(
+    exhibition: ExhibitionManipulationModel,
   ): Promise<ExhibitionManagerReturn> {
     if (
       exhibition.siteId === undefined ||
       exhibition.siteId === null ||
       exhibition.siteId <= 0
     ) {
-      throw new BadRequestException("siteId can't be null or empty")
+      throw new BadRequestException("siteId can't be null or empty");
     }
     const newExhibition: unknown = await this.prismaBase.exhibition
       .create({
@@ -188,39 +198,43 @@ export class ExhibitionsService {
           endDate: exhibition.endDate,
           site: {
             connect: {
-              id: +exhibition.siteId
-            }
-          }
+              id: +exhibition.siteId,
+            },
+          },
         },
-        select: new ExhibitionManagerSelect()
+        select: new ExhibitionManagerSelect(),
       })
       .catch((e: Error) => {
-        console.log(e)
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+        console.log(e);
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
 
-    return newExhibition as ExhibitionManagerReturn
+    return newExhibition as ExhibitionManagerReturn;
   }
 
-  async update (
+  async update(
     id: number,
-    updatedExhibition: ExhibitionManipulationModel
+    updatedExhibition: ExhibitionManipulationModel,
   ): Promise<ExhibitionManagerReturn> {
     if (
       updatedExhibition.siteId === undefined ||
       updatedExhibition.siteId === null ||
       updatedExhibition.siteId <= 0
     ) {
-      throw new BadRequestException("siteId can't be null or empty")
+      throw new BadRequestException("siteId can't be null or empty");
     }
     const exhibition = await this.prismaBase.exhibition.findUnique({
       where: { id: +id, deletedAt: null },
       select: {
-        id: true
-      }
-    })
-    if (!exhibition) throw new NotFoundException('Exhibition not found')
+        id: true,
+      },
+    });
+    if (!exhibition) throw new NotFoundException('Exhibition not found');
 
     const updated: unknown = await this.prismaBase.exhibition
       .update({
@@ -233,27 +247,31 @@ export class ExhibitionsService {
           endDate: updatedExhibition.endDate,
           site: {
             connect: {
-              id: +updatedExhibition.siteId
-            }
-          }
+              id: +updatedExhibition.siteId,
+            },
+          },
         },
-        select: new ExhibitionManagerSelect()
+        select: new ExhibitionManagerSelect(),
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException('Error updating exhibition')
-      })
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException('Error updating exhibition');
+      });
 
-    return updated as ExhibitionManagerReturn
+    return updated as ExhibitionManagerReturn;
   }
 
-  async delete (id: number) {
+  async delete(id: number) {
     await this.prismaBase.exhibition.update({
       where: { id: +id },
       data: {
-        deletedAt: new Date()
+        deletedAt: new Date(),
       },
-      select: new ExhibitionAdminSelect()
-    })
+      select: new ExhibitionAdminSelect(),
+    });
   }
 }

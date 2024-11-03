@@ -2,63 +2,68 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException
-} from '@nestjs/common'
+  NotFoundException,
+} from '@nestjs/common';
 import {
   RemoveManagerRequestBody,
-  SiteManagerModificationRequestBody
-} from '@noloback/api.request.bodies'
-import { SiteManagerCommonReturn } from '@noloback/api.returns'
-import { SiteManagerCommonSelect } from '@noloback/db.calls'
-import { SiteManagerCommonDbReturn } from '@noloback/db.returns'
+  SiteManagerModificationRequestBody,
+} from '@noloback/api.request.bodies';
+import { SiteManagerCommonReturn } from '@noloback/api.returns';
+import { SiteManagerCommonSelect } from '@noloback/db.calls';
+import { SiteManagerCommonDbReturn } from '@noloback/db.returns';
 import {
   LogCriticity,
   PrismaBaseService,
   Role,
-  SiteHasManager
-} from '@noloback/prisma-client-base'
-import { UserRequestModel } from '@noloback/requests.constructor'
-import { LoggerService } from '@noloback/logger-lib'
+  SiteHasManager,
+} from '@noloback/prisma-client-base';
+import { UserRequestModel } from '@noloback/requests.constructor';
+import { LoggerService } from '@noloback/logger-lib';
 
 @Injectable()
 export class SitesManagersService {
-  constructor (
-    private prismaBase: PrismaBaseService, private loggingService: LoggerService
+  constructor(
+    private prismaBase: PrismaBaseService,
+    private loggingService: LoggerService,
   ) {}
 
-  async isAllowedToModify (
+  async isAllowedToModify(
     user: UserRequestModel,
-    siteId: number
+    siteId: number,
   ): Promise<boolean> {
     return (
       user.activeProfile.role === Role.ADMIN ||
       (user.activeProfile.role === Role.MANAGER &&
         (await this.isManagerOfSite(user.activeProfile.id, siteId)))
-    )
+    );
   }
 
-  async findManagers (siteId: number): Promise<SiteManagerCommonReturn[]> {
+  async findManagers(siteId: number): Promise<SiteManagerCommonReturn[]> {
     return await this.prismaBase.siteHasManager
       .findMany({
         where: {
-          siteId: +siteId
+          siteId: +siteId,
         },
-        select: new SiteManagerCommonSelect()
+        select: new SiteManagerCommonSelect(),
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
       })
       .then((managers: unknown[]) => {
         return managers.map(
-          manager =>
-            new SiteManagerCommonReturn(manager as SiteManagerCommonDbReturn)
-        )
-      })
+          (manager) =>
+            new SiteManagerCommonReturn(manager as SiteManagerCommonDbReturn),
+        );
+      });
   }
 
-  private async createManagerProfile (
-    userId: number
+  private async createManagerProfile(
+    userId: number,
   ): Promise<{ id: number; role: Role; deletedAt: Date | null }> {
     const profile = await this.prismaBase.profile
       .create({
@@ -66,24 +71,24 @@ export class SitesManagersService {
           role: Role.MANAGER,
           user: {
             connect: {
-              id: +userId
-            }
-          }
+              id: +userId,
+            },
+          },
         },
         select: {
           id: true,
           role: true,
-          deletedAt: true
-        }
+          deletedAt: true,
+        },
       })
       .catch((e: Error) => {
-        throw new InternalServerErrorException('Failed to create profile')
-      })
-    return profile
+        throw new InternalServerErrorException('Failed to create profile');
+      });
+    return profile;
   }
 
-  private async reactivateProfile (
-    profileId: number
+  private async reactivateProfile(
+    profileId: number,
   ): Promise<{ id: number; role: Role; deletedAt: Date | null }> {
     return await this.prismaBase.profile.update({
       where: { id: +profileId },
@@ -91,14 +96,14 @@ export class SitesManagersService {
       select: {
         id: true,
         role: true,
-        deletedAt: true
-      }
-    })
+        deletedAt: true,
+      },
+    });
   }
 
-  async addManager (
+  async addManager(
     siteId: number,
-    managerEmail: string
+    managerEmail: string,
   ): Promise<SiteManagerCommonReturn> {
     const managerUser = await this.prismaBase.user.findUnique({
       where: { email: managerEmail },
@@ -107,34 +112,34 @@ export class SitesManagersService {
           select: {
             id: true,
             role: true,
-            deletedAt: true
-          }
-        }
-      }
-    })
+            deletedAt: true,
+          },
+        },
+      },
+    });
     if (managerUser === null) {
       //TODO: here we should send an email to the user to invite him to create an account
-      throw new NotFoundException('User not found')
+      throw new NotFoundException('User not found');
     }
-    await this.checkSiteValidity(siteId)
+    await this.checkSiteValidity(siteId);
     let managerProfile = managerUser.profiles.find(
-      profile => profile.role === Role.MANAGER
-    )
+      (profile) => profile.role === Role.MANAGER,
+    );
     if (!managerProfile) {
-      managerProfile = await this.createManagerProfile(managerUser.id)
+      managerProfile = await this.createManagerProfile(managerUser.id);
     } else if (managerProfile.deletedAt !== null) {
-      managerProfile = await this.reactivateProfile(managerProfile.id)
+      managerProfile = await this.reactivateProfile(managerProfile.id);
     } else if (await this.isManagerOfSite(managerProfile.id, siteId)) {
-      throw new ConflictException('Manager is already a manager of this site')
+      throw new ConflictException('Manager is already a manager of this site');
     }
     const alreadyManager = await this.prismaBase.siteHasManager.findUnique({
       where: {
         profileId_siteId: {
           profileId: +managerProfile.id,
-          siteId: +siteId
-        }
-      }
-    })
+          siteId: +siteId,
+        },
+      },
+    });
     if (alreadyManager) {
       if (alreadyManager.deletedAt !== null) {
         return new SiteManagerCommonReturn(
@@ -143,45 +148,49 @@ export class SitesManagersService {
               where: {
                 profileId_siteId: {
                   profileId: +managerProfile.id,
-                  siteId: +siteId
-                }
+                  siteId: +siteId,
+                },
               },
               data: {
-                deletedAt: null
+                deletedAt: null,
               },
-              select: new SiteManagerCommonSelect()
+              select: new SiteManagerCommonSelect(),
             })
             .catch((e: Error) => {
-              this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-              throw new InternalServerErrorException(e)
-            })) as unknown as SiteManagerCommonDbReturn
-        )
+              this.loggingService.log(
+                LogCriticity.Critical,
+                this.constructor.name,
+                e,
+              );
+              throw new InternalServerErrorException(e);
+            })) as unknown as SiteManagerCommonDbReturn,
+        );
       }
-      throw new ConflictException('Manager is already a manager of this site')
+      throw new ConflictException('Manager is already a manager of this site');
     }
     return new SiteManagerCommonReturn(
       (await this.prismaBase.siteHasManager.create({
         data: {
           profileId: +managerProfile.id,
-          siteId: +siteId
+          siteId: +siteId,
         },
-        select: new SiteManagerCommonSelect()
-      })) as unknown as SiteManagerCommonDbReturn
-    )
+        select: new SiteManagerCommonSelect(),
+      })) as unknown as SiteManagerCommonDbReturn,
+    );
   }
 
-  private async checkSiteValidity (siteId: number) {
+  private async checkSiteValidity(siteId: number) {
     const site = await this.prismaBase.site.findUnique({
-      where: { id: +siteId }
-    })
+      where: { id: +siteId },
+    });
     if (site === null) {
-      throw new NotFoundException('Site not found')
+      throw new NotFoundException('Site not found');
     }
-    return site
+    return site;
   }
 
-  private async getManagerProfile (
-    managerEmail: string
+  private async getManagerProfile(
+    managerEmail: string,
   ): Promise<{ id: number; role: Role; deletedAt: Date | null }> {
     const managerUser = await this.prismaBase.user.findUnique({
       where: { email: managerEmail },
@@ -190,35 +199,35 @@ export class SitesManagersService {
           select: {
             id: true,
             role: true,
-            deletedAt: true
-          }
-        }
-      }
-    })
+            deletedAt: true,
+          },
+        },
+      },
+    });
     if (managerUser === null) {
-      throw new NotFoundException('User not found')
+      throw new NotFoundException('User not found');
     }
     const managerProfile = managerUser.profiles.find(
-      profile => profile.role === Role.MANAGER
-    )
+      (profile) => profile.role === Role.MANAGER,
+    );
     if (!managerProfile) {
-      throw new NotFoundException('Manager not found')
+      throw new NotFoundException('Manager not found');
     }
-    return managerProfile
+    return managerProfile;
   }
 
-  async updateManager (
+  async updateManager(
     siteId: number,
-    updatedRelation: SiteManagerModificationRequestBody
+    updatedRelation: SiteManagerModificationRequestBody,
   ): Promise<SiteManagerCommonReturn> {
-    await this.checkSiteValidity(siteId)
-    const managerProfile = await this.getManagerProfile(updatedRelation.email)
+    await this.checkSiteValidity(siteId);
+    const managerProfile = await this.getManagerProfile(updatedRelation.email);
     if (
       !managerProfile ||
       managerProfile.deletedAt !== null ||
       !(await this.isManagerOfSite(managerProfile.id, siteId))
     ) {
-      throw new NotFoundException('Manager not found')
+      throw new NotFoundException('Manager not found');
     }
     return new SiteManagerCommonReturn(
       (await this.prismaBase.siteHasManager
@@ -226,33 +235,37 @@ export class SitesManagersService {
           where: {
             profileId_siteId: {
               profileId: +managerProfile.id,
-              siteId: +siteId
-            }
+              siteId: +siteId,
+            },
           },
           data: {
-            isMain: updatedRelation.isMain
+            isMain: updatedRelation.isMain,
           },
-          select: new SiteManagerCommonSelect()
+          select: new SiteManagerCommonSelect(),
         })
         .catch((e: Error) => {
-          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-          throw new InternalServerErrorException(e)
-        })) as unknown as SiteManagerCommonDbReturn
-    )
+          this.loggingService.log(
+            LogCriticity.Critical,
+            this.constructor.name,
+            e,
+          );
+          throw new InternalServerErrorException(e);
+        })) as unknown as SiteManagerCommonDbReturn,
+    );
   }
 
-  async deleteManager (
+  async deleteManager(
     siteId: number,
-    removedManager: RemoveManagerRequestBody
+    removedManager: RemoveManagerRequestBody,
   ): Promise<SiteManagerCommonReturn> {
-    await this.checkSiteValidity(siteId)
-    const managerProfile = await this.getManagerProfile(removedManager.email)
+    await this.checkSiteValidity(siteId);
+    const managerProfile = await this.getManagerProfile(removedManager.email);
     if (
       !managerProfile ||
       managerProfile.deletedAt !== null ||
       !(await this.isManagerOfSite(managerProfile.id, siteId))
     ) {
-      throw new NotFoundException('Manager not found')
+      throw new NotFoundException('Manager not found');
     }
     return new SiteManagerCommonReturn(
       (await this.prismaBase.siteHasManager
@@ -260,58 +273,70 @@ export class SitesManagersService {
           where: {
             profileId_siteId: {
               profileId: +managerProfile.id,
-              siteId: +siteId
-            }
+              siteId: +siteId,
+            },
           },
           data: {
-            deletedAt: new Date()
+            deletedAt: new Date(),
           },
-          select: new SiteManagerCommonSelect()
+          select: new SiteManagerCommonSelect(),
         })
         .catch((e: Error) => {
-          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-          throw new InternalServerErrorException(e)
-        })) as unknown as SiteManagerCommonDbReturn
-    )
+          this.loggingService.log(
+            LogCriticity.Critical,
+            this.constructor.name,
+            e,
+          );
+          throw new InternalServerErrorException(e);
+        })) as unknown as SiteManagerCommonDbReturn,
+    );
   }
 
-  async isManagerOfSite (
+  async isManagerOfSite(
     managerProfileId: number,
-    siteId: number
+    siteId: number,
   ): Promise<boolean> {
     const relation: SiteHasManager | null = await this.prismaBase.siteHasManager
       .findUnique({
         where: {
           profileId_siteId: {
             siteId: +siteId,
-            profileId: +managerProfileId
+            profileId: +managerProfileId,
           },
-          deletedAt: null
-        }
+          deletedAt: null,
+        },
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
-    return relation !== null
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
+    return relation !== null;
   }
 
-  async isMainManagerOfSite (managerProfileId: number, siteId: number) {
+  async isMainManagerOfSite(managerProfileId: number, siteId: number) {
     const relation: SiteHasManager | null = await this.prismaBase.siteHasManager
       .findUnique({
         where: {
           profileId_siteId: {
             siteId: +siteId,
-            profileId: +managerProfileId
+            profileId: +managerProfileId,
           },
           isMain: true,
-          deletedAt: null
-        }
+          deletedAt: null,
+        },
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
-    return relation !== null
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
+    return relation !== null;
   }
 }

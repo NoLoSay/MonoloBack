@@ -9,21 +9,21 @@ import {
   ParseIntPipe,
   Request,
   Query,
-  Response
-} from '@nestjs/common'
-import { ADMIN, Roles } from '@noloback/roles'
-import { AddressAdminReturn } from '@noloback/api.returns'
-import { AddressManipulationModel } from '@noloback/api.request.bodies'
-import { AddressesService } from '@noloback/addresses.service'
-import { FiltersGetMany } from 'models/filters-get-many'
+  Response,
+} from '@nestjs/common';
+import { ADMIN, Roles } from '@noloback/roles';
+import { AddressAdminReturn } from '@noloback/api.returns';
+import { AddressManipulationModel } from '@noloback/api.request.bodies';
+import { AddressesService } from '@noloback/addresses.service';
+import { FiltersGetMany } from 'models/filters-get-many';
 
 @Controller('addresses')
 export class AddressesController {
-  constructor (private readonly addressesService: AddressesService) {}
+  constructor(private readonly addressesService: AddressesService) {}
 
   @Roles([ADMIN])
   @Get()
-  async findAll (
+  async findAll(
     @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
@@ -33,9 +33,8 @@ export class AddressesController {
     @Query('city_id') cityId?: number | undefined,
     @Query('zip_start') zipStart?: string | undefined,
     @Query('createdAt_gte') createdAtGte?: string | undefined,
-    @Query('createdAt_lte') createdAtLte?: string | undefined
+    @Query('createdAt_lte') createdAtLte?: string | undefined,
   ): Promise<AddressAdminReturn[]> {
-   
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
@@ -43,44 +42,59 @@ export class AddressesController {
           cityId ? +cityId : undefined,
           zipStart ? zipStart : undefined,
           createdAtGte,
-          createdAtLte
+          createdAtLte,
         ),
       })
       .json(
-        await this.addressesService.findAll(new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'zip', 'cityId', 'street', 'houseNumber', 'longitude', 'latitude', 'createdAt']), cityId, zipStart, createdAtGte, createdAtLte)
+        await this.addressesService.findAll(
+          new FiltersGetMany(firstElem, lastElem, sort, order, [
+            'id',
+            'zip',
+            'cityId',
+            'street',
+            'houseNumber',
+            'longitude',
+            'latitude',
+            'createdAt',
+          ]),
+          cityId,
+          zipStart,
+          createdAtGte,
+          createdAtLte,
+        ),
       );
   }
 
   @Roles([ADMIN])
   @Get(':id')
-  async findOne (
-    @Param('id', ParseIntPipe) id: number
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<AddressAdminReturn> {
-    return this.addressesService.findOne(id)
+    return this.addressesService.findOne(id);
   }
 
   @Roles([ADMIN])
   @Post()
-  async create (@Body() addresses: AddressManipulationModel) {
-    return this.addressesService.create(addresses)
+  async create(@Body() addresses: AddressManipulationModel) {
+    return this.addressesService.create(addresses);
   }
 
   @Put(':id')
-  async update (
+  async update(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatedAddress: AddressManipulationModel
+    @Body() updatedAddress: AddressManipulationModel,
   ) {
     return this.addressesService.update(
       id,
       updatedAddress,
-      request.user.activeProfile.role
-    )
+      request.user.activeProfile.role,
+    );
   }
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (@Param('id', ParseIntPipe) id: number) {
-    return this.addressesService.delete(id)
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    return this.addressesService.delete(id);
   }
 }

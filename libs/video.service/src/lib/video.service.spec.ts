@@ -10,15 +10,15 @@ import { SitesManagersService } from '@noloback/sites.managers.service';
 
 class Provider {
   constructor(url: string) {
-    this.url = url
+    this.url = url;
   }
 
-  url: string
+  url: string;
 }
 
 class HostingProvider {
   async findUnique(): Promise<Provider> {
-    return new Provider("aaa")
+    return new Provider('aaa');
   }
 }
 
@@ -30,32 +30,31 @@ class MockPrisma {
   hostingProvider: HostingProvider;
 }
 
-class EmptyService {
-
-}
+class EmptyService {}
 
 describe('videoservice', () => {
   let app: TestingModule;
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      providers: [VideoService,
+      providers: [
+        VideoService,
         {
           provide: PrismaBaseService,
-          useClass: MockPrisma
+          useClass: MockPrisma,
         },
         {
           provide: LoggerService,
-          useClass: EmptyService
+          useClass: EmptyService,
         },
         {
           provide: ProfileService,
-          useClass: EmptyService
+          useClass: EmptyService,
         },
         {
           provide: SitesManagersService,
-          useClass: EmptyService
-        }
+          useClass: EmptyService,
+        },
       ],
       imports: [HttpModule],
     }).compile();
@@ -64,10 +63,15 @@ describe('videoservice', () => {
   describe('getYoutube', () => {
     it('should return the mocked video', async () => {
       const service = app.get(VideoService);
-      const video: VideoCommonReturn = new VideoCommonReturn(new VideoCommonDbReturn);
-      expect(await service.getYoutube(video)).toStrictEqual({video: video, url: "aaa"
-        .replace('${videoUUID}', video.uuid)
-        .replace('${providerVideoId}', video.hostingProviderVideoId)});
+      const video: VideoCommonReturn = new VideoCommonReturn(
+        new VideoCommonDbReturn(),
+      );
+      expect(await service.getYoutube(video)).toStrictEqual({
+        video: video,
+        url: 'aaa'
+          .replace('${videoUUID}', video.uuid)
+          .replace('${providerVideoId}', video.hostingProviderVideoId),
+      });
     });
   });
 });

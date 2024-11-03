@@ -7,7 +7,7 @@ describe('PicturesController', () => {
   let controller: PicturesController;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({ 
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [PicturesController],
       providers: [PicturesService],
       imports: [RootTestModule],

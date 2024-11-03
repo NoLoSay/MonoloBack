@@ -13,7 +13,13 @@ import { JwtAuthGuard } from '@noloback/guards';
 import { RolesGuard } from '@noloback/roles';
 
 @Module({
-  imports: [AuthServiceModule, SanctionsServiceModule, PicturesControllerModule, UploadControllerModule, WatchControllerModule],
+  imports: [
+    AuthServiceModule,
+    SanctionsServiceModule,
+    PicturesControllerModule,
+    UploadControllerModule,
+    WatchControllerModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

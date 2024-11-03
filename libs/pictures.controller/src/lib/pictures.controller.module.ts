@@ -6,6 +6,6 @@ import { PicturesServiceModule } from '@noloback/pictures.service';
   controllers: [PicturesController],
   providers: [],
   exports: [],
-  imports: [PicturesServiceModule]
+  imports: [PicturesServiceModule],
 })
 export class PicturesControllerModule {}

@@ -1,19 +1,22 @@
-import { Injectable } from "@nestjs/common";
-import { LoggerService } from "@noloback/logger-lib";
-import path = require("path");
-import { UTApi } from "uploadthing/server";
-import { FileEsque } from "uploadthing/types";
+import { Injectable } from '@nestjs/common';
+import { LoggerService } from '@noloback/logger-lib';
+import path = require('path');
+import { UTApi } from 'uploadthing/server';
+import { FileEsque } from 'uploadthing/types';
 import { Express } from 'express'; // DO NOT REMOVE, REQUIRED FOR UNIT TESTS
 import { Multer } from 'multer'; // DO NOT REMOVE, REQUIRED FOR UNIT TESTS
 
 @Injectable()
 export class UploadthingService {
-  private utapi: UTApi = new UTApi()
+  private utapi: UTApi = new UTApi();
 
-  async uploadFromUrl(url: string, extname: string): Promise<string | undefined> {
+  async uploadFromUrl(
+    url: string,
+    extname: string,
+  ): Promise<string | undefined> {
     const uploadedFile = await this.utapi.uploadFilesFromUrl(url + extname);
 
-    return uploadedFile.data?.url
+    return uploadedFile.data?.url;
   }
 
   async uploadFile(file: Express.Multer.File): Promise<string> {
@@ -30,11 +33,16 @@ export class UploadthingService {
       if (response && response[0] && response[0].data) {
         return response[0].data.url;
       } else {
-        throw new Error("Failed to upload file.");
+        throw new Error('Failed to upload file.');
       }
     } catch (error: any) {
-      console.error(error)
-      LoggerService.log('Critical', 'PicturesService.createPicture', error, `Error uploading file: ${error.message}`)
+      console.error(error);
+      LoggerService.log(
+        'Critical',
+        'PicturesService.createPicture',
+        error,
+        `Error uploading file: ${error.message}`,
+      );
       throw error;
     }
   }

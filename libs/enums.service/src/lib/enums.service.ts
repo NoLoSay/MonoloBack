@@ -1,9 +1,9 @@
-import { PrismaBaseService } from '@noloback/prisma-client-base'
+import { PrismaBaseService } from '@noloback/prisma-client-base';
 import {
   BadRequestException,
   Injectable,
-  NotFoundException
-} from '@nestjs/common'
+  NotFoundException,
+} from '@nestjs/common';
 import {
   PersonTypeColorAdminReturn,
   PersonTypeColorCommonReturn,
@@ -14,9 +14,9 @@ import {
   SiteTypeColorAdminReturn,
   SiteTypeColorCommonReturn,
   ValidationStatusColorAdminReturn,
-  ValidationStatusColorCommonReturn
-} from '@noloback/api.returns'
-import { EnumColorManipulationModel } from '@noloback/api.request.bodies'
+  ValidationStatusColorCommonReturn,
+} from '@noloback/api.returns';
+import { EnumColorManipulationModel } from '@noloback/api.request.bodies';
 import {
   PersonTypeColorAdminSelect,
   PersonTypeColorCommonSelect,
@@ -27,168 +27,168 @@ import {
   SiteTypeColorAdminSelect,
   SiteTypeColorCommonSelect,
   ValidationStatusColorAdminSelect,
-  ValidationStatusColorCommonSelect
-} from '@noloback/db.calls'
+  ValidationStatusColorCommonSelect,
+} from '@noloback/db.calls';
 
 @Injectable()
 export class EnumsService {
-  constructor (private prismaBase: PrismaBaseService) {}
+  constructor(private prismaBase: PrismaBaseService) {}
 
-  isColor (color: string): boolean {
-    return /^#[0-9A-F]{6}$/i.test(color)
+  isColor(color: string): boolean {
+    return /^#[0-9A-F]{6}$/i.test(color);
   }
 
-  async getRolesColors (): Promise<RoleColorCommonReturn[]> {
+  async getRolesColors(): Promise<RoleColorCommonReturn[]> {
     return this.prismaBase.roleColor.findMany({
-      select: new RoleColorCommonSelect()
-    })
+      select: new RoleColorCommonSelect(),
+    });
   }
 
-  async getAdminRolesColors (): Promise<RoleColorAdminReturn[]> {
+  async getAdminRolesColors(): Promise<RoleColorAdminReturn[]> {
     return this.prismaBase.roleColor.findMany({
-      select: new RoleColorAdminSelect()
-    })
+      select: new RoleColorAdminSelect(),
+    });
   }
 
-  async roleColorsPatch (
+  async roleColorsPatch(
     id: number,
-    body: EnumColorManipulationModel
+    body: EnumColorManipulationModel,
   ): Promise<RoleColorAdminReturn> {
     if (!this.isColor(body.color)) {
-      throw new BadRequestException('Color not valid')
+      throw new BadRequestException('Color not valid');
     }
     try {
       return await this.prismaBase.roleColor.update({
         where: { id: +id },
         data: body,
-        select: new RoleColorAdminSelect()
-      })
+        select: new RoleColorAdminSelect(),
+      });
     } catch {
-      throw new NotFoundException('Enum not found')
+      throw new NotFoundException('Enum not found');
     }
   }
 
-  async getValidationStatusesColors (): Promise<
+  async getValidationStatusesColors(): Promise<
     ValidationStatusColorCommonReturn[]
   > {
     return this.prismaBase.validationStatusColor.findMany({
-      select: new ValidationStatusColorCommonSelect()
-    })
+      select: new ValidationStatusColorCommonSelect(),
+    });
   }
 
-  async getAdminValidationStatusesColors (): Promise<
+  async getAdminValidationStatusesColors(): Promise<
     ValidationStatusColorAdminReturn[]
   > {
     return this.prismaBase.validationStatusColor.findMany({
-      select: new ValidationStatusColorAdminSelect()
-    })
+      select: new ValidationStatusColorAdminSelect(),
+    });
   }
 
-  async validationStatusColorsPatch (
+  async validationStatusColorsPatch(
     id: number,
-    body: EnumColorManipulationModel
+    body: EnumColorManipulationModel,
   ): Promise<ValidationStatusColorAdminReturn> {
     if (!this.isColor(body.color)) {
-      throw new BadRequestException('Color not valid')
+      throw new BadRequestException('Color not valid');
     }
     try {
       return await this.prismaBase.validationStatusColor.update({
         where: { id: +id },
         data: body,
-        select: new ValidationStatusColorAdminSelect()
-      })
+        select: new ValidationStatusColorAdminSelect(),
+      });
     } catch {
-      throw new NotFoundException('Enum not found')
+      throw new NotFoundException('Enum not found');
     }
   }
 
-  async getPersonTypesColors (): Promise<PersonTypeColorCommonReturn[]> {
+  async getPersonTypesColors(): Promise<PersonTypeColorCommonReturn[]> {
     return this.prismaBase.personTypeColor.findMany({
-      select: new PersonTypeColorCommonSelect()
-    })
+      select: new PersonTypeColorCommonSelect(),
+    });
   }
 
-  async getAdminPersonTypesColors (): Promise<PersonTypeColorAdminReturn[]> {
+  async getAdminPersonTypesColors(): Promise<PersonTypeColorAdminReturn[]> {
     return this.prismaBase.personTypeColor.findMany({
-      select: new PersonTypeColorAdminSelect()
-    })
+      select: new PersonTypeColorAdminSelect(),
+    });
   }
 
-  async personTypeColorsPatch (
+  async personTypeColorsPatch(
     id: number,
-    body: EnumColorManipulationModel
+    body: EnumColorManipulationModel,
   ): Promise<PersonTypeColorAdminReturn> {
     if (!this.isColor(body.color)) {
-      throw new BadRequestException('Color not valid')
+      throw new BadRequestException('Color not valid');
     }
     try {
       return await this.prismaBase.personTypeColor.update({
         where: { id: +id },
         data: body,
-        select: new PersonTypeColorAdminSelect()
-      })
+        select: new PersonTypeColorAdminSelect(),
+      });
     } catch {
-      throw new NotFoundException('Enum not found')
+      throw new NotFoundException('Enum not found');
     }
   }
 
-  async getSiteTypesColors (): Promise<SiteTypeColorCommonReturn[]> {
+  async getSiteTypesColors(): Promise<SiteTypeColorCommonReturn[]> {
     return this.prismaBase.siteTypeColor.findMany({
-      select: new SiteTypeColorCommonSelect()
-    })
+      select: new SiteTypeColorCommonSelect(),
+    });
   }
 
-  async getAdminSiteTypesColors (): Promise<SiteTypeColorAdminReturn[]> {
+  async getAdminSiteTypesColors(): Promise<SiteTypeColorAdminReturn[]> {
     return this.prismaBase.siteTypeColor.findMany({
-      select: new SiteTypeColorAdminSelect()
-    })
+      select: new SiteTypeColorAdminSelect(),
+    });
   }
 
-  async siteTypeColorsPatch (
+  async siteTypeColorsPatch(
     id: number,
-    body: EnumColorManipulationModel
+    body: EnumColorManipulationModel,
   ): Promise<SiteTypeColorAdminReturn> {
     if (!this.isColor(body.color)) {
-      throw new BadRequestException('Color not valid')
+      throw new BadRequestException('Color not valid');
     }
     try {
       return await this.prismaBase.siteTypeColor.update({
         where: { id: +id },
         data: body,
-        select: new SiteTypeColorAdminSelect()
-      })
+        select: new SiteTypeColorAdminSelect(),
+      });
     } catch {
-      throw new NotFoundException('Enum not found')
+      throw new NotFoundException('Enum not found');
     }
   }
 
-  async getSiteTagsColors (): Promise<SiteTagColorCommonReturn[]> {
+  async getSiteTagsColors(): Promise<SiteTagColorCommonReturn[]> {
     return this.prismaBase.siteTagColor.findMany({
-      select: new SiteTagColorCommonSelect()
-    })
+      select: new SiteTagColorCommonSelect(),
+    });
   }
 
-  async getAdminSiteTagsColors (): Promise<SiteTagColorAdminReturn[]> {
+  async getAdminSiteTagsColors(): Promise<SiteTagColorAdminReturn[]> {
     return this.prismaBase.siteTagColor.findMany({
-      select: new SiteTagColorAdminSelect()
-    })
+      select: new SiteTagColorAdminSelect(),
+    });
   }
 
-  async siteTagColorsPatch (
+  async siteTagColorsPatch(
     id: number,
-    body: EnumColorManipulationModel
+    body: EnumColorManipulationModel,
   ): Promise<SiteTagColorAdminReturn> {
     if (!this.isColor(body.color)) {
-      throw new BadRequestException('Color not valid')
+      throw new BadRequestException('Color not valid');
     }
     try {
       return await this.prismaBase.siteTagColor.update({
         where: { id: +id },
         data: body,
-        select: new SiteTagColorAdminSelect()
-      })
+        select: new SiteTagColorAdminSelect(),
+      });
     } catch {
-      throw new NotFoundException('Enum not found')
+      throw new NotFoundException('Enum not found');
     }
   }
 }

@@ -1,7 +1,19 @@
-import { Controller, Delete, Get, HttpCode, Param, Patch, Post, Put, Query, Request, Response } from "@nestjs/common";
-import { SanctionType } from "@noloback/prisma-client-base";
-import { SanctionsService } from "@noloback/sanctions.service";
-import { FiltersGetMany } from "models/filters-get-many";
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+  Request,
+  Response,
+} from '@nestjs/common';
+import { SanctionType } from '@noloback/prisma-client-base';
+import { SanctionsService } from '@noloback/sanctions.service';
+import { FiltersGetMany } from 'models/filters-get-many';
 import { ADMIN, MODERATOR, Roles } from '@noloback/roles';
 
 @Controller('sanctions')
@@ -35,74 +47,112 @@ export class SanctionsController {
     let sanctionTypeEnum: SanctionType | undefined;
     if (
       sanctionType &&
-      Object.values(SanctionType).includes(
-        sanctionType as SanctionType
-      )
+      Object.values(SanctionType).includes(sanctionType as SanctionType)
     ) {
       sanctionTypeEnum = sanctionType as unknown as SanctionType;
     }
 
     const data = await this.sanctionsService.findAll(
-      new FiltersGetMany(
-        firstElem,
-        lastElem,
-        sort,
-        order,
-        ['id', 'userId', 'issuerId', 'reason', 'sanctionType', 'sanctionStart', 'sanctionEnd', 'createdAt', 'updatedAt']
-    ),
-    userId, issuerId, issuerUserId, reasonContains, sanctionTypeEnum,
-    sanctionStartAtGte, sanctionStartAtLte, sanctionEndAtGte, sanctionEndAtLte,
-    createdAtGte, createdAtLte, updatedAtGte, updatedAtLte);
+      new FiltersGetMany(firstElem, lastElem, sort, order, [
+        'id',
+        'userId',
+        'issuerId',
+        'reason',
+        'sanctionType',
+        'sanctionStart',
+        'sanctionEnd',
+        'createdAt',
+        'updatedAt',
+      ]),
+      userId,
+      issuerId,
+      issuerUserId,
+      reasonContains,
+      sanctionTypeEnum,
+      sanctionStartAtGte,
+      sanctionStartAtLte,
+      sanctionEndAtGte,
+      sanctionEndAtLte,
+      createdAtGte,
+      createdAtLte,
+      updatedAtGte,
+      updatedAtLte,
+    );
 
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': this.sanctionsService.count(userId, issuerId, issuerUserId, reasonContains, sanctionTypeEnum,
-          sanctionStartAtGte, sanctionStartAtLte, sanctionEndAtGte, sanctionEndAtLte,
-          createdAtGte, createdAtLte, updatedAtGte, updatedAtLte),
+        'X-Total-Count': this.sanctionsService.count(
+          userId,
+          issuerId,
+          issuerUserId,
+          reasonContains,
+          sanctionTypeEnum,
+          sanctionStartAtGte,
+          sanctionStartAtLte,
+          sanctionEndAtGte,
+          sanctionEndAtLte,
+          createdAtGte,
+          createdAtLte,
+          updatedAtGte,
+          updatedAtLte,
+        ),
       })
-      .json(
-        data
-      );
+      .json(data);
   }
 
   @Post()
   @HttpCode(201)
   @Roles([ADMIN, MODERATOR])
   async create(@Request() request: any, @Response() res: any): Promise<string> {
-    const data = await this.sanctionsService.create(request.user, request.body.target_user, request.body.sanction_type, request.body.reason, request.body.sanction_start, request.body.sanction_end);
-    return res
-      .status(201)
-      .json(data);
+    const data = await this.sanctionsService.create(
+      request.user,
+      request.body.target_user,
+      request.body.sanction_type,
+      request.body.reason,
+      request.body.sanction_start,
+      request.body.sanction_end,
+    );
+    return res.status(201).json(data);
   }
 
   @Delete(':id')
   @HttpCode(200)
   @Roles([ADMIN])
-  async delete (@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
+  async delete(
+    @Request() request: any,
+    @Response() res: any,
+    @Param('id') id: number,
+  ): Promise<string> {
     const data = await this.sanctionsService.delete(request.user, id);
-    return res
-      .status(200)
-      .json(data);
+    return res.status(200).json(data);
   }
 
   @Get(':id')
   @HttpCode(200)
   @Roles([ADMIN, MODERATOR])
-  async findById(@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
+  async findById(
+    @Request() request: any,
+    @Response() res: any,
+    @Param('id') id: number,
+  ): Promise<string> {
     const data = await this.sanctionsService.findById(id);
-    return res
-      .status(200)
-      .json(data);
+    return res.status(200).json(data);
   }
 
   @Patch(':id')
   @HttpCode(200)
   @Roles([ADMIN, MODERATOR])
-  async update(@Request() request: any, @Response() res: any, @Param('id') id: number): Promise<string> {
-    const data = await this.sanctionsService.patch(request.user, id, request.body);
-    return res
-      .status(200)
-      .json(data);
+  async update(
+    @Request() request: any,
+    @Response() res: any,
+    @Param('id') id: number,
+  ): Promise<string> {
+    const data = await this.sanctionsService.patch(
+      request.user,
+      id,
+      request.body,
+    );
+    return res.status(200).json(data);
   }
 }

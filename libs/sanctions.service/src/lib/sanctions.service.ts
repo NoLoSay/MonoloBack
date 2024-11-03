@@ -1,14 +1,20 @@
-import { Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  NotImplementedException,
+} from '@nestjs/common';
 import { LoggerService } from '@noloback/logger-lib';
-import { PrismaBaseService, SanctionType, Sanctions } from '@noloback/prisma-client-base';
+import {
+  PrismaBaseService,
+  SanctionType,
+  Sanctions,
+} from '@noloback/prisma-client-base';
 import { UserRequestModel } from '@noloback/requests.constructor';
 import { FiltersGetMany } from 'models/filters-get-many';
 
 @Injectable()
 export class SanctionsService {
-  constructor (
-    private prismaBase: PrismaBaseService,
-  ) {}
+  constructor(private prismaBase: PrismaBaseService) {}
 
   async count(
     userId?: number | undefined,
@@ -32,10 +38,12 @@ export class SanctionsService {
         issuer: issuerUserId ? { userId: +issuerUserId } : undefined,
         sanctionType: sanctionType ? sanctionType : undefined,
 
-        reason: reasonContains? {
-          contains: reasonContains,
-          mode: 'insensitive'
-        } : undefined,
+        reason: reasonContains
+          ? {
+              contains: reasonContains,
+              mode: 'insensitive',
+            }
+          : undefined,
 
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
@@ -53,7 +61,7 @@ export class SanctionsService {
           gte: sanctionEndAtGte ? new Date(sanctionEndAtGte) : undefined,
           lte: sanctionEndAtLte ? new Date(sanctionEndAtLte) : undefined,
         },
-      }
+      },
     });
   }
 
@@ -82,10 +90,12 @@ export class SanctionsService {
         issuer: issuerUserId ? { userId: +issuerUserId } : undefined,
         sanctionType: sanctionType ? sanctionType : undefined,
 
-        reason: reasonContains? {
-          contains: reasonContains,
-          mode: 'insensitive'
-        } : undefined,
+        reason: reasonContains
+          ? {
+              contains: reasonContains,
+              mode: 'insensitive',
+            }
+          : undefined,
 
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
@@ -116,11 +126,11 @@ export class SanctionsService {
   async findById(id: number) {
     return await this.prismaBase.sanctions.findUnique({
       where: {
-        id: +id
+        id: +id,
       },
       include: {
         issuer: true,
-      }
+      },
     });
   }
 
@@ -137,19 +147,19 @@ export class SanctionsService {
         issuer: {
           connect: {
             id: +user.activeProfile.id,
-          }
+          },
         },
         user: {
           connect: {
-            id: +targetUser
-          }
+            id: +targetUser,
+          },
         },
         sanctionType: sanctionType,
         reason: reason,
         sanctionStart: sanctionStart ? new Date(sanctionStart) : undefined,
-        sanctionEnd: sanctionEnd ? new Date(sanctionEnd) : undefined
-      }
-    })
+        sanctionEnd: sanctionEnd ? new Date(sanctionEnd) : undefined,
+      },
+    });
   }
 
   async update(
@@ -163,25 +173,25 @@ export class SanctionsService {
   ) {
     return await this.prismaBase.sanctions.update({
       where: {
-        id: +sanctionId
+        id: +sanctionId,
       },
       data: {
         issuer: {
           connect: {
             id: +user.activeProfile.id,
-          }
+          },
         },
         user: {
           connect: {
-            id: +targetUser
-          }
+            id: +targetUser,
+          },
         },
         sanctionType: sanctionType,
         reason: reason,
         sanctionStart: sanctionStart,
-        sanctionEnd: sanctionEnd
-      }
-    })
+        sanctionEnd: sanctionEnd,
+      },
+    });
   }
 
   async patch(
@@ -189,109 +199,120 @@ export class SanctionsService {
     sanctionId: number,
     data: Partial<Sanctions>,
   ) {
-    const before = await this.prismaBase.sanctions.findUnique({ where: { id: +sanctionId } });
+    const before = await this.prismaBase.sanctions.findUnique({
+      where: { id: +sanctionId },
+    });
     const updated = await this.prismaBase.sanctions.update({
       where: {
-        id: +sanctionId
+        id: +sanctionId,
       },
-      data: data
+      data: data,
     });
     if (updated) {
-      LoggerService.sensitiveLog(user.activeProfile.id, 'PATCH', 'Sanctions', +sanctionId, JSON.stringify(
-      {
-        "before": before,
-        "after": data
-      }));
+      LoggerService.sensitiveLog(
+        user.activeProfile.id,
+        'PATCH',
+        'Sanctions',
+        +sanctionId,
+        JSON.stringify({
+          before: before,
+          after: data,
+        }),
+      );
     }
     return updated;
   }
 
-  async delete(
-    user: UserRequestModel,
-    sanctionId: number,
-  ) {
-    LoggerService.sensitiveLog(user.activeProfile.id, 'DELETE', 'Sanctions', +sanctionId);
+  async delete(user: UserRequestModel, sanctionId: number) {
+    LoggerService.sensitiveLog(
+      user.activeProfile.id,
+      'DELETE',
+      'Sanctions',
+      +sanctionId,
+    );
     return await this.prismaBase.sanctions.update({
       where: {
-        id: +sanctionId
+        id: +sanctionId,
       },
       data: {
-        deletedAt: new Date()
-      }
-    })
+        deletedAt: new Date(),
+      },
+    });
   }
 
-  private async getUserSanctions(sanctions: Sanctions[]) : Promise<{
-    banned: boolean,
-    uploadBlocked: boolean,
-    sanctions: Sanctions[]
+  private async getUserSanctions(sanctions: Sanctions[]): Promise<{
+    banned: boolean;
+    uploadBlocked: boolean;
+    sanctions: Sanctions[];
   }> {
     const now = new Date(); // Get the current date and time
 
-    const banned = (sanctions.find(sanction => 
-        sanction.deletedAt == undefined &&
-        sanction.sanctionType === SanctionType.BAN && 
-        now >= sanction.sanctionStart && 
-        (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd)
-      ) != undefined
-    );
+    const banned =
+      sanctions.find(
+        (sanction) =>
+          sanction.deletedAt == undefined &&
+          sanction.sanctionType === SanctionType.BAN &&
+          now >= sanction.sanctionStart &&
+          (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd),
+      ) != undefined;
 
-    const uploadBlocked = (sanctions.find(sanction => 
-        sanction.deletedAt == undefined &&
-        sanction.sanctionType === SanctionType.BLOCK_UPLOAD && 
-        now >= sanction.sanctionStart && 
-        (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd)
-      ) != undefined
-    );
+    const uploadBlocked =
+      sanctions.find(
+        (sanction) =>
+          sanction.deletedAt == undefined &&
+          sanction.sanctionType === SanctionType.BLOCK_UPLOAD &&
+          now >= sanction.sanctionStart &&
+          (sanction.sanctionEnd == undefined || now <= sanction.sanctionEnd),
+      ) != undefined;
 
     return {
       banned: banned,
       uploadBlocked: uploadBlocked,
-      sanctions: sanctions
-    }
+      sanctions: sanctions,
+    };
   }
 
-  async getUserSanctionsById(userId: number) : Promise<{
-    banned: boolean,
-    uploadBlocked: boolean,
-    sanctions: Sanctions[]
+  async getUserSanctionsById(userId: number): Promise<{
+    banned: boolean;
+    uploadBlocked: boolean;
+    sanctions: Sanctions[];
   }> {
     if (!userId) {
       return {
         banned: false,
         uploadBlocked: false,
-        sanctions: []
-      }
+        sanctions: [],
+      };
     }
 
     const sanctions = await this.prismaBase.sanctions.findMany({
       where: {
-        userId: +userId
-      }
+        userId: +userId,
+      },
     });
 
     return this.getUserSanctions(sanctions);
   }
 
-  async getUserSanctionsByEmail(email: string) : Promise<{
-    banned: boolean,
-    uploadBlocked: boolean,
-    sanctions: Sanctions[]
+  async getUserSanctionsByEmail(email: string): Promise<{
+    banned: boolean;
+    uploadBlocked: boolean;
+    sanctions: Sanctions[];
   }> {
     if (!email) {
       return {
         banned: false,
         uploadBlocked: false,
-        sanctions: []
-      }
+        sanctions: [],
+      };
     }
 
     const sanctions = await this.prismaBase.sanctions.findMany({
       where: {
         user: {
-          email: email
-        }
-      }
+          email: email,
+        },
+      },
     });
 
     return this.getUserSanctions(sanctions);

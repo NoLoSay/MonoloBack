@@ -10,7 +10,7 @@ describe('UploadController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UploadController],
       imports: [RootTestModule],
-      providers: [VideoService]
+      providers: [VideoService],
     }).compile();
 
     controller = module.get<UploadController>(UploadController);

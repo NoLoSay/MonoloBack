@@ -12,26 +12,29 @@ describe('UsersService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UsersService, {
-        provide: LoggerService,
-        useValue: {
-          log: jest.fn(),
+      providers: [
+        UsersService,
+        {
+          provide: LoggerService,
+          useValue: {
+            log: jest.fn(),
+          },
         },
-      },
-      {
-        provide: PrismaBaseService,
-        useValue: {
-          // user: {
-          //   create: jest.fn((userCreate: UserCreateModel) : any => {
-          //     if (fakePrismaUser.find(user => user.email === userCreate.email)) {
-          //       throw new ConflictException();
-          //     }
-          //     fakePrismaUser.push(userCreate);
-          //   }),
-          //   findUnique: jest.fn(),
-          // },
+        {
+          provide: PrismaBaseService,
+          useValue: {
+            // user: {
+            //   create: jest.fn((userCreate: UserCreateModel) : any => {
+            //     if (fakePrismaUser.find(user => user.email === userCreate.email)) {
+            //       throw new ConflictException();
+            //     }
+            //     fakePrismaUser.push(userCreate);
+            //   }),
+            //   findUnique: jest.fn(),
+            // },
+          },
         },
-      }],
+      ],
     }).compile();
 
     service = module.get<UsersService>(UsersService);

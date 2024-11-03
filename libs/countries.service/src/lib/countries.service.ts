@@ -1,19 +1,25 @@
-import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
+import {
+  PrismaBaseService,
+  Prisma,
+  Role,
+  LogCriticity,
+} from '@noloback/prisma-client-base';
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException
-} from '@nestjs/common'
-import { CountryManipulationModel } from '@noloback/api.request.bodies'
-import { CountryAdminReturn, CountryCommonReturn } from '@noloback/api.returns'
-import { CountryAdminSelect, CountryCommonSelect } from '@noloback/db.calls'
-import { FiltersGetMany } from 'models/filters-get-many'
-import { LoggerService } from '@noloback/logger-lib'
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { CountryManipulationModel } from '@noloback/api.request.bodies';
+import { CountryAdminReturn, CountryCommonReturn } from '@noloback/api.returns';
+import { CountryAdminSelect, CountryCommonSelect } from '@noloback/db.calls';
+import { FiltersGetMany } from 'models/filters-get-many';
+import { LoggerService } from '@noloback/logger-lib';
 
 @Injectable()
 export class CountriesService {
-  constructor (
-    private prismaBase: PrismaBaseService, private loggingService: LoggerService
+  constructor(
+    private prismaBase: PrismaBaseService,
+    private loggingService: LoggerService,
   ) {}
 
   async count(
@@ -21,12 +27,16 @@ export class CountriesService {
     nameStart?: string | undefined,
     codeStart?: string | undefined,
     createdAtGte?: string | undefined,
-    createdAtLte?: string | undefined
+    createdAtLte?: string | undefined,
   ): Promise<number> {
     return await this.prismaBase.country.count({
       where: {
-        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
-        code: codeStart ? { startsWith: codeStart, mode: 'insensitive' } : undefined,
+        name: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
+        code: codeStart
+          ? { startsWith: codeStart, mode: 'insensitive' }
+          : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
@@ -37,22 +47,22 @@ export class CountriesService {
     });
   }
 
-  async findAll (
+  async findAll(
     role: Role,
     filters: FiltersGetMany,
     nameStart?: string | undefined,
     codeStart?: string | undefined,
     createdAtGte?: string | undefined,
-    createdAtLte?: string | undefined
+    createdAtLte?: string | undefined,
   ): Promise<CountryCommonReturn[] | CountryAdminReturn[]> {
-    let selectOptions: Prisma.CountrySelect
+    let selectOptions: Prisma.CountrySelect;
 
     switch (role) {
       case Role.ADMIN:
-        selectOptions = new CountryAdminSelect()
-        break
+        selectOptions = new CountryAdminSelect();
+        break;
       default:
-        selectOptions = new CountryCommonSelect()
+        selectOptions = new CountryCommonSelect();
     }
 
     const countries = await this.prismaBase.country
@@ -61,8 +71,12 @@ export class CountriesService {
         take: +filters.end - filters.start,
         select: selectOptions,
         where: {
-          name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
-          code: codeStart ? { startsWith: codeStart, mode: 'insensitive' } : undefined,
+          name: nameStart
+            ? { startsWith: nameStart, mode: 'insensitive' }
+            : undefined,
+          code: codeStart
+            ? { startsWith: codeStart, mode: 'insensitive' }
+            : undefined,
           createdAt: {
             gte: createdAtGte ? new Date(createdAtGte) : undefined,
             lte: createdAtLte ? new Date(createdAtLte) : undefined,
@@ -72,78 +86,90 @@ export class CountriesService {
         },
         orderBy: {
           [filters.sort]: filters.order,
-        }
+        },
       })
       .catch((e: Error) => {
-        console.log(e)
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+        console.log(e);
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
 
     switch (role) {
       case Role.ADMIN:
-        return countries as CountryAdminReturn[]
+        return countries as CountryAdminReturn[];
       default:
-        return countries as CountryCommonReturn[]
+        return countries as CountryCommonReturn[];
     }
   }
 
-  async findOne (
+  async findOne(
     id: number,
-    role: Role
+    role: Role,
   ): Promise<CountryCommonReturn | CountryAdminReturn> {
-    let selectOptions: Prisma.CountrySelect
+    let selectOptions: Prisma.CountrySelect;
 
     switch (role) {
       case Role.ADMIN:
-        selectOptions = new CountryAdminSelect()
-        break
+        selectOptions = new CountryAdminSelect();
+        break;
       default:
-        selectOptions = new CountryCommonSelect()
+        selectOptions = new CountryCommonSelect();
     }
 
     const country = await this.prismaBase.country
       .findUnique({
         where: { id: +id, deletedAt: role === Role.ADMIN ? undefined : null },
-        select: selectOptions
+        select: selectOptions,
       })
       .catch((e: Error) => {
-        console.log(e)
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new BadRequestException('Country not found')
-      })
+        console.log(e);
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new BadRequestException('Country not found');
+      });
 
     switch (role) {
       case Role.ADMIN:
-        return country as CountryAdminReturn
+        return country as CountryAdminReturn;
       default:
-        return country as CountryCommonReturn
+        return country as CountryCommonReturn;
     }
   }
 
-  async create (country: CountryManipulationModel): Promise<CountryAdminReturn> {
+  async create(country: CountryManipulationModel): Promise<CountryAdminReturn> {
     const newCountry: CountryAdminReturn = await this.prismaBase.country
       .create({
         data: {
           name: country.name,
           code: country.code,
           latitude: +(country?.latitude ?? 0),
-          longitude: +(country?.longitude ?? 0)
+          longitude: +(country?.longitude ?? 0),
         },
-        select: new CountryAdminSelect()
+        select: new CountryAdminSelect(),
       })
       .catch((e: Error) => {
-        console.log(e)
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+        console.log(e);
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
 
-    return newCountry
+    return newCountry;
   }
 
-  async update (
+  async update(
     id: number,
-    updatedCountry: CountryManipulationModel
+    updatedCountry: CountryManipulationModel,
   ): Promise<CountryAdminReturn> {
     const updated: CountryAdminReturn = await this.prismaBase.country
       .update({
@@ -152,30 +178,38 @@ export class CountriesService {
           name: updatedCountry.name,
           code: updatedCountry.code,
           latitude: +(updatedCountry.latitude ?? 0),
-          longitude: +(updatedCountry.longitude ?? 0)
+          longitude: +(updatedCountry.longitude ?? 0),
         },
-        select: new CountryAdminSelect()
+        select: new CountryAdminSelect(),
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
 
-    return updated
+    return updated;
   }
 
-  async delete (id: number): Promise<CountryAdminReturn> {
+  async delete(id: number): Promise<CountryAdminReturn> {
     const deleted: CountryAdminReturn = await this.prismaBase.country
       .update({
         where: { id: +id },
         data: { deletedAt: new Date() },
-        select: new CountryAdminSelect()
+        select: new CountryAdminSelect(),
       })
       .catch((e: Error) => {
-        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+        this.loggingService.log(
+          LogCriticity.Critical,
+          this.constructor.name,
+          e,
+        );
+        throw new InternalServerErrorException(e);
+      });
 
-    return deleted
+    return deleted;
   }
 }

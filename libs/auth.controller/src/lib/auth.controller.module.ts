@@ -7,9 +7,6 @@ import { MailConfirmationServiceModule } from '@noloback/mail-confirmation.servi
   controllers: [AuthController],
   providers: [],
   exports: [],
-  imports: [
-    AuthServiceModule,
-    MailConfirmationServiceModule
-  ],
+  imports: [AuthServiceModule, MailConfirmationServiceModule],
 })
 export class AuthControllerModule {}

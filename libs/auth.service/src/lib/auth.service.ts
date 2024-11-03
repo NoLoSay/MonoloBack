@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import { UsersService } from '@noloback/users.service';
 import { MailerService } from '@noloback/mailer';
@@ -47,7 +52,10 @@ export class AuthService {
     return this.usersService.findOneByEmail(email);
   }
 
-  async changePassword(token: string, newPassword: string): Promise<{ statusCode: number, message: string }> {
+  async changePassword(
+    token: string,
+    newPassword: string,
+  ): Promise<{ statusCode: number; message: string }> {
     try {
       const userId = await this.decodeConfirmationToken(token);
 
@@ -61,33 +69,40 @@ export class AuthService {
       if (error instanceof BadRequestException) {
         throw new BadRequestException(error.message);
       } else {
-        throw new InternalServerErrorException('An error occurred while changing the password');
+        throw new InternalServerErrorException(
+          'An error occurred while changing the password',
+        );
       }
     }
   }
 
-  async forgotPassword(email: string): Promise<{ statusCode: number, message: string }> {
+  async forgotPassword(
+    email: string,
+  ): Promise<{ statusCode: number; message: string }> {
     try {
       const user = await this.usersService.findOneByEmail(email);
       if (!user) {
         throw new BadRequestException('User not found');
       }
 
-      const token = this.jwtService.sign({ userId: user.id }, {
-        secret: process.env['JWT_VERIFICATION_TOKEN_SECRET'],
-        expiresIn: '1h'
-      });
+      const token = this.jwtService.sign(
+        { userId: user.id },
+        {
+          secret: process.env['JWT_VERIFICATION_TOKEN_SECRET'],
+          expiresIn: '1h',
+        },
+      );
 
       const url = `${process.env['RESET_PASSWORD_URL']}?token=${token}`;
 
-      const text = `Click this link to reset your password: ${url}`; 
+      const text = `Click this link to reset your password: ${url}`;
 
       await this.mailerService.sendMail({
         from: process.env['EMAIL_USER'],
         to: email,
         subject: 'Email confirmation',
         html: `<html><body>${text}</body></html>`,
-      })
+      });
       return {
         statusCode: 200,
         message: 'Password reset email sent successfully',
@@ -96,7 +111,9 @@ export class AuthService {
       if (error instanceof BadRequestException) {
         throw new BadRequestException(error.message);
       } else {
-        throw new InternalServerErrorException('An error occurred while sending the password reset email');
+        throw new InternalServerErrorException(
+          'An error occurred while sending the password reset email',
+        );
       }
     }
   }
@@ -106,13 +123,13 @@ export class AuthService {
       const payload = await this.jwtService.verify(token, {
         secret: process.env['JWT_VERIFICATION_TOKEN_SECRET'],
       });
- 
+
       if (typeof payload === 'object' && 'userId' in payload) {
         return payload.userId;
       }
       throw new BadRequestException();
     } catch (error) {
-      if(error instanceof TokenExpiredError) {
+      if (error instanceof TokenExpiredError) {
         throw new BadRequestException('Token expired');
       }
       throw new BadRequestException('Bad token');

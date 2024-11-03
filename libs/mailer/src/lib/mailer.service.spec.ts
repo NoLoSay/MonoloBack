@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MailerService } from "./mailer.service";
+import { MailerService } from './mailer.service';
 import { RootTestModule } from '@noloback/root.test';
 
 describe('MailerService', () => {

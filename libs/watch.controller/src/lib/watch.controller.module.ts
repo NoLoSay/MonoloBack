@@ -4,9 +4,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { VideoServiceModule } from '@noloback/video.service';
 
 @Module({
-  imports: [
-    MulterModule.register({ dest: './uploads' }),
-    VideoServiceModule,],
+  imports: [MulterModule.register({ dest: './uploads' }), VideoServiceModule],
   controllers: [WatchController],
   providers: [],
   exports: [],

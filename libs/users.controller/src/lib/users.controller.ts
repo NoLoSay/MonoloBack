@@ -31,7 +31,7 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly sanctionsService: SanctionsService,
-    private readonly videoService: VideoService
+    private readonly videoService: VideoService,
   ) {}
 
   @Get()
@@ -49,11 +49,30 @@ export class UsersController {
     @Query('createdAt_gte') createdAtGte?: string | undefined,
     @Query('createdAt_lte') createdAtLte?: string | undefined,
     @Query('deletedAt_gte') deletedAtGte?: string | undefined,
-    @Query('deletedAt_lte') deletedAtLte?: string | undefined
+    @Query('deletedAt_lte') deletedAtLte?: string | undefined,
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
-    const data = await this.usersService.findAll(request.user.activeProfile.role, new FiltersGetMany(firstElem, lastElem, sort, order,
-    ['id', 'username', 'telNumber', 'email', 'emailVerified', 'type', 'addressId', 'createdAt', 'deletedAt']),
-    nameStart, telStart, emailStart, emailVerified, createdAtGte, createdAtLte, deletedAtGte, deletedAtLte)
+    const data = await this.usersService.findAll(
+      request.user.activeProfile.role,
+      new FiltersGetMany(firstElem, lastElem, sort, order, [
+        'id',
+        'username',
+        'telNumber',
+        'email',
+        'emailVerified',
+        'type',
+        'addressId',
+        'createdAt',
+        'deletedAt',
+      ]),
+      nameStart,
+      telStart,
+      emailStart,
+      emailVerified,
+      createdAtGte,
+      createdAtLte,
+      deletedAtGte,
+      deletedAtLte,
+    );
 
     return res
       .set({
@@ -68,14 +87,19 @@ export class UsersController {
   @Roles([ADMIN, MODERATOR])
   async findOneSanctions(
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ) {
     return this.sanctionsService.getUserSanctionsById(id);
   }
 
   @Get('me')
   async findMe(@Request() request: any) {
-    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'User', +request.user.activeProfile.id)
+    LoggerService.userLog(
+      +request.user.activeProfile.id,
+      'GET',
+      'User',
+      +request.user.activeProfile.id,
+    );
 
     return this.usersService.findMe(request.user);
   }
@@ -88,9 +112,9 @@ export class UsersController {
   @Get(':id')
   async findOne(
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ) {
-    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'User', +id)
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'User', +id);
 
     return this.usersService.findOne(id, request.user.activeProfile.role);
   }
@@ -106,7 +130,7 @@ export class UsersController {
   async update(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateUser: UserUpdateModel
+    @Body() updateUser: UserUpdateModel,
   ) {
     if (
       id !== request.user.id &&
@@ -145,7 +169,7 @@ export class UsersController {
       +request.user.activeProfile.id,
       'DELETE',
       'User',
-      +id
+      +id,
     );
 
     return this.usersService.remove(id);
@@ -154,7 +178,7 @@ export class UsersController {
   @Get(':id/videos')
   async findItsVideos(
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ) {
     return this.videoService.getVideosFromUser(id, request.user);
   }

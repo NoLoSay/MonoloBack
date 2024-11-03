@@ -9,21 +9,21 @@ import {
   ParseIntPipe,
   Request,
   Query,
-  Response
-} from '@nestjs/common'
-import { CitiesService } from '@noloback/cities.service'
-import { CityManipulationModel } from '@noloback/api.request.bodies'
-import { CityCommonReturn, CityAdminReturn } from '@noloback/api.returns'
-import { ADMIN, Roles } from '@noloback/roles'
-import { LoggerService } from '@noloback/logger-lib'
-import { FiltersGetMany } from 'models/filters-get-many'
+  Response,
+} from '@nestjs/common';
+import { CitiesService } from '@noloback/cities.service';
+import { CityManipulationModel } from '@noloback/api.request.bodies';
+import { CityCommonReturn, CityAdminReturn } from '@noloback/api.returns';
+import { ADMIN, Roles } from '@noloback/roles';
+import { LoggerService } from '@noloback/logger-lib';
+import { FiltersGetMany } from 'models/filters-get-many';
 
 @Controller('cities')
 export class CitiesController {
-  constructor (private readonly citiesService: CitiesService) {}
+  constructor(private readonly citiesService: CitiesService) {}
 
   @Get()
-  async findAll (
+  async findAll(
     @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
@@ -34,7 +34,7 @@ export class CitiesController {
     @Query('zip_start') zipStart?: string | undefined,
     @Query('name_start') nameStart?: string | undefined,
     @Query('createdAt_gte') createdAtGte?: string | undefined,
-    @Query('createdAt_lte') createdAtLte?: string | undefined
+    @Query('createdAt_lte') createdAtLte?: string | undefined,
   ): Promise<CityCommonReturn[] | CityAdminReturn[]> {
     return res
       .set({
@@ -45,52 +45,79 @@ export class CitiesController {
           zipStart ? zipStart : undefined,
           nameStart ? nameStart : undefined,
           createdAtGte,
-          createdAtLte
+          createdAtLte,
         ),
       })
       .json(
-        await this.citiesService.findAll(request.user.activeProfile.role, new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'zip', 'name', 'departmentId', 'longitude', 'latitude', 'createdAt']), departmentId, zipStart, nameStart, createdAtGte, createdAtLte)
+        await this.citiesService.findAll(
+          request.user.activeProfile.role,
+          new FiltersGetMany(firstElem, lastElem, sort, order, [
+            'id',
+            'zip',
+            'name',
+            'departmentId',
+            'longitude',
+            'latitude',
+            'createdAt',
+          ]),
+          departmentId,
+          zipStart,
+          nameStart,
+          createdAtGte,
+          createdAtLte,
+        ),
       );
   }
 
   @Get(':id')
-  async findOne (
+  async findOne(
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ) {
-    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'City', +id)
+    LoggerService.userLog(+request.user.activeProfile.id, 'GET', 'City', +id);
 
-    return this.citiesService.findOne(id, request.user.activeProfile.role)
+    return this.citiesService.findOne(id, request.user.activeProfile.role);
   }
 
   @Roles([ADMIN])
   @Post()
-  async create (
-    @Body() cities: CityManipulationModel
+  async create(
+    @Body() cities: CityManipulationModel,
   ): Promise<CityAdminReturn> {
-    return this.citiesService.create(cities)
+    return this.citiesService.create(cities);
   }
 
   @Roles([ADMIN])
   @Put(':id')
-  async update (
+  async update(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatedCity: CityManipulationModel
+    @Body() updatedCity: CityManipulationModel,
   ): Promise<CityAdminReturn> {
-    LoggerService.sensitiveLog(+request.user.activeProfile.id, 'UPDATE', 'City', +id, JSON.stringify(updatedCity))
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'UPDATE',
+      'City',
+      +id,
+      JSON.stringify(updatedCity),
+    );
 
-    return this.citiesService.update(id, updatedCity)
+    return this.citiesService.update(id, updatedCity);
   }
 
   @Roles([ADMIN])
   @Delete(':id')
-  async delete (
+  async delete(
     @Request() request: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<CityAdminReturn> {
-    LoggerService.sensitiveLog(+request.user.activeProfile.id, 'DELETE', 'City', +id)
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'DELETE',
+      'City',
+      +id,
+    );
 
-    return this.citiesService.delete(id)
+    return this.citiesService.delete(id);
   }
 }

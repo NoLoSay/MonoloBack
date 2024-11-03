@@ -19,7 +19,7 @@ export class InstagramStrategy extends PassportStrategy(Strategy, 'instagram') {
   async validate(
     _accessToken: string,
     _refreshToken: string,
-    profile: any
+    profile: any,
   ): Promise<any> {
     const { id, username, fullName, profilePicture, emails } = profile;
 
@@ -35,16 +35,15 @@ export class InstagramStrategy extends PassportStrategy(Strategy, 'instagram') {
       picture: profilePicture,
     };
 
-    const oAuthProvider =
-      await this.prismaBaseService.oAuthProviders.upsert({
-        where: {
-          provider: user.provider,
-        },
-        create: {
-          provider: user.provider,
-        },
-        update: {},
-      });
+    const oAuthProvider = await this.prismaBaseService.oAuthProviders.upsert({
+      where: {
+        provider: user.provider,
+      },
+      create: {
+        provider: user.provider,
+      },
+      update: {},
+    });
 
     let dbUser = await this.prismaBaseService.oAuthProviderUser.findFirst({
       where: {

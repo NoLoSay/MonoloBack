@@ -27,7 +27,7 @@ async function bootstrap() {
 
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: ${process.env['VIDEO_API_URL']}/${globalPrefix}`
+    `🚀 Application is running on: ${process.env['VIDEO_API_URL']}/${globalPrefix}`,
   );
 }
 

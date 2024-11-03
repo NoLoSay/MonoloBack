@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common'
-import { AuthServiceModule } from '@noloback/auth.service'
-import { ItemsServiceModule } from '@noloback/items.service'
-import { ItemsController } from './items.controller'
-import { SitesManagersServiceModule } from '@noloback/sites.managers.service'
-import { UploadthingServiceModule } from '@noloback/uploadthing.service'
-import { VideoServiceModule } from '@noloback/video.service'
-import { LoggerLibModule } from '@noloback/logger-lib'
+import { Module } from '@nestjs/common';
+import { AuthServiceModule } from '@noloback/auth.service';
+import { ItemsServiceModule } from '@noloback/items.service';
+import { ItemsController } from './items.controller';
+import { SitesManagersServiceModule } from '@noloback/sites.managers.service';
+import { UploadthingServiceModule } from '@noloback/uploadthing.service';
+import { VideoServiceModule } from '@noloback/video.service';
+import { LoggerLibModule } from '@noloback/logger-lib';
 
 @Module({
   controllers: [ItemsController],
@@ -17,7 +17,7 @@ import { LoggerLibModule } from '@noloback/logger-lib'
     SitesManagersServiceModule,
     UploadthingServiceModule,
     LoggerLibModule,
-    VideoServiceModule
-  ]
+    VideoServiceModule,
+  ],
 })
 export class ItemsControllerModule {}

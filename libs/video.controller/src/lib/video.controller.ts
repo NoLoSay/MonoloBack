@@ -48,13 +48,13 @@ export class VideoController {
     @Query('item') itemId?: number | undefined,
     @Query('user') userId?: number | undefined,
     @Query('createdAt_gte') createdAtGte?: string | undefined,
-    @Query('createdAt_lte') createdAtLte?: string | undefined
+    @Query('createdAt_lte') createdAtLte?: string | undefined,
   ): Promise<string> {
     let validationStatusEnum: ValidationStatus | undefined;
     if (
       validationStatus &&
       Object.values(ValidationStatus).includes(
-        validationStatus as ValidationStatus
+        validationStatus as ValidationStatus,
       )
     ) {
       validationStatusEnum = validationStatus as unknown as ValidationStatus;
@@ -68,23 +68,21 @@ export class VideoController {
         sort,
         order,
         ['id', 'validationStatus', 'createdAt'],
-        'id'
+        'id',
       ),
       validationStatusEnum,
       itemId ? +itemId : undefined,
       userId ? +userId : undefined,
       createdAtGte,
-      createdAtLte
-    )
+      createdAtLte,
+    );
 
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
         'X-Total-Count': data.length,
       })
-      .json(
-        data
-      );
+      .json(data);
     // return JSON.parse(
     //   JSON.stringify(
     //     await this.videoservice.getAllVideos(
@@ -103,14 +101,14 @@ export class VideoController {
   async patchVideo(
     @Request() request: any,
     @Param('id') id: number,
-    @Response() res: any
+    @Response() res: any,
   ) {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Video',
       +id,
-      JSON.stringify(request.body)
+      JSON.stringify(request.body),
     );
 
     return res.json(await this.videoservice.patchVideo(+id, request.body));
@@ -124,7 +122,7 @@ export class VideoController {
       'GET',
       'City',
       +0,
-      JSON.stringify({ uuid })
+      JSON.stringify({ uuid }),
     );
 
     const isnum = /^\d+$/.test(uuid);
@@ -141,14 +139,14 @@ export class VideoController {
   async patchYoutube(
     @Request() req: any,
     @Param('id') id: number,
-    @Body('validationStatus') validationStatus: ValidationStatus
+    @Body('validationStatus') validationStatus: ValidationStatus,
   ) {
     if (req.user.role !== Role.ADMIN)
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
 
     return await this.videoservice.patchYoutubeValidation(
       +id,
-      validationStatus
+      validationStatus,
     );
   }
 
@@ -158,20 +156,20 @@ export class VideoController {
   async updateShowcased(
     @Request() request: any,
     @Param('id') id: number,
-    @Body('showcased') showcased: boolean
+    @Body('showcased') showcased: boolean,
   ) {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Video',
       +id,
-      'New showcased status: ' + showcased
+      'New showcased status: ' + showcased,
     );
 
     return await this.videoservice.updateVideoShowcased(
       request.user,
       +id,
-      showcased
+      showcased,
     );
   }
 
@@ -193,19 +191,19 @@ export class VideoController {
   async updateYoutube(
     @Request() request: any,
     @Param('id') id: number,
-    @Body('validationStatus') validationStatus: ValidationStatus
+    @Body('validationStatus') validationStatus: ValidationStatus,
   ) {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'UPDATE',
       'Video',
       +id,
-      'New validation status: ' + validationStatus
+      'New validation status: ' + validationStatus,
     );
 
     return await this.videoservice.updateYoutubeValidation(
       +id,
-      validationStatus
+      validationStatus,
     );
   }
 
@@ -215,13 +213,13 @@ export class VideoController {
   async deleteYoutube(
     @Request() request: any,
     @Param('id') id: number,
-    @Query('deletedReason') deletedReason: string
+    @Query('deletedReason') deletedReason: string,
   ) {
     LoggerService.sensitiveLog(
       +request.user.activeProfile.id,
       'DELETE',
       'Video',
-      +id
+      +id,
     );
 
     return await this.videoservice.deleteVideo(+id, deletedReason);

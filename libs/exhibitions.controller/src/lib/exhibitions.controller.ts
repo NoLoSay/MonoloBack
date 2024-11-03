@@ -12,42 +12,46 @@ import {
   UnauthorizedException,
   Query,
   NotFoundException,
-  BadRequestException
-} from '@nestjs/common'
-import { ExhibitionsService } from '@noloback/exhibitions.service'
+  BadRequestException,
+} from '@nestjs/common';
+import { ExhibitionsService } from '@noloback/exhibitions.service';
 import {
   ExhibitionManipulationModel,
-  ExhibitedItemAdditionModel
-} from '@noloback/api.request.bodies'
-import { ExhibitedItemsService } from '@noloback/exhibited.items.service'
-import { ADMIN, MANAGER, Roles } from '@noloback/roles'
-import { SitesManagersService } from '@noloback/sites.managers.service'
+  ExhibitedItemAdditionModel,
+} from '@noloback/api.request.bodies';
+import { ExhibitedItemsService } from '@noloback/exhibited.items.service';
+import { ADMIN, MANAGER, Roles } from '@noloback/roles';
+import { SitesManagersService } from '@noloback/sites.managers.service';
 import {
   ExhibitionAdminDetailedReturn,
   ExhibitionManagerDetailedReturn,
-  ExhibitionCommonDetailedReturn
-} from '@noloback/api.returns'
-import { LoggerService } from '@noloback/logger-lib'
-import { FiltersGetMany } from 'models/filters-get-many'
+  ExhibitionCommonDetailedReturn,
+} from '@noloback/api.returns';
+import { LoggerService } from '@noloback/logger-lib';
+import { FiltersGetMany } from 'models/filters-get-many';
 
 @Controller('exhibitions')
 export class ExhibitionsController {
-  constructor (
+  constructor(
     private readonly exhibitionsService: ExhibitionsService,
     private readonly exhibitedItemsService: ExhibitedItemsService,
-    private readonly sitesManagersService: SitesManagersService, private loggingService: LoggerService
+    private readonly sitesManagersService: SitesManagersService,
+    private loggingService: LoggerService,
   ) {}
 
   @Get()
-  async findAll (@Request() request: any, @Response() res: any,
-  @Query('_start') firstElem: number = 0,
-  @Query('_end') lastElem: number = 10,
-  @Query('_sort') sort?: string | undefined,
-  @Query('_order') order?: 'asc' | 'desc' | undefined,
-  @Query('site_id') siteId?: number | undefined,
-  @Query('name_start') nameStart?: string | undefined,
-  @Query('createdAt_gte') createdAtGte?: string | undefined,
-  @Query('createdAt_lte') createdAtLte?: string | undefined) {
+  async findAll(
+    @Request() request: any,
+    @Response() res: any,
+    @Query('_start') firstElem: number = 0,
+    @Query('_end') lastElem: number = 10,
+    @Query('_sort') sort?: string | undefined,
+    @Query('_order') order?: 'asc' | 'desc' | undefined,
+    @Query('site_id') siteId?: number | undefined,
+    @Query('name_start') nameStart?: string | undefined,
+    @Query('createdAt_gte') createdAtGte?: string | undefined,
+    @Query('createdAt_lte') createdAtLte?: string | undefined,
+  ) {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
@@ -55,63 +59,77 @@ export class ExhibitionsController {
           siteId ? siteId : undefined,
           nameStart ? nameStart : undefined,
           createdAtGte,
-          createdAtLte
+          createdAtLte,
         ),
       })
       .json(
-        await this.exhibitionsService.findAll(request.user, new FiltersGetMany(firstElem, lastElem, sort, order, ['id', 'name', 'siteId', 'longitude', 'latitude', 'createdAt']), siteId, nameStart, createdAtGte, createdAtLte)
+        await this.exhibitionsService.findAll(
+          request.user,
+          new FiltersGetMany(firstElem, lastElem, sort, order, [
+            'id',
+            'name',
+            'siteId',
+            'longitude',
+            'latitude',
+            'createdAt',
+          ]),
+          siteId,
+          nameStart,
+          createdAtGte,
+          createdAtLte,
+        ),
       );
   }
 
   @Get(':id')
-  async findOne (
+  async findOne(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Response() res: any
+    @Response() res: any,
   ) {
     LoggerService.userLog(
       +request.user.activeProfile.id,
       'GET',
       'Exhibition',
-      +id
-    )
+      +id,
+    );
 
     return res
       .status(200)
-      .json(await this.exhibitionsService.findOne(id, request.user))
+      .json(await this.exhibitionsService.findOne(id, request.user));
   }
 
   @Roles([ADMIN, MANAGER])
   @Post()
-  async create (
+  async create(
     @Request() request: any,
     @Response() res: any,
-    @Body() exhibition: ExhibitionManipulationModel
+    @Body() exhibition: ExhibitionManipulationModel,
   ) {
     if (
       await this.sitesManagersService.isAllowedToModify(
         request.user,
-        exhibition.siteId
+        exhibition.siteId,
       )
     )
       return res
         .status(200)
-        .json(await this.exhibitionsService.create(exhibition))
-    throw new UnauthorizedException()
+        .json(await this.exhibitionsService.create(exhibition));
+    throw new UnauthorizedException();
   }
 
   @Roles([ADMIN, MANAGER])
   @Put(':id')
-  async update (
+  async update(
     @Request() request: any,
     @Response() res: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatedExhibition: ExhibitionManipulationModel
+    @Body() updatedExhibition: ExhibitionManipulationModel,
   ) {
     if (
       await this.sitesManagersService.isAllowedToModify(
         request.user,
-        updatedExhibition.siteId
+        updatedExhibition.siteId,
       )
     ) {
       LoggerService.sensitiveLog(
@@ -119,35 +137,35 @@ export class ExhibitionsController {
         'UPDATE',
         'Exhibition',
         +id,
-        JSON.stringify(request.body)
-      )
+        JSON.stringify(request.body),
+      );
 
       return res
         .status(200)
-        .json(await this.exhibitionsService.update(id, updatedExhibition))
+        .json(await this.exhibitionsService.update(id, updatedExhibition));
     }
-    throw new UnauthorizedException()
+    throw new UnauthorizedException();
   }
 
   @Roles([ADMIN, MANAGER])
   @Delete(':id')
-  async delete (
+  async delete(
     @Request() request: any,
     @Response() res: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ) {
     const exhibition:
       | ExhibitionAdminDetailedReturn
       | ExhibitionManagerDetailedReturn
       | ExhibitionCommonDetailedReturn = await this.exhibitionsService.findOne(
       id,
-      request.user
-    )
-    if (!exhibition) return null
+      request.user,
+    );
+    if (!exhibition) return null;
     if (
       await this.sitesManagersService.isAllowedToModify(
         request.user,
-        exhibition.site.id
+        exhibition.site.id,
       )
     ) {
       LoggerService.sensitiveLog(
@@ -155,69 +173,69 @@ export class ExhibitionsController {
         'DELETE',
         'Exhibition',
         +id,
-        JSON.stringify(request.body)
-      )
+        JSON.stringify(request.body),
+      );
 
-      return res.status(200).json(await this.exhibitionsService.delete(id))
+      return res.status(200).json(await this.exhibitionsService.delete(id));
     }
-    throw new UnauthorizedException()
+    throw new UnauthorizedException();
   }
 
   @Get(':id/items')
-  async findExibitedItems (
+  async findExibitedItems(
     @Response() res: any,
-    @Param('id', ParseIntPipe) id: number
+    @Param('id', ParseIntPipe) id: number,
   ) {
     return res
       .status(200)
-      .json(await this.exhibitedItemsService.findExibitedItems(id))
+      .json(await this.exhibitedItemsService.findExibitedItems(id));
   }
 
   @Roles([ADMIN, MANAGER])
   @Post(':id/items')
-  async addExhibitedItem (
+  async addExhibitedItem(
     @Request() request: any,
     @Response() res: any,
     @Param('id', ParseIntPipe) id: number,
-    @Body() addedItem: ExhibitedItemAdditionModel
+    @Body() addedItem: ExhibitedItemAdditionModel,
   ) {
-    const exhibition = await this.exhibitionsService.findOne(id, request.user)
-    if (!exhibition) throw new NotFoundException('Exhibition not found.')
+    const exhibition = await this.exhibitionsService.findOne(id, request.user);
+    if (!exhibition) throw new NotFoundException('Exhibition not found.');
     if (
       !(await this.sitesManagersService.isAllowedToModify(
         request.user,
-        exhibition.site.id
+        exhibition.site.id,
       ))
     )
-      throw new UnauthorizedException("You can't modify this exhibition.")
+      throw new UnauthorizedException("You can't modify this exhibition.");
     if (
       !(await this.exhibitedItemsService.canItemBeUsedInExhibition(
         addedItem.itemId,
-        id
+        id,
       ))
     )
-      throw new BadRequestException('Item not linked to the exhibition site.')
+      throw new BadRequestException('Item not linked to the exhibition site.');
     return res
       .status(200)
-      .json(await this.exhibitedItemsService.addExhibitedItem(id, addedItem))
+      .json(await this.exhibitedItemsService.addExhibitedItem(id, addedItem));
   }
 
   @Roles([ADMIN, MANAGER])
   @Delete(':id/items/:itemId')
-  async deleteExhibitedItem (
+  async deleteExhibitedItem(
     @Request() request: any,
     @Param('id', ParseIntPipe) id: number,
-    @Param('itemId', ParseIntPipe) itemId: number
+    @Param('itemId', ParseIntPipe) itemId: number,
   ) {
-    const exhibition = await this.exhibitionsService.findOne(id, request.user)
-    if (!exhibition) return null
+    const exhibition = await this.exhibitionsService.findOne(id, request.user);
+    if (!exhibition) return null;
     if (
       await this.sitesManagersService.isAllowedToModify(
         request.user,
-        exhibition.site.id
+        exhibition.site.id,
       )
     )
-      return this.exhibitedItemsService.deleteExhibitedItem(id, itemId)
-    throw new UnauthorizedException()
+      return this.exhibitedItemsService.deleteExhibitedItem(id, itemId);
+    throw new UnauthorizedException();
   }
 }

@@ -70,10 +70,10 @@ export class VideoService {
     private prismaBase: PrismaBaseService,
     private loggerService: LoggerService,
     private readonly profileService: ProfileService,
-    private sitesManagersService: SitesManagersService
+    private sitesManagersService: SitesManagersService,
   ) {
     const serviceAccount = JSON.parse(
-      readFileSync('secrets/google-service-account.json', 'utf-8')
+      readFileSync('secrets/google-service-account.json', 'utf-8'),
     );
 
     this.auth = new google.auth.JWT(
@@ -84,7 +84,7 @@ export class VideoService {
         'https://www.googleapis.com/auth/youtube.upload',
         'https://www.googleapis.com/auth/youtube',
       ],
-      undefined
+      undefined,
     );
 
     this.youtube = google.youtube({
@@ -93,7 +93,11 @@ export class VideoService {
     });
   }
 
-  async updateVideoShowcased(user: UserRequestModel, id: number, showcased: any) {
+  async updateVideoShowcased(
+    user: UserRequestModel,
+    id: number,
+    showcased: any,
+  ) {
     showcased = showcased === 'true' || showcased === true;
 
     if (user.activeProfile.role === Role.MANAGER) {
@@ -106,13 +110,19 @@ export class VideoService {
         throw new NotFoundException('Video not found');
       }
 
-      const site = await this.prismaBase.site.findFirst({ where: { items: {some: { id: +video?.itemId} } }});
+      const site = await this.prismaBase.site.findFirst({
+        where: { items: { some: { id: +video?.itemId } } },
+      });
       if (!site) {
-        throw new InternalServerErrorException('The item owning this video is not linked to a site');
+        throw new InternalServerErrorException(
+          'The item owning this video is not linked to a site',
+        );
       }
 
       if (!(await this.sitesManagersService.isAllowedToModify(user, site.id))) {
-        throw new UnauthorizedException('You are not allowed to modify this resource');
+        throw new UnauthorizedException(
+          'You are not allowed to modify this resource',
+        );
       }
     }
 
@@ -129,7 +139,7 @@ export class VideoService {
   async setHostingProvider(
     videoId: number,
     newProviderId: number,
-    newProviderVideoId: string
+    newProviderVideoId: string,
   ) {
     const video = await this.prismaBase.video.update({
       data: {
@@ -152,11 +162,15 @@ export class VideoService {
     if (body.hostingProviderId !== 1) {
       const video = await this.getYoutubeById(+videoId);
       if (video?.video?.hostingProviderId === 1) {
-        unlink(`${process.env["LOCAL_VIDEO_PATH"]}/` + video.video.hostingProviderVideoId, (err) => {
-          if (err) {
-            console.error(err);
-          }
-        });
+        unlink(
+          `${process.env['LOCAL_VIDEO_PATH']}/` +
+            video.video.hostingProviderVideoId,
+          (err) => {
+            if (err) {
+              console.error(err);
+            }
+          },
+        );
       }
     }
 
@@ -198,7 +212,9 @@ export class VideoService {
       //     .replace('$(providerVideoId)', video.hostingProviderVideoId)
       // );
 
-      return createReadStream(`/opt/nolovideos/${video.hostingProviderVideoId}`);
+      return createReadStream(
+        `/opt/nolovideos/${video.hostingProviderVideoId}`,
+      );
     } catch (e) {
       throw new InternalServerErrorException();
     }
@@ -284,7 +300,7 @@ export class VideoService {
   async createYoutube(
     user: UserRequestModel,
     video: Express.Multer.File,
-    itemId: number
+    itemId: number,
   ): Promise<Video> {
     const item = await this.prismaBase.item.findUnique({
       where: {
@@ -309,7 +325,7 @@ export class VideoService {
       if (
         !(await this.profileService.canUserUseThisProfileRole(
           user.id,
-          Role.CREATOR
+          Role.CREATOR,
         ))
       )
         await this.profileService.createProfile(user.id, Role.CREATOR);
@@ -325,11 +341,15 @@ export class VideoService {
           },
           include: {
             siteHasManagers: true,
-          }
-        })
+          },
+        });
         if (site != null) {
-          if (site.siteHasManagers.some((manager) => manager.profileId === user.activeProfile.id)) {
-            autoValidation = true
+          if (
+            site.siteHasManagers.some(
+              (manager) => manager.profileId === user.activeProfile.id,
+            )
+          ) {
+            autoValidation = true;
           }
         }
       }
@@ -357,7 +377,9 @@ export class VideoService {
             id: +itemId,
           },
         },
-        validationStatus: autoValidation ? ValidationStatus.VALIDATED : ValidationStatus.PENDING,
+        validationStatus: autoValidation
+          ? ValidationStatus.VALIDATED
+          : ValidationStatus.PENDING,
       },
     });
   }
@@ -428,7 +450,7 @@ export class VideoService {
 
   async getVideosFromItem(
     itemId: number,
-    user: UserRequestModel
+    user: UserRequestModel,
   ): Promise<
     | VideoCommonReturn[]
     //| VideoManagerReturn[]
@@ -440,12 +462,12 @@ export class VideoService {
     switch (user.activeProfile.role) {
       case Role.ADMIN:
         selectOptions = new VideoAdminSelect(
-          new VideoListedFromItemCommonSelect()
+          new VideoListedFromItemCommonSelect(),
         );
         break;
       case Role.MODERATOR:
         selectOptions = new VideoModeratorSelect(
-          new VideoListedFromItemCommonSelect()
+          new VideoListedFromItemCommonSelect(),
         );
         break;
       // case Role.MANAGER:
@@ -474,24 +496,25 @@ export class VideoService {
     switch (user.activeProfile.role) {
       case Role.ADMIN:
         return videoEntities.map(
-          (entity) => new VideoAdminReturn(entity as VideoAdminDbReturn)
+          (entity) => new VideoAdminReturn(entity as VideoAdminDbReturn),
         );
       case Role.MODERATOR:
         return videoEntities.map(
-          (entity) => new VideoModeratorReturn(entity as VideoModeratorDbReturn)
+          (entity) =>
+            new VideoModeratorReturn(entity as VideoModeratorDbReturn),
         );
       // case Role.MANAGER:
       //   return videoEntities.map(entity => new VideoManagerReturn(entity as VideoManagerDbReturn))
       default:
         return videoEntities.map(
-          (entity) => new VideoCommonReturn(entity as VideoCommonDbReturn)
+          (entity) => new VideoCommonReturn(entity as VideoCommonDbReturn),
         );
     }
   }
 
   async getVideosFromUser(
     userId: number,
-    user: UserRequestModel
+    user: UserRequestModel,
   ): Promise<
     | VideoCommonReturn[]
     | VideoCreatorReturn[]
@@ -503,18 +526,18 @@ export class VideoService {
     switch (user.activeProfile.role) {
       case Role.ADMIN:
         selectOptions = new VideoAdminSelect(
-          new VideoListedFromUserCommonSelect()
+          new VideoListedFromUserCommonSelect(),
         );
         break;
       case Role.MODERATOR:
         selectOptions = new VideoModeratorSelect(
-          new VideoListedFromUserCommonSelect()
+          new VideoListedFromUserCommonSelect(),
         );
         break;
       case Role.CREATOR:
         if (user.id === userId)
           selectOptions = new VideoCreatorSelect(
-            new VideoListedFromUserCommonSelect()
+            new VideoListedFromUserCommonSelect(),
           );
         else selectOptions = new VideoListedFromUserCommonSelect();
         break;
@@ -532,7 +555,7 @@ export class VideoService {
           in: getValidationStatusFromRole(
             user.activeProfile.role === Role.CREATOR && user.id === userId
               ? Role.MANAGER
-              : user.activeProfile.role
+              : user.activeProfile.role,
           ),
         },
       },
@@ -542,24 +565,25 @@ export class VideoService {
     switch (user.activeProfile.role) {
       case Role.ADMIN:
         return videoEntities.map(
-          (entity) => new VideoAdminReturn(entity as VideoAdminDbReturn)
+          (entity) => new VideoAdminReturn(entity as VideoAdminDbReturn),
         );
       case Role.MODERATOR:
         return videoEntities.map(
-          (entity) => new VideoModeratorReturn(entity as VideoModeratorDbReturn)
+          (entity) =>
+            new VideoModeratorReturn(entity as VideoModeratorDbReturn),
         );
       case Role.CREATOR:
         if (user.id === userId)
           return videoEntities.map(
-            (entity) => new VideoCreatorReturn(entity as VideoCreatorDbReturn)
+            (entity) => new VideoCreatorReturn(entity as VideoCreatorDbReturn),
           );
         else
           return videoEntities.map(
-            (entity) => new VideoCommonReturn(entity as VideoCommonDbReturn)
+            (entity) => new VideoCommonReturn(entity as VideoCommonDbReturn),
           );
       default:
         return videoEntities.map(
-          (entity) => new VideoCommonReturn(entity as VideoCommonDbReturn)
+          (entity) => new VideoCommonReturn(entity as VideoCommonDbReturn),
         );
     }
   }
@@ -569,7 +593,7 @@ export class VideoService {
     itemId?: number | undefined,
     userId?: number | undefined,
     createdAtGte?: string | undefined,
-    createdAtLte?: string | undefined
+    createdAtLte?: string | undefined,
   ): Promise<number> {
     return await this.prismaBase.video.count({
       where: {
@@ -596,7 +620,7 @@ export class VideoService {
     itemId?: number | undefined,
     userId?: number | undefined,
     createdAtGte?: string | undefined,
-    createdAtLte?: string | undefined
+    createdAtLte?: string | undefined,
   ): Promise<
     VideoCommonReturn[] | VideoModeratorReturn[] | VideoAdminReturn[]
   > {
@@ -639,15 +663,16 @@ export class VideoService {
     switch (user.activeProfile.role) {
       case Role.ADMIN:
         return videoEntities.map(
-          (entity) => new VideoAdminReturn(entity as VideoAdminDbReturn)
+          (entity) => new VideoAdminReturn(entity as VideoAdminDbReturn),
         );
       case Role.MODERATOR:
         return videoEntities.map(
-          (entity) => new VideoModeratorReturn(entity as VideoModeratorDbReturn)
+          (entity) =>
+            new VideoModeratorReturn(entity as VideoModeratorDbReturn),
         );
       default:
         return videoEntities.map(
-          (entity) => new VideoCommonReturn(entity as VideoCommonDbReturn)
+          (entity) => new VideoCommonReturn(entity as VideoCommonDbReturn),
         );
     }
   }

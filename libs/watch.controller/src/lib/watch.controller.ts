@@ -32,7 +32,7 @@ export class WatchController {
   async watchVideo(
     @Request() request: any,
     @Res({ passthrough: true }) res: Response,
-    @Param('videoUUID') videoUUID: string
+    @Param('videoUUID') videoUUID: string,
   ): Promise<StreamableFile> {
     // LoggerService.userLog(
     //   +request.user.activeProfile.id,
