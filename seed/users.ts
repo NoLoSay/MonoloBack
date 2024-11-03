@@ -1,52 +1,52 @@
 import {
   PrismaClient as PrismaBaseClient,
   Role,
-  User
-} from '@prisma/client/base'
-import { hash } from 'bcrypt'
+  User,
+} from '@prisma/client/base';
+import { hash } from 'bcrypt';
 
-const prisma = new PrismaBaseClient()
+const prisma = new PrismaBaseClient();
 
 class UserCommonReturn {
-  id: number = 0
-  username: string = ''
-  picture: string = ''
-  email: string = ''
-  createdAt: Date = new Date()
-  telNumber: string = ''
+  id: number = 0;
+  username: string = '';
+  picture: string = '';
+  email: string = '';
+  createdAt: Date = new Date();
+  telNumber: string = '';
   profiles: {
-    id: number
-    role: string
-    createdAt: Date
-  }[] = []
-  updatedAt: Date = new Date()
-  deletedAt: Date | null = null
-  uuid: string = ''
+    id: number;
+    role: string;
+    createdAt: Date;
+  }[] = [];
+  updatedAt: Date = new Date();
+  deletedAt: Date | null = null;
+  uuid: string = '';
 }
 
 class ProfileCommonSelect {
-  id: boolean = true
-  role: boolean = true
-  createdAt: boolean = true
+  id: boolean = true;
+  role: boolean = true;
+  createdAt: boolean = true;
 }
 
 class UserCommonSelect {
-  id: boolean = true
-  username: boolean = true
-  picture: boolean = true
-  email: boolean = true
-  createdAt: boolean = true
-  telNumber: boolean = true
+  id: boolean = true;
+  username: boolean = true;
+  picture: boolean = true;
+  email: boolean = true;
+  createdAt: boolean = true;
+  telNumber: boolean = true;
   profiles: object = {
-    select: new ProfileCommonSelect()
-  }
-  updatedAt: boolean = true
-  deletedAt: boolean = true
-  uuid: boolean = true
+    select: new ProfileCommonSelect(),
+  };
+  updatedAt: boolean = true;
+  deletedAt: boolean = true;
+  uuid: boolean = true;
 }
 
-export async function seedUsers (): Promise<UserCommonReturn[]> {
-  let users: UserCommonReturn[] = []
+export async function seedUsers(): Promise<UserCommonReturn[]> {
+  let users: UserCommonReturn[] = [];
 
   users.push(
     (await prisma.user.upsert({
@@ -63,19 +63,19 @@ export async function seedUsers (): Promise<UserCommonReturn[]> {
             data: [
               {
                 role: 'USER',
-                isActive: false
+                isActive: false,
               },
               {
                 role: 'ADMIN',
-                isActive: true
-              }
-            ]
-          }
-        }
+                isActive: true,
+              },
+            ],
+          },
+        },
       },
-      select: new UserCommonSelect()
-    })) as UserCommonReturn
-  )
+      select: new UserCommonSelect(),
+    })) as UserCommonReturn,
+  );
   users.push(
     (await prisma.user.upsert({
       where: { email: 'creator@nolosay.com' },
@@ -91,19 +91,19 @@ export async function seedUsers (): Promise<UserCommonReturn[]> {
             data: [
               {
                 role: 'USER',
-                isActive: false
+                isActive: false,
               },
               {
                 role: 'CREATOR',
-                isActive: true
-              }
-            ]
-          }
-        }
+                isActive: true,
+              },
+            ],
+          },
+        },
       },
-      select: new UserCommonSelect()
-    })) as UserCommonReturn
-  )
+      select: new UserCommonSelect(),
+    })) as UserCommonReturn,
+  );
   users.push(
     (await prisma.user.upsert({
       where: { email: 'user@nolosay.com' },
@@ -119,15 +119,15 @@ export async function seedUsers (): Promise<UserCommonReturn[]> {
             data: [
               {
                 role: 'USER',
-                isActive: true
-              }
-            ]
-          }
-        }
+                isActive: true,
+              },
+            ],
+          },
+        },
       },
-      select: new UserCommonSelect()
-    })) as UserCommonReturn
-  )
+      select: new UserCommonSelect(),
+    })) as UserCommonReturn,
+  );
   users.push(
     (await prisma.user.upsert({
       where: { email: 'moderator@nolosay.com' },
@@ -143,21 +143,21 @@ export async function seedUsers (): Promise<UserCommonReturn[]> {
             data: [
               {
                 role: 'MODERATOR',
-                isActive: true
+                isActive: true,
               },
               {
                 role: 'USER',
-                isActive: false
-              }
-            ]
-          }
-        }
+                isActive: false,
+              },
+            ],
+          },
+        },
       },
-      select: new UserCommonSelect()
-    })) as UserCommonReturn
-  )
+      select: new UserCommonSelect(),
+    })) as UserCommonReturn,
+  );
   // Add manager for each site
-  const sites = await prisma.site.findMany({})
+  const sites = await prisma.site.findMany({});
 
   for (const site of sites) {
     const mainManager = (await prisma.user.upsert({
@@ -174,18 +174,18 @@ export async function seedUsers (): Promise<UserCommonReturn[]> {
             data: [
               {
                 role: 'MANAGER',
-                isActive: true
+                isActive: true,
               },
               {
                 role: 'USER',
-                isActive: false
-              }
-            ]
-          }
-        }
+                isActive: false,
+              },
+            ],
+          },
+        },
       },
-      select: new UserCommonSelect()
-    })) as UserCommonReturn
+      select: new UserCommonSelect(),
+    })) as UserCommonReturn;
 
     const manager = (await prisma.user.upsert({
       where: { email: `manager${site.id}@nolosay.com` },
@@ -201,29 +201,29 @@ export async function seedUsers (): Promise<UserCommonReturn[]> {
             data: [
               {
                 role: 'MANAGER',
-                isActive: true
+                isActive: true,
               },
               {
                 role: 'USER',
-                isActive: false
-              }
-            ]
-          }
-        }
+                isActive: false,
+              },
+            ],
+          },
+        },
       },
-      select: new UserCommonSelect()
-    })) as UserCommonReturn
+      select: new UserCommonSelect(),
+    })) as UserCommonReturn;
 
     const mainManagerProfiles = mainManager.profiles.find(
-      profile => profile.role === Role.MANAGER
-    )
+      (profile) => profile.role === Role.MANAGER,
+    );
     if (mainManagerProfiles) {
       await prisma.siteHasManager.upsert({
         where: {
           profileId_siteId: {
             profileId: mainManagerProfiles.id,
-            siteId: site.id
-          }
+            siteId: site.id,
+          },
         },
         update: {},
         create: {
@@ -231,29 +231,29 @@ export async function seedUsers (): Promise<UserCommonReturn[]> {
           isMain: true,
           site: {
             connect: {
-              id: site.id
-            }
+              id: site.id,
+            },
           },
           profile: {
             connect: {
-              id: mainManagerProfiles.id
-            }
-          }
-        }
-      })
+              id: mainManagerProfiles.id,
+            },
+          },
+        },
+      });
     }
-    users.push(mainManager)
+    users.push(mainManager);
 
     const managerProfiles = mainManager.profiles.find(
-      profile => profile.role === Role.MANAGER
-    )
+      (profile) => profile.role === Role.MANAGER,
+    );
     if (managerProfiles) {
       await prisma.siteHasManager.upsert({
         where: {
           profileId_siteId: {
             profileId: managerProfiles.id,
-            siteId: site.id
-          }
+            siteId: site.id,
+          },
         },
         update: {},
         create: {
@@ -261,19 +261,19 @@ export async function seedUsers (): Promise<UserCommonReturn[]> {
           isMain: false,
           site: {
             connect: {
-              id: site.id
-            }
+              id: site.id,
+            },
           },
           profile: {
             connect: {
-              id: managerProfiles.id
-            }
-          }
-        }
-      })
+              id: managerProfiles.id,
+            },
+          },
+        },
+      });
     }
-    users.push(manager)
+    users.push(manager);
   }
 
-  return users
+  return users;
 }

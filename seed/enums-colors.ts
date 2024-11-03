@@ -5,35 +5,35 @@ import {
   PersonType,
   SiteType,
   SiteTag,
-  SanctionType
-} from '@prisma/client/base'
+  SanctionType,
+} from '@prisma/client/base';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-function getRandomHexColor (): string {
-  const letters = '0123456789ABCDEF'
-  let color = '#'
+function getRandomHexColor(): string {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
   for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)]
+    color += letters[Math.floor(Math.random() * 16)];
   }
-  return color
+  return color;
 }
 
-export async function seedEnumsColors (): Promise<{
-  roles: { role: Role; color: string }[]
-  validationStatuses: { validationStatus: ValidationStatus; color: string }[]
-  personTypes: { personType: PersonType; color: string }[]
-  siteTypes: { siteType: SiteType; color: string }[]
-  siteTags: { siteTag: SiteTag; color: string }[]
-  sanctionTypes: { sanctionType: SanctionType; color: string }[]
+export async function seedEnumsColors(): Promise<{
+  roles: { role: Role; color: string }[];
+  validationStatuses: { validationStatus: ValidationStatus; color: string }[];
+  personTypes: { personType: PersonType; color: string }[];
+  siteTypes: { siteType: SiteType; color: string }[];
+  siteTags: { siteTag: SiteTag; color: string }[];
+  sanctionTypes: { sanctionType: SanctionType; color: string }[];
 }> {
   let enumsColors: {
-    roles: { role: Role; color: string }[]
-    validationStatuses: { validationStatus: ValidationStatus; color: string }[]
-    personTypes: { personType: PersonType; color: string }[]
-    siteTypes: { siteType: SiteType; color: string }[]
-    siteTags: { siteTag: SiteTag; color: string }[]
-    sanctionTypes: { sanctionType: SanctionType; color: string }[]
+    roles: { role: Role; color: string }[];
+    validationStatuses: { validationStatus: ValidationStatus; color: string }[];
+    personTypes: { personType: PersonType; color: string }[];
+    siteTypes: { siteType: SiteType; color: string }[];
+    siteTags: { siteTag: SiteTag; color: string }[];
+    sanctionTypes: { sanctionType: SanctionType; color: string }[];
   } = {
     roles: [],
     validationStatuses: [],
@@ -41,7 +41,7 @@ export async function seedEnumsColors (): Promise<{
     siteTypes: [],
     siteTags: [],
     sanctionTypes: [],
-  }
+  };
 
   for (const role of Object.values(Role)) {
     enumsColors.roles.push(
@@ -50,10 +50,10 @@ export async function seedEnumsColors (): Promise<{
         update: {},
         create: {
           role,
-          color: getRandomHexColor()
-        }
-      })
-    )
+          color: getRandomHexColor(),
+        },
+      }),
+    );
   }
 
   for (const validationStatus of Object.values(ValidationStatus)) {
@@ -63,10 +63,10 @@ export async function seedEnumsColors (): Promise<{
         update: {},
         create: {
           validationStatus,
-          color: getRandomHexColor()
-        }
-      })
-    )
+          color: getRandomHexColor(),
+        },
+      }),
+    );
   }
 
   for (const personType of Object.values(PersonType)) {
@@ -76,10 +76,10 @@ export async function seedEnumsColors (): Promise<{
         update: {},
         create: {
           personType,
-          color: getRandomHexColor()
-        }
-      })
-    )
+          color: getRandomHexColor(),
+        },
+      }),
+    );
   }
 
   for (const siteType of Object.values(SiteType)) {
@@ -89,10 +89,10 @@ export async function seedEnumsColors (): Promise<{
         update: {},
         create: {
           siteType,
-          color: getRandomHexColor()
-        }
-      })
-    )
+          color: getRandomHexColor(),
+        },
+      }),
+    );
   }
 
   for (const siteTag of Object.values(SiteTag)) {
@@ -102,10 +102,10 @@ export async function seedEnumsColors (): Promise<{
         update: {},
         create: {
           siteTag,
-          color: getRandomHexColor()
-        }
-      })
-    )
+          color: getRandomHexColor(),
+        },
+      }),
+    );
   }
 
   for (const sanctionType of Object.values(SanctionType)) {
@@ -115,11 +115,11 @@ export async function seedEnumsColors (): Promise<{
         update: {},
         create: {
           sanctionType,
-          color: getRandomHexColor()
-        }
-      })
-    )
+          color: getRandomHexColor(),
+        },
+      }),
+    );
   }
 
-  return enumsColors
+  return enumsColors;
 }

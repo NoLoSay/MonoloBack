@@ -1,39 +1,36 @@
-import {
-  Item,
-  PrismaClient as PrismaBaseClient
-} from '@prisma/client/base'
-import * as fs from 'fs'
+import { Item, PrismaClient as PrismaBaseClient } from '@prisma/client/base';
+import * as fs from 'fs';
 
-const prisma = new PrismaBaseClient()
+const prisma = new PrismaBaseClient();
 
-export async function newSeedItems (): Promise<Item[]> {
-  let items: Item[] = []
+export async function newSeedItems(): Promise<Item[]> {
+  let items: Item[] = [];
 
-  const rawData = fs.readFileSync('seed/datas/items.json', 'utf-8')
-  const itemsData = JSON.parse(rawData)
+  const rawData = fs.readFileSync('seed/datas/items.json', 'utf-8');
+  const itemsData = JSON.parse(rawData);
 
   for (const itemData of itemsData) {
     const site = await prisma.site.findFirst({
       where: {
-        name: { contains: itemData.site.name }
-      }
-    })
-    if (!site) continue
+        name: { contains: itemData.site.name },
+      },
+    });
+    if (!site) continue;
     const itemType = itemData.itemType
       ? await prisma.itemType.findFirst({
           where: {
-            name: { contains: itemData.itemType.name }
-          }
+            name: { contains: itemData.itemType.name },
+          },
         })
-      : null
+      : null;
 
     const relatedPerson = itemData.relatedPerson
       ? await prisma.person.findFirst({
           where: {
-            name: { contains: itemData.relatedPerson.name }
-          }
+            name: { contains: itemData.relatedPerson.name },
+          },
         })
-      : null
+      : null;
 
     items.push(
       await prisma.item.create({
@@ -41,102 +38,105 @@ export async function newSeedItems (): Promise<Item[]> {
           name: itemData.name,
           description: itemData.description,
           textToTranslate: itemData.textToTranslate,
-          itemType: itemType ? { connect: { id: itemType.id } } :  undefined,
+          itemType: itemType ? { connect: { id: itemType.id } } : undefined,
           site: {
             connect: {
-              id: site.id
-            }
+              id: site.id,
+            },
           },
           relatedPerson: relatedPerson
             ? { connect: { id: relatedPerson.id } }
             : itemData.relatedPerson
-            ? {
-                create: {
-                  name: itemData.relatedPerson.name,
-                  type: itemData.relatedPerson.type,
-                  bio: itemData.relatedPerson.bio,
-                  birthDate: itemData.relatedPerson.birthDate,
-                  deathDate: itemData.relatedPerson.deathDate
+              ? {
+                  create: {
+                    name: itemData.relatedPerson.name,
+                    type: itemData.relatedPerson.type,
+                    bio: itemData.relatedPerson.bio,
+                    birthDate: itemData.relatedPerson.birthDate,
+                    deathDate: itemData.relatedPerson.deathDate,
+                  },
                 }
+              : undefined,
+          pictures: itemData.pictures
+            ? {
+                create: itemData.pictures.map(
+                  (picture: { hostingUrl: string }) => ({
+                    hostingUrl: picture.hostingUrl,
+                  }),
+                ),
               }
             : undefined,
-            pictures: itemData.pictures ? {
-              create: itemData.pictures.map((picture: {hostingUrl: string}) => ({
-                hostingUrl: picture.hostingUrl
-              }))
-            }
-            : undefined
-        }
-      })
-    )
+        },
+      }),
+    );
   }
 
-  return items
+  return items;
 }
 
-export async function seedItems (): Promise<Item[]> {
-  let items: Item[] = []
+export async function seedItems(): Promise<Item[]> {
+  let items: Item[] = [];
 
   const chateauDucBretagne = await prisma.site.findFirst({
     where: {
-      name: 'Chateau des Ducs de Bretagne'
+      name: 'Chateau des Ducs de Bretagne',
     },
     include: {
-      pictures: true
-    }
-  })
+      pictures: true,
+    },
+  });
 
   const architecture = await prisma.itemCategory.findUnique({
     where: {
-      name: 'Architecture'
-    }
-  })
+      name: 'Architecture',
+    },
+  });
 
   if (architecture) {
     const castle = await prisma.itemType.findUnique({
       where: {
         name_itemCategoryId: {
           name: 'Castle',
-          itemCategoryId: architecture.id
-        }
-      }
-    })
+          itemCategoryId: architecture.id,
+        },
+      },
+    });
 
     if (castle && chateauDucBretagne) {
       const manager = await prisma.profile.findFirst({
         where: {
           managerOf: {
             some: {
-              id: chateauDucBretagne.id
-            }
-          }
-        }
-      })
+              id: chateauDucBretagne.id,
+            },
+          },
+        },
+      });
 
       if (manager) {
         const exhibition = await prisma.exhibition.findFirst({
           where: {
-            siteId: chateauDucBretagne.id
-          }
-        })
+            siteId: chateauDucBretagne.id,
+          },
+        });
 
         if (exhibition) {
           const createdItem = await prisma.item.upsert({
             where: {
-              id: chateauDucBretagne.id
+              id: chateauDucBretagne.id,
             },
             update: {},
             create: {
               name: 'Chateau des Ducs de Bretagne',
               itemType: {
                 connect: {
-                  id: castle.id
-                }
+                  id: castle.id,
+                },
               },
               site: {
                 connect: {
-                  id: chateauDucBretagne.id
-                }
+                  id: chateauDucBretagne.id,
+                },
               },
               description: chateauDucBretagne.longDescription,
               textToTranslate:
@@ -145,24 +145,24 @@ export async function seedItems (): Promise<Item[]> {
                 createMany: {
                   data: [
                     {
-                      exhibitionId: exhibition.id
-                    }
-                  ]
-                }
+                      exhibitionId: exhibition.id,
+                    },
+                  ],
+                },
               },
               pictures: {
-                create: chateauDucBretagne.pictures.map(picture => ({
-                  hostingUrl: picture.hostingUrl
-                }))
-              }
-            }
-          })
+                create: chateauDucBretagne.pictures.map((picture) => ({
+                  hostingUrl: picture.hostingUrl,
+                })),
+              },
+            },
+          });
 
-          items.push(createdItem)
+          items.push(createdItem);
         }
       }
     }
   }
 
-  return items
+  return items;
 }

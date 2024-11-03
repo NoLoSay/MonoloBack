@@ -15,7 +15,7 @@ export async function seedCountries(): Promise<Country[]> {
         latitude: 46.603354,
         longitude: 1.888334,
       },
-    })
+    }),
   );
   countries.push(
     await prisma.country.upsert({
@@ -27,7 +27,7 @@ export async function seedCountries(): Promise<Country[]> {
         latitude: 50.6402809,
         longitude: 4.6667145,
       },
-    })
+    }),
   );
 
   return countries;

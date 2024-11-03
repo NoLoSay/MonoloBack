@@ -1,18 +1,18 @@
-import { PrismaClient, SignLanguage } from '@prisma/client/base'
+import { PrismaClient, SignLanguage } from '@prisma/client/base';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-function getRandomHexColor (): string {
-  const letters = '0123456789ABCDEF'
-  let color = '#'
+function getRandomHexColor(): string {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
   for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)]
+    color += letters[Math.floor(Math.random() * 16)];
   }
-  return color
+  return color;
 }
 
-export async function seedSignLanguages (): Promise<SignLanguage[]> {
-  let signLanguages: SignLanguage[] = []
+export async function seedSignLanguages(): Promise<SignLanguage[]> {
+  let signLanguages: SignLanguage[] = [];
 
   signLanguages.push(
     await prisma.signLanguage.upsert({
@@ -21,10 +21,10 @@ export async function seedSignLanguages (): Promise<SignLanguage[]> {
       create: {
         name: 'Langue des Signes Française',
         code: 'LSF',
-        color: getRandomHexColor()
-      }
-    })
-  )
+        color: getRandomHexColor(),
+      },
+    }),
+  );
 
   signLanguages.push(
     await prisma.signLanguage.upsert({
@@ -33,10 +33,10 @@ export async function seedSignLanguages (): Promise<SignLanguage[]> {
       create: {
         name: 'Langue des Signes de Belgique Francophone',
         code: 'LSFB',
-        color: getRandomHexColor()
-      }
-    })
-  )
+        color: getRandomHexColor(),
+      },
+    }),
+  );
 
   signLanguages.push(
     await prisma.signLanguage.upsert({
@@ -45,10 +45,10 @@ export async function seedSignLanguages (): Promise<SignLanguage[]> {
       create: {
         name: 'Vlaamse Gebarentaal',
         code: 'VGT',
-        color: getRandomHexColor()
-      }
-    })
-  )
+        color: getRandomHexColor(),
+      },
+    }),
+  );
 
   signLanguages.push(
     await prisma.signLanguage.upsert({
@@ -57,10 +57,10 @@ export async function seedSignLanguages (): Promise<SignLanguage[]> {
       create: {
         name: 'Deutschschweizerische Gebärdensprache',
         code: 'DSGS',
-        color: getRandomHexColor()
-      }
-    })
-  )
+        color: getRandomHexColor(),
+      },
+    }),
+  );
 
   signLanguages.push(
     await prisma.signLanguage.upsert({
@@ -69,10 +69,10 @@ export async function seedSignLanguages (): Promise<SignLanguage[]> {
       create: {
         name: 'American Sign Language',
         code: 'ASL',
-        color: getRandomHexColor()
-      }
-    })
-  )
+        color: getRandomHexColor(),
+      },
+    }),
+  );
 
   signLanguages.push(
     await prisma.signLanguage.upsert({
@@ -81,10 +81,10 @@ export async function seedSignLanguages (): Promise<SignLanguage[]> {
       create: {
         name: 'British Sign Language',
         code: 'BSL',
-        color: getRandomHexColor()
-      }
-    })
-  )
+        color: getRandomHexColor(),
+      },
+    }),
+  );
 
-  return signLanguages
+  return signLanguages;
 }

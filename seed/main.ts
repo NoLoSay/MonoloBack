@@ -47,7 +47,6 @@ async function main() {
   console.log(users);
 
   console.log('Seeding completed');
-
 }
 
 main()
