@@ -27,6 +27,7 @@ import { readFileSync, unlink } from 'fs';
 import { VideoFile } from 'models/swagger/youtube-file';
 import multer = require('multer');
 import { extname } from 'path';
+import { Express } from 'express'; // DO NOT REMOVE, REQUIRED FOR UNIT TESTS
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
