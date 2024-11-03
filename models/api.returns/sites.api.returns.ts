@@ -1,4 +1,4 @@
-import { Exhibition, SiteHasManager, SiteTag, SiteType } from '@prisma/client/base'
+import { SiteHasManager, SiteTag, SiteType } from '@prisma/client/base'
 import { AddressCommonReturn } from './addresses.api.returns'
 import { ProfileUserAdminReturn } from './profiles.api.returns'
 
@@ -6,6 +6,14 @@ class Picture {
   id: number = 0
   uuid: string = ''
   hostingUrl: string = ''
+}
+
+class Exhibition {
+  id: number = 0
+  name: string = ''
+  shortDescription: string = ''
+  startDate: Date = new Date()
+  endDate: Date = new Date()
 }
 
 export class SiteCommonReturn {
@@ -22,7 +30,7 @@ export class SiteCommonReturn {
   type: SiteTag = SiteTag.OTHER
   tags: SiteType[] = []
   address: AddressCommonReturn = new AddressCommonReturn()
-  exhibition: Exhibition[] = []
+  exhibitions: Exhibition[] = []
 }
 
 export class SiteHasManagerAdminReturn {

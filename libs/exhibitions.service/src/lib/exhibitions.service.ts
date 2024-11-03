@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
 import {
   BadRequestException,
   Injectable,
@@ -30,14 +30,13 @@ import {
   ExhibitionManagerDetailedDbReturn
 } from '@noloback/db.returns'
 import { FiltersGetMany } from 'models/filters-get-many'
-//import { LogCriticity } from '@prisma/client/logs'
-//import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ExhibitionsService {
   constructor (
     private readonly prismaBase: PrismaBaseService,
-    private readonly siteManagersService: SitesManagersService // private loggingService: LoggerService
+    private readonly siteManagersService: SitesManagersService, private loggingService: LoggerService
   ) {}
 
   async count(
@@ -135,7 +134,7 @@ export class ExhibitionsService {
     }
     const exhibition: unknown = await this.prismaBase.exhibition.findUnique({
       where: {
-        id: id,
+        id: +id,
         deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null
       },
       select: selectOptions
@@ -189,7 +188,7 @@ export class ExhibitionsService {
           endDate: exhibition.endDate,
           site: {
             connect: {
-              id: exhibition.siteId
+              id: +exhibition.siteId
             }
           }
         },
@@ -197,7 +196,7 @@ export class ExhibitionsService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -216,7 +215,7 @@ export class ExhibitionsService {
       throw new BadRequestException("siteId can't be null or empty")
     }
     const exhibition = await this.prismaBase.exhibition.findUnique({
-      where: { id: id, deletedAt: null },
+      where: { id: +id, deletedAt: null },
       select: {
         id: true
       }
@@ -225,7 +224,7 @@ export class ExhibitionsService {
 
     const updated: unknown = await this.prismaBase.exhibition
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: updatedExhibition.name,
           shortDescription: updatedExhibition.shortDescription,
@@ -234,14 +233,14 @@ export class ExhibitionsService {
           endDate: updatedExhibition.endDate,
           site: {
             connect: {
-              id: updatedExhibition.siteId
+              id: +updatedExhibition.siteId
             }
           }
         },
         select: new ExhibitionManagerSelect()
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException('Error updating exhibition')
       })
 
@@ -250,7 +249,7 @@ export class ExhibitionsService {
 
   async delete (id: number) {
     await this.prismaBase.exhibition.update({
-      where: { id: id },
+      where: { id: +id },
       data: {
         deletedAt: new Date()
       },

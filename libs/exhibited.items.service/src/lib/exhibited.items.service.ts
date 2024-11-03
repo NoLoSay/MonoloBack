@@ -4,16 +4,16 @@ import {
   InternalServerErrorException,
   NotFoundException
 } from '@nestjs/common'
-import { PrismaBaseService } from '@noloback/prisma-client-base'
+import { LogCriticity, PrismaBaseService } from '@noloback/prisma-client-base'
 import { ExhibitedItemAdditionModel } from '@noloback/api.request.bodies'
 import { ExhibitionCommonSelect, ItemCommonSelect } from '@noloback/db.calls'
 import { ExhibitionCommonReturn, ItemCommonReturn } from '@noloback/api.returns'
-// import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class ExhibitedItemsService {
   constructor (
-    private prismaBase: PrismaBaseService // private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async canItemBeUsedInExhibition (
@@ -21,7 +21,7 @@ export class ExhibitedItemsService {
     exhibitionId: number
   ): Promise<boolean> {
     const exhibitionSite = await this.prismaBase.exhibition.findUnique({
-      where: { id: exhibitionId },
+      where: { id: +exhibitionId },
       select: {
         siteId: true
       }
@@ -29,7 +29,7 @@ export class ExhibitedItemsService {
     if (!exhibitionSite) throw new NotFoundException('Exhibition not found.')
 
     const itemSite = await this.prismaBase.item.findUnique({
-      where: { id: itemId },
+      where: { id: +itemId },
       select: {
         siteId: true
       }
@@ -42,7 +42,7 @@ export class ExhibitedItemsService {
     const exhibitedItems = await this.prismaBase.exhibitedItem
       .findMany({
         where: {
-          exhibitionId: exhibitionId,
+          exhibitionId: +exhibitionId,
           item: {
             deletedAt: null
           }
@@ -54,7 +54,7 @@ export class ExhibitedItemsService {
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     return exhibitedItems.map(exhibitedItem => {
@@ -68,7 +68,7 @@ export class ExhibitedItemsService {
   ): Promise<{ item: ItemCommonReturn; exhibition: ExhibitionCommonReturn }> {
     if (
       (await this.prismaBase.exhibitedItem.count({
-        where: { itemId: exhibitedItem.itemId, exhibitionId: exhibitionId }
+        where: { itemId: +exhibitedItem.itemId, exhibitionId: +exhibitionId }
       })) > 0
     )
       throw new ConflictException('Item already exhibited in this exhibition.')
@@ -77,12 +77,12 @@ export class ExhibitedItemsService {
         data: {
           exhibition: {
             connect: {
-              id: exhibitionId
+              id: +exhibitionId
             }
           },
           item: {
             connect: {
-              id: exhibitedItem.itemId
+              id: +exhibitedItem.itemId
             }
           }
         },
@@ -96,7 +96,7 @@ export class ExhibitedItemsService {
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -113,7 +113,7 @@ export class ExhibitedItemsService {
   ): Promise<{ itemId: number; exhibitionId: number }> {
     if (
       !(await this.prismaBase.exhibitedItem.count({
-        where: { itemId: itemId, exhibitionId: exhibitionId }
+        where: { itemId: +itemId, exhibitionId: +exhibitionId }
       }))
     )
       throw new NotFoundException('Item not exhibited in this exhibition.')
@@ -121,8 +121,8 @@ export class ExhibitedItemsService {
       .delete({
         where: {
           itemId_exhibitionId: {
-            itemId: itemId,
-            exhibitionId: exhibitionId
+            itemId: +itemId,
+            exhibitionId: +exhibitionId
           }
         },
         select: {
@@ -131,7 +131,7 @@ export class ExhibitedItemsService {
         }
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
   }

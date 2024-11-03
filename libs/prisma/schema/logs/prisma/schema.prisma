@@ -22,21 +22,25 @@ datasource db {
 //   output   = "../../../../../docs/prisma-dbml"
 // }
 
-model Logs {
-  id        Int          @id @default(autoincrement())
-  uuid      String       @unique @default(uuid())
-  criticity LogCriticity @default(Info)
-  context   String?
-  exception String?
-  content   String?
-  stack     String?
-  message   String?
+model Legacy {
+  id Int @id @default(autoincrement())
 }
 
-enum LogCriticity {
-  Info
-  Low
-  Medium
-  High
-  Critical
-}
+// model Logs {
+//   id        Int          @id @default(autoincrement())
+//   uuid      String       @unique @default(uuid())
+//   criticity LogCriticity @default(Info)
+//   context   String?
+//   exception String?
+//   content   String?
+//   stack     String?
+//   message   String?
+// }
+
+// enum LogCriticity {
+//   Info
+//   Low
+//   Medium
+//   High
+//   Critical
+// }

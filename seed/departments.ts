@@ -1,74 +1,40 @@
 import {
-  Country,
   Department,
   PrismaClient as PrismaBaseClient,
 } from '@prisma/client/base';
+import * as fs from 'fs'
 
 const prisma = new PrismaBaseClient();
 
-export async function seedDepartments(countries: Country[]) {
+export async function seedDepartments() {
+  const countries = await prisma.country.findMany();
   let departments: Department[] = [];
 
-  const france = countries.find((country) => country.code === 'FR');
-  if (france) {
-    departments.push(
-      await prisma.department.upsert({
-        where: {
-          code_countryId: {
-            code: '44',
-            countryId: france.id,
-          },
-        },
-        update: {},
-        create: {
-          name: 'Loire-Atlantique',
-          code: '44',
-          countryId: france.id,
-          latitude: 47.348161,
-          longitude: -1.872746,
-        },
-      })
-    );
-    departments.push(
-      await prisma.department.upsert({
-        where: {
-          code_countryId: {
-            code: '75',
-            countryId: france.id,
-          },
-        },
-        update: {},
-        create: {
-          name: 'Paris',
-          code: '75',
-          countryId: france.id,
-          latitude: 48.8588897,
-          longitude: 2.320041,
-        },
-      })
-    );
-  }
+  const rawData = fs.readFileSync('seed/datas/departments.json', 'utf-8')
+  const departmentsData = JSON.parse(rawData)
 
-  const belgium = countries.find((country) => country.code === 'BE');
-  if (belgium) {
-    departments.push(
-      await prisma.department.upsert({
-        where: {
-          code_countryId: {
-            code: 'Bruxelles-Capitale',
-            countryId: belgium.id
-          }
-        },
-        update: {},
-        create: {
-          name: 'Bruxelles-Capitale',
-          code: 'Bruxelles-Capitale',
-          countryId: belgium.id,
-          latitude: 50.503887,
-          longitude: 3.939396
-        }
-      })
-    );
+  for (const departmentData of departmentsData) {
+    const country = countries.find((c) => c.code === departmentData.countryCode);
+    if (country) {
+      departments.push(
+        await prisma.department.upsert({
+          where: {
+            code_countryId: {
+              code: departmentData.code,
+              countryId: country.id,
+            },
+          },
+          update: {},
+          create: {
+            name: departmentData.name,
+            code: departmentData.code,
+            countryId: country.id,
+            latitude: departmentData.latitude,
+            longitude: departmentData.longitude,
+          },
+        })
+      );
+    }
   }
 
   return departments

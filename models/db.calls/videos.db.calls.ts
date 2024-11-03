@@ -28,12 +28,13 @@ abstract class VideoDefaultSelect {
   createdAt: boolean = true
   likedBy: object = {
     select: {
-      User: {
+      user: {
         select: new UserVideoSelect()
       }
     }
   }
   item: object | undefined = undefined
+  showcased: boolean = true
   postedBy: object | undefined = undefined
 }
 

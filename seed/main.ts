@@ -4,39 +4,35 @@ import { seedCountries } from './countries';
 import { seedDepartments } from './departments';
 import { seedCities } from './cities';
 import { seedSites } from './sites';
-import { seedItemTypes } from './item-types';
-import { seedItems } from './items';
+import { newSeedItemCategories } from './item-categories';
+import { newSeedItems } from './items';
 import { seedVideos } from './videos';
-import { seedExhibitions } from './exhibitions';
-import { seedPersons } from './persons';
+import { seedExhibitions, newSeedExhibitions } from './exhibitions';
 import { seedEnumsColors } from './enums-colors';
 import { seedSignLanguages } from './sign-languages';
 
 const prisma = new PrismaBaseClient();
 async function main() {
-  const users = await seedUsers();
-  console.log(users);
-
   const countries = await seedCountries();
   console.log(countries);
 
-  const departments = await seedDepartments(countries);
+  const departments = await seedDepartments();
   console.log(departments);
 
-  const cities = await seedCities(countries, departments);
+  const cities = await seedCities();
   console.log(cities);
 
-  const sites = await seedSites(countries, departments, cities);
+  const sites = await seedSites();
   console.log(sites);
 
-  const exhibitions = await seedExhibitions();
-  console.log(exhibitions);
+  const itemCategories = await newSeedItemCategories();
+  console.log(itemCategories);
 
-  const itemTypes = await seedItemTypes();
-  console.log(itemTypes);
-
-  const items = await seedItems();
+  const items = await newSeedItems();
   console.log(items);
+
+  const exhibitions = newSeedExhibitions();
+  console.log(exhibitions);
 
   const signLanguages = await seedSignLanguages();
   console.log(signLanguages);
@@ -44,13 +40,14 @@ async function main() {
   const videos = await seedVideos();
   console.log(videos);
 
-  const persons = await seedPersons();
-  console.log(persons);
-
   const enumsColors = await seedEnumsColors();
   console.log(enumsColors);
 
+  const users = await seedUsers();
+  console.log(users);
+
   console.log('Seeding completed');
+
 }
 
 main()

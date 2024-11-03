@@ -30,6 +30,7 @@
         "libs/countries.controller/src/index.ts"
       ],
       "@noloback/countries.service": ["libs/countries.service/src/index.ts"],
+      "@noloback/crash.controller": ["libs/crash.controller/src/index.ts"],
       "@noloback/db.calls": ["models/db.calls"],
       "@noloback/db.returns": ["models/db.returns"],
       "@noloback/departments.controller": [

@@ -1,0 +1,830 @@
+[
+  {
+    "name": "Le cœur d'Anne de Bretagne",
+    "description": "Un précieux reliquaire contenant le cœur d'Anne de Bretagne, la duchesse de Bretagne, un symbole de fidélité et de loyauté.",
+    "textToTranslate": "Ce cœur, conservé dans un bijou en or finement travaillé, est un témoignage de la dévotion et des traditions funéraires de l'époque Renaissance.",
+    "itemType": {
+      "name": "Reliquaire"
+    },
+    "site": {
+      "name": "Musée Dobrée"
+    },
+    "relatedPerson": {
+      "name": "Anne de Bretagne",
+      "type": "ARTIST",
+      "bio": "Duchesse de Bretagne, reine de France par son mariage avec Charles VIII et Louis XII, elle est l'une des figures les plus influentes du Moyen Âge.",
+      "birthDate": "1477-01-25",
+      "deathDate": "1514-11-09"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Reliquaire_Anne_de_Bretagne_-_Musée_de_Bretagne_20141102-02.JPG/800px-Reliquaire_Anne_de_Bretagne_-_Musée_de_Bretagne_20141102-02.JPG"
+      }
+    ]
+  },
+  {
+    "name": "Épée de Gilles de Rais",
+    "description": "Une épée légendaire appartenant à Gilles de Rais, compagnon de Jeanne d'Arc.",
+    "textToTranslate": "Cette épée a été utilisée lors de nombreuses batailles, emblématique du courage et de la tragédie de Gilles de Rais.",
+    "itemType": {
+      "name": "Sword"
+    },
+    "site": {
+      "name": "Château des Ducs de Bretagne"
+    },
+    "relatedPerson": {
+      "name": "Gilles de Rais",
+      "type": "ROYALTY",
+      "bio": "Noble breton et militaire, il a été compagnon de Jeanne d'Arc et a été exécuté pour crimes.",
+      "birthDate": "1404-09-29",
+      "deathDate": "1440-10-26"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Gravure_gilles_de_rais.jpg/317px-Gravure_gilles_de_rais.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Statue de la Liberté",
+    "description": "Une statue emblématique représentant la liberté et l'indépendance.",
+    "textToTranslate": "Cette statue a été un don de la France aux États-Unis, symbole d'amitié entre les deux nations.",
+    "itemType": {
+      "name": "Statue"
+    },
+    "site": {
+      "name": "Château des Ducs de Bretagne"
+    },
+    "relatedPerson": {
+      "name": "Frédéric Auguste Bartholdi",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, il est connu pour avoir conçu la Statue de la Liberté.",
+      "birthDate": "1834-04-02",
+      "deathDate": "1904-10-04"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://navaway.fr/wp-content/uploads/2022/06/Statue-de-la-Liberte.jpg"
+      }
+    ]
+  },
+  {
+    "name": "La liberté guidant le peuple",
+    "description": "Un tableau célèbre d'Eugène Delacroix représentant la liberté et la révolution.",
+    "textToTranslate": "Ce tableau est un symbole de la Révolution française, illustrant la liberté et l'égalité. On peut voir une femme portant un drapeau français et guidant le peuple lors d'une révolte.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Eugène Delacroix",
+      "type": "ARTIST",
+      "bio": "Peintre français, il est connu pour ses œuvres dramatiques et ses scènes historiques.",
+      "birthDate": "1798-04-26",
+      "deathDate": "1863-08-13"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/La_Liberté_guidant_le_peuple_-_Eugène_Delacroix_-_Musée_du_Louvre_Peintures_RF_129_-_après_restauration_2024.jpg/640px-La_Liberté_guidant_le_peuple_-_Eugène_Delacroix_-_Musée_du_Louvre_Peintures_RF_129_-_après_restauration_2024.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Manteau du Duc de Bretagne",
+    "description": "Un manteau richement décoré porté par les ducs de Bretagne lors des cérémonies.",
+    "textToTranslate": "Ce manteau est un symbole de la royauté bretonne et de la richesse de son histoire.",
+    "itemType": {
+      "name": "Cloak"
+    },
+    "site": {
+      "name": "Château des Ducs de Bretagne"
+    },
+    "relatedPerson": {
+      "name": "Jean IV de Bretagne",
+      "type": "ROYALTY",
+      "bio": "Duc de Bretagne, il a joué un rôle important dans l'histoire de la Bretagne au XIVe siècle.",
+      "birthDate": "1339-01-01",
+      "deathDate": "1399-10-01"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.traces-h.net/costumes/ill/costume-france-16e-francois-bretagne-5dsr_14915.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Tenture de l'Apocalypse",
+    "description": "Une tapisserie médiévale impressionnante représentant l'Apocalypse.",
+    "textToTranslate": "Cette tapisserie, richement colorée, raconte l'histoire de l'Apocalypse, un chef-d'œuvre de l'art médiéval.",
+    "itemType": {
+      "name": "Tapestry"
+    },
+    "site": {
+      "name": "Château d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Jean de France",
+      "type": "ROYALTY",
+      "bio": "Jean de France, duc d'Anjou, a commandé la tapisserie et a joué un rôle important dans la culture médiévale.",
+      "birthDate": "1340-01-01",
+      "deathDate": "1416-09-02"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://reservation.destination-angers.com/medias/images/prestataires/tapisserie-de-l-apocalypse-du-cha-teau-d-angers-1956553.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Coffre des trésors",
+    "description": "Un coffre ancien utilisé pour stocker les trésors royaux.",
+    "textToTranslate": "Ce coffre en bois sculpté renfermait les trésors des ducs d'Anjou, symbole de richesse et de pouvoir.",
+    "itemType": {
+      "name": "Chest"
+    },
+    "site": {
+      "name": "Château d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Louis II d'Anjou",
+      "type": "ROYALTY",
+      "bio": "Duc d'Anjou et roi de Naples, Louis II était connu pour sa richesse et son mécénat des arts.",
+      "birthDate": "1377-07-10",
+      "deathDate": "1417-08-29"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.fykmag.com/wp-content/uploads/2018/11/P1060801-825x1100.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Sceptre de Charles d'Anjou",
+    "description": "Un sceptre symbolisant le pouvoir du roi Charles d'Anjou.",
+    "textToTranslate": "Ce sceptre est un symbole de la royauté, richement orné de pierres précieuses.",
+    "itemType": {
+      "name": "Scepter"
+    },
+    "site": {
+      "name": "Château d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Charles d'Anjou",
+      "type": "ROYALTY",
+      "bio": "Roi de Sicile et duc d'Anjou, il a eu une influence considérable en Europe.",
+      "birthDate": "1226-03-21",
+      "deathDate": "1285-05-07"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://media.routard.com/image/98/8/photo.1545988.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Fresque de la chapelle",
+    "description": "Une fresque représentant des scènes religieuses dans la chapelle du château.",
+    "textToTranslate": "Cette fresque est un exemple de l'art religieux médiéval, captivant et coloré.",
+    "itemType": {
+      "name": "Fresco"
+    },
+    "site": {
+      "name": "Château d'Angers"
+    },
+    "relatedPerson": {
+      "name": "Jacques Le Moyne",
+      "type": "ARTIST",
+      "bio": "Artiste flamand connu pour ses fresques et ses illustrations.",
+      "birthDate": "1533-01-01",
+      "deathDate": "1588-01-01"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://image.over-blog.com/TwXM8xs-k5wmcZRe7r7gVSxeWWY=/filters:no_upscale()/image%2F1401956%2F20240716%2Fob_292cb7_baie-4a.JPG"
+      }
+    ]
+  },
+  {
+    "name": "Héraklès et Cerbère",
+    "description": "Un vase représentant le héros grec Héraklès combattant le chien à trois têtes Cerbère.",
+    "textToTranslate": "Ce vase est un exemple de l'art grec antique, illustrant les mythes et les légendes de la Grèce.",
+    "itemType": {
+      "name": "Vase"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Inconnu",
+      "type": "ARTIST",
+      "bio": "Artisan anonyme dont l'œuvre est préservée à travers les âges.",
+      "birthDate": "N/A",
+      "deathDate": "N/A"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.photo.rmn.fr/CorexDoc/RMN/Media/TR1/EVCPH3/93-000707.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Code de Hammurabi",
+    "description": "Une stèle en pierre gravée contenant l'un des plus anciens codes de lois écrits au monde.",
+    "textToTranslate": "Ce code de lois babylonien régissait la justice dans l'ancien royaume de Babylone.",
+    "itemType": {
+      "name": "Stele"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Hammurabi",
+      "type": "PERFORMER",
+      "bio": "Hammurabi était un roi de Babylone qui a régné au XVIIIe siècle avant J.-C. et a créé l'un des premiers codes de lois écrits.",
+      "birthDate": "-1810-01-01",
+      "deathDate": "-1750-01-01"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/9/98/F0182_Louvre_Code_Hammourabi_Bas-relief_Sb8_rwk.jpg"
+      }
+    ]
+  },
+  {
+    "name": "La Joconde",
+    "description": "Un portrait célèbre de Léonard de Vinci, emblématique de l'art de la Renaissance.",
+    "textToTranslate": "Ce tableau est reconnu dans le monde entier pour son sourire mystérieux et son histoire fascinante.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Léonard de Vinci",
+      "type": "ARTIST",
+      "bio": "Peintre et inventeur italien, il est considéré comme l'un des plus grands génies de l'histoire.",
+      "birthDate": "1452-04-15",
+      "deathDate": "1519-05-02"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_x9lYphCQoGyOXWoASL2sLh0ZOLE9vKL_Gg&s"
+      }
+    ]
+  },
+  {
+    "name": "Le serment des Horaces",
+    "description": "Le Serment des Horaces (1784) de Jacques-Louis David représente trois frères, les Horaces, jurant de défendre Rome face à leurs ennemis, les Curiaces, devant leur père. Cette œuvre néoclassique symbolise le devoir, le patriotisme et le sacrifice familial au nom de la nation.",
+    "textToTranslate": "Le Serment des Horaces, par Jacques-Louis David, illustre un épisode légendaire de l'histoire romaine : les trois frères Horaces jurent de combattre jusqu'à la mort pour défendre Rome contre les Curiaces, leurs adversaires. Ce tableau incarne les valeurs de patriotisme, de sacrifice et de devoir filial, au cœur de l'idéal néoclassique. Par la rigueur de sa composition et la solennité de ses figures, David magnifie l'héroïsme et l'unité morale, offrant ainsi une œuvre emblématique des vertus républicaines prônées à l'époque des Lumières.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée du Louvre"
+    },
+    "relatedPerson": {
+      "name": "Jacques-Louis David",
+      "type": "ARTIST",
+      "bio": "Peintre néoclassique français, il a été un artiste majeur de la Révolution française.",
+      "birthDate": "1748-08-30",
+      "deathDate": "1825-01-29"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.museumtv.art/wp-content/uploads/2021/06/836F85A9-81EB-489B-BAD7-1243A343BB5B.jpeg"
+      }
+    ]
+  },
+  {
+    "name": "Le Penseur",
+    "description": "Le Penseur (1880) d’Auguste Rodin est une sculpture représentant un homme assis en pleine réflexion, le menton posé sur sa main. Symbolisant la puissance de la pensée, cette œuvre incarne la complexité de l’âme humaine, oscillant entre introspection et action.",
+    "textToTranslate": "Le Penseur (1880), créé par Auguste Rodin, est l’une des sculptures les plus emblématiques de l’art moderne. À l’origine conçu comme partie intégrante de La Porte de l’Enfer, il représente un homme méditant profondément, le corps tendu, dans une posture de réflexion intense. Par ce contraste entre force physique et concentration intérieure, Rodin exprime la dualité de l’esprit humain, capable à la fois de contemplation et de création.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Centre Pompidou"
+    },
+    "relatedPerson": {
+      "name": "Auguste Rodin",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, il est connu pour ses œuvres expressives et novatrices.",
+      "birthDate": "1840-11-12",
+      "deathDate": "1917-11-17"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.meudon.musee-rodin.fr//sites/default/files/2021-04/jm_5550.jpg"
+      }
+    ]
+  },
+  {
+    "name": "L'Homme qui marche",
+    "description": "L’Homme qui marche (1961) d’Alberto Giacometti représente une silhouette élancée, en mouvement, avec un corps long et décharné. Cette sculpture exprime la fragilité de l’existence humaine, tout en symbolisant la persévérance et la solitude.",
+    "textToTranslate": "L’Homme qui marche (1961), œuvre d’Alberto Giacometti, est une sculpture emblématique de l’art moderne. Cette figure allongée et dépouillée, capturée en plein mouvement, incarne l’essence de la condition humaine, marquée par l’isolement et la quête incessante de sens. Par l’allongement des formes et la texture rugueuse, Giacometti exprime à la fois la vulnérabilité et la détermination de l’être humain face à l’immensité du monde.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Centre Pompidou"
+    },
+    "relatedPerson": {
+      "name": "Alberto Giacometti",
+      "type": "ARTIST",
+      "bio": "Sculpteur et peintre suisse, il est connu pour ses figures élancées et expressives.",
+      "birthDate": "1901-10-10",
+      "deathDate": "1966-01-11"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.connaissancedesarts.com/wp-content/thumbnails/uploads/2020/07/cda20_focus_giacometti_homme_marche_main-tt-width-1200-height-630-fill-0-crop-1-bgcolor-ffffff.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Paysage de l’Estaque",
+    "description": "Paysage de l’Estaque (1906) de Georges Braque représente le village méditerranéen avec des formes géométriques simplifiées. Cette œuvre annonce le développement du cubisme, marquant une rupture avec la perspective traditionnelle au profit d’une construction plus abstraite.",
+    "textToTranslate": "Paysage de l’Estaque (1906), peint par Georges Braque, capture une vue du village de l’Estaque, où l’artiste commence à expérimenter une déconstruction des formes. Inspiré par Cézanne, Braque réduit le paysage en blocs géométriques et utilise des couleurs limitées pour accentuer la structure. Cette œuvre, avec ses volumes simplifiés et sa perspective fragmentée, marque une étape cruciale dans l’émergence du cubisme, en posant les bases d’une nouvelle façon de représenter la réalité, non plus à travers une illusion de profondeur, mais par une analyse des formes et des plans.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Centre Pompidou"
+    },
+    "relatedPerson": {
+      "name": "Georges Braque",
+      "type": "ARTIST",
+      "bio": "Peintre français, il a été l'un des pionniers du cubisme avec Pablo Picasso.",
+      "birthDate": "1882-05-13",
+      "deathDate": "1963-08-31"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://cms.guggenheim-bilbao.eus/uploads/2021/03/IMG_Georges_Braque_Fauvismo.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Le Sacre de Napoléon",
+    "description": "Le Sacre de Napoléon (1805-1807) de Jacques-Louis David dépeint l’empereur Napoléon Ier couronnant son épouse Joséphine lors de la cérémonie de son sacre à Notre-Dame de Paris. Cette grande fresque historique symbolise la puissance impériale et la légitimité du pouvoir.",
+    "textToTranslate": "Le Sacre de Napoléon (1805-1807), par Jacques-Louis David, illustre l’instant solennel du couronnement de Napoléon Ier à Notre-Dame de Paris. L’œuvre, riche en détails, montre Napoléon plaçant la couronne sur la tête de Joséphine, tandis que l’assistance observe, une scène marquée par l’autorité et la grandeur de l’Empire. Par son style néoclassique, David magnifie la puissance impériale tout en soulignant l’importance de la cérémonie religieuse qui légitime le pouvoir de Napoléon. La composition rigoureuse et la mise en scène imposante renforcent l’idée de grandeur et de majesté.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Centre Pompidou"
+    },
+    "relatedPerson": {
+      "name": "Jacques-Louis David",
+      "type": "ARTIST",
+      "bio": "Peintre néoclassique français, il a été un artiste majeur de la Révolution française.",
+      "birthDate": "1748-08-30",
+      "deathDate": "1825-01-29"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://histoire-image.org/sites/default/files/2021-11/oneline-sacre-napoleon-david.jpg"
+      }
+    ]
+  },
+  {
+    "name": "La corbeille de pommes",
+    "description": "La Corbeille de pommes (vers 1890-1894) de Paul Cézanne est une nature morte où des pommes sont disposées dans une corbeille, offrant une étude des volumes, des couleurs et de la lumière. L’œuvre témoigne de la recherche de Cézanne pour représenter la réalité à travers la structure et la simplicité des formes.",
+    "textToTranslate": "La Corbeille de pommes (vers 1890-1894), peinte par Paul Cézanne, présente une composition simple de pommes dans une corbeille, mais avec une complexité formelle et une richesse de couleur qui révèlent la maîtrise technique de l’artiste. Cézanne joue avec les perspectives et les volumes, décomposant la lumière et l’ombre sur les fruits pour explorer les relations entre les objets et l’espace. Cette œuvre, marquée par des touches de couleur vibrantes et une approche presque géométrique, influence profondément l’évolution de l’art moderne, préfigurant le cubisme.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Art Institute of Chicago"
+    },
+    "relatedPerson": {
+      "name": "Paul Cézanne",
+      "type": "ARTIST",
+      "bio": "Peintre français, il est considéré comme le père de l'art moderne.",
+      "birthDate": "1839-01-19",
+      "deathDate": "1906-10-22"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/3/38/Paul_Cézanne_-_The_Basket_of_Apples_-_1926.252_-_Art_Institute_of_Chicago.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Le Tutu de Marie Taglioni",
+    "description": "Le Tutu de Marie Taglioni (vers 1834) est une photographie emblématique de la danseuse Marie Taglioni, immortalisée dans son célèbre tutu, une pièce légère et aérienne qui met en valeur sa silhouette gracile. Cette image symbolise la beauté et la légèreté de la danse romantique.",
+    "textToTranslate": "Le Tutu de Marie Taglioni (vers 1834) est une photographie iconique qui capture l’une des plus célèbres danseuses du XIXe siècle dans son costume de scène. Marie Taglioni, figure centrale du ballet romantique, est photographiée dans son tutu aérien, une tenue emblématique qui transforme le corps en une figure d’extase et de légèreté. La photographie met en valeur la fluidité de ses mouvements et la grâce de sa posture, tout en soulignant l’importance du costume comme extension de la danse. Ce portrait symbolise l’ère romantique du ballet et la consécration de la ballerine en tant qu’icône de la danse.",
+    "itemType": {
+      "name": "Costume"
+    },
+    "site": {
+      "name": "Palais Garnier"
+    },
+    "relatedPerson": {
+      "name": "Marie Taglioni",
+      "type": "PERFORMER",
+      "bio": "Danseuse étoile du XIXe siècle, célèbre pour son rôle dans 'La Sylphide'.",
+      "birthDate": "1804-04-23",
+      "deathDate": "1884-04-23"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.meisterdrucke.fr/kunstwerke/1260px/Marie_Alexandre_%28after%29_Alophe_-_Italian_ballet_dancer_Marie_Taglioni_in_her_father_Filippo_Taglionis_ballet_Le_S_-_%28MeisterDrucke-1062088%29.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Chandelier du Palais",
+    "description": "Le Chandelier du Palais Garnier (1875), conçu par le sculpteur Sabatier et le designer Gambon, est un élément majestueux du grand foyer de l’Opéra de Paris. Ce chandelier en bronze doré, orné de cristaux, illumine l’architecture grandiose et le décor somptueux du bâtiment.",
+    "textToTranslate": "Le Chandelier du Palais Garnier (1875) est une pièce maîtresse du foyer de l’Opéra de Paris, sculptée par Sabatier et conçue par Gambon. Il se distingue par sa richesse ornementale, avec des bras en bronze doré soutenant de multiples bougies, entourés de cristaux étincelants. Placé sous la grande coupole, il reflète l’opulence et la splendeur du bâtiment, tout en incarnant l’esthétique du Second Empire. Ce chandelier, aux lignes élégantes et à l’éclat raffiné, illumine avec magnificence l’espace monumental du Palais Garnier.",
+    "itemType": {
+      "name": "Chandelier"
+    },
+    "site": {
+      "name": "Palais Garnier"
+    },
+    "relatedPerson": {
+      "name": "Charles Garnier",
+      "type": "ARCHITECT",
+      "bio": "Architecte français, il est célèbre pour la conception du Palais Garnier.",
+      "birthDate": "1825-11-06",
+      "deathDate": "1898-08-17"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://live.staticflickr.com/4180/34432554725_7821934e65_h.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Maquette de l'Opéra",
+    "description": "Maquette de l’Opéra Garnier (vers 1861-1875) est une reproduction réduite du célèbre bâtiment parisien conçu par Charles Garnier. Réalisée pour visualiser les proportions et l’architecture complexe du projet, elle reflète l’ambition et l’innovation de l’Opéra dans son design fastueux.",
+    "textToTranslate": "Maquette de l’Opéra Garnier (vers 1861-1875), créée pour la conception de l’édifice par l’architecte Charles Garnier, est une réplique minutieuse de la célèbre salle de spectacle parisienne. Cette maquette présente les détails architecturaux élaborés du Palais Garnier, tels que les colonnes, les escaliers majestueux et les façades richement ornées. Elle témoigne de l’ingéniosité de Garnier dans la fusion des styles classiques et baroques, tout en mettant en lumière l’ampleur monumentale du projet. Utilisée comme outil de présentation et de planification, cette maquette reste un précieux témoignage de l’œuvre monumentale qui a marqué l’histoire de l’architecture parisienne.",
+    "itemType": {
+      "name": "Model"
+    },
+    "site": {
+      "name": "Palais Garnier"
+    },
+    "relatedPerson": {
+      "name": "Charles Garnier",
+      "type": "ARCHITECT",
+      "bio": "Architecte français, il est célèbre pour la conception du Palais Garnier.",
+      "birthDate": "1825-11-06",
+      "deathDate": "1898-08-17"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://cdn.mediatheque.epmoo.fr/link/3c9igq/gzi1ar3hai0dzfk.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Peinture de Monet",
+    "description": "Impression, soleil levant (1872) de Claude Monet est une peinture emblématique du mouvement impressionniste. Elle représente le port du Havre au lever du soleil, avec des touches de couleurs vives et une atmosphère brumeuse, capturant la lumière et l’effet éphémère du moment.",
+    "textToTranslate": "Impression, soleil levant (1872), peint par Claude Monet, est l’une des œuvres les plus célèbres du mouvement impressionniste. La scène montre le port du Havre, baigné dans la lumière douce du matin, avec des navires flous et des reflets sur l’eau. La technique de Monet, avec ses touches rapides et légères de couleur, capte l’instant fugace et la brume qui enveloppe le paysage. Ce tableau, en privilégiant l’effet de lumière et l’atmosphère, incarne la volonté des impressionnistes de peindre l’impression visuelle d’un moment plutôt que la réalité détaillée, marquant le début d’une nouvelle ère dans l’histoire de l’art.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée Marmottan Monet"
+    },
+    "relatedPerson": {
+      "name": "Claude Monet",
+      "type": "ARTIST",
+      "bio": "Peintre français, il est un pionnier de l'impressionnisme.",
+      "birthDate": "1840-11-14",
+      "deathDate": "1926-12-05"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/5/54/Claude_Monet%2C_Impression%2C_soleil_levant.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Le Baiser",
+    "description": "Le Baiser (1882) d’Auguste Rodin est une sculpture romantique qui représente un couple enlacé, capturant un moment d’intimité et de passion. Avec des formes fluides et sensuelles, Rodin exprime la fusion des corps et des émotions à travers la pierre.",
+    "textToTranslate": "Le Baiser (1882), sculpté par Auguste Rodin, représente un couple en plein élan amoureux, figé dans un baiser intense. Inspirée de la légende de Paolo et Francesca, l’œuvre capture l’intimité et la sensualité du geste, tout en mettant en avant la beauté des corps entrelacés. Rodin, par ses détails anatomiques et sa maîtrise de la texture de la pierre, donne vie à cette scène passionnée, révélant une émotion profonde à travers une composition sculpturale dynamique. Cette œuvre, au-delà de son esthétique, évoque la puissance de l’amour et la tension entre désir et vulnérabilité.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée Rodin"
+    },
+    "relatedPerson": {
+      "name": "Auguste Rodin",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, il est connu pour ses œuvres expressives et novatrices.",
+      "birthDate": "1840-11-12",
+      "deathDate": "1917-11-17"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://lesecretderriereletableau.fr/wp-content/uploads/2023/09/72_recadre.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Autoportrait",
+    "description": "Autoportrait (1889) de Vincent van Gogh est un portrait intense et expressif de l’artiste. Avec des coups de pinceau visibles et des couleurs vives, Van Gogh se représente dans un moment d’introspection, capturant à la fois la force intérieure et la fragilité de son état d’esprit.",
+    "textToTranslate": "Autoportrait (1889) de Vincent van Gogh est une œuvre puissante où l’artiste se représente avec une palette vibrante de couleurs et une texture expressive. Le visage, encadré par sa chevelure rousse et son écharpe verte, montre des traits marqués, presque tourmentés, dans une posture de contemplation. Les coups de pinceau visibles et les contrastes de lumière donnent un effet dynamique, soulignant la psychologie complexe de l’artiste. Peint alors que Van Gogh séjournait à l’asile de Saint-Rémy-de-Provence, ce portrait reflète son état émotionnel fragile, tout en affirmant sa présence en tant qu’artiste déterminé.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée d'Orsay"
+    },
+    "relatedPerson": {
+      "name": "Vincent van Gogh",
+      "type": "ARTIST",
+      "bio": "Peintre néerlandais, il est connu pour son utilisation audacieuse de la couleur et de la texture.",
+      "birthDate": "1853-03-30",
+      "deathDate": "1890-07-29"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Self-Portrait_%28Van_Gogh_September_1889%29.jpg"
+      }
+    ]
+  },
+  {
+    "name": "L’Apparition de l’ange à saint Joseph, dit aussi Le Songe de saint Joseph",
+    "description": "L’Apparition de l’ange à saint Joseph (vers 1645) de Georges de La Tour, également connu sous le titre Le Songe de saint Joseph, représente un moment de rêve mystique où l’ange apparaît en pleine nuit à saint Joseph. L’éclairage doux et dramatique de la scène illustre la fusion entre le divin et l’humain.",
+    "textToTranslate": "L’Apparition de l’ange à saint Joseph, ou Le Songe de saint Joseph (vers 1645), par Georges de La Tour, est une peinture religieuse captivante qui dépeint un moment spirituel intime. L’ange apparaît à saint Joseph dans un rêve, une scène nocturne baignée dans une lumière chaude et tamisée qui caractérise l’œuvre de La Tour. L’artiste maîtrise l’effet de clair-obscur pour créer une atmosphère à la fois surnaturelle et intime, soulignant la nature divine du message apporté. La pose tranquille de saint Joseph, plongé dans un sommeil profond, contraste avec la présence lumineuse de l’ange, qui semble incarner la révélation divine.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée d'Arts de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Georges de La Tour",
+      "type": "ARTIST",
+      "bio": "Peintre français, artiste au confluent des cultures nordique, italienne et française, contemporain de Jacques Callot et des frères Le Nain, La Tour est un observateur pénétrant de la réalité quotidienne.",
+      "birthDate": "1593-03-14",
+      "deathDate": "1652-01-30"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Gravure_gilles_de_rais.jpg/317px-Gravure_gilles_de_rais.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Gorille enlevant une femme",
+    "description": "Le Gorille enlevant une femme (1887) d’Emmanuel Frémiet est une sculpture dramatique représentant un gorille puissant en train d’enlever une femme dans ses bras. La force brute de la bête contraste avec la fragilité de la victime, créant une scène à la fois brutale et émotive.",
+    "textToTranslate": "Le Gorille enlevant une femme (1887), sculpté par Emmanuel Frémiet, présente une scène saisissante où un gorille, avec une expression féroce, enlève une femme dans un geste brutal. La sculpture, à la fois réaliste et dramatique, met en lumière la force animale, à travers les muscles tendus de la bête, tout en soulignant la vulnérabilité de la femme, dont les traits et la posture reflètent la terreur et la fragilité. Le contraste entre la puissance du gorille et la délicatesse de la victime est accentué par les détails minutieux de la peau, du mouvement et des expressions, offrant une scène poignante qui interroge sur la relation entre l’homme, la nature et la violence.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée d'Arts de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Emmanuel Frémiet",
+      "type": "ARTIST",
+      "bio": "Sculpteur et peintre français du XIXe siècle, célèbre pour ses statues.",
+      "birthDate": "1824-12-06",
+      "deathDate": "1910-09-10"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.meisterdrucke.lu/kunstwerke/1260px/Emmanuel_Fremiet_-_Gorilla_Abducting_a_Woman_-_%28MeisterDrucke-88539%29.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Schwarzer Raster [Trame noire]",
+    "description": "Schwarzer Raster (Trame noire) (1923) de Wassily Kandinsky est une composition abstraite où des lignes noires s’entrelacent sur un fond de couleurs vives, créant une dynamique visuelle forte. L’œuvre explore la relation entre formes géométriques et couleurs, tout en s’ancrant dans le langage visuel du Bauhaus.",
+    "textToTranslate": "Schwarzer Raster (Trame noire) (1923), par Wassily Kandinsky, est une œuvre de l’art abstrait qui illustre la recherche de Kandinsky pour exprimer des émotions à travers la couleur et la forme géométrique. Le tableau se compose d’une série de lignes noires qui se croisent et se superposent sur un fond vibrant de teintes rouges, jaunes et bleues. L’agencement des formes évoque une tension et une énergie rythmique, tandis que l’utilisation des couleurs vise à renforcer la signification émotionnelle du travail. Ce tableau, influencé par le mouvement Bauhaus, démontre l’évolution de Kandinsky vers une abstraction pure, fondée sur la construction rationnelle et la relation harmonieuse entre les éléments visuels.",
+    "itemType": {
+      "name": "Abstract Art"
+    },
+    "site": {
+      "name": "Musée d'Arts de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Wassily Kandinsky",
+      "type": "ARTIST",
+      "bio": "Peintre et théoricien russe, considéré comme le pionnier de l'art abstrait.",
+      "birthDate": "1866-12-16",
+      "deathDate": "1944-12-13"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://museedartsdenantes.nantesmetropole.fr/files/live/sites/museedarts/files/2-Au-coeur-du-musee/Art_moderne/trame_noire_690px.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Flea Market Lady",
+    "description": "Flea Market Lady (1984) de Duane Hanson est une sculpture hyperréaliste représentant une femme âgée assise à un stand de brocante. Avec une attention extraordinaire aux détails, l’œuvre capte la texture de sa peau, ses vêtements usés et son expression calme, rendant la figure presque vivante.",
+    "textToTranslate": "Flea Market Lady (1984), réalisée par Duane Hanson, est un exemple saisissant d’hyperréalisme, représentant une femme âgée assise à un stand de brocante. Hanson rend avec minutie chaque détail, des rides sur ses mains aux plis de ses vêtements, créant une représentation presque vivante qui défie la perception de la réalité. L’expression de la femme, à la fois pensive et marquée par la fatigue, évoque une certaine quotidienneté et le passage du temps. En se concentrant sur des figures ordinaires et souvent négligées, Hanson attire l’attention sur l’expérience humaine dans sa forme brute et non idéalisée. Cette sculpture invite les spectateurs à réfléchir sur des thèmes tels que le vieillissement, la mémoire et les moments discrets de la vie.",
+    "itemType": {
+      "name": "Installation"
+    },
+    "site": {
+      "name": "Musée d'Arts de Nantes"
+    },
+    "relatedPerson": {
+      "name": "Duane Hanson",
+      "type": "ARTIST",
+      "bio": "Sculpteur américain du courant artistique de l'hyperréalisme.",
+      "birthDate": "1925-01-17",
+      "deathDate": "1996-01-06"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://museedartsdenantes.nantesmetropole.fr/files/live/sites/museedarts/files/2-Au-coeur-du-musee/Art_contemporain/hanson_690px.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Nymphéas II",
+    "description": "Nympheas II (vers 1915-1916) de Claude Monet est une peinture impressionniste représentant les célèbres nénuphars de son jardin à Giverny. Les couleurs vibrantes et les reflets sur l’eau créent une atmosphère poétique et apaisante, capturant l’essence de la nature en constante transformation.",
+    "textToTranslate": "Nympheas II (vers 1915-1916), de Claude Monet, fait partie de la série emblématique des Nympheas, dans laquelle l’artiste explore les variations de lumière et de couleur à travers les reflets de l’eau. Le tableau représente les nénuphars flottant à la surface du bassin, avec des touches de bleu, de vert et de rose qui se fondent dans l’eau, créant une composition harmonieuse et presque abstraite. Monet, par son style flou et son utilisation subtile de la couleur, parvient à traduire l’immensité et la poésie du jardin, tout en donnant à l’observateur l’impression d’être immergé dans un paysage vivant et en perpétuel mouvement.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "Musée de l'Orangerie"
+    },
+    "relatedPerson": {
+      "name": "Claude Monet",
+      "type": "ARTIST",
+      "bio": "Peintre français, fondateur du mouvement impressionniste.",
+      "birthDate": "1840-11-14",
+      "deathDate": "1926-12-05"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://galeriemontblanc.com/cdn/shop/products/main_169cc90c-5444-4f35-bbdb-b91f49739ec1.png"
+      }
+    ]
+  },
+  {
+    "name": "L'implorante",
+    "description": "L’Implorante (1899) de Camille Claudel est une sculpture poignante représentant une femme agenouillée, dans un geste de supplication désespérée. Avec une grande expressivité dans les traits du visage et les détails du corps, Claudel capte la douleur et la vulnérabilité de son sujet.",
+    "textToTranslate": "L’Implorante (1899), sculptée par Camille Claudel, illustre une femme agenouillée dans un geste de désespoir et de supplication. Le visage marqué par la souffrance et les mains tendues créent une émotion brute et poignante. Par la fluidité des drapés et les détails du corps, Claudel parvient à rendre visible la douleur intérieure du personnage, tout en soulignant la fragilité humaine. L’œuvre, avec sa puissance émotionnelle et son attention à la texture de la chair, montre l’intensité de l’expression corporelle, témoignant du génie de Claudel dans la capture de la psychologie et de la condition humaine.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Musée Camille Claudel"
+    },
+    "relatedPerson": {
+      "name": "Camille Claudel",
+      "type": "ARTIST",
+      "bio": "Sculptrice française, connue pour ses œuvres audacieuses.",
+      "birthDate": "1864-12-08",
+      "deathDate": "1943-10-19"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Musée_Camille_Claudel_08092019_Camille_Claudel_L%27Implorante_8703.jpg/640px-Musée_Camille_Claudel_08092019_Camille_Claudel_L%27Implorante_8703.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Le déjeuner des canotiers",
+    "description": "Le Déjeuner des canotiers (1881) de Pierre-Auguste Renoir est une scène vibrante de la vie parisienne en plein air. Ce tableau montre des amis partageant un repas sur la terrasse du restaurant La Maison Fournaise, capturant l’atmosphère joyeuse et décontractée de l’époque.",
+    "textToTranslate": "Le Déjeuner des canotiers (1881), peint par Pierre-Auguste Renoir, est l’une des œuvres emblématiques de l’impressionnisme. La scène se déroule sur la terrasse d’un restaurant au bord de la Seine, où un groupe d’amis déguste un repas en plein air. À travers des coups de pinceau lumineux et des couleurs vibrantes, Renoir rend hommage à la convivialité et à la légèreté de la vie bourgeoise parisienne. Les personnages, baignés dans la lumière, sont capturés dans des moments de rire et de complicité, tandis que le paysage environnant ajoute à l’effet d’harmonie et de fluidité. Le tableau incarne l’esprit de l’époque et le désir de représenter la vie moderne avec une fraîcheur et une spontanéité sans précédent.",
+    "itemType": {
+      "name": "Painting"
+    },
+    "site": {
+      "name": "The Phillips Collection"
+    },
+    "relatedPerson": {
+      "name": "Pierre-Auguste Renoir",
+      "type": "ARTIST",
+      "bio": "Peintre français, membre du mouvement impressionniste.",
+      "birthDate": "1841-02-25",
+      "deathDate": "1919-12-03"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://renoir-essoyes.fr/wp-content/uploads/2023/06/Pierre-Auguste_Renoir_-_Luncheon_of_the_Boating_Party_-_Google_Art_Project-scaled.jpg"
+      }
+    ]
+  },
+  {
+    "name": "La joie de vivre",
+    "description": "La Joie de vivre (1905) de Henri Matisse est une œuvre emblématique du fauvisme, représentant un groupe de figures nues dans un paysage idyllique. Les couleurs vives et audacieuses, ainsi que les formes simplifiées, expriment une sensation de bonheur et d'harmonie avec la nature.",
+    "textToTranslate": "La Joie de vivre (1905), peinte par Henri Matisse, est l'une des œuvres majeures du fauvisme. Cette composition montre des personnages nus dans un paysage lumineux, baignés dans des couleurs vibrantes et expressives. Matisse simplifie les formes humaines et les éléments naturels, donnant à l'ensemble un aspect presque primitif, tout en exprimant une sensation de liberté et d'épanouissement. La palette audacieuse de rouges, verts et bleus illustre l'énergie et la joie de vivre, marquant une rupture avec les conventions traditionnelles de l'art académique de l'époque.",
+    "itemType": {
+      "name": "Still Life"
+    },
+    "site": {
+      "name": "Fondation Barnes"
+    },
+    "relatedPerson": {
+      "name": "Henri Matisse",
+      "type": "ARTIST",
+      "bio": "Peintre français, connu pour sa couleur audacieuse et son style.",
+      "birthDate": "1869-12-31",
+      "deathDate": "1954-11-03"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Gravure_gilles_de_rais.jpg/317px-Gravure_gilles_de_rais.jpg"
+      }
+    ]
+  },
+  {
+    "name": "Jardin du Palais",
+    "description": "Un jardin historique entouré de sculptures et de fontaines.",
+    "textToTranslate": "Ce jardin est un lieu de détente au cœur de Paris.",
+    "itemType": {
+      "name": "Garden"
+    },
+    "site": {
+      "name": "Palais Royal"
+    },
+    "relatedPerson": {
+      "name": "Cardinal Richelieu",
+      "type": "LEADER",
+      "bio": "Cardinal et homme d'État français, fondateur du Palais Royal.",
+      "birthDate": "1585-09-09",
+      "deathDate": "1642-12-04"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://royal-opera.fr/wp-content/uploads/2019/03/palais-royal.jpg"
+      }
+    ]
+  },
+  {
+    "name": "La Porte de l'Enfer",
+    "description": "La Porte de l'Enfer (1880-1917) d'Auguste Rodin est une sculpture monumentale représentant des scènes inspirées de l'Enfer de Dante. L'œuvre, qui regroupe des figures tourmentées et des corps déformés, incarne la souffrance et le drame humain.",
+    "textToTranslate": "La Porte de l'Enfer (1880-1917), réalisée par Auguste Rodin, est une œuvre majeure inspirée de la *Divine Comédie* de Dante. Cette sculpture monumentale représente des personnages tourmentés, pris dans des postures dramatiques qui évoquent l'enfer et la damnation. Le relief richement détaillé donne vie à des figures humaines aux corps déformés, qui semblent vivre des souffrances intenses. Rodin, avec sa maîtrise du mouvement et de l'expression corporelle, explore la condition humaine à travers cette représentation intense et émotive de la douleur et du désir.",
+    "itemType": {
+      "name": "Sculpture"
+    },
+    "site": {
+      "name": "Philadelphia Museum of Art"
+    },
+    "relatedPerson": {
+      "name": "Auguste Rodin",
+      "type": "ARTIST",
+      "bio": "Sculpteur français, considéré comme l'un des fondateurs de la sculpture moderne.",
+      "birthDate": "1840-11-12",
+      "deathDate": "1917-11-17"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.etaletaculture.fr/wp-content/uploads/2012/05/la-porte-de-l-enfer.jpg"
+      }
+    ]
+  },
+  {
+    "name": "La Persistance de la mémoire",
+    "description": "Une peinture surréaliste de Salvador Dalí, représentant des horloges fondantes suspendues sur des objets dans un paysage désert.",
+    "textToTranslate": "Cette peinture explore la fluidité du temps et de la mémoire à travers son imagerie onirique.",
+    "itemType": {
+      "name": "Peinture"
+    },
+    "site": {
+      "name": "Museum of Modern Art"
+    },
+    "relatedPerson": {
+      "name": "Salvador Dalí",
+      "type": "Artiste",
+      "bio": "Un peintre surréaliste espagnol connu pour ses œuvres excentriques et imaginatives.",
+      "birthDate": "1904-05-11",
+      "deathDate": "1989-01-23"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://www.museumtv.art/wp-content/uploads/2021/05/E5EA565D-7ADE-43FF-B762-844F60CFAE23.jpeg"
+      }
+    ]
+  },
+  {
+    "name": "La Nuit étoilée",
+    "description": "Une peinture de Vincent van Gogh représentant un ciel nocturne animé par des étoiles tourbillonnantes au-dessus d'un village paisible.",
+    "textToTranslate": "Cette peinture iconique est renommée pour ses couleurs vives et son coup de pinceau expressif, capturant la turbulence de l'esprit de l'artiste.",
+    "itemType": {
+      "name": "Peinture"
+    },
+    "site": {
+      "name": "Museum of Modern Art"
+    },
+    "relatedPerson": {
+      "name": "Vincent van Gogh",
+      "type": "Artiste",
+      "bio": "Un peintre post-impressionniste néerlandais connu pour son utilisation émotionnelle des couleurs et son coup de pinceau expressif.",
+      "birthDate": "1853-03-30",
+      "deathDate": "1890-07-29"
+    },
+    "pictures": [
+      {
+        "hostingUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/260px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"
+      }
+    ]
+  }
+]

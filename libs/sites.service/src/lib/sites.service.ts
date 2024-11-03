@@ -11,9 +11,13 @@ import {
   Picture,
   PrismaBaseService,
   Prisma,
-  Role
+  Role,
+  LogCriticity
 } from '@noloback/prisma-client-base'
-import { SiteManipulationRequestBody } from '@noloback/api.request.bodies'
+import {
+  SiteCreationRequestBody,
+  SiteManipulationRequestBody
+} from '@noloback/api.request.bodies'
 import {
   SiteCommonReturn,
   SiteManagerReturn,
@@ -26,7 +30,7 @@ import {
 } from '@noloback/db.calls'
 import { UserRequestModel } from '@noloback/requests.constructor'
 import { SitesManagersService } from '@noloback/sites.managers.service'
-// import { LoggerService } from '@noloback/logger-lib';
+import { LoggerService } from '@noloback/logger-lib';
 import { PicturesService } from '@noloback/pictures.service'
 import { FiltersGetMany } from 'models/filters-get-many'
 
@@ -35,7 +39,7 @@ export class SitesService {
   constructor (
     private readonly prismaBase: PrismaBaseService,
     private readonly picturesService: PicturesService,
-    private readonly sitesManagerService: SitesManagersService // private loggingService: LoggerService
+    private readonly sitesManagerService: SitesManagersService, private loggingService: LoggerService
   ) {}
 
   async count (
@@ -53,20 +57,28 @@ export class SitesService {
   ): Promise<SiteCommonReturn[] | SiteAdminReturn[]> {
     const sites = (await this.prismaBase.site.findMany({
       where: {
-        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
-        telNumber: telStart ? { startsWith: telStart, mode: 'insensitive' } : undefined,
-        email: emailStart ? { startsWith: emailStart, mode: 'insensitive' } : undefined,
-        website: websiteContains ? { contains: websiteContains, mode: 'insensitive' } : undefined,
+        name: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
+        telNumber: telStart
+          ? { startsWith: telStart, mode: 'insensitive' }
+          : undefined,
+        email: emailStart
+          ? { startsWith: emailStart, mode: 'insensitive' }
+          : undefined,
+        website: websiteContains
+          ? { contains: websiteContains, mode: 'insensitive' }
+          : undefined,
         price: price ? +price : undefined,
         type: type ? type : undefined,
         addressId: addressId ? +addressId : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
-          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined
         },
 
-        deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null,
-      },
+        deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null
+      }
     })) as unknown
     switch (user.activeProfile.role) {
       case Role.ADMIN:
@@ -103,22 +115,30 @@ export class SitesService {
       take: +filters.end - filters.start,
       select: selectOptions,
       where: {
-        name: nameStart ? { startsWith: nameStart, mode: 'insensitive' } : undefined,
-        telNumber: telStart ? { startsWith: telStart, mode: 'insensitive' } : undefined,
-        email: emailStart ? { startsWith: emailStart, mode: 'insensitive' } : undefined,
-        website: websiteContains ? { contains: websiteContains, mode: 'insensitive' } : undefined,
+        name: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
+        telNumber: telStart
+          ? { startsWith: telStart, mode: 'insensitive' }
+          : undefined,
+        email: emailStart
+          ? { startsWith: emailStart, mode: 'insensitive' }
+          : undefined,
+        website: websiteContains
+          ? { contains: websiteContains, mode: 'insensitive' }
+          : undefined,
         price: price ? +price : undefined,
         type: type ? type : undefined,
         addressId: addressId ? +addressId : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
-          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined
         },
 
-        deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null,
+        deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null
       },
       orderBy: {
-        [filters.sort]: filters.order,
+        [filters.sort]: filters.order
       }
     })) as unknown
     switch (user.activeProfile.role) {
@@ -129,9 +149,9 @@ export class SitesService {
     }
   }
 
-  async patch(id: number, body: any) {
+  async patch (id: number, body: any) {
     return await this.prismaBase.site.update({
-      where: { id: id },
+      where: { id: +id },
       data: body,
     })
   }
@@ -155,7 +175,7 @@ export class SitesService {
 
     const site = (await this.prismaBase.site.findUnique({
       where: {
-        id: id,
+        id: +id,
         deletedAt: user.activeProfile.role !== Role.ADMIN ? null : undefined
       },
       select: selectOptions
@@ -179,118 +199,50 @@ export class SitesService {
     }
   }
 
-  async create (site: SiteManipulationRequestBody, picture: Express.Multer.File): Promise<SiteAdminReturn> {
-    let newPicture: Picture | undefined = undefined;
+  async create (
+    site: SiteCreationRequestBody,
+    picture: Express.Multer.File
+  ): Promise<SiteAdminReturn> {
+    let newPicture: Picture | undefined = undefined
 
     if (picture) {
-      newPicture = await this.picturesService.createPicture(picture.path);
+      newPicture = await this.picturesService.createPicture(picture.path)
     }
 
     if (site.addressId) {
-     
-    const newSite: any = await this.prismaBase.site
-    .create({
-      data: {
-        name: site.name,
-        shortDescription: site.shortDescription,
-        longDescription: site.longDescription,
-        telNumber: site.telNumber,
-        email: site.email,
-        website: site.website,
-        price: +site.price,
-        pictures: newPicture ? {
-          connect: {
-            id: newPicture.id
-          }
-        } : {},
-        type: site.type as unknown as SiteType,
-        tags: site.tags as unknown[] as SiteTag[],
-        // addressId: site.addressId,
-        address: {
-          connect: {
-            id: +site.addressId
-          },
-        }
-      },
-      select: new SiteAdminSelect()
-    })
-    .catch((e: Error) => {
-      console.log(e)
-      // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
-      throw new InternalServerErrorException(e)
-    })
-
-    const managers = await this.prismaBase.siteHasManager.create({
-      data: {
-        isMain: true,
-        profile: {
-          connect: {
-            id: +site.managerId
-          }
-        },
-        site: {
-          connect: {
-            id: +newSite.id
-          }
-        }
-      }
-    })
-    
-  
-  return newSite as SiteAdminReturn 
-    }
-    else if (site.address) {
-    const newSite: any = await this.prismaBase.site
-      .create({
-        data: {
-          name: site.name,
-          shortDescription: site.shortDescription,
-          longDescription: site.longDescription,
-          telNumber: site.telNumber,
-          email: site.email,
-          website: site.website,
-          price: +site.price,
-          pictures: newPicture ? {
-            connect: {
-              id: newPicture.id
-            }
-          } : {},
-          type: site.type as unknown as SiteType,
-          tags: site.tags as unknown[] as SiteTag[],
-          // addressId: site.addressId,
-          address: {
-            connectOrCreate: {
-              where: {
-                houseNumber_street_zip_cityId: {
-                  houseNumber: site.address.houseNumber,
-                  street: site.address.street,
-                  zip: site.address.zip,
-                  cityId: +site.address.cityId
-                }
-              },
-              create: {
-                houseNumber: site.address.houseNumber,
-                street: site.address.street,
-                zip: site.address.zip,
-                otherDetails: site.address.otherDetails,
-                latitude: +(site.address.latitude || 0),
-                longitude: +(site.address.longitude || 0),
-                city: {
+      const newSite: any = await this.prismaBase.site
+        .create({
+          data: {
+            name: site.name,
+            shortDescription: site.shortDescription,
+            longDescription: site.longDescription,
+            telNumber: site.telNumber,
+            email: site.email,
+            website: site.website,
+            price: +site.price,
+            pictures: newPicture
+              ? {
                   connect: {
-                    id: +site.address.cityId
+                    id: +newPicture.id
                   }
                 }
+              : {},
+            type: site.type as unknown as SiteType,
+            tags: site.tags as unknown[] as SiteTag[],
+            // addressId: site.addressId,
+            address: {
+              connect: {
+                id: +site.addressId
               }
-            },
-          }
-        },
-        select: new SiteAdminSelect()
-      })
-      .catch((e: Error) => {
-        console.log(e)
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
-        throw new InternalServerErrorException(e)
-      })
+            }
+          },
+          select: new SiteAdminSelect()
+        })
+        .catch((e: Error) => {
+          console.log(e)
+          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+          throw new InternalServerErrorException(e)
+        })
 
       const managers = await this.prismaBase.siteHasManager.create({
         data: {
@@ -307,9 +259,80 @@ export class SitesService {
           }
         }
       })
-      
-    
-    return newSite as SiteAdminReturn
+
+      return newSite as SiteAdminReturn
+    } else if (site.address) {
+      const newSite: any = await this.prismaBase.site
+        .create({
+          data: {
+            name: site.name,
+            shortDescription: site.shortDescription,
+            longDescription: site.longDescription,
+            telNumber: site.telNumber,
+            email: site.email,
+            website: site.website,
+            price: +site.price,
+            pictures: newPicture
+              ? {
+                  connect: {
+                    id: +newPicture.id
+                  }
+                }
+              : {},
+            type: site.type as unknown as SiteType,
+            tags: site.tags as unknown[] as SiteTag[],
+            // addressId: site.addressId,
+            address: {
+              connectOrCreate: {
+                where: {
+                  houseNumber_street_zip_cityId: {
+                    houseNumber: site.address.houseNumber,
+                    street: site.address.street,
+                    zip: site.address.zip,
+                    cityId: +site.address.cityId
+                  }
+                },
+                create: {
+                  houseNumber: site.address.houseNumber,
+                  street: site.address.street,
+                  zip: site.address.zip,
+                  otherDetails: site.address.otherDetails,
+                  latitude: +site.address.latitude,
+                  longitude: +site.address.longitude,
+                  city: {
+                    connect: {
+                      id: +site.address.cityId
+                    }
+                  }
+                }
+              }
+            }
+          },
+          select: new SiteAdminSelect()
+        })
+        .catch((e: Error) => {
+          console.log(e)
+          this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
+          throw new InternalServerErrorException(e)
+        })
+
+      const managers = await this.prismaBase.siteHasManager.create({
+        data: {
+          isMain: true,
+          profile: {
+            connect: {
+              id: +site.managerId
+            }
+          },
+          site: {
+            connect: {
+              id: +newSite.id
+            }
+          }
+        }
+      })
+
+      return newSite as SiteAdminReturn
     } else {
       throw new BadRequestException('No address provided')
     }
@@ -322,7 +345,7 @@ export class SitesService {
     picture?: Express.Multer.File
   ): Promise<SiteManagerReturn | SiteAdminReturn> {
     let selectOptions: Prisma.SiteSelect
-    let newPicture: Picture | undefined = undefined;
+    let newPicture: Picture | undefined = undefined
 
     switch (role) {
       case Role.ADMIN:
@@ -336,12 +359,12 @@ export class SitesService {
     }
 
     if (picture) {
-      newPicture = await this.picturesService.createPicture(picture.path);
+      newPicture = await this.picturesService.createPicture(picture.path)
     }
 
     const updatedSite: unknown = await this.prismaBase.site
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           name: site.name,
           shortDescription: site.shortDescription,
@@ -349,20 +372,24 @@ export class SitesService {
           telNumber: site.telNumber,
           email: site.email,
           website: site.website,
-          price: site.price,
-          pictures: newPicture ? {
-            set: {
-              id: newPicture.id
-            }
-          } : {},
+          price: +site.price,
+          pictures: newPicture
+            ? {
+                set: {
+                  id: +newPicture.id
+                }
+              }
+            : {},
           type: site.type as unknown as SiteType,
           tags: site.tags as unknown[] as SiteTag[],
           // addressId: site.addressId,
-          address: site.addressId ? {
-            connect: {
-              id: +site.addressId
-            } 
-          } : {},
+          address: site.addressId
+            ? {
+                connect: {
+                  id: +site.addressId
+                }
+              }
+            : {}
           // address: {
           //   update: {
           //     houseNumber: site.address.houseNumber,
@@ -373,7 +400,7 @@ export class SitesService {
           //     longitude: site.address.longitude,
           //     city: {
           //       connect: {
-          //         id: site.address.cityId
+          //         id: +site.address.cityId
           //       }
           //     }
           //   }
@@ -383,7 +410,7 @@ export class SitesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 
@@ -398,13 +425,13 @@ export class SitesService {
   async delete (id: number) {
     return (await this.prismaBase.site
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: { deletedAt: new Date() },
         select: new SiteAdminSelect()
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })) as unknown as SiteAdminReturn
   }
@@ -467,7 +494,7 @@ export class SitesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
 

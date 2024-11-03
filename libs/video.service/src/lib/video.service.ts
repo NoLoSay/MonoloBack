@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
   Redirect,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ReadStream, createReadStream, readFileSync, unlink } from 'fs';
 import {
@@ -92,6 +93,39 @@ export class VideoService {
     });
   }
 
+  async updateVideoShowcased(user: UserRequestModel, id: number, showcased: any) {
+    showcased = showcased === 'true' || showcased === true;
+
+    if (user.activeProfile.role === Role.MANAGER) {
+      const video = await this.prismaBase.video.findFirst({
+        where: {
+          id: +id,
+        },
+      });
+      if (!video) {
+        throw new NotFoundException('Video not found');
+      }
+
+      const site = await this.prismaBase.site.findFirst({ where: { items: {some: { id: +video?.itemId} } }});
+      if (!site) {
+        throw new InternalServerErrorException('The item owning this video is not linked to a site');
+      }
+
+      if (!(await this.sitesManagersService.isAllowedToModify(user, site.id))) {
+        throw new UnauthorizedException('You are not allowed to modify this resource');
+      }
+    }
+
+    return await this.prismaBase.video.update({
+      where: {
+        id: +id,
+      },
+      data: {
+        showcased: showcased,
+      },
+    });
+  }
+
   async setHostingProvider(
     videoId: number,
     newProviderId: number,
@@ -129,7 +163,7 @@ export class VideoService {
     return await this.prismaBase.video.update({
       data: body,
       where: {
-        id: videoId,
+        id: +videoId,
       },
     });
   }
@@ -148,7 +182,7 @@ export class VideoService {
 
       const provider = await this.prismaBase.hostingProvider.findUnique({
         where: {
-          id: video.hostingProviderId,
+          id: +video.hostingProviderId,
         },
       });
 
@@ -173,7 +207,7 @@ export class VideoService {
   async getYoutube(video: VideoCommonReturn) {
     const provider = await this.prismaBase.hostingProvider.findUnique({
       where: {
-        id: video.hostingProviderId,
+        id: +video.hostingProviderId,
       },
     });
 
@@ -197,7 +231,7 @@ export class VideoService {
         validationStatus: validationStatus,
       },
       where: {
-        id: id,
+        id: +id,
       },
     });
 
@@ -240,7 +274,7 @@ export class VideoService {
         validationStatus: status,
       },
       where: {
-        id: id,
+        id: +id,
       },
     });
 
@@ -252,6 +286,16 @@ export class VideoService {
     video: Express.Multer.File,
     itemId: number
   ): Promise<Video> {
+    const item = await this.prismaBase.item.findUnique({
+      where: {
+        id: +itemId,
+      },
+    });
+
+    if (!item) {
+      throw new NotFoundException('Item not found');
+    }
+
     const provider = await this.prismaBase.hostingProvider.findUnique({
       where: {
         name: 'NoLoSay',
@@ -269,14 +313,33 @@ export class VideoService {
         ))
       )
         await this.profileService.createProfile(user.id, Role.CREATOR);
-      await this.profileService.changeActiveProfileWithRole(user, Role.CREATOR);
+      // await this.profileService.changeActiveProfileWithRole(user, Role.CREATOR);
+    }
+
+    let autoValidation = false;
+    if (user.activeProfile.role === Role.MANAGER) {
+      if (item.siteId != null) {
+        const site = await this.prismaBase.site.findUnique({
+          where: {
+            id: +item.siteId,
+          },
+          include: {
+            siteHasManagers: true,
+          }
+        })
+        if (site != null) {
+          if (site.siteHasManagers.some((manager) => manager.profileId === user.activeProfile.id)) {
+            autoValidation = true
+          }
+        }
+      }
     }
 
     return await this.prismaBase.video.create({
       data: {
         hostingProvider: {
           connect: {
-            id: provider.id,
+            id: +provider.id,
           },
         },
         hostingProviderVideoId: video.filename,
@@ -284,16 +347,17 @@ export class VideoService {
           connect: {
             userId_role: {
               role: Role.CREATOR,
-              userId: user.id,
+              userId: +user.id,
             },
           },
         },
         uuid: video.filename.split('.')[0],
         item: {
           connect: {
-            id: itemId,
+            id: +itemId,
           },
         },
+        validationStatus: autoValidation ? ValidationStatus.VALIDATED : ValidationStatus.PENDING,
       },
     });
   }
@@ -352,10 +416,10 @@ export class VideoService {
   //     },
   //    connect: {
   //       postedBy: {
-  //         userId: user.id
+  //         userId: +user.id
   //      },
   //      item: {
-  //        id: itemId
+  //        id: +itemId
   //      }
   //   })
 
@@ -394,7 +458,7 @@ export class VideoService {
 
     const videoEntities: unknown[] = await this.prismaBase.video.findMany({
       where: {
-        itemId: itemId,
+        itemId: +itemId,
         validationStatus: {
           in: getValidationStatusFromRole(user.activeProfile.role),
         },
@@ -462,7 +526,7 @@ export class VideoService {
       where: {
         postedBy: {
           role: Role.CREATOR,
-          userId: userId,
+          userId: +userId,
         },
         validationStatus: {
           in: getValidationStatusFromRole(
@@ -514,7 +578,7 @@ export class VideoService {
         postedBy: userId
           ? {
               role: Role.CREATOR,
-              userId: userId,
+              userId: +userId,
             }
           : undefined,
         createdAt: {
@@ -559,7 +623,7 @@ export class VideoService {
         postedBy: userId
           ? {
               role: Role.CREATOR,
-              userId: userId,
+              userId: +userId,
             }
           : undefined,
         createdAt: {
@@ -595,7 +659,7 @@ export class VideoService {
         deletedReason: deleteReason,
       },
       where: {
-        id: id,
+        id: +id,
       },
     });
   }

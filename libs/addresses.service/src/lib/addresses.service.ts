@@ -1,4 +1,4 @@
-import { PrismaBaseService, Prisma, Role } from '@noloback/prisma-client-base'
+import { PrismaBaseService, Prisma, Role, LogCriticity } from '@noloback/prisma-client-base'
 import {
   BadGatewayException,
   BadRequestException,
@@ -10,13 +10,12 @@ import { AddressManipulationModel } from '@noloback/api.request.bodies'
 import { AddressAdminReturn, AddressCommonReturn } from '@noloback/api.returns'
 import { AddressAdminSelect, AddressCommonSelect } from '@noloback/db.calls'
 import { FiltersGetMany } from 'models/filters-get-many'
-//import { LogCritiaddress } from '@prisma/client/logs'
-//import { LoggerService } from '@noloback/logger-lib'
+import { LoggerService } from '@noloback/logger-lib'
 
 @Injectable()
 export class AddressesService {
   constructor (
-    private prismaBase: PrismaBaseService //private loggingService: LoggerService
+    private prismaBase: PrismaBaseService, private loggingService: LoggerService
   ) {}
 
   async count(
@@ -67,7 +66,7 @@ export class AddressesService {
 
   async findOne (id: number): Promise<AddressAdminReturn> {
     const address: unknown = await this.prismaBase.address.findUnique({
-      where: { id: id },
+      where: { id: +id },
       select: new AddressAdminSelect()
     })
 
@@ -98,7 +97,7 @@ export class AddressesService {
           longitude: address.longitude,
           city: {
             connect: {
-              id: address.cityId
+              id: +address.cityId
             }
           }
         },
@@ -106,7 +105,7 @@ export class AddressesService {
       })
       .catch((e: Error) => {
         console.log(e)
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })) as unknown as AddressCommonReturn
     return newAddress
@@ -137,7 +136,7 @@ export class AddressesService {
 
     const updated: unknown = await this.prismaBase.address
       .update({
-        where: { id: id },
+        where: { id: +id },
         data: {
           houseNumber: updatedAddress.houseNumber,
           street: updatedAddress.street,
@@ -147,14 +146,14 @@ export class AddressesService {
           longitude: updatedAddress.longitude,
           city: {
             connect: {
-              id: updatedAddress.cityId
+              id: +updatedAddress.cityId
             }
           }
         },
         select: selectOptions
       })
       .catch((e: Error) => {
-        // this.loggingService.log(LogCritiaddress.Critical, this.constructor.name, e)
+        this.loggingService.log(LogCriticity.Critical, this.constructor.name, e)
         throw new InternalServerErrorException(e)
       })
     switch (role) {
@@ -167,7 +166,7 @@ export class AddressesService {
 
   async delete (id: number): Promise<AddressAdminReturn> {
     return (await this.prismaBase.address.update({
-      where: { id: id },
+      where: { id: +id },
       data: { deletedAt: new Date() },
       select: new AddressAdminSelect()
     })) as unknown as AddressAdminReturn
