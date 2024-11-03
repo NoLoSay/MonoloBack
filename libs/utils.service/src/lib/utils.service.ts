@@ -20,7 +20,7 @@ export class UtilsService {
         "dec": "12", "december": "12", "decembre": "12"
     };
 
-    parseCustomDate(dateString: string): string {
+    public parseCustomDate(dateString: string): string {
         try {
             if (!isNaN(+dateString)) {
                 return `${dateString}:01:01`;
