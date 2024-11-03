@@ -356,7 +356,7 @@
   {
     "name": "Textile",
     "description": "Articles fabriqués à partir de tissu, souvent utilisés pour les vêtements, la décoration ou des fins fonctionnelles.",
-    "associatedTypes": [ 
+    "associatedTypes": [
       {
         "name": "Tissu",
         "description": "Un matériau fait de fils tissés ou tricotés."

@@ -12,10 +12,7 @@
       "name": "Château des Ducs de Bretagne",
       "price": 8.0,
       "type": "CASTLE",
-      "tags": [
-        "NOLOSAY",
-        "DISABILITY_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DISABILITY_FRIENDLY"],
       "email": "contact@chateaunantes.fr",
       "telNumber": "02 40 41 50 00",
       "website": "https://www.chateaunantes.fr/",
@@ -41,9 +38,7 @@
       "name": "Château d'Angers",
       "price": 9.5,
       "type": "CASTLE",
-      "tags": [
-        "NOLOSAY"
-      ],
+      "tags": ["NOLOSAY"],
       "email": "contact@chateaudangers.fr",
       "telNumber": "02 41 87 20 00",
       "website": "https://www.chateau-angers.fr/",
@@ -69,10 +64,7 @@
       "name": "Musée du Louvre",
       "price": 17.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "DISABILITY_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DISABILITY_FRIENDLY"],
       "email": "info@louvre.fr",
       "telNumber": "01 40 20 50 50",
       "website": "https://www.louvre.fr/",
@@ -98,9 +90,7 @@
       "name": "Centre Pompidou",
       "price": 14.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY"
-      ],
+      "tags": ["NOLOSAY"],
       "email": "info@centrepompidou.fr",
       "telNumber": "01 44 78 12 33",
       "website": "https://www.centrepompidou.fr/",
@@ -126,10 +116,7 @@
       "name": "Palais Garnier",
       "price": 12.0,
       "type": "MONUMENT",
-      "tags": [
-        "DISABILITY_FRIENDLY",
-        "BLIND_FRIENDLY"
-      ],
+      "tags": ["DISABILITY_FRIENDLY", "BLIND_FRIENDLY"],
       "email": "",
       "telNumber": "01 71 25 24 23",
       "website": "https://www.operadeparis.fr/",
@@ -155,10 +142,7 @@
       "name": "Musée des Beaux-Arts d'Angers",
       "price": 8.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "OTHER"
-      ],
+      "tags": ["NOLOSAY", "OTHER"],
       "email": "",
       "telNumber": "02 41 24 17 57",
       "website": "https://musee.angers.fr/",
@@ -177,17 +161,14 @@
       "street": "Avenue Winston-Churchill",
       "zip": "75008",
       "cityName": "Paris",
-      "longitude": 2.314590,
+      "longitude": 2.31459,
       "latitude": 48.866043
     },
     "site": {
       "name": "Le Petit Palais",
       "price": 0.0,
       "type": "MUSEUM",
-      "tags": [
-        "DEAF_FRIENDLY",
-        "OTHER"
-      ],
+      "tags": ["DEAF_FRIENDLY", "OTHER"],
       "email": "",
       "telNumber": "01 53 43 40 00",
       "website": "https://www.petitpalais.paris.fr",
@@ -213,9 +194,7 @@
       "name": "Musée d'Arts de Nantes",
       "price": 7.0,
       "type": "MUSEUM",
-      "tags": [
-        "BLIND_FRIENDLY"
-      ],
+      "tags": ["BLIND_FRIENDLY"],
       "email": "",
       "telNumber": "02 51 17 45 00",
       "website": "https://museedarts.nantes.fr/",
@@ -241,10 +220,7 @@
       "name": "Musée de l'Orangerie",
       "price": 9.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "OTHER"
-      ],
+      "tags": ["NOLOSAY", "OTHER"],
       "email": "",
       "telNumber": "01 44 50 43 00",
       "website": "https://www.musee-orangerie.fr/",
@@ -270,10 +246,7 @@
       "name": "Palais Royal",
       "price": 0.0,
       "type": "GARDEN",
-      "tags": [
-        "DISABILITY_FRIENDLY",
-        "BLIND_FRIENDLY"
-      ],
+      "tags": ["DISABILITY_FRIENDLY", "BLIND_FRIENDLY"],
       "email": "",
       "telNumber": "",
       "website": "https://www.parisinfo.com/",
@@ -299,10 +272,7 @@
       "name": "Les Invalides",
       "price": 14.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "DISABILITY_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DISABILITY_FRIENDLY"],
       "email": "",
       "telNumber": "01 44 42 38 77",
       "website": "https://www.musee-armee.fr/",
@@ -328,10 +298,7 @@
       "name": "Musée du quai Branly",
       "price": 10.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "DEAF_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DEAF_FRIENDLY"],
       "email": "",
       "telNumber": "01 56 61 70 00",
       "website": "https://www.quaibranly.fr/",
@@ -357,10 +324,7 @@
       "name": "Musée des Arts Décoratifs",
       "price": 12.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "DISABILITY_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DISABILITY_FRIENDLY"],
       "email": "",
       "telNumber": "01 44 55 57 00",
       "website": "https://mad.paris.fr/",
@@ -386,10 +350,7 @@
       "name": "Institut Lumière",
       "price": 6.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "DEAF_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DEAF_FRIENDLY"],
       "email": "",
       "telNumber": "04 72 18 01 01",
       "website": "https://www.institut-lumiere.org/",
@@ -415,10 +376,7 @@
       "name": "Musée des Confluences",
       "price": 9.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "DISABILITY_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DISABILITY_FRIENDLY"],
       "email": "",
       "telNumber": "04 28 38 12 00",
       "website": "https://www.museedesconfluences.fr/",
@@ -444,9 +402,7 @@
       "name": "Musée de l'Automobile",
       "price": 5.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY"
-      ],
+      "tags": ["NOLOSAY"],
       "email": "",
       "telNumber": "0389332321",
       "website": "http://www.musee-automobile.fr/",
@@ -472,9 +428,7 @@
       "name": "Musée de la Préfecture de Police",
       "price": 0.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY"
-      ],
+      "tags": ["NOLOSAY"],
       "email": "",
       "telNumber": "",
       "website": "https://www.prefecturedepolice.interieur.gouv.fr/",
@@ -493,8 +447,8 @@
       "street": "Place Jean V",
       "zip": "44000",
       "cityName": "Nantes",
-      "longitude": -1.565720,
-      "latitude": 47.212060
+      "longitude": -1.56572,
+      "latitude": 47.21206
     },
     "site": {
       "name": "Musée Dobrée",
@@ -531,10 +485,7 @@
       "name": "Maillé Brézé",
       "price": 12.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "DEAF_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DEAF_FRIENDLY"],
       "email": "",
       "telNumber": "+33 9 79 18 33 51",
       "website": "https://www.maillebreze.com/fr",
@@ -553,17 +504,14 @@
       "street": "Boulevard Léon Bureau",
       "zip": "44200",
       "cityName": "Nantes",
-      "longitude": -1.564190,
-      "latitude": 47.205880
+      "longitude": -1.56419,
+      "latitude": 47.20588
     },
     "site": {
       "name": "La galerie des machines",
       "price": 11.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "DISABILITY_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DISABILITY_FRIENDLY"],
       "email": "",
       "telNumber": "+33810121225",
       "website": "https://www.lesmachines-nantes.fr/decouvrir/la-galerie-des-machines/",
@@ -620,11 +568,7 @@
       "name": "Le carrousel des mondes marins",
       "price": 9.0,
       "type": "MUSEUM",
-      "tags": [
-        "NOLOSAY",
-        "DEAF_FRIENDLY",
-        "BLIND_FRIENDLY"
-      ],
+      "tags": ["NOLOSAY", "DEAF_FRIENDLY", "BLIND_FRIENDLY"],
       "email": "",
       "telNumber": "+33810121225",
       "website": "https://www.lesmachines-nantes.fr/decouvrir/le-carrousel-des-mondes-marins/",
