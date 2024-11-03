@@ -36,6 +36,8 @@ To start the development servers run `nx serve api` and `nx serve video`. Open y
 
 `npm run lint` Lints all files
 
+`npm run test` Launch all tests
+
 ## Generate code
 
 If you happen to use Nx plugins, you can leverage code generators that might come with it.

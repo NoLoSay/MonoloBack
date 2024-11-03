@@ -3,9 +3,9 @@ export * from './filters-get-many';
 
 export * as swagger from './swagger/index';
 export * as guards from './guards/index';
-export * as 'requests-constructor' from './requests.constructor/index';
-export * as 'db-calls' from './db.calls/index';
-export * as 'db-returns' from './db.returns/index';
-export * as 'api-request-bodies' from './api.request.bodies/index';
-export * as 'api-querry-parameters' from './api.querry.parameters/index';
-export * as 'api-returns' from './api.returns/index';
+export * as requestsConstructor from './requests.constructor/index';
+export * as dbCalls from './db.calls/index';
+export * as dbReturns from './db.returns/index';
+export * as apiRequestBodies from './api.request.bodies/index';
+export * as apiQuerryParameters from './api.querry.parameters/index';
+export * as apiReturns from './api.returns/index';
