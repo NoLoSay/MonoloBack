@@ -1,43 +1,43 @@
-import { ApiProperty } from '@nestjs/swagger/dist'
+import { ApiProperty } from '@nestjs/swagger/dist';
 import {
   IsString,
   IsNumber,
   IsOptional,
   IsNotEmpty,
-  IsPositive
-} from 'class-validator'
+  IsPositive,
+} from 'class-validator';
 
 export class AddressManipulationModel {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  houseNumber: string = ''
+  houseNumber: string = '';
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  street: string = ''
+  street: string = '';
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  zip: string = ''
+  zip: string = '';
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  otherDetails?: string
+  otherDetails?: string;
 
   @ApiProperty()
   @IsNumber()
-  longitude: number = -1.5753814518204865
+  longitude: number = -1.5753814518204865;
 
   @ApiProperty()
   @IsNumber()
-  latitude: number = 47.20937936224022
+  latitude: number = 47.20937936224022;
 
   @ApiProperty()
   @IsNumber()
   @IsPositive()
-  cityId: number = 0
+  cityId: number = 0;
 }

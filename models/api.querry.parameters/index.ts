@@ -1,1 +1,1 @@
-export * from './mail-confirmation.querry.parameters'
+export * from './mail-confirmation.querry.parameters';

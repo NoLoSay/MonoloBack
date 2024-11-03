@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsHexColor,
   IsNotEmpty,
@@ -6,8 +6,8 @@ import {
   IsString,
   Max,
   MaxLength,
-  MinLength
-} from 'class-validator'
+  MinLength,
+} from 'class-validator';
 
 export class SignLanguageCreateRequestBody {
   @ApiProperty()
@@ -15,18 +15,18 @@ export class SignLanguageCreateRequestBody {
   @IsNotEmpty()
   @MinLength(2)
   @MaxLength(254)
-  name: string = ''
+  name: string = '';
 
   @ApiProperty()
   @IsString()
   @MinLength(2)
   @MaxLength(10)
-  code: string = ''
+  code: string = '';
 
   @ApiProperty()
   @IsString()
   @IsHexColor()
-  color: string = ''
+  color: string = '';
 }
 
 export class SignLanguageModificationRequestBody {
@@ -35,18 +35,18 @@ export class SignLanguageModificationRequestBody {
   @IsString()
   @MinLength(2)
   @MaxLength(254)
-  name?: string
+  name?: string;
 
   @ApiProperty()
   @IsOptional()
   @IsString()
   @MinLength(2)
   @MaxLength(10)
-  code?: string
+  code?: string;
 
   @ApiProperty()
   @IsOptional()
   @IsString()
   @IsHexColor()
-  color?: string
+  color?: string;
 }

@@ -1,7 +1,7 @@
 export class CountryCommonReturn {
-  id: number = 0
-  name: string = ''
-  code: string = ''
+  id: number = 0;
+  name: string = '';
+  code: string = '';
   longitude: number | null = null;
   latitude: number | null = null;
 }

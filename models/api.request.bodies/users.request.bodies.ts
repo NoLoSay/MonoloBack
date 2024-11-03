@@ -1,22 +1,22 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsOptional,
   IsString,
   MinLength,
   IsEmail,
   IsStrongPassword,
-  IsNotEmpty
-} from 'class-validator'
+  IsNotEmpty,
+} from 'class-validator';
 
 export class UserCreateModel {
   @ApiProperty()
   @IsString()
   @MinLength(2)
-  username: string = ''
+  username: string = '';
 
   @ApiProperty()
   @IsEmail()
-  email: string = ''
+  email: string = '';
 
   @ApiProperty()
   @IsStrongPassword({
@@ -24,30 +24,30 @@ export class UserCreateModel {
     minLowercase: 1,
     minUppercase: 1,
     minNumbers: 1,
-    minSymbols: 1
+    minSymbols: 1,
   })
-  password: string = ''
+  password: string = '';
 
   @ApiProperty()
   @IsOptional()
   @IsString()
-  telNumber?: string
+  telNumber?: string;
 }
 
 export class UserUpdateModel {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  username?: string
+  username?: string;
 
   @ApiProperty()
   @IsEmail()
   @IsOptional()
-  email?: string
+  email?: string;
 
   @ApiProperty()
   @IsOptional()
-  picture?: string
+  picture?: string;
 
   @ApiProperty()
   @IsStrongPassword({
@@ -55,15 +55,15 @@ export class UserUpdateModel {
     minLowercase: 1,
     minUppercase: 1,
     minNumbers: 1,
-    minSymbols: 1
+    minSymbols: 1,
   })
   @IsOptional()
-  password?: string
+  password?: string;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  telNumber?: string
+  telNumber?: string;
 }
 
 export class UserChangePasswordModel {

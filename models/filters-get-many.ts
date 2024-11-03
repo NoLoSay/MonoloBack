@@ -10,7 +10,7 @@ export class FiltersGetMany {
     sort: string = 'id',
     order: 'asc' | 'desc' = 'asc',
     sortPossibleValues: string[] = ['id'],
-    sortFallbackValue: string = 'id'
+    sortFallbackValue: string = 'id',
   ) {
     this.start = +start;
     this.end = +end;
