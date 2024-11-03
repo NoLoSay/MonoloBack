@@ -7,13 +7,13 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService) {}
 
   canActivate(
-    context: ExecutionContext
+    context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
 
     return this.authService.validateUser(
       request.body.user,
-      request.body.password
+      request.body.password,
     );
   }
 }

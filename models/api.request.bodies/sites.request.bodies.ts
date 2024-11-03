@@ -1,13 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsOptional, IsNotEmpty, IsPositive, IsEnum } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsOptional,
+  IsNotEmpty,
+  IsPositive,
+  IsEnum,
+} from 'class-validator';
 import { AddressManipulationModel } from './addresses.request.bodies';
-import { SiteTag, SiteType } from "@prisma/client/base"
+import { SiteTag, SiteType } from '@prisma/client/base';
 
 export class SiteManipulationRequestBody {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  name: string = "";
+  name: string = '';
 
   @ApiProperty()
   @IsString()

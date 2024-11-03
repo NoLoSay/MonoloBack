@@ -1,49 +1,49 @@
-import { ApiProperty } from '@nestjs/swagger/dist'
+import { ApiProperty } from '@nestjs/swagger/dist';
 import {
   IsString,
   IsInt,
   IsOptional,
   IsNotEmpty,
-  IsPositive
-} from 'class-validator'
+  IsPositive,
+} from 'class-validator';
 
 export class ItemManipulationModel {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string = ''
+  name: string = '';
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  description?: string
+  description?: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  textToTranslate: string = ''
+  textToTranslate: string = '';
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  picture?: string
+  picture?: string;
 
   @ApiProperty()
   @IsOptional()
   @IsInt()
   @IsPositive()
-  relatedPersonId?: number
+  relatedPersonId?: number;
 
   @ApiProperty()
   @IsOptional()
   @IsInt()
   @IsPositive()
-  itemTypeId?: number
+  itemTypeId?: number;
 
   @ApiProperty()
   @IsInt()
   @IsPositive()
-  siteId: number = 0
+  siteId: number = 0;
 }
 
 export class ItemGiveModel {
@@ -51,5 +51,5 @@ export class ItemGiveModel {
   @IsNotEmpty()
   @IsInt()
   @IsPositive()
-  siteId: number = 0
+  siteId: number = 0;
 }

@@ -1,47 +1,47 @@
-import { ApiProperty } from '@nestjs/swagger/dist'
+import { ApiProperty } from '@nestjs/swagger/dist';
 import {
   IsString,
   IsOptional,
   IsNotEmpty,
   IsDateString,
-  IsEnum
-} from 'class-validator'
+  IsEnum,
+} from 'class-validator';
 
 enum PersonType {
   ARTIST,
   WRITER,
   SCIENTIST,
   CELEBRITY,
-  OTHER
+  OTHER,
 }
 
 export class PersonManipulationModel {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string = ''
+  name: string = '';
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  bio?: string
+  bio?: string;
 
   @ApiProperty()
   @IsDateString()
   @IsOptional()
-  birthDate?: string
+  birthDate?: string;
 
   @ApiProperty()
   @IsDateString()
   @IsOptional()
-  deathDate?: string
+  deathDate?: string;
 
   @ApiProperty({ enum: PersonType })
   @IsEnum(PersonType)
-  type: PersonType = PersonType.OTHER
+  type: PersonType = PersonType.OTHER;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  picture?: string
+  picture?: string;
 }

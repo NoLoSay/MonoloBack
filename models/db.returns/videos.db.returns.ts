@@ -1,67 +1,67 @@
 class User {
-  id: number = 0
-  username: string = ''
-  picture: string | null = null
+  id: number = 0;
+  username: string = '';
+  picture: string | null = null;
 }
 
 class UserLikeVideo {
-  User: User = new User()
+  User: User = new User();
 }
 
 class Profile {
-  user: User = new User()
+  user: User = new User();
 }
 
 class Picture {
-  id: number = 0
-  uuid: string = ''
-  hostingUrl: string = ''
+  id: number = 0;
+  uuid: string = '';
+  hostingUrl: string = '';
 }
 
 class Item {
-  id: number = 0
-  uuid: string = ''
-  name: string = ''
-  pictures: Picture[] = []
+  id: number = 0;
+  uuid: string = '';
+  name: string = '';
+  pictures: Picture[] = [];
 }
 
 export abstract class VideoDefaultDbReturn {
-  id: number = 0
-  uuid: string = ''
-  duration: number = 0
-  hostingProviderId: number = 0
-  hostingProviderVideoId: string = ''
-  validationStatus: string = ''
-  createdAt: Date = new Date()
-  likedBy: UserLikeVideo[] = []
-  item: Item | undefined = undefined
-  showcased: boolean = false
-  postedBy: Profile | undefined = undefined
+  id: number = 0;
+  uuid: string = '';
+  duration: number = 0;
+  hostingProviderId: number = 0;
+  hostingProviderVideoId: string = '';
+  validationStatus: string = '';
+  createdAt: Date = new Date();
+  likedBy: UserLikeVideo[] = [];
+  item: Item | undefined = undefined;
+  showcased: boolean = false;
+  postedBy: Profile | undefined = undefined;
 }
 
 // Single video
 
 export class VideoCommonDbReturn extends VideoDefaultDbReturn {
-  constructor () {
-    super()
-    this.postedBy = new Profile()
-    this.item = new Item()
+  constructor() {
+    super();
+    this.postedBy = new Profile();
+    this.item = new Item();
   }
 }
 
 // ----- LISTS -----
 
 export class VideoListedFromItemCommonDbReturn extends VideoDefaultDbReturn {
-  constructor () {
-    super()
-    this.postedBy = new Profile()
+  constructor() {
+    super();
+    this.postedBy = new Profile();
   }
 }
 
 export class VideoListedFromUserCommonDbReturn extends VideoDefaultDbReturn {
-  constructor () {
-    super()
-    this.item = new Item()
+  constructor() {
+    super();
+    this.item = new Item();
   }
 }
 
@@ -69,7 +69,6 @@ export class VideoListedFromUserCommonDbReturn extends VideoDefaultDbReturn {
 
 export class VideoManagerDbReturn extends VideoDefaultDbReturn {
   // validationStatus: string = ''
-
   // constructor (entity?: VideoListedFromUserCommonDbReturn | VideoListedFromUserCommonDbReturn | VideoCommonDbReturn) {
   //   super()
   //   this.item = entity?.item || undefined
@@ -78,12 +77,12 @@ export class VideoManagerDbReturn extends VideoDefaultDbReturn {
 }
 
 export class VideoCreatorDbReturn extends VideoManagerDbReturn {
-    deletedAt: Date | null = null
-    deletedReason: string | null = null
+  deletedAt: Date | null = null;
+  deletedReason: string | null = null;
 }
 
 export class VideoModeratorDbReturn extends VideoCreatorDbReturn {}
 
 export class VideoAdminDbReturn extends VideoModeratorDbReturn {
-    updatedAt: Date = new Date()
+  updatedAt: Date = new Date();
 }

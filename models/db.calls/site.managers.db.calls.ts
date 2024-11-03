@@ -1,20 +1,20 @@
 class SiteManagerUserSelect {
-  id: boolean = true
-  username: boolean = true
-  email: boolean = true
+  id: boolean = true;
+  username: boolean = true;
+  email: boolean = true;
 }
 
 class SiteManagerProfileSelect {
-  id: boolean = true
+  id: boolean = true;
   user: object = {
-    select: new SiteManagerUserSelect()
-  }
+    select: new SiteManagerUserSelect(),
+  };
 }
 
 export class SiteManagerCommonSelect {
   profile: object = {
-    select: new SiteManagerProfileSelect()
-  }
-  isMain: boolean = true
-  createdAt: boolean = true
+    select: new SiteManagerProfileSelect(),
+  };
+  isMain: boolean = true;
+  createdAt: boolean = true;
 }

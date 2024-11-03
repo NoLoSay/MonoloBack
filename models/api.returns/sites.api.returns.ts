@@ -1,36 +1,36 @@
-import { SiteHasManager, SiteTag, SiteType } from '@prisma/client/base'
-import { AddressCommonReturn } from './addresses.api.returns'
-import { ProfileUserAdminReturn } from './profiles.api.returns'
+import { SiteHasManager, SiteTag, SiteType } from '@prisma/client/base';
+import { AddressCommonReturn } from './addresses.api.returns';
+import { ProfileUserAdminReturn } from './profiles.api.returns';
 
 class Picture {
-  id: number = 0
-  uuid: string = ''
-  hostingUrl: string = ''
+  id: number = 0;
+  uuid: string = '';
+  hostingUrl: string = '';
 }
 
 class Exhibition {
-  id: number = 0
-  name: string = ''
-  shortDescription: string = ''
-  startDate: Date = new Date()
-  endDate: Date = new Date()
+  id: number = 0;
+  name: string = '';
+  shortDescription: string = '';
+  startDate: Date = new Date();
+  endDate: Date = new Date();
 }
 
 export class SiteCommonReturn {
-  id: number = 0
-  uuid: string = ''
-  name: string = ''
-  shortDescription: string | null = null
-  longDescription: string | null = null
-  telNumber: string | null = null
-  email: string | null = null
-  website: string | null = null
-  price: number = 0
-  pictures: Picture[] | null = null
-  type: SiteTag = SiteTag.OTHER
-  tags: SiteType[] = []
-  address: AddressCommonReturn = new AddressCommonReturn()
-  exhibitions: Exhibition[] = []
+  id: number = 0;
+  uuid: string = '';
+  name: string = '';
+  shortDescription: string | null = null;
+  longDescription: string | null = null;
+  telNumber: string | null = null;
+  email: string | null = null;
+  website: string | null = null;
+  price: number = 0;
+  pictures: Picture[] | null = null;
+  type: SiteTag = SiteTag.OTHER;
+  tags: SiteType[] = [];
+  address: AddressCommonReturn = new AddressCommonReturn();
+  exhibitions: Exhibition[] = [];
 }
 
 export class SiteHasManagerAdminReturn {
@@ -45,12 +45,12 @@ export class SiteHasManagerAdminReturn {
 }
 
 export class SiteManagerReturn extends SiteCommonReturn {
-  siteHasManagers: SiteHasManager[] = []
-  createdAt: Date = new Date()
+  siteHasManagers: SiteHasManager[] = [];
+  createdAt: Date = new Date();
 }
 
 export class SiteAdminReturn extends SiteManagerReturn {
-  override siteHasManagers: SiteHasManagerAdminReturn[] = []
-  updatedAt: Date = new Date()
-  deletedAt: Date | null = null
+  override siteHasManagers: SiteHasManagerAdminReturn[] = [];
+  updatedAt: Date = new Date();
+  deletedAt: Date | null = null;
 }

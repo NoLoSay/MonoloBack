@@ -1,36 +1,36 @@
-import { ApiProperty } from '@nestjs/swagger/dist'
+import { ApiProperty } from '@nestjs/swagger/dist';
 import {
   IsString,
   IsNumber,
   IsOptional,
   IsNotEmpty,
   IsPositive,
-  IsInt
-} from 'class-validator'
+  IsInt,
+} from 'class-validator';
 
 export class DepartmentManipulationModel {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string = ''
+  name: string = '';
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  code: string = ''
+  code: string = '';
 
   @ApiProperty()
   @IsNumber()
   @IsOptional()
-  longitude?: number
+  longitude?: number;
 
   @ApiProperty()
   @IsNumber()
   @IsOptional()
-  latitude?: number
+  latitude?: number;
 
   @ApiProperty()
   @IsInt()
   @IsPositive()
-  countryId: number = 0
+  countryId: number = 0;
 }
