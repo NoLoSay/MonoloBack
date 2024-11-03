@@ -3,6 +3,8 @@ import { LoggerService } from "@noloback/logger-lib";
 import path = require("path");
 import { UTApi } from "uploadthing/server";
 import { FileEsque } from "uploadthing/types";
+import { Express } from 'express'; // DO NOT REMOVE, REQUIRED FOR UNIT TESTS
+import { Multer } from 'multer'; // DO NOT REMOVE, REQUIRED FOR UNIT TESTS
 
 @Injectable()
 export class UploadthingService {
