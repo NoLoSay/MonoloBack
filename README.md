@@ -34,6 +34,8 @@ To start the development servers run `nx serve api` and `nx serve video`. Open y
 
 `npm run generate` Regenerates the TS bindings according to the latest database schema
 
+`npm run lint` Lints all files
+
 ## Generate code
 
 If you happen to use Nx plugins, you can leverage code generators that might come with it.

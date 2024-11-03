@@ -10,7 +10,8 @@
     "seed": "npm run prisma:reset-seed",
     "generate": "npm run prisma:generate",
     "studio": "npm run prisma:studio",
-    "migrate": "npm run prisma:migrate"
+    "migrate": "npm run prisma:migrate",
+    "lint": "npx nx run-many --target=lint --all --fix=true"
   },
   "prisma": {
     "seed": "ts-node seed/main.ts"
