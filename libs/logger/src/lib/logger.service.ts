@@ -31,7 +31,12 @@ export class LoggerService {
       hookMessage = process.env['LOG_DISCORD_PING_IDS'] || '';
     }
 
-    return await fetch(process.env['LOG_DISCORD_WEBHOOK_URL'], {
+    const webhookUrl = process.env['LOG_DISCORD_WEBHOOK_URL'];
+    if (!webhookUrl) {
+      this.log('Critical', 'getHookMessage', e, 'LOG_DISCORD_WEBHOOK_URL is not defined', true);
+      return;
+    }
+    return await fetch(webhookUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -108,7 +113,8 @@ export class LoggerService {
     criticity: LogCriticity,
     context: string,
     exception: Error | undefined,
-    message: string = ''
+    message: string = '',
+    noHook: boolean = false
   ) {
     const prisma: PrismaBaseClient = new PrismaBaseClient();
 
@@ -125,7 +131,9 @@ export class LoggerService {
       })
       .then(async (e) => {
         console.log(e);
-        LoggerService.getHookMessage(criticity, e);
+        if (!noHook) {
+          LoggerService.getHookMessage(criticity, e);
+        }
       })
       .catch((e) => {
         console.log(e);
