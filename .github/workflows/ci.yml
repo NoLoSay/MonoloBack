@@ -13,6 +13,7 @@ concurrency:
 jobs:
   main:
     name: Nx Cloud - CI Job
+    runs-on: ubuntu-latest  # Required by GitHub Actions, even if we're using a container
     container: node:20-alpine  # Use a lightweight Node container
 
     steps:
