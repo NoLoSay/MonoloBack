@@ -12,32 +12,38 @@ concurrency:
 
 jobs:
   main:
-    name: Nx Cloud - Main Job
-    runs-on: ubuntu-latest
+    name: Nx Cloud - CI Job
+    container: node:20-alpine  # Use a lightweight Node container
+
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Cache Yarn Dependencies
+        uses: actions/cache@v3
         with:
-          node-version: '16'
+          path: |
+            node_modules
+            ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - name: Install Yarn and Dependencies
+        run: |
+          # Enable Yarn using Corepack
+          corepack enable
+          corepack prepare yarn@stable --activate
+
+          # Install project dependencies (use cache if available)
+          yarn install --frozen-lockfile
 
       - name: Generate Prisma Client
         run: yarn prisma generate
 
-      - name: Nx Cloud Commands
+      - name: Run Nx Cloud Commands in Parallel
         run: |
           yarn nx-cloud record -- yarn nx format:check
           yarn nx affected --target=lint --parallel=3
           yarn nx affected --target=test --parallel=3 --ci --code-coverage
           yarn nx affected --target=build --parallel=3
-
-  agents:
-    name: Nx Cloud - Agents
-    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.1
-    with:
-      number-of-agents: 3
