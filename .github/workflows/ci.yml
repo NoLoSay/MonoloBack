@@ -13,8 +13,7 @@ concurrency:
 jobs:
   main:
     name: Nx Cloud - CI Job
-    runs-on: ubuntu-latest  # Required by GitHub Actions, even if we're using a container
-    container: node:20-alpine  # Use a lightweight Node container
+    runs-on: ubuntu-latest  # Switch back to Ubuntu for a more feature-complete environment
 
     steps:
       - name: Check out code
@@ -40,7 +39,7 @@ jobs:
           yarn install --frozen-lockfile
 
       - name: Generate Prisma Client
-        run: yarn prisma generate
+        run: yarn run generate
 
       - name: Run Nx Cloud Commands in Parallel
         run: |
