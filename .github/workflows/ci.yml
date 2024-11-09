@@ -12,38 +12,22 @@ concurrency:
 
 jobs:
   main:
-    name: Nx Cloud - CI Job
-    runs-on: ubuntu-latest  # Switch back to Ubuntu for a more feature-complete environment
+    name: Nx Cloud - Main Job
+    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.1
+    with:
+      # NOTE: Here we are using the special `nx-cloud record` command to ensure that any commands we run that do not go through the cloud task runner natively
+      # (i.e. anything that starts with `nx run`/`nx run-many`/`nx affected --target`), are still captured in the Nx Cloud UI and Github App comment for
+      # easier troubleshooting. See more here: https://nx.dev/nx-cloud/set-up/record-commands#recording-non-nx-commands
+      parallel-commands: |
+        yarn nx-cloud record -- yarn nx format:check
+      parallel-commands-on-agents: |
+        yarn prisma generate
+        yarn nx affected --target=lint --parallel=3
+        yarn nx affected --target=test --parallel=3 --ci --code-coverage
+        yarn nx affected --target=build --parallel=3
 
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Cache Yarn Dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install Yarn and Dependencies
-        run: |
-          # Enable Yarn using Corepack
-          corepack enable
-          corepack prepare yarn@stable --activate
-
-          # Install project dependencies (use cache if available)
-          yarn install --frozen-lockfile
-
-      - name: Generate Prisma Client
-        run: yarn run generate
-
-      - name: Run Nx Cloud Commands in Parallel
-        run: |
-          yarn nx-cloud record -- yarn nx format:check
-          yarn nx affected --target=lint --parallel=3
-          yarn nx affected --target=test --parallel=3 --ci --code-coverage
-          yarn nx affected --target=build --parallel=3
+  agents:
+    name: Nx Cloud - Agents
+    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.1
+    with:
+      number-of-agents: 3
