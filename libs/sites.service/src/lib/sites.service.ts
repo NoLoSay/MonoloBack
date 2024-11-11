@@ -45,7 +45,6 @@ export class SitesService {
 
   async count(
     user: UserRequestModel,
-    filters: FiltersGetMany,
     nameLike?: string | undefined,
     telStart?: string | undefined,
     emailStart?: string | undefined,
@@ -56,8 +55,8 @@ export class SitesService {
     createdAtGte?: string | undefined,
     createdAtLte?: string | undefined,
     tags?: SiteTag[] | undefined,
-  ): Promise<SiteCommonReturn[] | SiteAdminReturn[]> {
-    const sites = (await this.prismaBase.site.findMany({
+  ): Promise<number> {
+    const sites = await this.prismaBase.site.findMany({
       where: {
         name: nameLike
           ? { contains: nameLike, mode: 'insensitive' }
@@ -82,13 +81,8 @@ export class SitesService {
 
         deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null,
       },
-    })) as unknown;
-    switch (user.activeProfile.role) {
-      case Role.ADMIN:
-        return sites as SiteAdminReturn[];
-      default:
-        return sites as SiteCommonReturn[];
-    }
+    });
+    return sites.length;
   }
 
   async findAll(

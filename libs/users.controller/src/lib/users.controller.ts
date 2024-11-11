@@ -94,17 +94,6 @@ export class UsersController {
         'Access-Control-Expose-Headers': 'X-Total-Count',
         'X-Total-Count': await this.usersService.count(
           request.user.activeProfile.role,
-          new FiltersGetMany(firstElem, lastElem, sort, order, [
-            'id',
-            'username',
-            'telNumber',
-            'email',
-            'emailVerified',
-            'type',
-            'addressId',
-            'createdAt',
-            'deletedAt',
-          ]),
           usernameLike,
           telStart,
           emailStart,

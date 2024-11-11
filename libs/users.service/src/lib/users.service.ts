@@ -38,7 +38,6 @@ export class UsersService {
 
   async count(
     role: Role,
-    filters: FiltersGetMany,
     usernameLike?: string | undefined,
     telStart?: string | undefined,
     emailStart?: string | undefined,
@@ -50,8 +49,6 @@ export class UsersService {
     deletedAtLte?: string | undefined,
   ) {
     return await this.prismaBase.user.count({
-      skip: +filters.start,
-      take: +filters.end - filters.start,
       where: {
         username: usernameLike
           ? { contains: usernameLike, mode: 'insensitive' }
@@ -83,9 +80,6 @@ export class UsersService {
                 lte: deletedAtLte ? new Date(deletedAtLte) : undefined,
               }
             : null,
-      },
-      orderBy: {
-        [filters.sort]: filters.order,
       },
     });
   }
