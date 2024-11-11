@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const Deprecated = createParamDecorator(
-  (data: { oldParam: string, newParam: string }, ctx: ExecutionContext) => {
+  (data: { oldParam: string; newParam: string }, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const response = ctx.switchToHttp().getResponse();
     const queryParam = request.query[data.oldParam];
