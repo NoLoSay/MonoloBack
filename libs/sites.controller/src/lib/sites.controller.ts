@@ -50,7 +50,7 @@ export class SitesController {
     @Query('_end') lastElem: number = 10,
     @Query('_sort') sort?: string | undefined,
     @Query('_order') order?: 'asc' | 'desc' | undefined,
-    @Query('name_start') nameStart?: string | undefined,
+    @Query('name_like') nameLike?: string | undefined,
     @Query('tel_start') telStart?: string | undefined,
     @Query('email_start') emailStart?: string | undefined,
     @Query('website_contains') websiteContains?: string | undefined,
@@ -64,11 +64,15 @@ export class SitesController {
     @Deprecated({ oldParam: 'site_type', newParam: 'type' })
     @Query('site_type')
     siteType?: SiteType | undefined,
+    @Deprecated({ oldParam: 'name_start', newParam: 'name_like' })
+    @Query('name_start')
+    nameStart?: string | undefined,
   ) {
     types = Array.isArray(types) ? types : types ? [types] : undefined;
     tags = Array.isArray(tags) ? tags : tags ? [tags] : undefined;
 
     if (!types && siteType) types = [siteType];
+    if (!nameLike && nameStart) nameLike = nameStart;
 
     const data = await this.sitesService.findAll(
       request.user,
@@ -85,7 +89,7 @@ export class SitesController {
         'createdAt',
         'tags',
       ]),
-      nameStart,
+      nameLike,
       telStart,
       emailStart,
       websiteContains,
@@ -115,7 +119,7 @@ export class SitesController {
             'createdAt',
             'tags',
           ]),
-          nameStart,
+          nameLike,
           telStart,
           emailStart,
           websiteContains,

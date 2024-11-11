@@ -46,7 +46,7 @@ export class SitesService {
   async count(
     user: UserRequestModel,
     filters: FiltersGetMany,
-    nameStart?: string | undefined,
+    nameLike?: string | undefined,
     telStart?: string | undefined,
     emailStart?: string | undefined,
     websiteContains?: string | undefined,
@@ -59,8 +59,8 @@ export class SitesService {
   ): Promise<SiteCommonReturn[] | SiteAdminReturn[]> {
     const sites = (await this.prismaBase.site.findMany({
       where: {
-        name: nameStart
-          ? { startsWith: nameStart, mode: 'insensitive' }
+        name: nameLike
+          ? { contains: nameLike, mode: 'insensitive' }
           : undefined,
         telNumber: telStart
           ? { startsWith: telStart, mode: 'insensitive' }
@@ -94,7 +94,7 @@ export class SitesService {
   async findAll(
     user: UserRequestModel,
     filters: FiltersGetMany,
-    nameStart?: string | undefined,
+    nameLike?: string | undefined,
     telStart?: string | undefined,
     emailStart?: string | undefined,
     websiteContains?: string | undefined,
@@ -119,8 +119,8 @@ export class SitesService {
       take: +filters.end - filters.start,
       select: selectOptions,
       where: {
-        name: nameStart
-          ? { startsWith: nameStart, mode: 'insensitive' }
+        name: nameLike
+          ? { contains: nameLike, mode: 'insensitive' }
           : undefined,
         telNumber: telStart
           ? { startsWith: telStart, mode: 'insensitive' }
