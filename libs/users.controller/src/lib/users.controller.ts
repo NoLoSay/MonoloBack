@@ -24,6 +24,7 @@ import { Role } from '@prisma/client/base';
 import { LoggerService } from '@noloback/logger-lib';
 import { FiltersGetMany } from 'models/filters-get-many';
 import { SanctionsService } from '@noloback/sanctions.service';
+import { Deprecated } from 'models/decorators';
 
 @Controller('users')
 @ApiExtraModels(PaginatedDto)
@@ -42,15 +43,28 @@ export class UsersController {
     @Query('_end') lastElem: number = 10,
     @Query('_sort') sort?: string | undefined,
     @Query('_order') order?: 'asc' | 'desc' | undefined,
-    @Query('name_start') nameStart?: string | undefined,
+    @Query('username_like') usernameLike?: string | undefined,
     @Query('tel_start') telStart?: string | undefined,
     @Query('email_start') emailStart?: string | undefined,
     @Query('email_verified') emailVerified?: boolean | undefined,
+    @Query('profiles') profiles?: Role[] | undefined,
     @Query('createdAt_gte') createdAtGte?: string | undefined,
     @Query('createdAt_lte') createdAtLte?: string | undefined,
     @Query('deletedAt_gte') deletedAtGte?: string | undefined,
     @Query('deletedAt_lte') deletedAtLte?: string | undefined,
+
+    @Deprecated({ oldParam: 'name_start', newParam: 'username_like' })
+    @Query('name_start')
+    nameStart?: string | undefined,
   ): Promise<UserCommonReturn[] | UserAdminReturn[]> {
+    profiles = Array.isArray(profiles)
+      ? profiles
+      : profiles
+        ? [profiles]
+        : undefined;
+
+    if (!usernameLike && nameStart) usernameLike = nameStart;
+
     const data = await this.usersService.findAll(
       request.user.activeProfile.role,
       new FiltersGetMany(firstElem, lastElem, sort, order, [
@@ -64,10 +78,11 @@ export class UsersController {
         'createdAt',
         'deletedAt',
       ]),
-      nameStart,
+      usernameLike,
       telStart,
       emailStart,
       emailVerified,
+      profiles,
       createdAtGte,
       createdAtLte,
       deletedAtGte,
@@ -77,7 +92,29 @@ export class UsersController {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': data.length,
+        'X-Total-Count': await this.usersService.count(
+          request.user.activeProfile.role,
+          new FiltersGetMany(firstElem, lastElem, sort, order, [
+            'id',
+            'username',
+            'telNumber',
+            'email',
+            'emailVerified',
+            'type',
+            'addressId',
+            'createdAt',
+            'deletedAt',
+          ]),
+          usernameLike,
+          telStart,
+          emailStart,
+          emailVerified,
+          profiles,
+          createdAtGte,
+          createdAtLte,
+          deletedAtGte,
+          deletedAtLte,
+        ),
       })
       .status(200)
       .json(data);

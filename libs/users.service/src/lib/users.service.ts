@@ -36,9 +36,57 @@ export class UsersService {
     private loggingService: LoggerService,
   ) {}
 
-  async count() {
+  async count(
+    role: Role,
+    filters: FiltersGetMany,
+    usernameLike?: string | undefined,
+    telStart?: string | undefined,
+    emailStart?: string | undefined,
+    emailVerified?: boolean | undefined,
+    profiles?: Role[] | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined,
+    deletedAtGte?: string | undefined,
+    deletedAtLte?: string | undefined,
+  ) {
     return await this.prismaBase.user.count({
-      where: { deletedAt: null },
+      skip: +filters.start,
+      take: +filters.end - filters.start,
+      where: {
+        username: usernameLike
+          ? { contains: usernameLike, mode: 'insensitive' }
+          : undefined,
+        telNumber: telStart
+          ? { startsWith: telStart, mode: 'insensitive' }
+          : undefined,
+        email: emailStart
+          ? { startsWith: emailStart, mode: 'insensitive' }
+          : undefined,
+        emailVerified: emailVerified ? emailVerified : undefined,
+        profiles: profiles
+          ? {
+              some: {
+                role: {
+                  in: profiles,
+                },
+              },
+            }
+          : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+        deletedAt:
+          role === Role.ADMIN
+            ? {
+                gte: deletedAtGte ? new Date(deletedAtGte) : undefined,
+                lte: deletedAtLte ? new Date(deletedAtLte) : undefined,
+              }
+            : null,
+      },
+      orderBy: {
+        [filters.sort]: filters.order,
+      },
     });
   }
 
@@ -207,10 +255,11 @@ export class UsersService {
   async findAll(
     role: Role,
     filters: FiltersGetMany,
-    nameStart?: string | undefined,
+    usernameLike?: string | undefined,
     telStart?: string | undefined,
     emailStart?: string | undefined,
     emailVerified?: boolean | undefined,
+    profiles?: Role[] | undefined,
     createdAtGte?: string | undefined,
     createdAtLte?: string | undefined,
     deletedAtGte?: string | undefined,
@@ -231,8 +280,8 @@ export class UsersService {
       take: +filters.end - filters.start,
       select: selectOptions,
       where: {
-        username: nameStart
-          ? { startsWith: nameStart, mode: 'insensitive' }
+        username: usernameLike
+          ? { contains: usernameLike, mode: 'insensitive' }
           : undefined,
         telNumber: telStart
           ? { startsWith: telStart, mode: 'insensitive' }
@@ -241,6 +290,15 @@ export class UsersService {
           ? { startsWith: emailStart, mode: 'insensitive' }
           : undefined,
         emailVerified: emailVerified ? emailVerified : undefined,
+        profiles: profiles
+          ? {
+              some: {
+                role: {
+                  in: profiles,
+                },
+              },
+            }
+          : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
