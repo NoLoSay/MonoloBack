@@ -9,3 +9,4 @@ export * as dbReturns from './db.returns/index';
 export * as apiRequestBodies from './api.request.bodies/index';
 export * as apiQuerryParameters from './api.querry.parameters/index';
 export * as apiReturns from './api.returns/index';
+export * as decorators from './decorators/index';

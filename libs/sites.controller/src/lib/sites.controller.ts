@@ -25,14 +25,14 @@ import {
   SiteManipulationRequestBody,
 } from '@noloback/api.request.bodies';
 import { SitesManagersService } from '@noloback/sites.managers.service';
-import { Role, SiteType } from '@prisma/client/base';
+import { Role, SiteTag, SiteType } from '@prisma/client/base';
 import { LoggerService } from '@noloback/logger-lib';
 import { FileInterceptor } from '@nestjs/platform-express';
 import multer = require('multer');
 import { randomUUID } from 'crypto';
 import { extname } from 'path';
 import { FiltersGetMany } from 'models/filters-get-many';
-import { count } from 'console';
+import { Deprecated } from 'models/decorators';
 
 @Controller('sites')
 export class SitesController {
@@ -55,11 +55,21 @@ export class SitesController {
     @Query('email_start') emailStart?: string | undefined,
     @Query('website_contains') websiteContains?: string | undefined,
     @Query('price') price?: number | undefined,
-    @Query('site_type') type?: SiteType | undefined,
+    @Query('type') types?: SiteType[] | undefined,
     @Query('address_id') addressId?: number | undefined,
     @Query('createdAt_gte') createdAtGte?: string | undefined,
     @Query('createdAt_lte') createdAtLte?: string | undefined,
+    @Query('tags') tags?: SiteTag[] | undefined,
+
+    @Deprecated({ oldParam: 'site_type', newParam: 'type' })
+    @Query('site_type')
+    siteType?: SiteType | undefined,
   ) {
+    types = Array.isArray(types) ? types : types ? [types] : undefined;
+    tags = Array.isArray(tags) ? tags : tags ? [tags] : undefined;
+
+    if (!types && siteType) types = [siteType];
+
     const data = await this.sitesService.findAll(
       request.user,
       new FiltersGetMany(firstElem, lastElem, sort, order, [
@@ -73,16 +83,18 @@ export class SitesController {
         'type',
         'addressId',
         'createdAt',
+        'tags',
       ]),
       nameStart,
       telStart,
       emailStart,
       websiteContains,
       price,
-      type,
+      types,
       addressId,
       createdAtGte,
       createdAtLte,
+      tags,
     );
 
     return res
@@ -101,16 +113,18 @@ export class SitesController {
             'type',
             'addressId',
             'createdAt',
+            'tags',
           ]),
           nameStart,
           telStart,
           emailStart,
           websiteContains,
           price,
-          type,
+          types,
           addressId,
           createdAtGte,
           createdAtLte,
+          tags,
         ),
       })
       .json(data);
