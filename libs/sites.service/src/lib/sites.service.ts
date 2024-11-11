@@ -51,10 +51,11 @@ export class SitesService {
     emailStart?: string | undefined,
     websiteContains?: string | undefined,
     price?: number | undefined,
-    type?: SiteType | undefined,
+    type?: SiteType[] | undefined,
     addressId?: number | undefined,
     createdAtGte?: string | undefined,
     createdAtLte?: string | undefined,
+    tags?: SiteTag[] | undefined,
   ): Promise<SiteCommonReturn[] | SiteAdminReturn[]> {
     const sites = (await this.prismaBase.site.findMany({
       where: {
@@ -71,12 +72,13 @@ export class SitesService {
           ? { contains: websiteContains, mode: 'insensitive' }
           : undefined,
         price: price ? +price : undefined,
-        type: type ? type : undefined,
+        type: type ? { in: type } : undefined,
         addressId: addressId ? +addressId : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
         },
+        tags: tags ? { hasEvery: tags } : undefined,
 
         deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null,
       },
@@ -97,10 +99,11 @@ export class SitesService {
     emailStart?: string | undefined,
     websiteContains?: string | undefined,
     price?: number | undefined,
-    type?: SiteType | undefined,
+    type?: SiteType[] | undefined,
     addressId?: number | undefined,
     createdAtGte?: string | undefined,
     createdAtLte?: string | undefined,
+    tags?: SiteTag[] | undefined,
   ): Promise<SiteCommonReturn[] | SiteAdminReturn[]> {
     let selectOptions: Prisma.SiteSelect;
     switch (user.activeProfile.role) {
@@ -129,12 +132,13 @@ export class SitesService {
           ? { contains: websiteContains, mode: 'insensitive' }
           : undefined,
         price: price ? +price : undefined,
-        type: type ? type : undefined,
+        type: type ? { in: type } : undefined,
         addressId: addressId ? +addressId : undefined,
         createdAt: {
           gte: createdAtGte ? new Date(createdAtGte) : undefined,
           lte: createdAtLte ? new Date(createdAtLte) : undefined,
         },
+        tags: tags ? { hasEvery: tags } : undefined,
 
         deletedAt: user.activeProfile.role === Role.ADMIN ? undefined : null,
       },
