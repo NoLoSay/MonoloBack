@@ -69,8 +69,18 @@ export class UserUpdateModel {
 export class UserChangePasswordModel {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   token: string = '';
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  oldPassword: string = '';
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  userMail: string = '';
 
   @ApiProperty()
   @IsStrongPassword({
@@ -80,5 +90,5 @@ export class UserChangePasswordModel {
     minNumbers: 1,
     minSymbols: 1,
   })
-  password: string = '';
+  newPassword: string = '';
 }
