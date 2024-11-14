@@ -55,7 +55,13 @@ export class ItemTypesController {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': itemTypes.length,
+        'X-Total-Count': await this.itemTypesService.count(
+          request.user.activeProfile.role,
+          itemCategoryId,
+          nameStart,
+          createdAtGte,
+          createdAtLte,
+        ),
       })
       .json(itemTypes);
   }

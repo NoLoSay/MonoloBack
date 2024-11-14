@@ -31,6 +31,30 @@ export class ItemTypesService {
     private loggingService: LoggerService,
   ) {}
 
+  async count(
+    role: Role,
+    itemCategoryId?: number | undefined,
+    nameStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined,
+  ): Promise<number> {
+    return this.prismaBase.itemType.count({
+      where: {
+        itemCategoryId: itemCategoryId ? +itemCategoryId : undefined,
+        name: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+
+        deletedAt: role === Role.ADMIN ? undefined : null,
+        itemCategory: role === Role.ADMIN ? undefined : { deletedAt: null },
+      },
+    });
+  }
+
   async findAll(
     role: Role,
     filters: FiltersGetMany,
