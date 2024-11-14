@@ -30,7 +30,7 @@ export class ItemCategoriesController {
     @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
-    @Query('_end') lastElem: number = 10,
+    @Query('_end') lastElem: number = 1000,
     @Query('_sort') sort?: string | undefined,
     @Query('_order') order?: 'asc' | 'desc' | undefined,
     @Query('name_start') nameStart?: string | undefined,
