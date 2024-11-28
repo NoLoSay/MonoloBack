@@ -44,7 +44,7 @@ export class ItemsService {
     private uploadthingService: UploadthingService,
   ) {}
 
-  private async checkExistingItem(id: number): Promise<Item> {
+  public async checkExistingItem(id: number): Promise<Item> {
     const item = await this.prismaBase.item.findUnique({
       where: { id: +id, deletedAt: null },
     });
@@ -52,7 +52,7 @@ export class ItemsService {
     return item;
   }
 
-  private async checkExistingSite(id: number) {
+  public async checkExistingSite(id: number) {
     if (
       (await this.prismaBase.site.count({
         where: { id: +id, deletedAt: null },
