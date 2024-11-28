@@ -10,6 +10,7 @@ import {
   Request,
   Query,
   Response,
+  Patch,
 } from '@nestjs/common';
 import { ADMIN, Roles } from '@noloback/roles';
 import { ItemTypesService } from '@noloback/item.types.service';
@@ -114,5 +115,23 @@ export class ItemTypesController {
     );
 
     return this.itemTypesService.delete(id);
+  }
+
+  @Roles([ADMIN])
+  @Patch(':id')
+  async patch(
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatedItemType: ItemTypeManipulationModel,
+  ): Promise<ItemTypeAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'PATCH',
+      'ItemType',
+      +id,
+      JSON.stringify(request.body),
+    );
+
+    return this.itemTypesService.patch(id, updatedItemType);
   }
 }

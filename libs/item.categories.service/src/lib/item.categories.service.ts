@@ -180,4 +180,23 @@ export class ItemCategoriesService {
       data: { deletedAt: new Date() },
     })) as unknown as ItemCategoryAdminReturn;
   }
+
+  async patch(
+    id: number,
+    updatedItemCategory: ItemCategoryManipulationModel,
+  ): Promise<ItemCategoryAdminReturn> {
+    return (await this.prismaBase.itemCategory
+      .update({
+        where: { id: +id },
+        data: {
+          name: updatedItemCategory.name,
+          description: updatedItemCategory.description,
+        },
+        select: new ItemCategoryAdminSelect(),
+      })
+      .catch((e: Error) => {
+        this.loggingService.log(LogCriticity.High, this.constructor.name, e);
+        throw new InternalServerErrorException(e);
+      })) as unknown as ItemCategoryAdminReturn;
+  }
 }

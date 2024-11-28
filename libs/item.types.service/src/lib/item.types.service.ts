@@ -213,4 +213,27 @@ export class ItemTypesService {
       data: { deletedAt: new Date() },
     })) as unknown as ItemTypeAdminReturn;
   }
+
+  async patch(
+    id: number,
+    updatedItemType: ItemTypeManipulationModel,
+  ): Promise<ItemTypeAdminReturn> {
+    return (await this.prismaBase.itemType
+      .update({
+        where: { id: +id },
+        data: {
+          name: updatedItemType.name,
+          description: updatedItemType.description,
+          itemCategory: {
+            connect: {
+              id: +updatedItemType.itemCategoryId,
+            },
+          },
+        },
+      })
+      .catch((e: Error) => {
+        this.loggingService.log(LogCriticity.High, this.constructor.name, e);
+        throw new InternalServerErrorException(e);
+      })) as unknown as ItemTypeAdminReturn;
+  }
 }
