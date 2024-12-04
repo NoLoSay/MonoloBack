@@ -16,6 +16,7 @@ import { UserRequestModel } from '@noloback/requests.constructor';
 import {
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import exp = require('constants');
 
@@ -46,6 +47,7 @@ class EmptyService {}
 describe('videoservice', () => {
   let app: TestingModule;
   let prismaBase: PrismaBaseService;
+  let sitesManagersService: SitesManagersService;
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
@@ -80,13 +82,16 @@ describe('videoservice', () => {
         },
         {
           provide: SitesManagersService,
-          useClass: EmptyService,
+          useValue: {
+            isAllowedToModify: jest.fn(),
+          },
         },
       ],
       imports: [HttpModule],
     }).compile();
 
     prismaBase = app.get<PrismaBaseService>(PrismaBaseService);
+    sitesManagersService = app.get<SitesManagersService>(SitesManagersService);
   });
 
   describe('getYoutube', () => {
@@ -167,20 +172,130 @@ describe('videoservice', () => {
         picture: 'test',
         telNumber: 'test',
         createdAt: new Date(),
-        activeProfile: { id: 1234, role: Role.ADMIN },
+        activeProfile: { id: 1234, role: Role.MANAGER },
         emailVerified: true,
         password: 'test',
       };
-      const findFirstSpy = jest
+      const video: Video = {
+        id: 1234,
+        showcased: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+        uuid: '',
+        hostingProviderId: 0,
+        hostingProviderVideoId: '',
+        validationStatus: 'VALIDATED',
+        duration: 0,
+        deletedReason: null,
+        itemId: 0,
+        profileId: 0,
+        signLanguageId: null
+      }
+      const findFirstSpyVideo = jest
+        .spyOn(prismaBase.video, 'findFirst')
+        .mockResolvedValue(video);
+      const findFirstSpySite = jest
         .spyOn(prismaBase.site, 'findFirst')
         .mockResolvedValue(null);
       expect(service.updateVideoShowcased(user, 1234, true)).rejects.toThrow(
         InternalServerErrorException,
       );
-      expect(findFirstSpy).toHaveBeenCalled();
     });
-    // const video: VideoCommonReturn = new VideoCommonReturn(
-    //   new VideoCommonDbReturn(),
-    // );
+
+    it('should throw if the user is not allowed to modify the site', async () => {
+      const service = app.get(VideoService);
+      const user: UserRequestModel = {
+        id: 1234,
+        username: 'test',
+        email: 'test',
+        picture: 'test',
+        telNumber: 'test',
+        createdAt: new Date(),
+        activeProfile: { id: 1234, role: Role.MANAGER },
+        emailVerified: true,
+        password: 'test',
+      };
+      const video: Video = {
+        id: 1234,
+        showcased: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+        uuid: '',
+        hostingProviderId: 0,
+        hostingProviderVideoId: '',
+        validationStatus: 'VALIDATED',
+        duration: 0,
+        deletedReason: null,
+        itemId: 0,
+        profileId: 0,
+        signLanguageId: null
+      }
+      const site: Site = {
+        id: 1234,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+        name: 'test',
+        uuid: '',
+        shortDescription: null,
+        longDescription: null,
+        telNumber: null,
+        email: null,
+        website: null,
+        price: 0,
+        type: 'MUSEUM',
+        tags: [],
+        addressId: 0
+      }
+      const findFirstSpyVideo = jest
+        .spyOn(prismaBase.video, 'findFirst')
+        .mockResolvedValue(video);
+      const findFirstSpySite = jest
+        .spyOn(prismaBase.site, 'findFirst')
+        .mockResolvedValue(site);
+      const isAllowedToModifySpy = jest.spyOn(
+        sitesManagersService,
+        'isAllowedToModify',
+      ).mockResolvedValue(false);
+      expect(service.updateVideoShowcased(user, 1234, true)).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+
+    it('should update the video', async () => {
+      const service = app.get(VideoService);
+      const user: UserRequestModel = {
+        id: 1234,
+        username: 'test',
+        email: 'test',
+        picture: 'test',
+        telNumber: 'test',
+        createdAt: new Date(),
+        activeProfile: { id: 1234, role: Role.ADMIN },
+        emailVerified: true,
+        password: 'test',
+      };
+      const video: Video = {
+        id: 0,
+        uuid: '',
+        hostingProviderId: 0,
+        hostingProviderVideoId: '',
+        validationStatus: 'VALIDATED',
+        duration: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+        deletedReason: null,
+        itemId: 0,
+        showcased: false,
+        profileId: 0,
+        signLanguageId: null
+      }
+      const updateSpyVideo = jest.spyOn(prismaBase.video, 'update').mockResolvedValue(video);
+      expect(await service.updateVideoShowcased(user, 1234, true)).toStrictEqual(video);
+      expect(updateSpyVideo).toHaveBeenCalled();
+    });
   });
 });
