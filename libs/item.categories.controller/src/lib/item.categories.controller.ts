@@ -10,6 +10,7 @@ import {
   Request,
   Response,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { ItemCategoriesService } from '@noloback/item.categories.service';
 import { ItemCategoryManipulationModel } from '@noloback/api.request.bodies';
@@ -120,5 +121,23 @@ export class ItemCategoriesController {
     );
 
     return this.itemCategoriesService.delete(id);
+  }
+
+  @Roles([ADMIN])
+  @Patch(':id')
+  async patch(
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatedItemCategory: ItemCategoryManipulationModel,
+  ): Promise<ItemCategoryAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'PATCH',
+      'ItemCategory',
+      +id,
+      JSON.stringify(request.body),
+    );
+
+    return this.itemCategoriesService.patch(id, updatedItemCategory);
   }
 }
