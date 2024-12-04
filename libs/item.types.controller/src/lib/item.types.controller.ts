@@ -10,6 +10,7 @@ import {
   Request,
   Query,
   Response,
+  Patch,
 } from '@nestjs/common';
 import { ADMIN, Roles } from '@noloback/roles';
 import { ItemTypesService } from '@noloback/item.types.service';
@@ -31,7 +32,7 @@ export class ItemTypesController {
     @Request() request: any,
     @Response() res: any,
     @Query('_start') firstElem: number = 0,
-    @Query('_end') lastElem: number = 10,
+    @Query('_end') lastElem: number = 1000,
     @Query('_sort') sort?: string | undefined,
     @Query('_order') order?: 'asc' | 'desc' | undefined,
     @Query('item_category_id') itemCategoryId?: number | undefined,
@@ -55,7 +56,13 @@ export class ItemTypesController {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': itemTypes.length,
+        'X-Total-Count': await this.itemTypesService.count(
+          request.user.activeProfile.role,
+          itemCategoryId,
+          nameStart,
+          createdAtGte,
+          createdAtLte,
+        ),
       })
       .json(itemTypes);
   }
@@ -108,5 +115,23 @@ export class ItemTypesController {
     );
 
     return this.itemTypesService.delete(id);
+  }
+
+  @Roles([ADMIN])
+  @Patch(':id')
+  async patch(
+    @Request() request: any,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatedItemType: ItemTypeManipulationModel,
+  ): Promise<ItemTypeAdminReturn> {
+    LoggerService.sensitiveLog(
+      +request.user.activeProfile.id,
+      'PATCH',
+      'ItemType',
+      +id,
+      JSON.stringify(request.body),
+    );
+
+    return this.itemTypesService.patch(id, updatedItemType);
   }
 }

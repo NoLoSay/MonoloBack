@@ -31,6 +31,30 @@ export class ItemTypesService {
     private loggingService: LoggerService,
   ) {}
 
+  async count(
+    role: Role,
+    itemCategoryId?: number | undefined,
+    nameStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined,
+  ): Promise<number> {
+    return this.prismaBase.itemType.count({
+      where: {
+        itemCategoryId: itemCategoryId ? +itemCategoryId : undefined,
+        name: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+
+        deletedAt: role === Role.ADMIN ? undefined : null,
+        itemCategory: role === Role.ADMIN ? undefined : { deletedAt: null },
+      },
+    });
+  }
+
   async findAll(
     role: Role,
     filters: FiltersGetMany,
@@ -188,5 +212,28 @@ export class ItemTypesService {
       where: { id: +id },
       data: { deletedAt: new Date() },
     })) as unknown as ItemTypeAdminReturn;
+  }
+
+  async patch(
+    id: number,
+    updatedItemType: ItemTypeManipulationModel,
+  ): Promise<ItemTypeAdminReturn> {
+    return (await this.prismaBase.itemType
+      .update({
+        where: { id: +id },
+        data: {
+          name: updatedItemType.name,
+          description: updatedItemType.description,
+          itemCategory: {
+            connect: {
+              id: +updatedItemType.itemCategoryId,
+            },
+          },
+        },
+      })
+      .catch((e: Error) => {
+        this.loggingService.log(LogCriticity.High, this.constructor.name, e);
+        throw new InternalServerErrorException(e);
+      })) as unknown as ItemTypeAdminReturn;
   }
 }

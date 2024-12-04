@@ -80,7 +80,13 @@ export class VideoController {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': data.length,
+        'X-Total-Count': await this.videoservice.countVideos(
+          validationStatusEnum,
+          itemId ? +itemId : undefined,
+          userId ? +userId : undefined,
+          createdAtGte,
+          createdAtLte,
+        ),
       })
       .json(data);
     // return JSON.parse(

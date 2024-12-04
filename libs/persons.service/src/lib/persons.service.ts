@@ -33,6 +33,37 @@ export class PersonsService {
     private loggingService: LoggerService,
   ) {}
 
+  async count(
+    role: Role,
+    personType?: PersonType | undefined,
+    nameStart?: string | undefined,
+    birthStart?: string | undefined,
+    deathStart?: string | undefined,
+    createdAtGte?: string | undefined,
+    createdAtLte?: string | undefined,
+  ) {
+    return this.prismaBase.person.count({
+      where: {
+        type: personType ? personType : undefined,
+        name: nameStart
+          ? { startsWith: nameStart, mode: 'insensitive' }
+          : undefined,
+        birthDate: birthStart
+          ? { startsWith: birthStart, mode: 'insensitive' }
+          : undefined,
+        deathDate: deathStart
+          ? { startsWith: deathStart, mode: 'insensitive' }
+          : undefined,
+        createdAt: {
+          gte: createdAtGte ? new Date(createdAtGte) : undefined,
+          lte: createdAtLte ? new Date(createdAtLte) : undefined,
+        },
+
+        deletedAt: role === Role.ADMIN ? undefined : null,
+      },
+    });
+  }
+
   async findAll(
     role: Role,
     filters: FiltersGetMany,

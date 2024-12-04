@@ -22,6 +22,13 @@ const options: NestApplicationOptions = {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, options);
+
+  app.enableCors({
+    origin: '*',
+    methods: '*',
+    allowedHeaders: '*',
+  });
+
   //app.useGlobalPipes(new ValidationPipe());
   const globalPrefix = '';
   // app.setGlobalPrefix(globalPrefix);

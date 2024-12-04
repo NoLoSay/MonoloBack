@@ -118,7 +118,24 @@ export class SanctionsService {
         [filters.sort]: filters.order,
       },
       include: {
-        issuer: true,
+        issuer: {
+          select: {
+            id: true,
+            role: true,
+            user: {
+              select: {
+                id: true,
+                username: true,
+              },
+            },
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
       },
     });
   }

@@ -1,6 +1,6 @@
 {
   "name": "@noloback/source",
-  "version": "1.0.0-pre1",
+  "version": "1.1.1",
   "license": "MIT",
   "scripts": {
     "prisma:generate": "npx prisma generate --schema libs/prisma/schema/base/prisma/schema.prisma && npx prisma generate --schema libs/prisma/schema/logs/prisma/schema.prisma && npx prisma generate --schema libs/prisma/schema/translator/prisma/schema.prisma",

@@ -63,7 +63,15 @@ export class PersonsController {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': data.length,
+        'X-Total-Count': await this.personsService.count(
+          request.user.activeProfile.role,
+          personType,
+          nameStart,
+          birthStart,
+          deathStart,
+          createdAtGte,
+          createdAtLte,
+        ),
       })
       .json(data);
   }

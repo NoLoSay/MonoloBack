@@ -82,7 +82,7 @@ export class SanctionsController {
     return res
       .set({
         'Access-Control-Expose-Headers': 'X-Total-Count',
-        'X-Total-Count': this.sanctionsService.count(
+        'X-Total-Count': await this.sanctionsService.count(
           userId,
           issuerId,
           issuerUserId,
