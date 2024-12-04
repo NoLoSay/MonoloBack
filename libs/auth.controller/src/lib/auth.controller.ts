@@ -7,6 +7,7 @@ import {
   Req,
   Body,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
@@ -44,7 +45,23 @@ export class AuthController {
   @Post('change-password')
   @Public()
   async changePassword(@Body() req: UserChangePasswordModel) {
-    return this.authService.changePassword(req.token, req.password);
+    if (!req.token && !req.oldPassword) {
+      throw new BadRequestException(
+        'error: you must either give old password and user or just mail token.'
+      );
+    }
+    if ((req.oldPassword && !req.userMail) || (!req.oldPassword && req.userMail)) {
+      throw new BadRequestException(
+        'error: you must provide both oldPassword and userMail.'
+      );
+    }
+    return this.authService.changePassword(
+      req.password,
+      req.token,
+      req.oldPassword,
+      req.userMail
+    );
+
   }
 
   @Post('forgot-password')

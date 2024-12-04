@@ -159,9 +159,9 @@ export class UsersService {
     }
   }
 
-  async changePassword(userId: number, newPassword: string) {
+  async changePassword(userId: number, password: string) {
     try {
-      const hashedPassword = await hash(newPassword, 12);
+      const hashedPassword = await hash(password, 12);
       const result = await this.prismaBase.user.update({
         where: { id: +userId },
         data: {
