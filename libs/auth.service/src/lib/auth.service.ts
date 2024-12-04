@@ -53,7 +53,7 @@ export class AuthService {
   }
 
   async changePassword(
-    newPassword: string,
+    password: string,
     token?: string,
     oldPassword?: string,
     userMail?: string,
@@ -61,13 +61,13 @@ export class AuthService {
     try {
       if (token) {
         const userId = await this.decodeConfirmationToken(token);
-        await this.usersService.changePassword(userId, newPassword);
+        await this.usersService.changePassword(userId, password);
       } else if (userMail && oldPassword) {
         const user = await this.validateUser(userMail, oldPassword);
         if (!user) {
           throw new BadRequestException('Wrong mail or old password');
         }
-        await this.usersService.changePassword(user.id, newPassword);
+        await this.usersService.changePassword(user.id, password);
       }
       return {
         statusCode: 200,

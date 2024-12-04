@@ -90,5 +90,5 @@ export class UserChangePasswordModel {
     minNumbers: 1,
     minSymbols: 1,
   })
-  newPassword: string = '';
+  password: string = '';
 }
