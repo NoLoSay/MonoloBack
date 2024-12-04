@@ -1,14 +1,22 @@
 import { HttpModule } from '@nestjs/axios';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getValidationStatusFromRole, VideoService } from './video.service';
-import { PrismaBaseService, Role, Video } from '@noloback/prisma-client-base';
+import {
+  PrismaBaseService,
+  Role,
+  Site,
+  Video,
+} from '@noloback/prisma-client-base';
 import { VideoCommonReturn } from '@noloback/api.returns';
 import { VideoCommonDbReturn } from '@noloback/db.returns';
 import { LoggerService } from '@noloback/logger-lib';
 import { ProfileService } from '@noloback/profile.service';
 import { SitesManagersService } from '@noloback/sites.managers.service';
 import { UserRequestModel } from '@noloback/requests.constructor';
-import { NotFoundException } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import exp = require('constants');
 
 class Provider {
@@ -56,6 +64,9 @@ describe('videoservice', () => {
             },
             hostingProvider: {
               findUnique: jest.fn(),
+            },
+            site: {
+              findFirst: jest.fn(),
             },
           },
         },
@@ -146,5 +157,30 @@ describe('videoservice', () => {
       );
       expect(findFirstSpy).toHaveBeenCalled();
     });
+
+    it('should throw if the site is invalid', async () => {
+      const service = app.get(VideoService);
+      const user: UserRequestModel = {
+        id: 1234,
+        username: 'test',
+        email: 'test',
+        picture: 'test',
+        telNumber: 'test',
+        createdAt: new Date(),
+        activeProfile: { id: 1234, role: Role.ADMIN },
+        emailVerified: true,
+        password: 'test',
+      };
+      const findFirstSpy = jest
+        .spyOn(prismaBase.site, 'findFirst')
+        .mockResolvedValue(null);
+      expect(service.updateVideoShowcased(user, 1234, true)).rejects.toThrow(
+        InternalServerErrorException,
+      );
+      expect(findFirstSpy).toHaveBeenCalled();
+    });
+    // const video: VideoCommonReturn = new VideoCommonReturn(
+    //   new VideoCommonDbReturn(),
+    // );
   });
 });
