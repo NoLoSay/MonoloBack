@@ -1,6 +1,6 @@
 # NoLoBack
 
-Version `0.5.0`
+Version `1.3.0`
 
 > General documentation
 > https://nolosay.com/Documentation/index.html
