@@ -8,6 +8,7 @@ import {
   Body,
   Query,
   BadRequestException,
+  Res,
 } from '@nestjs/common';
 import { ApiBody } from '@nestjs/swagger/dist';
 import { AuthService, UsernamePasswordCombo } from '@noloback/auth.service';
@@ -40,6 +41,16 @@ export class AuthController {
     const user = req.user;
 
     return this.authService.login(user);
+  }
+
+  @Public()
+  @UseGuards(GoogleOAuthGuard)
+  @Get('web-google')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async webLoginWithGoogle(@Req() req: any, @Res() res: any) {
+    const user = req.user;
+    const response = await this.authService.login(user);
+    return res.redirect(`${process.env['GOOGLE_CALLBACK_URL']}account?user=${JSON.stringify(response)}`);
   }
 
   @Post('change-password')
