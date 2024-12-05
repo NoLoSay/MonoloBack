@@ -190,8 +190,8 @@ describe('videoservice', () => {
         deletedReason: null,
         itemId: 0,
         profileId: 0,
-        signLanguageId: null
-      }
+        signLanguageId: null,
+      };
       const findFirstSpyVideo = jest
         .spyOn(prismaBase.video, 'findFirst')
         .mockResolvedValue(video);
@@ -230,8 +230,8 @@ describe('videoservice', () => {
         deletedReason: null,
         itemId: 0,
         profileId: 0,
-        signLanguageId: null
-      }
+        signLanguageId: null,
+      };
       const site: Site = {
         id: 1234,
         createdAt: new Date(),
@@ -247,18 +247,17 @@ describe('videoservice', () => {
         price: 0,
         type: 'MUSEUM',
         tags: [],
-        addressId: 0
-      }
+        addressId: 0,
+      };
       const findFirstSpyVideo = jest
         .spyOn(prismaBase.video, 'findFirst')
         .mockResolvedValue(video);
       const findFirstSpySite = jest
         .spyOn(prismaBase.site, 'findFirst')
         .mockResolvedValue(site);
-      const isAllowedToModifySpy = jest.spyOn(
-        sitesManagersService,
-        'isAllowedToModify',
-      ).mockResolvedValue(false);
+      const isAllowedToModifySpy = jest
+        .spyOn(sitesManagersService, 'isAllowedToModify')
+        .mockResolvedValue(false);
       expect(service.updateVideoShowcased(user, 1234, true)).rejects.toThrow(
         UnauthorizedException,
       );
@@ -291,11 +290,41 @@ describe('videoservice', () => {
         itemId: 0,
         showcased: false,
         profileId: 0,
-        signLanguageId: null
-      }
-      const updateSpyVideo = jest.spyOn(prismaBase.video, 'update').mockResolvedValue(video);
-      expect(await service.updateVideoShowcased(user, 1234, true)).toStrictEqual(video);
+        signLanguageId: null,
+      };
+      const updateSpyVideo = jest
+        .spyOn(prismaBase.video, 'update')
+        .mockResolvedValue(video);
+      expect(
+        await service.updateVideoShowcased(user, 1234, true),
+      ).toStrictEqual(video);
       expect(updateSpyVideo).toHaveBeenCalled();
+    });
+  });
+
+  describe('setHostingProvider', () => {
+    it('should call prisma', async () => {
+      const service = app.get(VideoService);
+      const videoSpy = jest
+        .spyOn(prismaBase.video, 'update')
+        .mockResolvedValue({} as Video);
+      expect(service.setHostingProvider(1, 1, 'aa')).resolves.toEqual(
+        {} as Video,
+      );
+      expect(videoSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('patchVideo', () => {
+    it('should call prisma', async () => {
+      const service = app.get(VideoService);
+      const videoSpy = jest
+        .spyOn(prismaBase.video, 'update')
+        .mockResolvedValue({} as Video);
+      expect(service.patchVideo(1, { hostingProviderId: 1 })).resolves.toEqual(
+        {} as Video,
+      );
+      expect(videoSpy).toHaveBeenCalled();
     });
   });
 });
