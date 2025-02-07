@@ -2,6 +2,7 @@ import { google, youtube_v3 } from 'googleapis';
 import { JWT } from 'google-auth-library';
 import {
   BadRequestException,
+  GoneException,
   HttpException,
   Injectable,
   InternalServerErrorException,
@@ -11,6 +12,7 @@ import {
 } from '@nestjs/common';
 import {
   ReadStream,
+  Stats,
   createReadStream,
   readFileSync,
   statSync,
@@ -220,11 +222,25 @@ export class VideoService {
       //     .replace('$(providerVideoId)', video.hostingProviderVideoId)
       // );
 
-      const videoPath = `/opt/nolovideos/${video.hostingProviderVideoId}`;
-      const file = createReadStream(videoPath);
-      const { size } = statSync(videoPath);
-      return { file, size };
+      try {
+        const videoPath = `/opt/nolovideos/${video.hostingProviderVideoId}`;
+        const stats: Stats = statSync(videoPath);
+        const size = stats.size;
+        console.log('size', size);
+        if (size) {
+          const file = createReadStream(videoPath);
+          return { file, size };
+        } else {
+          throw new GoneException('Video deleted');
+        }
+      } catch (e) {
+        console.error(e);
+        throw new GoneException('Video deleted');
+      }
     } catch (e) {
+      if (e instanceof GoneException) {
+        throw new GoneException('Video deleted');
+      }
       throw new InternalServerErrorException();
     }
   }
