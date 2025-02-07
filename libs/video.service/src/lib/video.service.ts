@@ -9,7 +9,13 @@ import {
   Redirect,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ReadStream, createReadStream, readFileSync, unlink } from 'fs';
+import {
+  ReadStream,
+  createReadStream,
+  readFileSync,
+  statSync,
+  unlink,
+} from 'fs';
 import {
   HostingProvider,
   Prisma,
@@ -182,7 +188,9 @@ export class VideoService {
     });
   }
 
-  async watchVideo(videoUUID: string): Promise<ReadStream> {
+  async watchVideo(
+    videoUUID: string,
+  ): Promise<{ file: ReadStream; size: number }> {
     try {
       const video: Video = await this.prismaBase.video
         .findUniqueOrThrow({
@@ -212,9 +220,10 @@ export class VideoService {
       //     .replace('$(providerVideoId)', video.hostingProviderVideoId)
       // );
 
-      return createReadStream(
-        `/opt/nolovideos/${video.hostingProviderVideoId}`,
-      );
+      const videoPath = `/opt/nolovideos/${video.hostingProviderVideoId}`;
+      const file = createReadStream(videoPath);
+      const { size } = statSync(videoPath);
+      return { file, size };
     } catch (e) {
       throw new InternalServerErrorException();
     }

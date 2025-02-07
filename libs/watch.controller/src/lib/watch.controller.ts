@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Header,
   Param,
   ParseIntPipe,
   Post,
@@ -28,12 +29,14 @@ export class WatchController {
   constructor(private readonly videoService: VideoService) {}
 
   @Get(':videoUUID')
+  @Header('Accept-Ranges', 'bytes')
+  @Header('Content-Type', 'video/mp4')
   @Public()
   async watchVideo(
     @Request() request: any,
     @Res({ passthrough: true }) res: Response,
     @Param('videoUUID') videoUUID: string,
-  ): Promise<StreamableFile> {
+  ) {
     // LoggerService.userLog(
     //   +request.user.activeProfile.id,
     //   'GET',
@@ -43,9 +46,19 @@ export class WatchController {
     // );
 
     const videoFile = await this.videoService.watchVideo(videoUUID);
-    res.set({
-      'Content-Type': 'video/mp4',
+    // console.log('file', videoFile.file);
+    // console.log('size', videoFile.size);
+    // res.writeHead(200, {
+    //   'Content-Length': videoFile.size,
+    // });
+    // videoFile.file.pipe(res);
+    return new FixedStreamableFile(videoFile.file, {
+      length: videoFile.size,
+      type: 'video/mp4',
     });
-    return new StreamableFile(videoFile);
   }
+}
+
+class FixedStreamableFile extends StreamableFile {
+  errorLogger: any = console.error;
 }

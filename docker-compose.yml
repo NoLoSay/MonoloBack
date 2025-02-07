@@ -43,6 +43,7 @@ services:
     networks:
       - postgres_net
       - elasticsearch_net
+    restart: always
     depends_on:
       prisma-migrate:
         condition: service_started
@@ -62,6 +63,7 @@ services:
     networks:
       - postgres_net
       - elasticsearch_net
+    restart: always
     depends_on:
       prisma-migrate:
         condition: service_started
